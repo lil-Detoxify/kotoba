@@ -1,4 +1,4 @@
-﻿# KotoBud Handoff
+# KotoBud Handoff
 
 > 本文档由 Antigravity 生成，专用于 Codex 接手 Kotoba / KotoBud 项目继续开发。
 > 编写时间：2026-09-17。
@@ -220,17 +220,151 @@ Codex 在周额度恢复接手后，推荐按以下优先级继续开发，切�
 ## 13. Git 状态
 
 - **工作区路径**：`C:\Users\75481\Documents\ChatGPT\New project\jp-vocab`
-- **当前 Git 分支**：`master`（位于上级目录 `C:\Users\75481\Documents\ChatGPT\New project`）
-- **最新 Commit**：`No commits yet`（仓库当前尚未创建首次 commit）
-- **当前 `git status` 输出**：
-  ```text
-  On branch master
-  No commits yet
-  Untracked files:
-    (use "git add <file>..." to include in what will be committed)
-          "../DesktopOrganizer - v1.12发行版/"
-          ./
-          ../social-media-os/
-  nothing added to commit but untracked files present (use "git add" to track)
-  ```
-- **工作区文件保护**：所有本轮优化、品牌修改、构建输出与交接文档均安全保留在本地磁盘上，随时可供 Codex 继续使用或执行首次 commit。
+- **仓库隔离状态**：`jp-vocab` 现已独立初始化为专属 Git 仓库，与外部杂项目录彻底解耦。
+- **分支规划**：
+  - `main`：对应正式生产环境（Production）
+  - `staging`：对应内部验收环境（Staging）
+- **当前 Commit**：已创建基线 Commit（`feat: migrate to KotoBud branding, kotobud.com domain routing, SEO and multi-tier environment architecture`），所有品牌重命名、SEO 优化、分级路由 Worker 及测试用例均已被完整追踪。
+
+---
+
+# Domain & Environment Migration
+
+> 本章节详细说明 KotoBud 正式独立域名迁移、Production / Staging / Preview 三级架构建设及 SEO 统一治理方案。
+
+## 1. 域名迁移决策与执行结果
+
+- **正式生产域名**：`https://kotobud.com`
+- **Cloudflare Zone 状态**：
+  - Zone 域名：`kotobud.com`（Zone ID: `b4c34fbe3db3bfe26e4ae6b970f673db`）
+  - 状态：Active（Cloudflare 托管权威 DNS）
+- **架构兼容原则**：
+  - 严格保持原有 Cloudflare Pages 项目名 `kotoba`，不重新创建项目。
+  - 严格保持 R2 存储桶 `kotoba-assets` 绑定关系，不迁移或重新上传 18,072 个 TTS 文件。
+- **Custom Domains API 登记完成**：
+  已通过 Cloudflare Pages Custom Domains API 将以下域名全部绑定至项目 `kotoba`：
+  - `kotobud.com`（Production Apex 域名）
+  - `www.kotobud.com`（Production www 域名）
+  - `staging.kotobud.com`（Staging 内部验收域名）
+- **DNS 激活指南**：
+  由于本地 Wrangler OAuth Token 默认仅授予 `zone:read` 权限，缺乏 `dns_records:write` 权限，DNS 记录需要在 Cloudflare 控制台一键确认：
+  - 访问 Cloudflare Dashboard -> **Compute (Workers & Pages)** -> 点击项目 **kotoba** -> 进入 **Custom domains** 标签页。
+  - 点击域名右侧的 **"Set up DNS records"** 按钮（或直接在 `kotobud.com` 的 **DNS -> Records** 中添加针对 `@`、`www`、`staging` 指向 `kotoba-iuz.pages.dev` 的 CNAME 代理记录）。
+  - Cloudflare 将自动下发 Universal SSL 边缘证书。
+
+## 2. Production / Staging / Preview 三级架构说明
+
+| 环境级别 | 访问域名 | 关联 Git 分支 | 搜索引擎索引 | 作用与测试策略 |
+| :--- | :--- | :---: | :---: | :--- |
+| **Production** | `https://kotobud.com` | `main` | ✅ **index, follow** | 正式稳定版本，面向外部用户。仅接收通过 Staging 验证的代码。 |
+| **Staging** | `https://staging.kotobud.com`<br>`https://staging.kotoba-iuz.pages.dev` | `staging` | 🚫 **noindex, nofollow** | 内部验收版本，供 Antigravity / Codex 上线前功能验收、跨端验证。 |
+| **Feature Preview** | `https://<deploy-hash>.kotoba-iuz.pages.dev` | 各 feature 分支 | 🚫 **noindex, nofollow** | 临时分支预览环境，部署后即时销毁或仅供短期单项功能核对。 |
+
+### 客户端存储环境隔离说明
+- Web 端采用浏览器的 IndexedDB 数据库（`kotoba-v1`）。
+- 由于浏览器的同源策略（Same-Origin Policy），`https://kotobud.com`、`https://staging.kotobud.com` 以及 `https://kotoba-iuz.pages.dev` 运行在完全相互隔离的 Origin 下，各自拥有独立的数据存储沙箱，测试数据绝不会污染生产环境用户的数据。
+
+## 3. Cloudflare Pages / Worker / DNS 对应关系
+
+- **Pages 部署产物**：`dist-cloudflare/`（包含前端静态构建文件与 `_worker.js`）。
+- **Worker 入口**：`scripts/cloudflare-worker.js`，部署时被构建为 `dist-cloudflare/_worker.js` 统一接管 HTTP 流量。
+- **全流量分发策略**：
+  1. **www 规范化重定向**：访问 `www.kotobud.com/*` 将自动触发 HTTP 301 永久重定向至 `https://kotobud.com/*`（保留路径与 Query）。
+  2. **Staging & Preview 爬虫防御**：当 Host 为 `staging.kotobud.com` 或以 `*.pages.dev` 为预览分支时，强制输出 `X-Robots-Tag: noindex, nofollow`，并在 HTML `<head>` 中注入 `<meta name="robots" content="noindex, nofollow">`。
+  3. **Robots.txt 动态适配**：
+     - Production (`kotobud.com`): 允许抓取，屏蔽 `/api/` 与 `/downloads/`，指向 `https://kotobud.com/sitemap.xml`。
+     - Staging / Preview: 无论请求路径为何，均返回 `User-agent: *\nDisallow: /`。
+  4. **Sitemap 动态服务**：直接响应标准 XML 格式站点地图，规范化 URL 全部统一在 `https://kotobud.com/`。
+  5. **静态资源与 R2 缓存**：
+     - `/audio/*`：直接读取 R2 `kotoba-assets`，返回 `Cache-Control: public, max-age=31536000, immutable` 强缓存。
+     - `/dictionary/*`：直接读取词典分片数据。
+     - `/api/v1/*`：交由 Pages Functions 动态处理。
+
+## 4. SEO 规则与 robots.txt / sitemap / canonical 说明
+
+- **网页 Title 规范**：`KotoBud - 日语背词与日语学习`，突出品牌与核心功能，严禁倒退回旧名称。
+- **Canonical URL**：`<link rel="canonical" href="https://kotobud.com/">`，统一权威入口。
+- **Meta Description**：包含“每天，认识一点日语”、“标日全册词书”、“智能 FSRS 间隔重复算法”、“多模式单词测验与真人级发音”。
+- **社交分享（Open Graph & Twitter）**：
+  - `og:url`：`https://kotobud.com/`
+  - `og:image`：`https://kotobud.com/icon.png`
+  - `twitter:card`：`summary_large_image`
+- **结构化数据（JSON-LD）**：在 `index.html` 中注入 Schema.org `WebApplication` 规范元数据。
+- **非 JS 爬虫语义兜底**：
+  在 `index.html` 的 `<div id="app">` 内部预置语义化 `<noscript>` 块与轻量静态文本，清晰呈现：
+  - 产品定位：干净纯粹的日语单词背词与日语学习工具
+  - 核心教材：《标准日本语》初级上/下、中级上/下、高级上/下全册收录
+  - 核心机制：现代 FSRS (Free Spaced Repetition Scheduler) 智能间隔复习
+  使百度、Google、Bing 等搜索引擎即使在不执行 JS 的轻量抓取阶段也能精准建立收录相关性。
+
+## 5. 旧域名 301 重定向机制与启用条件
+
+- **旧域名**：`https://kotoba-iuz.pages.dev`
+- **平滑过渡保护原则**：
+  > [!IMPORTANT]
+  > 在 `https://kotobud.com` 正式生效且各项功能验收完全通过之前，**严禁直接关闭旧域名或粗暴切断访问**。
+- **301 自动重定向机制**：
+  - `scripts/cloudflare-worker.js` 中已预埋 `ENABLE_LEGACY_301` 环境变量控制逻辑：
+    ```javascript
+    const enableLegacy301 = (env && env.ENABLE_LEGACY_301 === 'true') || false;
+    if (enableLegacy301 && hostname === 'kotoba-iuz.pages.dev') {
+      const targetUrl = new URL(request.url);
+      targetUrl.hostname = 'kotobud.com';
+      targetUrl.protocol = 'https:';
+      return Response.redirect(targetUrl.toString(), 301);
+    }
+    ```
+- **启用条件与步骤**：
+  1. 用户在 Cloudflare Dashboard 完成 `kotobud.com` 的 DNS 记录设置。
+  2. 运行自检命令确认 `https://kotobud.com` 返回 HTTP 200 且证书有效。
+  3. 在 Cloudflare Pages Dashboard -> **kotoba** -> **Settings** -> **Environment variables** 中添加 `ENABLE_LEGACY_301 = true`，或在后续部署命令中传入该变量。
+
+## 6. 标准开发与部署命令
+
+为避免 Windows 终端由于环境隔离或路径编码导致的凭证缺失，请统一使用以下标准命令：
+
+```bash
+# 1. 运行本地全量测试 (71 项测试)
+npm test
+
+# 2. 构建 Cloudflare 生产静态包与 Worker
+npm run build:cloudflare
+
+# 3. 部署到 Staging 验收环境 (对应 staging.kotobud.com 与 staging.kotoba-iuz.pages.dev)
+node scripts/deploy_pages.cjs staging
+
+# 4. 部署到 Production 生产环境 (对应 kotobud.com)
+node scripts/deploy_pages.cjs main
+
+# 5. 一键巡检验收 Production 与 Staging 线上端点
+node scripts/verify_deployments.cjs
+```
+
+## 7. 自动化测试与验证覆盖
+
+项目中已建立完整的自动化回归测试体系：
+
+1. **Worker 路由与重定向测试 (`tests/worker-routing.test.ts`)**：
+   - 验证 `www.kotobud.com` -> `kotobud.com` 301 重定向
+   - 验证 `ENABLE_LEGACY_301` 启用与关闭时的行为
+   - 验证 Staging 环境下 `X-Robots-Tag: noindex, nofollow` 响应头
+   - 验证 Staging 环境下动态返回 `User-agent: *\nDisallow: /`
+   - 验证 Production 环境下动态返回包含 `https://kotobud.com/sitemap.xml` 的 robots.txt
+   - 验证 `/sitemap.xml` 生成与 canonical URL 校验
+2. **全套业务测试通过情况**：
+   - Vitest：7 个测试套件，71 项测试全部通过（耗时约 600ms）。
+3. **线上生产与 Staging 端点自动化探针 (`scripts/verify_deployments.cjs`)**：
+   - `https://kotoba-iuz.pages.dev`：HTTP 200，SEO Title 生效，Robots.txt 生效，Sitemap 生效。
+   - `https://staging.kotoba-iuz.pages.dev`：HTTP 200，Noindex 响应头生效，Disallow: / 生效。
+
+## 8. 给 Codex 的下一步明确建议
+
+1. **协助完成 DNS 解析激活**：
+   指导用户或确认 Cloudflare Dashboard 中的 3 条 CNAME 记录是否就绪。
+2. **新域名 Production 验收**：
+   解析生效后，直接运行 `node scripts/verify_deployments.cjs` 验证 `https://kotobud.com`。
+3. **平滑开启 301 重定向**：
+   在新域名全功能验证无误后，配置 `ENABLE_LEGACY_301=true` 完成流量无缝归拢。
+4. **留置待办处理**：
+   推进 Windows 0.5.0 大文件 (~298 MB) 安装包上传至 Cloudflare R2 `releases/0.5.0/`，随后开启 `VITE_WINDOWS_DOWNLOADS_READY=true`。
+
