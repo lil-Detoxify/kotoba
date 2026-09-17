@@ -1,0 +1,1152 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-16T13:56:00.501Z",
+  "source": "selected-words.json",
+  "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+  "request": {
+    "languageCode": "ja-JP",
+    "quotaProject": "gen-lang-client-0118344750",
+    "audioEncoding": "MP3",
+    "speakingRate": 1,
+    "pitch": 0,
+    "volumeGainDb": 0,
+    "input": "SSML yomigana phoneme",
+    "voices": [
+      "ja-JP-Wavenet-A",
+      "ja-JP-Wavenet-B",
+      "ja-JP-Wavenet-C",
+      "ja-JP-Wavenet-D"
+    ]
+  },
+  "words": [
+    {
+      "id": "001",
+      "book": "biaori-beginner-upper",
+      "bookTitle": "标日初级上",
+      "lesson": "第3课",
+      "lessonOrder": 3,
+      "stableWordId": "biaori-beginner-upper-w-3-140",
+      "term": "今日",
+      "reading": "きょう",
+      "meaning": "今天",
+      "reason": "汉字存在多种常见读法；教材明确读音，适合验证 yomigana 控制。"
+    },
+    {
+      "id": "002",
+      "book": "biaori-beginner-upper",
+      "bookTitle": "标日初级上",
+      "lesson": "第3课",
+      "lessonOrder": 3,
+      "stableWordId": "biaori-beginner-upper-w-3-120",
+      "term": "喫茶店",
+      "reading": "きっさてん",
+      "meaning": "咖啡馆",
+      "reason": "包含促音和音读复合词，能观察辅音时长与节奏。"
+    },
+    {
+      "id": "003",
+      "book": "biaori-beginner-upper",
+      "bookTitle": "标日初级上",
+      "lesson": "第5课",
+      "lessonOrder": 5,
+      "stableWordId": "biaori-beginner-upper-w-5-240",
+      "term": "旅行",
+      "reading": "りょこう",
+      "meaning": "旅行",
+      "reason": "包含拗音「りょ」和长音节奏，适合观察自然度。"
+    },
+    {
+      "id": "004",
+      "book": "biaori-beginner-upper",
+      "bookTitle": "标日初级上",
+      "lesson": "第11课",
+      "lessonOrder": 11,
+      "stableWordId": "biaori-beginner-upper-w-11-553",
+      "term": "コンピュータ",
+      "reading": "コンピュータ",
+      "meaning": "计算机，电脑",
+      "reason": "片假名外来语，含拗音和长音，检验外来语韵律。"
+    },
+    {
+      "id": "005",
+      "book": "biaori-beginner-upper",
+      "bookTitle": "标日初级上",
+      "lesson": "第15课",
+      "lessonOrder": 15,
+      "stableWordId": "biaori-beginner-upper-w-15-732",
+      "term": "大丈夫",
+      "reading": "だいじょうぶ",
+      "meaning": "没关系，放心",
+      "reason": "汉字复合词含拗音，常用于口语，适合自然度比较。"
+    },
+    {
+      "id": "006",
+      "book": "biaori-beginner-lower",
+      "bookTitle": "标日初级下",
+      "lesson": "第34课",
+      "lessonOrder": 34,
+      "stableWordId": "biaori-beginner-lower-w-34-1510",
+      "term": "一生懸命",
+      "reading": "いっしょうけんめい",
+      "meaning": "拼命地，努力地",
+      "reason": "含促音、拗音和较长多拍词，能检验语速与拍数。"
+    },
+    {
+      "id": "007",
+      "book": "biaori-intermediate-upper",
+      "bookTitle": "标日中级上",
+      "lesson": "第7课",
+      "lessonOrder": 7,
+      "stableWordId": "biaori-intermediate-upper-w-7-2926",
+      "term": "発表",
+      "reading": "はっぴょう",
+      "meaning": "发表，发布，宣布，揭晓",
+      "reason": "含促音与拗音，音读词，适合验证辅音时长和连贯性。"
+    },
+    {
+      "id": "008",
+      "book": "biaori-intermediate-upper",
+      "bookTitle": "标日中级上",
+      "lesson": "第9课",
+      "lessonOrder": 9,
+      "stableWordId": "biaori-intermediate-upper-w-9-3193",
+      "term": "環境",
+      "reading": "かんきょう",
+      "meaning": "环境",
+      "reason": "正式语域汉字词，含拗音，适合观察音读清晰度。"
+    },
+    {
+      "id": "009",
+      "book": "biaori-advanced-upper",
+      "bookTitle": "标日高级上",
+      "lesson": "第1课",
+      "lessonOrder": 1,
+      "stableWordId": "biaori-advanced-upper-w-1-5843",
+      "term": "今日",
+      "reading": "こんにち",
+      "meaning": "现在，今天",
+      "reason": "与初级词「今日／きょう」同形异读，直接测试 reading 是否被严格遵循。"
+    },
+    {
+      "id": "010",
+      "book": "biaori-advanced-lower",
+      "bookTitle": "标日高级下",
+      "lesson": "第24课",
+      "lessonOrder": 24,
+      "stableWordId": "biaori-advanced-lower-w-24-9108",
+      "term": "思いっきり",
+      "reading": "おもいっきり",
+      "meaning": "痛快地，尽情地",
+      "reason": "口语副词含促音和长音节奏，适合判断自然语速。"
+    }
+  ],
+  "results": [
+    {
+      "wordId": "001",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/001_ja-JP-Wavenet-A.mp3",
+      "bytes": 5184,
+      "requestChars": 65,
+      "payloadHash": "cbc5b186a5e9c2aeb037210627cffc779d715a49744e4617d7b97d3d5d94e601",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きょう\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "001",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/001_ja-JP-Wavenet-B.mp3",
+      "bytes": 5184,
+      "requestChars": 65,
+      "payloadHash": "44872a83aa4506357ab4d8bff2a49fc936a1c91ff3dbd48dcaddc134a2ac35e3",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きょう\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "001",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/001_ja-JP-Wavenet-C.mp3",
+      "bytes": 5184,
+      "requestChars": 65,
+      "payloadHash": "851e4241ce6cefbdaf4c60a89db292fbba17acd83ab40dda0dac759694e47c92",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きょう\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "001",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/001_ja-JP-Wavenet-D.mp3",
+      "bytes": 5568,
+      "requestChars": 65,
+      "payloadHash": "72d7e714d8a410e2386d544a6f0b5f80093cf959a4cee44e30a819da708cdde9",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きょう\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "002",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/002_ja-JP-Wavenet-A.mp3",
+      "bytes": 8064,
+      "requestChars": 68,
+      "payloadHash": "96074c496aa2bf118605e614e08f3877eef2400910ae688435c84cf514c8b7ba",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きっさてん\">喫茶店</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "002",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/002_ja-JP-Wavenet-B.mp3",
+      "bytes": 8064,
+      "requestChars": 68,
+      "payloadHash": "7cd9c3f7ec89980d735afcd8ecca8faf4234ba5ce2a6450d5254250d5a0fa57c",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きっさてん\">喫茶店</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "002",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/002_ja-JP-Wavenet-C.mp3",
+      "bytes": 7488,
+      "requestChars": 68,
+      "payloadHash": "7ab18a525ea5ce9eaecabcb845f81d0f9ca3e0e05c357f42fedebdda21610751",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きっさてん\">喫茶店</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "002",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/002_ja-JP-Wavenet-D.mp3",
+      "bytes": 8256,
+      "requestChars": 68,
+      "payloadHash": "1bbf3d04306d9a9ea614e7cd4e5827d9b1154c5376a045bd148fbf6a945d0c09",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"きっさてん\">喫茶店</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "003",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/003_ja-JP-Wavenet-A.mp3",
+      "bytes": 7104,
+      "requestChars": 66,
+      "payloadHash": "ab7de7655d12f55be3853301a2e017f633a02f0346cb43e05289775284956fc5",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"りょこう\">旅行</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "003",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/003_ja-JP-Wavenet-B.mp3",
+      "bytes": 7104,
+      "requestChars": 66,
+      "payloadHash": "69ad276b6f6215368f867787bacffafbf4f6edf4e16ddaf5e0ff3480853dc6df",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"りょこう\">旅行</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "003",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/003_ja-JP-Wavenet-C.mp3",
+      "bytes": 6720,
+      "requestChars": 66,
+      "payloadHash": "c2537a4db3ad6dfaac9028c2c7af8e32359080aeeac0784a682c6cd0cb25d9aa",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"りょこう\">旅行</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "003",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/003_ja-JP-Wavenet-D.mp3",
+      "bytes": 7488,
+      "requestChars": 66,
+      "payloadHash": "5e7b741258adb0c1a209eb1b59535f8f7ce5c30f6c4a656f39a82c7c9dcd2de0",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"りょこう\">旅行</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "004",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/004_ja-JP-Wavenet-A.mp3",
+      "bytes": 8832,
+      "requestChars": 72,
+      "payloadHash": "be89324513506ba5b7ee7c2298cfc47ab76682798dcd1268761a81c5425449d9",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"コンピュータ\">コンピュータ</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "004",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/004_ja-JP-Wavenet-B.mp3",
+      "bytes": 8832,
+      "requestChars": 72,
+      "payloadHash": "4dd181612bc6644ed0bcbd1e77ac22141d86c6b0d6b447b73eeff8becc80fd48",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"コンピュータ\">コンピュータ</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "004",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/004_ja-JP-Wavenet-C.mp3",
+      "bytes": 7872,
+      "requestChars": 72,
+      "payloadHash": "cbc6b9fd7dbf3309f6c677343aa07581625c381b107709ffa112f0f1aa0c036d",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"コンピュータ\">コンピュータ</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "004",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/004_ja-JP-Wavenet-D.mp3",
+      "bytes": 8448,
+      "requestChars": 72,
+      "payloadHash": "98051e2162a4d4006b0de64ca2a15fe340abf55b8d1ad234987a1016294d6067",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"コンピュータ\">コンピュータ</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "005",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/005_ja-JP-Wavenet-A.mp3",
+      "bytes": 8832,
+      "requestChars": 69,
+      "payloadHash": "6c4b2f985e847dbda4ec34737edcfe31995a5c3e07929762a2bc40444480c310",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"だいじょうぶ\">大丈夫</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "005",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/005_ja-JP-Wavenet-B.mp3",
+      "bytes": 8832,
+      "requestChars": 69,
+      "payloadHash": "9c576cdabb0fdb2b4589502c9adb5d1afb46f01f10bb7f77993d70cb04c66ca9",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"だいじょうぶ\">大丈夫</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "005",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/005_ja-JP-Wavenet-C.mp3",
+      "bytes": 7680,
+      "requestChars": 69,
+      "payloadHash": "0601e4dc46a3f453b6153eaf81e1da8f7bf804e316337e797763d9171a04f058",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"だいじょうぶ\">大丈夫</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "005",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/005_ja-JP-Wavenet-D.mp3",
+      "bytes": 8640,
+      "requestChars": 69,
+      "payloadHash": "98d5750b829b39a32f6f0e328c304eb7142405181908ad8501cc92483efffa93",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"だいじょうぶ\">大丈夫</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "006",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/006_ja-JP-Wavenet-A.mp3",
+      "bytes": 11328,
+      "requestChars": 73,
+      "payloadHash": "595061663da014cc4bd040ff19e37bd9cfbc0f7f43c5d2664cc51df4d95d4079",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"いっしょうけんめい\">一生懸命</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "006",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/006_ja-JP-Wavenet-B.mp3",
+      "bytes": 11328,
+      "requestChars": 73,
+      "payloadHash": "dfd1460bcf5f8e8674c93cdbc38328cf4942092a1b812aeaf8f20dec986981ee",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"いっしょうけんめい\">一生懸命</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "006",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/006_ja-JP-Wavenet-C.mp3",
+      "bytes": 10752,
+      "requestChars": 73,
+      "payloadHash": "1c09d7bead77ce068a424ab8ee4c2e8aa747969cb49027829bd3b032a84614a2",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"いっしょうけんめい\">一生懸命</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "006",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/006_ja-JP-Wavenet-D.mp3",
+      "bytes": 10944,
+      "requestChars": 73,
+      "payloadHash": "2f0758762512171e295b068a71c1aabf43f01d25eca9da2094ec1b74b01a0c64",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"いっしょうけんめい\">一生懸命</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "007",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/007_ja-JP-Wavenet-A.mp3",
+      "bytes": 7680,
+      "requestChars": 67,
+      "payloadHash": "c9d6b082e2dc96bb1f8e7eac7864ea2ce74a075fcf9e7f1c96b0e4922a9d4ac2",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"はっぴょう\">発表</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "007",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/007_ja-JP-Wavenet-B.mp3",
+      "bytes": 7680,
+      "requestChars": 67,
+      "payloadHash": "98110faedda60a8f774737b02084834162f7c3d5041a089dd44f65a0b1309f2f",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"はっぴょう\">発表</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "007",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/007_ja-JP-Wavenet-C.mp3",
+      "bytes": 7488,
+      "requestChars": 67,
+      "payloadHash": "31c47a8c684e825ff91b57ff106ac563440203193ac48282d91d57483b92435d",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"はっぴょう\">発表</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "007",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/007_ja-JP-Wavenet-D.mp3",
+      "bytes": 7872,
+      "requestChars": 67,
+      "payloadHash": "788187e7a1cedea7bd1d228dbb5e78d953b3295e660618e434e7451ff0ee89ae",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"はっぴょう\">発表</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "008",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/008_ja-JP-Wavenet-A.mp3",
+      "bytes": 7872,
+      "requestChars": 67,
+      "payloadHash": "cd1a50036c2bd16970d4860570dfe654ddd498ce2ca842b7eb4bea989cdab261",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"かんきょう\">環境</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "008",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/008_ja-JP-Wavenet-B.mp3",
+      "bytes": 7872,
+      "requestChars": 67,
+      "payloadHash": "09fe3c5732aa5676a064586af617a631c5b371f91441ad6c853ef7514379c03f",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"かんきょう\">環境</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "008",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/008_ja-JP-Wavenet-C.mp3",
+      "bytes": 7488,
+      "requestChars": 67,
+      "payloadHash": "7ea285940462f56201da023b434f532d7fa6f7c740879ca3869b95b842c11200",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"かんきょう\">環境</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "008",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/008_ja-JP-Wavenet-D.mp3",
+      "bytes": 8064,
+      "requestChars": 67,
+      "payloadHash": "4756ab42bb3ba5467e0808c0287c68a9679fc1f6bf83234713cca98800a46a19",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"かんきょう\">環境</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "009",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/009_ja-JP-Wavenet-A.mp3",
+      "bytes": 7680,
+      "requestChars": 66,
+      "payloadHash": "e82f0664e07ae7c9c0928840c41ca779f3aabe7673bb7fcd12234936b592cb34",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"こんにち\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "009",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/009_ja-JP-Wavenet-B.mp3",
+      "bytes": 7680,
+      "requestChars": 66,
+      "payloadHash": "283cb872a4e40caff5b2fe1a4882a3a9c7c2205fa4b5d0421e37570a4dceb9de",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"こんにち\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "009",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/009_ja-JP-Wavenet-C.mp3",
+      "bytes": 7104,
+      "requestChars": 66,
+      "payloadHash": "7598baf246e1d08b6b55f529cb85cf0d1f3501b303013dbe92779648641d57f1",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"こんにち\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "009",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/009_ja-JP-Wavenet-D.mp3",
+      "bytes": 7872,
+      "requestChars": 66,
+      "payloadHash": "d01481350c9efefe63830f0f9e655b9c4386c4077bd96808d5a1d8fa3b69b76b",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"こんにち\">今日</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "010",
+      "voice": "ja-JP-Wavenet-A",
+      "status": "success",
+      "file": "output/wavenet-a/010_ja-JP-Wavenet-A.mp3",
+      "bytes": 9216,
+      "requestChars": 71,
+      "payloadHash": "f87696e55a04b014bc08ab03362a49243cebe01892f4803a299c7f5b8fd16811",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"おもいっきり\">思いっきり</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-A"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "010",
+      "voice": "ja-JP-Wavenet-B",
+      "status": "success",
+      "file": "output/wavenet-b/010_ja-JP-Wavenet-B.mp3",
+      "bytes": 9216,
+      "requestChars": 71,
+      "payloadHash": "e537e5fe0e61a08d487049d7bd22486c25da5e77f0f96a649f1049e1fb2e926f",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"おもいっきり\">思いっきり</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-B"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "010",
+      "voice": "ja-JP-Wavenet-C",
+      "status": "success",
+      "file": "output/wavenet-c/010_ja-JP-Wavenet-C.mp3",
+      "bytes": 8256,
+      "requestChars": 71,
+      "payloadHash": "4c93e769bddf8fcdefa00a204507a2a7e600282e0fa965ddf3f07752e6dfd3dc",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"おもいっきり\">思いっきり</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-C"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    },
+    {
+      "wordId": "010",
+      "voice": "ja-JP-Wavenet-D",
+      "status": "success",
+      "file": "output/wavenet-d/010_ja-JP-Wavenet-D.mp3",
+      "bytes": 8640,
+      "requestChars": 71,
+      "payloadHash": "00c039424afc3ac0eb6094b09331f971b19c32d08ea19f90333367d204763ad0",
+      "sourceHash": "286da8ced8431ba297e4a06c52584b1b52ad7859bc08a5f2b51da8439c79c475",
+      "requestContent": {
+        "input": {
+          "ssml": "<speak><phoneme alphabet=\"yomigana\" ph=\"おもいっきり\">思いっきり</phoneme></speak>"
+        },
+        "voice": {
+          "languageCode": "ja-JP",
+          "name": "ja-JP-Wavenet-D"
+        },
+        "audioConfig": {
+          "audioEncoding": "MP3",
+          "speakingRate": 1,
+          "pitch": 0,
+          "volumeGainDb": 0
+        }
+      }
+    }
+  ],
+  "summary": {
+    "requests": 40,
+    "generated": 40,
+    "failed": 0,
+    "chars": 2736,
+    "totalBytes": 321408
+  }
+}

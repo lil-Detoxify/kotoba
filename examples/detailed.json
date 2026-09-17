@@ -1,0 +1,44 @@
+[
+  {
+    "lesson": "第1课 · 详细释义",
+    "term": "中国人",
+    "reading": "ちゅうごくじん",
+    "meaning": "中国人",
+    "partOfSpeech": "名词",
+    "example": "私は中国人です。",
+    "exampleReading": "わたしはちゅうごくじんです。",
+    "exampleTranslation": "我是中国人。"
+  },
+  {
+    "lesson": "第1课 · 详细释义",
+    "term": "船便",
+    "reading": "ふなびん",
+    "meaning": "海运；海运邮件",
+    "partOfSpeech": "名词",
+    "senses": [
+      {
+        "meaning": "用船运送的邮件或货物",
+        "definitionJa": "船で送る郵便物や荷物。",
+        "example": "この荷物を船便で送ります。",
+        "exampleReading": "このにもつをふなびんでおくります。",
+        "exampleTranslation": "把这件行李通过海运寄送。"
+      },
+      {
+        "meaning": "定期船、轮渡的运输服务",
+        "definitionJa": "船を使った輸送の便。"
+      }
+    ]
+  },
+  {
+    "lesson": "第1课 · 详细释义",
+    "term": "学生",
+    "reading": "がくせい",
+    "meaning": "学生"
+  },
+  {
+    "lesson": "第1课 · 详细释义",
+    "term": "友達",
+    "reading": "ともだち",
+    "meaning": "朋友"
+  }
+]

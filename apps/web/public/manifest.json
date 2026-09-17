@@ -1,0 +1,16 @@
+﻿{
+  "name": "KotoBud · 日语背词",
+  "short_name": "KotoBud",
+  "description": "每天，认识一点日语。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8f4",
+  "theme_color": "#f7f8f4",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+.npm-cache/
+.xdg-config/
+.wrangler/
+dist-cloudflare/
+.env
+.env.*
+!.env.example
+
+.cache/
+
+release/
+Microsoft/

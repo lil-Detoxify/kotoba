@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kotoba",
+  "pages_build_output_dir": "dist-cloudflare",
+  "compatibility_date": "2026-09-16",
+  "vars": { "KOTOBA_DATA_VERSION": "v1" },
+  "r2_buckets": [
+    {
+      "binding": "KOTOBA_R2",
+      "bucket_name": "kotoba-assets"
+    }
+  ]
+}

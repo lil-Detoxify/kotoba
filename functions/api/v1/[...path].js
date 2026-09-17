@@ -1,0 +1,1 @@
+export const onRequest = async () => new Response(JSON.stringify({error:'not_found', message:'API route not found.'}), {status:404, headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});

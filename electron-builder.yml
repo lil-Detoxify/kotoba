@@ -1,0 +1,35 @@
+appId: org.kotoba.desktop
+productName: Kotoba
+copyright: Copyright © 2026 KotoBud
+asar: true
+npmRebuild: false
+electronDist: node_modules/electron/dist
+directories:
+  app: apps/windows
+  output: release
+files:
+  - main.cjs
+  - protocol.cjs
+  - package.json
+  - icon.png
+extraResources:
+  - from: dist
+    to: web
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  icon: apps/windows/icon.ico
+  signAndEditExecutable: false
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  deleteAppDataOnUninstall: false
+  artifactName: Kotoba-${version}-Windows-x64-Setup.${ext}
+portable:
+  artifactName: Kotoba-${version}-Windows-x64-Portable.${ext}

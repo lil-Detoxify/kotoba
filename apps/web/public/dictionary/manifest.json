@@ -1,0 +1,9 @@
+{
+  "version": "2026-09-02",
+  "entries": 217538,
+  "bytes": 222223562,
+  "shards": 512,
+  "source": "https://github.com/tomoshi-app/tomoshi-dict-data",
+  "license": "CC-BY-SA-4.0",
+  "modifications": "Exact lookup shards; selected fields; no generated translations added by Kotoba."
+}

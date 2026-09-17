@@ -1,0 +1,2 @@
+<script setup lang="ts">import {computed} from 'vue';const props=defineProps<{days:{day:string;label:string;count:number}[]}>();const max=computed(()=>Math.max(1,...props.days.map(d=>d.count)));</script>
+<template><div class="chart" aria-label="最近七天学习次数"><div v-for="d in days" :key="d.day" class="chart-day"><span>{{d.count}}</span><div class="bar-track"><div class="bar" :style="{height:(d.count/max*100)+'%'}"></div></div><small>{{d.label}}</small></div></div></template>

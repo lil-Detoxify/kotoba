@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-09-16",
+  "manifestResults": 40,
+  "expectedMp3": 40,
+  "nonZeroMp3": 40,
+  "missingOrSizeMismatch": 0,
+  "ffprobeAvailable": true,
+  "ffprobeDecodeFailures": 0,
+  "totalBytes": 321408,
+  "averageBytes": 8035.2,
+  "method": "Each manifest file path and byte count checked; ffprobe -v error format duration probe returned success for every MP3.",
+  "manifestSummary": {"requests":40,"generated":40,"failed":0,"chars":2736,"totalBytes":321408},
+  "browserVerification": {
+    "performedBy": "root agent (independent browser verification; not re-executed by this documentation pass)",
+    "page": "index.html opened from file://",
+    "dataFileButtons": "40/40 buttons mapped to unique existing manifest paths",
+    "audioMetadataDecode": "40/40 decoded successfully in browser",
+    "firstPlayback": "passed",
+    "navigation": "next reached 2/10; previous returned to 1/10",
+    "pageErrors": 0
+  },
+  "staticChecks": {
+    "manifestPathsExistAndMatchBytes": true,
+    "uniqueManifestPaths": 40,
+    "hardcodedCredentialsInEditedDocsOrUi": false
+  }
+}

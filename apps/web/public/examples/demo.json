@@ -1,0 +1,338 @@
+[
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "私",
+    "reading": "わたし",
+    "meaning": "我",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "学生",
+    "reading": "がくせい",
+    "meaning": "学生",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "先生",
+    "reading": "せんせい",
+    "meaning": "老师",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "友達",
+    "reading": "ともだち",
+    "meaning": "朋友",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "日本",
+    "reading": "にほん",
+    "meaning": "日本",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "中国",
+    "reading": "ちゅうごく",
+    "meaning": "中国",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "名前",
+    "reading": "なまえ",
+    "meaning": "名字",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "人",
+    "reading": "ひと",
+    "meaning": "人",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "会社",
+    "reading": "かいしゃ",
+    "meaning": "公司",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "学校",
+    "reading": "がっこう",
+    "meaning": "学校",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "言葉",
+    "reading": "ことば",
+    "meaning": "语言",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第1课 · 初次见面",
+    "term": "大学",
+    "reading": "だいがく",
+    "meaning": "大学",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "本",
+    "reading": "ほん",
+    "meaning": "书",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "机",
+    "reading": "つくえ",
+    "meaning": "桌子",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "椅子",
+    "reading": "いす",
+    "meaning": "椅子",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "時計",
+    "reading": "とけい",
+    "meaning": "钟表",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "鞄",
+    "reading": "かばん",
+    "meaning": "包",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "鍵",
+    "reading": "かぎ",
+    "meaning": "钥匙",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "傘",
+    "reading": "かさ",
+    "meaning": "伞",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "靴",
+    "reading": "くつ",
+    "meaning": "鞋",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "新聞",
+    "reading": "しんぶん",
+    "meaning": "报纸",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "電話",
+    "reading": "でんわ",
+    "meaning": "电话",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "窓",
+    "reading": "まど",
+    "meaning": "窗户",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第2课 · 日常身边",
+    "term": "写真",
+    "reading": "しゃしん",
+    "meaning": "照片",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "駅",
+    "reading": "えき",
+    "meaning": "车站",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "道",
+    "reading": "みち",
+    "meaning": "道路",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "店",
+    "reading": "みせ",
+    "meaning": "店铺",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "公園",
+    "reading": "こうえん",
+    "meaning": "公园",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "花",
+    "reading": "はな",
+    "meaning": "花",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "山",
+    "reading": "やま",
+    "meaning": "山",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "川",
+    "reading": "かわ",
+    "meaning": "河流",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "空",
+    "reading": "そら",
+    "meaning": "天空",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "雨",
+    "reading": "あめ",
+    "meaning": "雨",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "雪",
+    "reading": "ゆき",
+    "meaning": "雪",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "海",
+    "reading": "うみ",
+    "meaning": "海",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第3课 · 城市散步",
+    "term": "風",
+    "reading": "かぜ",
+    "meaning": "风",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "朝",
+    "reading": "あさ",
+    "meaning": "早晨",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "昼",
+    "reading": "ひる",
+    "meaning": "白天",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "夜",
+    "reading": "よる",
+    "meaning": "夜晚",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "今日",
+    "reading": "きょう",
+    "meaning": "今天",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "明日",
+    "reading": "あした",
+    "meaning": "明天",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "昨日",
+    "reading": "きのう",
+    "meaning": "昨天",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "時間",
+    "reading": "じかん",
+    "meaning": "时间",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "水",
+    "reading": "みず",
+    "meaning": "水",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "お茶",
+    "reading": "おちゃ",
+    "meaning": "茶",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "ご飯",
+    "reading": "ごはん",
+    "meaning": "米饭",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "休み",
+    "reading": "やすみ",
+    "meaning": "休息",
+    "partOfSpeech": "名词"
+  },
+  {
+    "lesson": "第4课 · 生活时光",
+    "term": "約束",
+    "reading": "やくそく",
+    "meaning": "约定",
+    "partOfSpeech": "名词"
+  }
+]

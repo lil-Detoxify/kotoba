@@ -1,0 +1,780 @@
+{
+  "books": [
+    {
+      "id": "biaori-beginner-upper",
+      "title": "标日初级上",
+      "description": "标日词汇 · 来源：biaori 开放词表；仅含词汇与课次。",
+      "wordCount": 1077,
+      "lessons": [
+        {
+          "id": "biaori-beginner-upper-l-1",
+          "bookId": "biaori-beginner-upper",
+          "title": "第1课",
+          "order": 1,
+          "wordCount": 57
+        },
+        {
+          "id": "biaori-beginner-upper-l-2",
+          "bookId": "biaori-beginner-upper",
+          "title": "第2课",
+          "order": 2,
+          "wordCount": 55
+        },
+        {
+          "id": "biaori-beginner-upper-l-3",
+          "bookId": "biaori-beginner-upper",
+          "title": "第3课",
+          "order": 3,
+          "wordCount": 44
+        },
+        {
+          "id": "biaori-beginner-upper-l-4",
+          "bookId": "biaori-beginner-upper",
+          "title": "第4课",
+          "order": 4,
+          "wordCount": 50
+        },
+        {
+          "id": "biaori-beginner-upper-l-5",
+          "bookId": "biaori-beginner-upper",
+          "title": "第5课",
+          "order": 5,
+          "wordCount": 52
+        },
+        {
+          "id": "biaori-beginner-upper-l-6",
+          "bookId": "biaori-beginner-upper",
+          "title": "第6课",
+          "order": 6,
+          "wordCount": 44
+        },
+        {
+          "id": "biaori-beginner-upper-l-7",
+          "bookId": "biaori-beginner-upper",
+          "title": "第7课",
+          "order": 7,
+          "wordCount": 53
+        },
+        {
+          "id": "biaori-beginner-upper-l-8",
+          "bookId": "biaori-beginner-upper",
+          "title": "第8课",
+          "order": 8,
+          "wordCount": 54
+        },
+        {
+          "id": "biaori-beginner-upper-l-9",
+          "bookId": "biaori-beginner-upper",
+          "title": "第9课",
+          "order": 9,
+          "wordCount": 71
+        },
+        {
+          "id": "biaori-beginner-upper-l-10",
+          "bookId": "biaori-beginner-upper",
+          "title": "第10课",
+          "order": 10,
+          "wordCount": 53
+        },
+        {
+          "id": "biaori-beginner-upper-l-11",
+          "bookId": "biaori-beginner-upper",
+          "title": "第11课",
+          "order": 11,
+          "wordCount": 54
+        },
+        {
+          "id": "biaori-beginner-upper-l-12",
+          "bookId": "biaori-beginner-upper",
+          "title": "第12课",
+          "order": 12,
+          "wordCount": 34
+        },
+        {
+          "id": "biaori-beginner-upper-l-13",
+          "bookId": "biaori-beginner-upper",
+          "title": "第13课",
+          "order": 13,
+          "wordCount": 29
+        },
+        {
+          "id": "biaori-beginner-upper-l-14",
+          "bookId": "biaori-beginner-upper",
+          "title": "第14课",
+          "order": 14,
+          "wordCount": 53
+        },
+        {
+          "id": "biaori-beginner-upper-l-15",
+          "bookId": "biaori-beginner-upper",
+          "title": "第15课",
+          "order": 15,
+          "wordCount": 44
+        },
+        {
+          "id": "biaori-beginner-upper-l-16",
+          "bookId": "biaori-beginner-upper",
+          "title": "第16课",
+          "order": 16,
+          "wordCount": 71
+        },
+        {
+          "id": "biaori-beginner-upper-l-17",
+          "bookId": "biaori-beginner-upper",
+          "title": "第17课",
+          "order": 17,
+          "wordCount": 32
+        },
+        {
+          "id": "biaori-beginner-upper-l-18",
+          "bookId": "biaori-beginner-upper",
+          "title": "第18课",
+          "order": 18,
+          "wordCount": 39
+        },
+        {
+          "id": "biaori-beginner-upper-l-19",
+          "bookId": "biaori-beginner-upper",
+          "title": "第19课",
+          "order": 19,
+          "wordCount": 40
+        },
+        {
+          "id": "biaori-beginner-upper-l-20",
+          "bookId": "biaori-beginner-upper",
+          "title": "第20课",
+          "order": 20,
+          "wordCount": 40
+        },
+        {
+          "id": "biaori-beginner-upper-l-21",
+          "bookId": "biaori-beginner-upper",
+          "title": "第21课",
+          "order": 21,
+          "wordCount": 27
+        },
+        {
+          "id": "biaori-beginner-upper-l-22",
+          "bookId": "biaori-beginner-upper",
+          "title": "第22课",
+          "order": 22,
+          "wordCount": 29
+        },
+        {
+          "id": "biaori-beginner-upper-l-23",
+          "bookId": "biaori-beginner-upper",
+          "title": "第23课",
+          "order": 23,
+          "wordCount": 21
+        },
+        {
+          "id": "biaori-beginner-upper-l-24",
+          "bookId": "biaori-beginner-upper",
+          "title": "第24课",
+          "order": 24,
+          "wordCount": 31
+        }
+      ]
+    },
+    {
+      "id": "biaori-beginner-lower",
+      "title": "标日初级下",
+      "description": "标日词汇 · 来源：biaori 开放词表；仅含词汇与课次。",
+      "wordCount": 1073,
+      "lessons": [
+        {
+          "id": "biaori-beginner-lower-l-25",
+          "bookId": "biaori-beginner-lower",
+          "title": "第25课",
+          "order": 25,
+          "wordCount": 35
+        },
+        {
+          "id": "biaori-beginner-lower-l-26",
+          "bookId": "biaori-beginner-lower",
+          "title": "第26课",
+          "order": 26,
+          "wordCount": 47
+        },
+        {
+          "id": "biaori-beginner-lower-l-27",
+          "bookId": "biaori-beginner-lower",
+          "title": "第27课",
+          "order": 27,
+          "wordCount": 53
+        },
+        {
+          "id": "biaori-beginner-lower-l-28",
+          "bookId": "biaori-beginner-lower",
+          "title": "第28课",
+          "order": 28,
+          "wordCount": 35
+        },
+        {
+          "id": "biaori-beginner-lower-l-29",
+          "bookId": "biaori-beginner-lower",
+          "title": "第29课",
+          "order": 29,
+          "wordCount": 51
+        },
+        {
+          "id": "biaori-beginner-lower-l-30",
+          "bookId": "biaori-beginner-lower",
+          "title": "第30课",
+          "order": 30,
+          "wordCount": 35
+        },
+        {
+          "id": "biaori-beginner-lower-l-31",
+          "bookId": "biaori-beginner-lower",
+          "title": "第31课",
+          "order": 31,
+          "wordCount": 40
+        },
+        {
+          "id": "biaori-beginner-lower-l-32",
+          "bookId": "biaori-beginner-lower",
+          "title": "第32课",
+          "order": 32,
+          "wordCount": 42
+        },
+        {
+          "id": "biaori-beginner-lower-l-33",
+          "bookId": "biaori-beginner-lower",
+          "title": "第33课",
+          "order": 33,
+          "wordCount": 47
+        },
+        {
+          "id": "biaori-beginner-lower-l-34",
+          "bookId": "biaori-beginner-lower",
+          "title": "第34课",
+          "order": 34,
+          "wordCount": 54
+        },
+        {
+          "id": "biaori-beginner-lower-l-35",
+          "bookId": "biaori-beginner-lower",
+          "title": "第35课",
+          "order": 35,
+          "wordCount": 44
+        },
+        {
+          "id": "biaori-beginner-lower-l-36",
+          "bookId": "biaori-beginner-lower",
+          "title": "第36课",
+          "order": 36,
+          "wordCount": 55
+        },
+        {
+          "id": "biaori-beginner-lower-l-37",
+          "bookId": "biaori-beginner-lower",
+          "title": "第37课",
+          "order": 37,
+          "wordCount": 37
+        },
+        {
+          "id": "biaori-beginner-lower-l-38",
+          "bookId": "biaori-beginner-lower",
+          "title": "第38课",
+          "order": 38,
+          "wordCount": 37
+        },
+        {
+          "id": "biaori-beginner-lower-l-39",
+          "bookId": "biaori-beginner-lower",
+          "title": "第39课",
+          "order": 39,
+          "wordCount": 46
+        },
+        {
+          "id": "biaori-beginner-lower-l-40",
+          "bookId": "biaori-beginner-lower",
+          "title": "第40课",
+          "order": 40,
+          "wordCount": 29
+        },
+        {
+          "id": "biaori-beginner-lower-l-41",
+          "bookId": "biaori-beginner-lower",
+          "title": "第41课",
+          "order": 41,
+          "wordCount": 68
+        },
+        {
+          "id": "biaori-beginner-lower-l-42",
+          "bookId": "biaori-beginner-lower",
+          "title": "第42课",
+          "order": 42,
+          "wordCount": 36
+        },
+        {
+          "id": "biaori-beginner-lower-l-43",
+          "bookId": "biaori-beginner-lower",
+          "title": "第43课",
+          "order": 43,
+          "wordCount": 64
+        },
+        {
+          "id": "biaori-beginner-lower-l-44",
+          "bookId": "biaori-beginner-lower",
+          "title": "第44课",
+          "order": 44,
+          "wordCount": 65
+        },
+        {
+          "id": "biaori-beginner-lower-l-45",
+          "bookId": "biaori-beginner-lower",
+          "title": "第45课",
+          "order": 45,
+          "wordCount": 47
+        },
+        {
+          "id": "biaori-beginner-lower-l-46",
+          "bookId": "biaori-beginner-lower",
+          "title": "第46课",
+          "order": 46,
+          "wordCount": 49
+        },
+        {
+          "id": "biaori-beginner-lower-l-47",
+          "bookId": "biaori-beginner-lower",
+          "title": "第47课",
+          "order": 47,
+          "wordCount": 17
+        },
+        {
+          "id": "biaori-beginner-lower-l-48",
+          "bookId": "biaori-beginner-lower",
+          "title": "第48课",
+          "order": 48,
+          "wordCount": 40
+        }
+      ]
+    },
+    {
+      "id": "biaori-intermediate-upper",
+      "title": "标日中级上",
+      "description": "标日词汇 · 来源：biaori 开放词表；仅含词汇与课次。",
+      "wordCount": 1748,
+      "lessons": [
+        {
+          "id": "biaori-intermediate-upper-l-1",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第1课",
+          "order": 1,
+          "wordCount": 140
+        },
+        {
+          "id": "biaori-intermediate-upper-l-2",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第2课",
+          "order": 2,
+          "wordCount": 94
+        },
+        {
+          "id": "biaori-intermediate-upper-l-3",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第3课",
+          "order": 3,
+          "wordCount": 136
+        },
+        {
+          "id": "biaori-intermediate-upper-l-4",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第4课",
+          "order": 4,
+          "wordCount": 110
+        },
+        {
+          "id": "biaori-intermediate-upper-l-5",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第5课",
+          "order": 5,
+          "wordCount": 127
+        },
+        {
+          "id": "biaori-intermediate-upper-l-6",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第6课",
+          "order": 6,
+          "wordCount": 126
+        },
+        {
+          "id": "biaori-intermediate-upper-l-7",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第7课",
+          "order": 7,
+          "wordCount": 109
+        },
+        {
+          "id": "biaori-intermediate-upper-l-8",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第8课",
+          "order": 8,
+          "wordCount": 106
+        },
+        {
+          "id": "biaori-intermediate-upper-l-9",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第9课",
+          "order": 9,
+          "wordCount": 111
+        },
+        {
+          "id": "biaori-intermediate-upper-l-10",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第10课",
+          "order": 10,
+          "wordCount": 100
+        },
+        {
+          "id": "biaori-intermediate-upper-l-11",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第11课",
+          "order": 11,
+          "wordCount": 144
+        },
+        {
+          "id": "biaori-intermediate-upper-l-12",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第12课",
+          "order": 12,
+          "wordCount": 90
+        },
+        {
+          "id": "biaori-intermediate-upper-l-13",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第13课",
+          "order": 13,
+          "wordCount": 89
+        },
+        {
+          "id": "biaori-intermediate-upper-l-14",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第14课",
+          "order": 14,
+          "wordCount": 88
+        },
+        {
+          "id": "biaori-intermediate-upper-l-15",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第15课",
+          "order": 15,
+          "wordCount": 104
+        },
+        {
+          "id": "biaori-intermediate-upper-l-16",
+          "bookId": "biaori-intermediate-upper",
+          "title": "第16课",
+          "order": 16,
+          "wordCount": 74
+        }
+      ]
+    },
+    {
+      "id": "biaori-intermediate-lower",
+      "title": "标日中级下",
+      "description": "标日词汇 · 来源：biaori 开放词表；仅含词汇与课次。",
+      "wordCount": 1907,
+      "lessons": [
+        {
+          "id": "biaori-intermediate-lower-l-17",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第17课",
+          "order": 17,
+          "wordCount": 137
+        },
+        {
+          "id": "biaori-intermediate-lower-l-18",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第18课",
+          "order": 18,
+          "wordCount": 122
+        },
+        {
+          "id": "biaori-intermediate-lower-l-19",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第19课",
+          "order": 19,
+          "wordCount": 145
+        },
+        {
+          "id": "biaori-intermediate-lower-l-20",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第20课",
+          "order": 20,
+          "wordCount": 145
+        },
+        {
+          "id": "biaori-intermediate-lower-l-21",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第21课",
+          "order": 21,
+          "wordCount": 139
+        },
+        {
+          "id": "biaori-intermediate-lower-l-22",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第22课",
+          "order": 22,
+          "wordCount": 129
+        },
+        {
+          "id": "biaori-intermediate-lower-l-23",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第23课",
+          "order": 23,
+          "wordCount": 151
+        },
+        {
+          "id": "biaori-intermediate-lower-l-24",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第24课",
+          "order": 24,
+          "wordCount": 105
+        },
+        {
+          "id": "biaori-intermediate-lower-l-25",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第25课",
+          "order": 25,
+          "wordCount": 128
+        },
+        {
+          "id": "biaori-intermediate-lower-l-26",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第26课",
+          "order": 26,
+          "wordCount": 91
+        },
+        {
+          "id": "biaori-intermediate-lower-l-27",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第27课",
+          "order": 27,
+          "wordCount": 120
+        },
+        {
+          "id": "biaori-intermediate-lower-l-28",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第28课",
+          "order": 28,
+          "wordCount": 97
+        },
+        {
+          "id": "biaori-intermediate-lower-l-29",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第29课",
+          "order": 29,
+          "wordCount": 90
+        },
+        {
+          "id": "biaori-intermediate-lower-l-30",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第30课",
+          "order": 30,
+          "wordCount": 94
+        },
+        {
+          "id": "biaori-intermediate-lower-l-31",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第31课",
+          "order": 31,
+          "wordCount": 110
+        },
+        {
+          "id": "biaori-intermediate-lower-l-32",
+          "bookId": "biaori-intermediate-lower",
+          "title": "第32课",
+          "order": 32,
+          "wordCount": 104
+        }
+      ]
+    },
+    {
+      "id": "biaori-advanced-upper",
+      "title": "标日高级上",
+      "description": "标日词汇 · 来源：biaori 开放词表；仅含词汇与课次。",
+      "wordCount": 1806,
+      "lessons": [
+        {
+          "id": "biaori-advanced-upper-l-1",
+          "bookId": "biaori-advanced-upper",
+          "title": "第1课",
+          "order": 1,
+          "wordCount": 170
+        },
+        {
+          "id": "biaori-advanced-upper-l-2",
+          "bookId": "biaori-advanced-upper",
+          "title": "第2课",
+          "order": 2,
+          "wordCount": 122
+        },
+        {
+          "id": "biaori-advanced-upper-l-3",
+          "bookId": "biaori-advanced-upper",
+          "title": "第3课",
+          "order": 3,
+          "wordCount": 175
+        },
+        {
+          "id": "biaori-advanced-upper-l-4",
+          "bookId": "biaori-advanced-upper",
+          "title": "第4课",
+          "order": 4,
+          "wordCount": 70
+        },
+        {
+          "id": "biaori-advanced-upper-l-5",
+          "bookId": "biaori-advanced-upper",
+          "title": "第5课",
+          "order": 5,
+          "wordCount": 181
+        },
+        {
+          "id": "biaori-advanced-upper-l-6",
+          "bookId": "biaori-advanced-upper",
+          "title": "第6课",
+          "order": 6,
+          "wordCount": 189
+        },
+        {
+          "id": "biaori-advanced-upper-l-7",
+          "bookId": "biaori-advanced-upper",
+          "title": "第7课",
+          "order": 7,
+          "wordCount": 199
+        },
+        {
+          "id": "biaori-advanced-upper-l-8",
+          "bookId": "biaori-advanced-upper",
+          "title": "第8课",
+          "order": 8,
+          "wordCount": 136
+        },
+        {
+          "id": "biaori-advanced-upper-l-9",
+          "bookId": "biaori-advanced-upper",
+          "title": "第9课",
+          "order": 9,
+          "wordCount": 202
+        },
+        {
+          "id": "biaori-advanced-upper-l-10",
+          "bookId": "biaori-advanced-upper",
+          "title": "第10课",
+          "order": 10,
+          "wordCount": 149
+        },
+        {
+          "id": "biaori-advanced-upper-l-11",
+          "bookId": "biaori-advanced-upper",
+          "title": "第11课",
+          "order": 11,
+          "wordCount": 110
+        },
+        {
+          "id": "biaori-advanced-upper-l-12",
+          "bookId": "biaori-advanced-upper",
+          "title": "第12课",
+          "order": 12,
+          "wordCount": 103
+        }
+      ]
+    },
+    {
+      "id": "biaori-advanced-lower",
+      "title": "标日高级下",
+      "description": "标日词汇 · 来源：biaori 开放词表；仅含词汇与课次。",
+      "wordCount": 1506,
+      "lessons": [
+        {
+          "id": "biaori-advanced-lower-l-13",
+          "bookId": "biaori-advanced-lower",
+          "title": "第13课",
+          "order": 13,
+          "wordCount": 121
+        },
+        {
+          "id": "biaori-advanced-lower-l-14",
+          "bookId": "biaori-advanced-lower",
+          "title": "第14课",
+          "order": 14,
+          "wordCount": 135
+        },
+        {
+          "id": "biaori-advanced-lower-l-15",
+          "bookId": "biaori-advanced-lower",
+          "title": "第15课",
+          "order": 15,
+          "wordCount": 125
+        },
+        {
+          "id": "biaori-advanced-lower-l-16",
+          "bookId": "biaori-advanced-lower",
+          "title": "第16课",
+          "order": 16,
+          "wordCount": 84
+        },
+        {
+          "id": "biaori-advanced-lower-l-17",
+          "bookId": "biaori-advanced-lower",
+          "title": "第17课",
+          "order": 17,
+          "wordCount": 123
+        },
+        {
+          "id": "biaori-advanced-lower-l-18",
+          "bookId": "biaori-advanced-lower",
+          "title": "第18课",
+          "order": 18,
+          "wordCount": 114
+        },
+        {
+          "id": "biaori-advanced-lower-l-19",
+          "bookId": "biaori-advanced-lower",
+          "title": "第19课",
+          "order": 19,
+          "wordCount": 142
+        },
+        {
+          "id": "biaori-advanced-lower-l-20",
+          "bookId": "biaori-advanced-lower",
+          "title": "第20课",
+          "order": 20,
+          "wordCount": 155
+        },
+        {
+          "id": "biaori-advanced-lower-l-21",
+          "bookId": "biaori-advanced-lower",
+          "title": "第21课",
+          "order": 21,
+          "wordCount": 148
+        },
+        {
+          "id": "biaori-advanced-lower-l-22",
+          "bookId": "biaori-advanced-lower",
+          "title": "第22课",
+          "order": 22,
+          "wordCount": 126
+        },
+        {
+          "id": "biaori-advanced-lower-l-23",
+          "bookId": "biaori-advanced-lower",
+          "title": "第23课",
+          "order": 23,
+          "wordCount": 140
+        },
+        {
+          "id": "biaori-advanced-lower-l-24",
+          "bookId": "biaori-advanced-lower",
+          "title": "第24课",
+          "order": 24,
+          "wordCount": 93
+        }
+      ]
+    }
+  ]
+}

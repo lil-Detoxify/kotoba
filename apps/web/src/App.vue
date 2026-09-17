@@ -1,0 +1,7 @@
+<script setup lang="ts">
+import {onMounted,onUnmounted} from 'vue';import {useRoute} from 'vue-router';import {useApp} from './store';import {Home,Library,Bookmark,ChartNoAxesColumn,Leaf} from 'lucide-vue-next';
+const app=useApp();const route=useRoute();let timer:ReturnType<typeof setInterval>;
+onMounted(()=>{app.init();timer=setInterval(()=>{app.now=new Date()},30000);window.addEventListener('focus',app.refresh)});onUnmounted(()=>{clearInterval(timer);window.removeEventListener('focus',app.refresh)});
+const nav=[{to:'/',name:'今日',icon:Home},{to:'/books',name:'词书',icon:Library},{to:'/difficult',name:'生词本',icon:Bookmark},{to:'/stats',name:'学习统计',icon:ChartNoAxesColumn}];
+</script>
+<template><div class="shell" :class="{'study-mode':route.path==='/study'}"><aside class="sidebar"><RouterLink to="/" class="brand"><span class="brand-mark">言</span><span>KotoBud<small>每天，认识一点日语。</small></span></RouterLink><div class="nav-label">我的学习</div><nav><RouterLink v-for="item in nav" :key="item.to" :to="item.to"><component :is="item.icon" :size="19"/><span>{{item.name}}</span></RouterLink></nav><div class="sidebar-bottom"><Leaf :size="20"/><p>一词一句，慢慢积累。<small>你的学习记录保存在此浏览器</small></p></div></aside><main><div class="topbar"><span>日本語のある毎日</span><span>WEB · 01</span></div><div v-if="app.error" class="error" role="alert">{{app.error}} <button @click="app.refresh">重试读取</button></div><RouterView v-if="app.ready"/><p v-else role="status">正在整理你的词书…</p><footer>ことばを、少しずつ。<span>KotoBud · 日语学习手帖</span></footer></main></div></template>

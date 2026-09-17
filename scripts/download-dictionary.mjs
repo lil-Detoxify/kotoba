@@ -1,0 +1,6 @@
+import {writeFile,mkdir} from 'node:fs/promises';import {createHash} from 'node:crypto';import {zstdDecompressSync} from 'node:zlib';
+const version='v2026-09-02';await mkdir('.cache',{recursive:true});await mkdir('apps/web/public/dictionary',{recursive:true});
+const r=await fetch(`https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/${version}/tomoshi-dict-open.db.zst`);if(!r.ok)throw Error(`Download failed: ${r.status}`);const compressed=Buffer.from(await r.arrayBuffer());
+if(createHash('sha256').update(compressed).digest('hex')!=='7153dfd7a8e42e2d920308370eac90cf9f2e4b4cfe67fb9a86e9aa1c89494073')throw Error('Compressed checksum mismatch');const raw=zstdDecompressSync(compressed);
+if(createHash('sha256').update(raw).digest('hex')!=='8b19c7d65a7d7d6df9afc58832b17b22fd349724e5d06d2acf3bb9a6c4b0ed9d')throw Error('Database checksum mismatch');await writeFile('.cache/tomoshi.db',raw);
+for(const name of ['LICENSE.md','NOTICE.md']){const response=await fetch(`https://raw.githubusercontent.com/tomoshi-app/tomoshi-dict-data/${version}/${name}`);if(!response.ok)throw Error(`License download failed: ${response.status}`);await writeFile(`apps/web/public/dictionary/${name}`,await response.text())}console.log('Dictionary downloaded, verified and decompressed. Run node scripts/build-dictionary.mjs next.');

@@ -1,0 +1,12 @@
+[
+  {"id":"001","book":"biaori-beginner-upper","bookTitle":"标日初级上","lesson":"第3课","lessonOrder":3,"stableWordId":"biaori-beginner-upper-w-3-140","term":"今日","reading":"きょう","meaning":"今天","reason":"汉字存在多种常见读法；教材明确读音，适合验证 yomigana 控制。"},
+  {"id":"002","book":"biaori-beginner-upper","bookTitle":"标日初级上","lesson":"第3课","lessonOrder":3,"stableWordId":"biaori-beginner-upper-w-3-120","term":"喫茶店","reading":"きっさてん","meaning":"咖啡馆","reason":"包含促音和音读复合词，能观察辅音时长与节奏。"},
+  {"id":"003","book":"biaori-beginner-upper","bookTitle":"标日初级上","lesson":"第5课","lessonOrder":5,"stableWordId":"biaori-beginner-upper-w-5-240","term":"旅行","reading":"りょこう","meaning":"旅行","reason":"包含拗音「りょ」和长音节奏，适合观察自然度。"},
+  {"id":"004","book":"biaori-beginner-upper","bookTitle":"标日初级上","lesson":"第11课","lessonOrder":11,"stableWordId":"biaori-beginner-upper-w-11-553","term":"コンピュータ","reading":"コンピュータ","meaning":"计算机，电脑","reason":"片假名外来语，含拗音和长音，检验外来语韵律。"},
+  {"id":"005","book":"biaori-beginner-upper","bookTitle":"标日初级上","lesson":"第15课","lessonOrder":15,"stableWordId":"biaori-beginner-upper-w-15-732","term":"大丈夫","reading":"だいじょうぶ","meaning":"没关系，放心","reason":"汉字复合词含拗音，常用于口语，适合自然度比较。"},
+  {"id":"006","book":"biaori-beginner-lower","bookTitle":"标日初级下","lesson":"第34课","lessonOrder":34,"stableWordId":"biaori-beginner-lower-w-34-1510","term":"一生懸命","reading":"いっしょうけんめい","meaning":"拼命地，努力地","reason":"含促音、拗音和较长多拍词，能检验语速与拍数。"},
+  {"id":"007","book":"biaori-intermediate-upper","bookTitle":"标日中级上","lesson":"第7课","lessonOrder":7,"stableWordId":"biaori-intermediate-upper-w-7-2926","term":"発表","reading":"はっぴょう","meaning":"发表，发布，宣布，揭晓","reason":"含促音与拗音，音读词，适合验证辅音时长和连贯性。"},
+  {"id":"008","book":"biaori-intermediate-upper","bookTitle":"标日中级上","lesson":"第9课","lessonOrder":9,"stableWordId":"biaori-intermediate-upper-w-9-3193","term":"環境","reading":"かんきょう","meaning":"环境","reason":"正式语域汉字词，含拗音，适合观察音读清晰度。"},
+  {"id":"009","book":"biaori-advanced-upper","bookTitle":"标日高级上","lesson":"第1课","lessonOrder":1,"stableWordId":"biaori-advanced-upper-w-1-5843","term":"今日","reading":"こんにち","meaning":"现在，今天","reason":"与初级词「今日／きょう」同形异读，直接测试 reading 是否被严格遵循。"},
+  {"id":"010","book":"biaori-advanced-lower","bookTitle":"标日高级下","lesson":"第24课","lessonOrder":24,"stableWordId":"biaori-advanced-lower-w-24-9108","term":"思いっきり","reading":"おもいっきり","meaning":"痛快地，尽情地","reason":"口语副词含促音和长音节奏，适合判断自然语速。"}
+]
