@@ -3,7 +3,10 @@
   "name": "kotoba",
   "pages_build_output_dir": "dist-cloudflare",
   "compatibility_date": "2026-09-16",
-  "vars": { "KOTOBA_DATA_VERSION": "v1" },
+  "vars": {
+    "KOTOBA_DATA_VERSION": "v1",
+    "ENABLE_LEGACY_301": "true"
+  },
   "r2_buckets": [
     {
       "binding": "KOTOBA_R2",
