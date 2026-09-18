@@ -1,9 +1,10 @@
 import {defineStore} from 'pinia';
 import {ref,computed} from 'vue';
-import {emptyData,type Data,type StudyMode,type Word,type QuizAttempt} from '@jp/models';
+import {emptyData,type Data,type StudyMode,type Word,type QuizAttempt,type ReviewLog,type WordState,type CloudProgressDoc,type ReviewEvent,type SyncBootstrapResult} from '@jp/models';
 import {IndexedDbRepository,deleteBook} from '@jp/storage';
-import {createStudyQueue,evaluate,initialState,stateFor,statistics} from '@jp/core';
+import {createStudyQueue,evaluate,initialState,stateFor,statistics,mergeWordStateWithLww,reconcileFsrsFromEvents} from '@jp/core';
 import {importBook,type ImportRow,type TextbookDefinition,textbookWordId} from '@jp/importers';
+import {type AuthUser,type AuthClient,type SyncClient,CloudBaseAuthClient,MockAuthClient,WorkerSyncClient} from '@jp/sync';
 import type {Grade} from 'ts-fsrs';
 import seed from './seed.json';
 import textbookMetaPayload from './textbooks-metadata.json';
@@ -20,6 +21,83 @@ export const metaBooks = (textbookMetaPayload as { books: TextbookMetaBook[] }).
 const repository = new IndexedDbRepository();
 const loadingBooks = new Set<string>();
 
+export const TEXTBOOKS_DATA_VERSION = '20260917-v2';
+
+export function ensureSystemTextbooks(d: Data) {
+  const createTime = new Date().toISOString();
+  for (const b of metaBooks) {
+    let existingBook = d.books.find(book => book.id === b.id);
+    if (!existingBook) {
+      existingBook = {
+        id: b.id,
+        title: b.title,
+        description: b.description,
+        language: 'ja',
+        createdAt: createTime,
+        updatedAt: createTime
+      };
+      d.books.push(existingBook);
+    } else {
+      existingBook.title = b.title;
+      existingBook.description = b.description;
+    }
+
+    for (const l of b.lessons) {
+      const existingLesson = d.lessons.find(lesson => lesson.id === l.id);
+      if (!existingLesson) {
+        d.lessons.push({
+          id: l.id,
+          bookId: b.id,
+          title: l.title,
+          order: l.order
+        });
+      } else {
+        existingLesson.title = l.title;
+        existingLesson.order = l.order;
+      }
+    }
+  }
+
+  if (!d.currentBookId && metaBooks.length > 0) {
+    d.currentBookId = metaBooks[0].id;
+  }
+}
+
+export function copyGuestCustomData(target: Data, guest: Data) {
+  const guestCustomBooks = guest.books.filter(b => !metaBooks.some(m => m.id === b.id));
+  for (const cb of guestCustomBooks) {
+    if (!target.books.some(b => b.id === cb.id)) {
+      target.books.push(structuredClone(cb));
+    }
+  }
+
+  const guestCustomLessons = guest.lessons.filter(l => guestCustomBooks.some(b => b.id === l.bookId));
+  for (const cl of guestCustomLessons) {
+    if (!target.lessons.some(l => l.id === cl.id)) {
+      target.lessons.push(structuredClone(cl));
+    }
+  }
+
+  const guestCustomWords = guest.words.filter(w => guestCustomLessons.some(l => l.id === w.lessonId));
+  for (const cw of guestCustomWords) {
+    if (!target.words.some(w => w.id === cw.id)) {
+      target.words.push(structuredClone(cw));
+    }
+  }
+
+  if (guest.currentBookId && !target.currentBookId) {
+    target.currentBookId = guest.currentBookId;
+  }
+}
+
+const isDesktop = typeof window !== 'undefined' && window.location.protocol === 'kotoba:';
+const defaultApiBase = isDesktop ? (import.meta.env.VITE_API_BASE_URL || 'https://kotobud.com') : '';
+
+const authClient: AuthClient = typeof window !== 'undefined' && (window as any).__MOCK_AUTH__
+  ? new MockAuthClient()
+  : new CloudBaseAuthClient(import.meta.env.VITE_CLOUDBASE_ENV_ID || 'kotobud-staging-d4femojn7def1c91', defaultApiBase);
+const syncClient: SyncClient = new WorkerSyncClient(defaultApiBase, 10000, authClient);
+
 export const useApp = defineStore('app', () => {
   const data = ref<Data>(emptyData());
   const ready = ref(false);
@@ -30,15 +108,31 @@ export const useApp = defineStore('app', () => {
   const index = ref(0);
   const mode = ref<StudyMode>('new');
   const sessionSize = ref(0);
-  const stats = computed(() => statistics(data.value, now.value));
+  const stats = computed(() => statistics(data.value, now.value, currentUser.value?.id));
 
+  // Auth & Sync Reactive State
+  const currentUser = ref<AuthUser | null>(null);
+  const syncStatus = ref<'synced' | 'syncing' | 'offline' | 'error'>('synced');
+  const syncError = ref('');
+  const lastSyncedAt = ref<string | null>(null);
+  const showLoginModal = ref(false);
+  const showConflictModal = ref(false);
+  let syncTimer: any = null;
+
+  let refreshingPromise: Promise<void> | null = null;
   async function refresh() {
-    try {
-      data.value = await repository.read();
-      now.value = new Date();
-    } catch (e) {
-      error.value = `无法读取本地数据：${String(e)}`;
-    }
+    if (refreshingPromise) return refreshingPromise;
+    refreshingPromise = (async () => {
+      try {
+        data.value = await repository.read();
+        now.value = new Date();
+      } catch (e) {
+        error.value = `无法读取本地数据：${String(e)}`;
+      } finally {
+        refreshingPromise = null;
+      }
+    })();
+    return refreshingPromise;
   }
 
   async function mutate(change: (d: Data) => void) {
@@ -58,46 +152,80 @@ export const useApp = defineStore('app', () => {
   }
 
   async function init() {
+    // 1. Initialize Auth session & listeners first to determine user namespace
+    try {
+      await authClient.init();
+      const user = authClient.getCurrentUser();
+      if (user) {
+        currentUser.value = user;
+        repository.switchUser(user.id);
+      }
+      authClient.onAuthStateChange(async (u) => {
+        if (!u && currentUser.value) {
+          await logout();
+        }
+      });
+    } catch (e) {
+      console.warn('Auth init failed:', e);
+    }
+
+    // 2. Read data for current namespace (guest or logged-in user)
+    await refresh();
+
+    // 3. Ensure system textbooks and initial guest seed on active namespace
     await mutate(d => {
       const existing = d.books.length > 0 || d.seeded;
-      if (!d.seeded) {
+      if (!d.seeded && !currentUser.value) {
         importBook(d, seed, '日语测试词书', () => crypto.randomUUID(), new Date(), '从初次见面到日常生活，48 个常用词。');
         d.seeded = true;
       }
-      if (d.textbooksVersion !== 'biaori-v1') {
-        const createTime = new Date().toISOString();
-        for (const b of metaBooks) {
-          if (!d.books.some(book => book.id === b.id)) {
-            d.books.push({
-              id: b.id,
-              title: b.title,
-              description: b.description,
-              language: 'ja',
-              createdAt: createTime,
-              updatedAt: createTime
-            });
-          }
-          for (const l of b.lessons) {
-            if (!d.lessons.some(lesson => lesson.id === l.id)) {
-              d.lessons.push({
-                id: l.id,
-                bookId: b.id,
-                title: l.title,
-                order: l.order
-              });
-            }
-          }
-        }
-        d.textbooksVersion = 'biaori-v1';
-        if (!existing && metaBooks[0]) d.currentBookId = metaBooks[0].id;
-      }
+      ensureSystemTextbooks(d);
+      d.textbooksVersion = 'biaori-v2';
+      if (!existing && metaBooks[0]) d.currentBookId = metaBooks[0].id;
     });
+
+    // 4. Synchronously upgrade and cache-bust any already-loaded textbook words
+    if (data.value.textbooksWordsVersion !== TEXTBOOKS_DATA_VERSION) {
+      const loadedBookIds = metaBooks
+        .filter(b => data.value.words.some(w => w.lessonId.startsWith(`${b.id}-l-`)))
+        .map(b => b.id);
+      for (const bId of loadedBookIds) {
+        await ensureBookLoaded(bId, true);
+      }
+      await mutate(d => {
+        d.textbooksWordsVersion = TEXTBOOKS_DATA_VERSION;
+      });
+    }
+
+    if (currentUser.value) {
+      scheduleDebouncedSync();
+    }
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', () => {
+        syncStatus.value = 'syncing';
+        flushSyncQueue();
+      });
+      window.addEventListener('offline', () => {
+        syncStatus.value = 'offline';
+      });
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden' && currentUser.value) {
+          flushSyncQueue();
+        }
+      });
+    }
+
     ready.value = true;
   }
 
-  async function ensureBookLoaded(bookId: string): Promise<boolean> {
-    if (data.value.words.some(w => w.lessonId.startsWith(`${bookId}-l-`))) {
-      return true;
+  async function ensureBookLoaded(bookId: string, force = false): Promise<boolean> {
+    const hasWords = data.value.words.some(w => w.lessonId.startsWith(`${bookId}-l-`));
+    if (hasWords && !force) {
+      const needsUpdate = data.value.textbooksWordsVersion !== TEXTBOOKS_DATA_VERSION || data.value.words.some(w => w.lessonId.startsWith(`${bookId}-l-`) && !w.rawTerm && (w.term.startsWith('～') || w.term.startsWith('〜') || w.term.endsWith('～') || w.term.endsWith('〜')));
+      if (!needsUpdate) {
+        return true;
+      }
     }
     if (!metaBooks.some(b => b.id === bookId)) {
       return true;
@@ -105,28 +233,38 @@ export const useApp = defineStore('app', () => {
     if (loadingBooks.has(bookId)) return false;
     loadingBooks.add(bookId);
     try {
-      const res = await fetch(`/data/books/${bookId}.json`);
+      const res = await fetch(`/data/books/${bookId}.json?v=${TEXTBOOKS_DATA_VERSION}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const bookDef = await res.json() as TextbookDefinition;
       await mutate(d => {
-        const newWords: Word[] = [];
+        const existingMap = new Map<string, Word>(d.words.map(w => [w.id, w]));
         for (const lesson of bookDef.lessons) {
           const lessonId = `${bookDef.id}-l-${lesson.order}`;
           for (const [idx, row] of lesson.words.entries()) {
-            newWords.push({
-              id: textbookWordId(bookDef.id, lesson.order, row.sourceIndex ?? idx),
-              lessonId,
-              term: row.term,
-              reading: row.reading,
-              meaning: row.meaning,
-              partOfSpeech: row.partOfSpeech,
-              order: newWords.length + 1
-            });
+            const wordId = textbookWordId(bookDef.id, lesson.order, row.sourceIndex ?? idx);
+            const existing = existingMap.get(wordId);
+            if (existing) {
+              existing.term = row.term;
+              existing.reading = row.reading;
+              existing.meaning = row.meaning;
+              existing.partOfSpeech = row.partOfSpeech;
+              existing.rawTerm = row.rawTerm;
+            } else {
+              const newWord: Word = {
+                id: wordId,
+                lessonId,
+                term: row.term,
+                reading: row.reading,
+                meaning: row.meaning,
+                partOfSpeech: row.partOfSpeech,
+                rawTerm: row.rawTerm,
+                order: d.words.length + 1
+              };
+              d.words.push(newWord);
+              existingMap.set(wordId, newWord);
+            }
           }
         }
-        const existingWordIds = new Set(d.words.map(w => w.id));
-        const toAdd = newWords.filter(w => !existingWordIds.has(w.id));
-        d.words.push(...toAdd);
       });
       return true;
     } catch (err) {
@@ -173,30 +311,524 @@ export const useApp = defineStore('app', () => {
     if (bookId) await mutate(d => { d.currentBookId = bookId });
   }
 
+  function scheduleDebouncedSync() {
+    if (!currentUser.value) return;
+    if (syncTimer) clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => {
+      flushSyncQueue();
+    }, 3500);
+  }
+
+  let flushing = false;
+  async function flushSyncQueue() {
+    if (flushing) return;
+    if (!currentUser.value) return;
+    flushing = true;
+    try {
+      if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        syncStatus.value = 'offline';
+        return;
+      }
+      const queue = await repository.getQueue();
+      syncStatus.value = 'syncing';
+      try {
+        const token = await authClient.getAccessToken();
+        if (!token) {
+          syncStatus.value = 'error';
+          syncError.value = '未登录或认证已过期';
+          return;
+        }
+
+        let pronunciationVoice: 'female' | 'male' | undefined;
+        try {
+          if (typeof localStorage !== 'undefined') {
+            const v = localStorage.getItem('jp-vocab.pronunciation-voice');
+            if (v === 'female' || v === 'male') pronunciationVoice = v;
+          }
+        } catch {}
+
+        const events: ReviewEvent[] = queue.filter(q => q.type === 'review_event').map(q => q.payload);
+        const progress: CloudProgressDoc[] = queue.filter(q => q.type === 'progress').map(q => q.payload);
+        const settings = {
+          userId: currentUser.value.id,
+          currentBookId: data.value.currentBookId,
+          preferences: {
+            pronunciationVoice
+          },
+          updatedAt: new Date().toISOString()
+        };
+
+        const res = await syncClient.push(token, { events, progress, settings });
+        if (res.success) {
+          if (queue.length > 0) {
+            await repository.dequeue(queue.map(q => q.id));
+          }
+          syncStatus.value = 'synced';
+          syncError.value = '';
+          lastSyncedAt.value = new Date().toISOString();
+        } else {
+          syncStatus.value = 'error';
+        }
+      } catch (err) {
+        console.error('Sync flush failed:', err);
+        syncStatus.value = 'error';
+        syncError.value = String(err);
+      }
+    } finally {
+      flushing = false;
+    }
+  }
+
   async function rate(rating: Grade, responseTime: number, attempt?: QuizAttempt) {
     const word = queue.value[index.value];
     if (!word || busy.value) return;
+    const currentUserId = currentUser.value?.id || 'local';
+    let newLog: ReviewLog | null = null;
+    let newState: WordState | null = null;
     const ok = await mutate(d => {
-      const previous = stateFor(d, word.id) ?? initialState(word.id);
+      const previous = stateFor(d, word.id, currentUserId) ?? initialState(word.id, new Date(), currentUserId);
       if (previous.isIgnored) return;
       const result = evaluate(previous, rating, mode.value, new Date(), crypto.randomUUID(), responseTime);
-      d.states = d.states.filter(s => !(s.wordId === word.id && s.userId === 'local'));
+      result.state.userId = currentUserId;
+      result.log.userId = currentUserId;
+      d.states = d.states.filter(s => !(s.wordId === word.id && (s.userId === currentUserId || s.userId === 'local')));
       d.states.push(result.state);
       if (attempt) result.log.quiz = { ...attempt, options: [...attempt.options] };
       d.logs.push(result.log);
+      newLog = result.log;
+      newState = result.state;
     });
-    if (ok) index.value++;
+    if (ok) {
+      index.value++;
+      if (currentUser.value && newLog && newState) {
+        await repository.enqueue([
+          {
+            id: `log_${(newLog as ReviewLog).id}`,
+            type: 'review_event',
+            payload: newLog,
+            createdAt: new Date().toISOString(),
+            retries: 0
+          },
+          {
+            id: `prog_${(newState as WordState).wordId}`,
+            type: 'progress',
+            payload: newState,
+            createdAt: new Date().toISOString(),
+            retries: 0
+          }
+        ]);
+        scheduleDebouncedSync();
+      }
+    }
   }
 
   async function flag(wordId: string, key: 'isDifficult' | 'isIgnored', value: boolean) {
-    return mutate(d => {
-      let state = stateFor(d, wordId);
+    const currentUserId = currentUser.value?.id || 'local';
+    let updatedState: WordState | null = null;
+    const ok = await mutate(d => {
+      let state = stateFor(d, wordId, currentUserId);
       if (!state) {
-        state = initialState(wordId);
+        state = initialState(wordId, new Date(), currentUserId);
         d.states.push(state);
       }
       state[key] = value;
+      const nowIso = new Date().toISOString();
+      if (key === 'isDifficult') state.difficultUpdatedAt = nowIso;
+      if (key === 'isIgnored') state.ignoredUpdatedAt = nowIso;
+      state.updatedAt = nowIso;
+      updatedState = state;
     });
+    if (ok && currentUser.value && updatedState) {
+      await repository.enqueue([
+        {
+          id: `prog_${(updatedState as WordState).wordId}`,
+          type: 'progress',
+          payload: updatedState,
+          createdAt: new Date().toISOString(),
+          retries: 0
+        }
+      ]);
+      scheduleDebouncedSync();
+    }
+  }
+
+  async function sendEmailCode(email: string) {
+    return authClient.sendEmailCode(email);
+  }
+
+  async function applyAuthenticatedUser(user: AuthUser, token: string): Promise<{ success: boolean; error?: string; requireConflictResolution?: boolean }> {
+    // 2. 游客数据读取：从当前活跃的游客命名空间中读取游客数据
+    const localGuestData = await repository.read('data_guest');
+    const localHasData = localGuestData.states.some(s => (s.reviewCount > 0 || s.firstSeenAt || s.isDifficult || s.isIgnored)) || localGuestData.logs.length > 0;
+
+    // 3. 本地备份快照：在任何切换与写入前，将游客数据备份至 data_backup_pre_login
+    await repository.createPreLoginSnapshot();
+
+    // 4. 云端检查与交互（Bootstrap）：获取云端数据状态
+    let bootstrapRes: SyncBootstrapResult;
+    let isOfflineFallback = false;
+    try {
+      bootstrapRes = await syncClient.bootstrap(token);
+    } catch (err) {
+      console.warn('Bootstrap check failed, continuing with offline fallback:', err);
+      isOfflineFallback = true;
+      bootstrapRes = { userId: user.id, hasCloudData: false, progressCount: 0, eventCount: 0 };
+    }
+
+    // 5. 关闭旧连接：确保旧游客连接上的所有读取与备份事务均已彻底提交并释放
+    await repository.close();
+
+    // 6. 打开用户数据库 / 用户上下文切换：切换活跃键至该用户专属命名空间，并开启全新连接
+    repository.switchUser(user.id);
+    await repository.open();
+
+    // 7. 用户数据初始化与写入（根据 Case A / Case B / Case C / Both Empty / 离线容灾分支）
+    if (isOfflineFallback) {
+      await repository.transact(d => {
+        copyGuestCustomData(d, localGuestData);
+        ensureSystemTextbooks(d);
+        if (!d.currentBookId && localGuestData.currentBookId) {
+          d.currentBookId = localGuestData.currentBookId;
+        }
+      });
+      await refresh();
+      currentUser.value = user;
+      syncStatus.value = 'offline';
+      syncError.value = '登录成功，云同步暂未完成，本地学习记录仍然安全。';
+      return { success: true };
+    }
+
+    const cloudHasData = bootstrapRes.hasCloudData;
+
+    // Case A: Local has data, Cloud is empty -> 上传初始记录
+    if (localHasData && !cloudHasData) {
+      await repository.transact(d => {
+        copyGuestCustomData(d, localGuestData);
+        ensureSystemTextbooks(d);
+        d.states = structuredClone(localGuestData.states);
+        d.logs = structuredClone(localGuestData.logs);
+        d.currentBookId = localGuestData.currentBookId || metaBooks[0]?.id || '';
+        for (const s of d.states) s.userId = user.id;
+        for (const l of d.logs) l.userId = user.id;
+      });
+      const validStates = localGuestData.states.filter(s => s.reviewCount > 0 || s.firstSeenAt || s.isDifficult || s.isIgnored);
+      const validLogs = localGuestData.logs;
+      const progressDocs = validStates.map(s => ({
+        _id: `${user.id}_${s.wordId}`,
+        userId: user.id,
+        wordId: s.wordId,
+        bookId: s.bookId,
+        lessonId: s.lessonId,
+        status: s.status,
+        firstSeenAt: s.firstSeenAt,
+        lastReviewedAt: s.lastReviewedAt,
+        nextReviewAt: s.nextReviewAt,
+        reviewCount: s.reviewCount,
+        lapseCount: s.lapseCount,
+        card: s.card,
+        isDifficult: s.isDifficult,
+        difficultUpdatedAt: s.difficultUpdatedAt,
+        isIgnored: s.isIgnored,
+        ignoredUpdatedAt: s.ignoredUpdatedAt,
+        updatedAt: s.updatedAt || new Date().toISOString(),
+        version: 1
+      }));
+      const reviewEvents = validLogs.map(l => ({
+        _id: l.id,
+        userId: user.id,
+        wordId: l.wordId,
+        reviewedAt: l.reviewedAt,
+        rating: l.rating,
+        responseTime: l.responseTime,
+        studyMode: l.studyMode,
+        quiz: l.quiz,
+        clientCreatedAt: l.clientCreatedAt || l.reviewedAt,
+        serverReceivedAt: new Date().toISOString()
+      }));
+      try {
+        await syncClient.push(token, {
+          events: reviewEvents,
+          progress: progressDocs,
+          settings: {
+            userId: user.id,
+            email: user.email,
+            currentBookId: localGuestData.currentBookId,
+            updatedAt: new Date().toISOString()
+          }
+        });
+        syncStatus.value = 'synced';
+        lastSyncedAt.value = new Date().toISOString();
+      } catch (e) {
+        syncStatus.value = 'offline';
+      }
+      await refresh();
+      currentUser.value = user;
+      scheduleDebouncedSync();
+      return { success: true };
+    }
+
+    // Case B: Local is empty, Cloud has data -> 拉取云端数据
+    if (!localHasData && cloudHasData) {
+      const pullRes = await syncClient.pull(token);
+      await repository.transact(d => {
+        copyGuestCustomData(d, localGuestData);
+        ensureSystemTextbooks(d);
+        d.states = pullRes.progress.map(p => ({
+          userId: user.id,
+          wordId: p.wordId,
+          bookId: p.bookId,
+          lessonId: p.lessonId,
+          status: p.status,
+          firstSeenAt: p.firstSeenAt,
+          lastReviewedAt: p.lastReviewedAt,
+          nextReviewAt: p.nextReviewAt,
+          reviewCount: p.reviewCount,
+          lapseCount: p.lapseCount,
+          card: p.card,
+          isDifficult: p.isDifficult,
+          difficultUpdatedAt: p.difficultUpdatedAt,
+          isIgnored: p.isIgnored,
+          ignoredUpdatedAt: p.ignoredUpdatedAt,
+          updatedAt: p.updatedAt
+        }));
+        d.logs = pullRes.events.map(e => ({
+          id: e._id,
+          userId: user.id,
+          wordId: e.wordId,
+          reviewedAt: e.reviewedAt,
+          rating: e.rating,
+          responseTime: e.responseTime,
+          previousState: null as any,
+          newState: null as any,
+          studyMode: e.studyMode,
+          quiz: e.quiz,
+          clientCreatedAt: e.clientCreatedAt,
+          serverReceivedAt: e.serverReceivedAt
+        }));
+        if (pullRes.settings?.currentBookId) {
+          d.currentBookId = pullRes.settings.currentBookId;
+        } else if (!d.currentBookId && metaBooks[0]) {
+          d.currentBookId = metaBooks[0].id;
+        }
+      });
+      await refresh();
+      currentUser.value = user;
+      scheduleDebouncedSync();
+      syncStatus.value = 'synced';
+      lastSyncedAt.value = new Date().toISOString();
+      return { success: true };
+    }
+
+    // Case C: Local and Cloud both have real data -> 提示冲突合并
+    if (localHasData && cloudHasData) {
+      await repository.transact(d => {
+        copyGuestCustomData(d, localGuestData);
+        ensureSystemTextbooks(d);
+      });
+      await refresh();
+      currentUser.value = user;
+      showConflictModal.value = true;
+      return { success: true, requireConflictResolution: true };
+    }
+
+    // Both empty -> 新用户初始数据
+    await repository.transact(d => {
+      copyGuestCustomData(d, localGuestData);
+      ensureSystemTextbooks(d);
+      if (metaBooks[0] && !d.currentBookId) {
+        d.currentBookId = metaBooks[0].id;
+      }
+    });
+    await refresh();
+    currentUser.value = user;
+    scheduleDebouncedSync();
+    syncStatus.value = 'synced';
+    return { success: true };
+  }
+
+  async function checkAccount(email: string) {
+    return authClient.checkAccount(email);
+  }
+
+  async function loginWithPassword(email: string, password: string): Promise<{ success: boolean; error?: string; flow?: string; requireConflictResolution?: boolean }> {
+    const res = await authClient.loginWithPassword(email, password);
+    if (!res.success || !res.user || !res.token) {
+      return { success: false, error: res.error || '登录失败', flow: res.flow };
+    }
+    return applyAuthenticatedUser(res.user, res.token);
+  }
+
+  async function registerWithPassword(email: string, password: string, code: string, verificationId?: string): Promise<{ success: boolean; error?: string; requireConflictResolution?: boolean }> {
+    const res = await authClient.registerWithPassword(email, password, code, verificationId);
+    if (!res.success || !res.user || !res.token) {
+      return { success: false, error: res.error || '注册失败' };
+    }
+    return applyAuthenticatedUser(res.user, res.token);
+  }
+
+  async function upgradeLegacyPassword(email: string, password: string, code: string, verificationId?: string): Promise<{ success: boolean; error?: string; requireConflictResolution?: boolean }> {
+    const res = await authClient.upgradeLegacyPassword(email, password, code, verificationId);
+    if (!res.success || !res.user || !res.token) {
+      return { success: false, error: res.error || '升级失败' };
+    }
+    return applyAuthenticatedUser(res.user, res.token);
+  }
+
+  async function resetPassword(email: string, newPassword: string, code: string, verificationId?: string): Promise<{ success: boolean; error?: string; requireConflictResolution?: boolean }> {
+    const res = await authClient.resetPassword(email, newPassword, code, verificationId);
+    if (!res.success || !res.user || !res.token) {
+      return { success: false, error: res.error || '重置密码失败' };
+    }
+    return applyAuthenticatedUser(res.user, res.token);
+  }
+
+  async function loginWithEmailCode(email: string, code: string): Promise<{ success: boolean; error?: string; requireConflictResolution?: boolean }> {
+    const authRes = await authClient.signInWithEmailCode(email, code);
+    if (!authRes.success || !authRes.user || !authRes.token) {
+      return { success: false, error: authRes.error || '登录失败' };
+    }
+    return applyAuthenticatedUser(authRes.user, authRes.token);
+  }
+
+  async function resolveConflictAndMerge() {
+    if (!currentUser.value) return;
+    const user = currentUser.value;
+    const token = await authClient.getAccessToken();
+    if (!token) return;
+
+    const localData = await repository.read('data_guest');
+    const pullRes = await syncClient.pull(token);
+
+    const eventMap = new Map<string, ReviewEvent | ReviewLog>();
+    for (const l of localData.logs) {
+      eventMap.set(l.id, l);
+    }
+    for (const e of pullRes.events) {
+      eventMap.set(e._id, e);
+    }
+    const allEvents = Array.from(eventMap.values());
+
+    const wordIds = new Set<string>([
+      ...localData.states.map(s => s.wordId),
+      ...pullRes.progress.map(p => p.wordId)
+    ]);
+
+    const mergedStates: WordState[] = [];
+    for (const wId of wordIds) {
+      const localS = localData.states.find(s => s.wordId === wId);
+      const remoteP = pullRes.progress.find(p => p.wordId === wId);
+      const wordEvents = allEvents.filter(e => e.wordId === wId);
+
+      if (localS && remoteP) {
+        mergedStates.push(mergeWordStateWithLww(localS, remoteP, wordEvents));
+      } else if (localS) {
+        mergedStates.push(wordEvents.length > 0 ? reconcileFsrsFromEvents(wordEvents, localS) : localS);
+      } else if (remoteP) {
+        mergedStates.push({
+          userId: user.id,
+          wordId: remoteP.wordId,
+          bookId: remoteP.bookId,
+          lessonId: remoteP.lessonId,
+          status: remoteP.status,
+          firstSeenAt: remoteP.firstSeenAt,
+          lastReviewedAt: remoteP.lastReviewedAt,
+          nextReviewAt: remoteP.nextReviewAt,
+          reviewCount: remoteP.reviewCount,
+          lapseCount: remoteP.lapseCount,
+          card: remoteP.card,
+          isDifficult: remoteP.isDifficult,
+          difficultUpdatedAt: remoteP.difficultUpdatedAt,
+          isIgnored: remoteP.isIgnored,
+          ignoredUpdatedAt: remoteP.ignoredUpdatedAt,
+          updatedAt: remoteP.updatedAt
+        });
+      }
+    }
+
+    await repository.transact(d => {
+      copyGuestCustomData(d, localData);
+      ensureSystemTextbooks(d);
+      d.states = mergedStates;
+      d.logs = allEvents.map(e => ({
+        id: (e as any)._id || (e as any).id,
+        userId: user.id,
+        wordId: e.wordId,
+        reviewedAt: e.reviewedAt,
+        rating: e.rating,
+        responseTime: e.responseTime,
+        previousState: (e as any).previousState,
+        newState: (e as any).newState,
+        studyMode: e.studyMode,
+        quiz: e.quiz,
+        clientCreatedAt: (e as any).clientCreatedAt,
+        serverReceivedAt: (e as any).serverReceivedAt
+      }));
+    });
+
+    const pushProgress: CloudProgressDoc[] = mergedStates.map(s => ({
+      _id: `${user.id}_${s.wordId}`,
+      userId: user.id,
+      wordId: s.wordId,
+      bookId: s.bookId,
+      lessonId: s.lessonId,
+      status: s.status,
+      firstSeenAt: s.firstSeenAt,
+      lastReviewedAt: s.lastReviewedAt,
+      nextReviewAt: s.nextReviewAt,
+      reviewCount: s.reviewCount,
+      lapseCount: s.lapseCount,
+      card: s.card,
+      isDifficult: s.isDifficult,
+      difficultUpdatedAt: s.difficultUpdatedAt,
+      isIgnored: s.isIgnored,
+      ignoredUpdatedAt: s.ignoredUpdatedAt,
+      updatedAt: new Date().toISOString(),
+      version: 1
+    }));
+
+    const pushEvents: ReviewEvent[] = allEvents.map(e => ({
+      _id: (e as any)._id || (e as any).id,
+      userId: user.id,
+      wordId: e.wordId,
+      reviewedAt: e.reviewedAt,
+      rating: e.rating,
+      responseTime: e.responseTime,
+      studyMode: e.studyMode,
+      quiz: e.quiz,
+      clientCreatedAt: (e as any).clientCreatedAt || e.reviewedAt,
+      serverReceivedAt: new Date().toISOString()
+    }));
+
+    await syncClient.push(token, {
+      events: pushEvents,
+      progress: pushProgress,
+      settings: {
+        userId: user.id,
+        email: user.email,
+        currentBookId: localData.currentBookId,
+        updatedAt: new Date().toISOString()
+      }
+    });
+
+    showConflictModal.value = false;
+    syncStatus.value = 'synced';
+    lastSyncedAt.value = new Date().toISOString();
+    await refresh();
+  }
+
+  async function logout() {
+    await flushSyncQueue();
+    await authClient.signOut();
+    currentUser.value = null;
+    await repository.close();
+    repository.switchUser(null);
+    await repository.open();
+    await refresh();
+    await mutate(d => {
+      ensureSystemTextbooks(d);
+    });
+    syncStatus.value = 'synced';
+    syncError.value = '';
   }
 
   return {
@@ -211,6 +843,12 @@ export const useApp = defineStore('app', () => {
     mode,
     sessionSize,
     metaBooks,
+    currentUser,
+    syncStatus,
+    syncError,
+    lastSyncedAt,
+    showLoginModal,
+    showConflictModal,
     init,
     refresh,
     mutate,
@@ -220,6 +858,16 @@ export const useApp = defineStore('app', () => {
     start,
     rate,
     flag,
-    ensureBookLoaded
+    ensureBookLoaded,
+    sendEmailCode,
+    checkAccount,
+    loginWithPassword,
+    registerWithPassword,
+    upgradeLegacyPassword,
+    resetPassword,
+    loginWithEmailCode,
+    resolveConflictAndMerge,
+    logout,
+    flushSyncQueue
   };
 });

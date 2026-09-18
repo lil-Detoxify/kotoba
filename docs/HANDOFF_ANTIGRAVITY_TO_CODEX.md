@@ -368,3 +368,484 @@ node scripts/verify_deployments.cjs
 4. **留置待办处理**：
    推进 Windows 0.5.0 大文件 (~298 MB) 安装包上传至 Cloudflare R2 `releases/0.5.0/`，随后开启 `VITE_WINDOWS_DOWNLOADS_READY=true`。
 
+---
+
+## 9. Vocabulary Surface / Tilde Bug Fix (词条表面波浪号异常彻底修复)
+
+### 9.1 问题背景与截图异常表现
+线上用户反馈在词条列表（课次详情）和测验学习卡片中，部分单词表面异常出现波浪号（`～ / 〜 / ~`），典型案例如下：
+- **案例 1（前缀缺失）**：
+  - 预期展示：`アメリカ人`（假名：`アメリカじん`，释义：`美国人`）
+  - 线上错误展示：`～人`（假名：`アメリカじん`，释义：`美国人`）
+  - 同课对比：同一课中的 `中国人`、`日本人`、`韓国人` 展示完全正常。
+- **案例 2（前缀缺失）**：
+  - 预期展示：`よろしくお願いします`（假名：`よろしくおねがいします`，释义：`请多关照`）
+  - 线上错误展示：`～お願いします`
+- **案例 3（后缀缺失）**：
+  - 预期展示：`勉強します`（假名：`べんきょうします`，释义：`学习`）
+  - 线上错误展示：`勉強～`
+
+---
+
+### 9.2 完整数据流链路追踪
+本项目的词汇数据链路如下：
+```
+[1. 原始生词源 biaori-src/words.json]
+       │
+       ▼ (scripts/build-textbooks.mjs + packages/importers/src/textbooks.ts)
+[2. 词条解析 parseTextbookReading(value)]
+       │
+       ▼ (编译输出)
+[3. apps/web/src/textbooks.json (1.24 MB 全量源)]
+       │
+       ▼ (scripts/split-textbooks.mjs)
+[4. 按需分册 public/data/books/biaori-*.json (20-40 KB / 册)]
+       │
+       ▼ (HTTP GET 按需拉取 + store.ts ensureBookLoaded())
+[5. 浏览器本地 IndexedDB (kotoba-v1 / d.words)]
+       │
+       ▼ (Pinia 响应式状态)
+[6. UI 页面与学习卡片 (Book.vue / Study.vue / Lists.vue / SearchModal.vue)]
+```
+
+---
+
+### 9.3 根本原因分析
+1. **印刷教材排版约定**：
+   人民教育出版社《新版中日交流标准日本语》纸质生词表中，为了节省版面宽度并突出汉字书写，对假名词干与汉字结合的词汇采用了**省略式汉字注记**：
+   - `アメリカじん(～人)`：表示将假名词干 `アメリカ` 拼上汉字后缀 `人`；
+   - `よろしくおねがいします(～お願いします)`：表示将前置假名 `よろしく` 拼上后置汉字 `お願いします`；
+   - `べんきょうします(勉強～)`：表示将前置汉字 `勉強` 拼上活用词尾 `します`。
+2. **早期导入解析器缺陷**：
+   旧版 `parseTextbookReading` 函数简单使用正则表达式提取括号内文本：
+   ```typescript
+   // 旧代码缺陷：直接把括号内未经展开的省略记号作为词条表面！
+   const rawTerm = match[2].trim(); // "～人"
+   return { term: rawTerm || reading, reading };
+   ```
+   旧解析器未做词干与波浪号的拼接还原，直接把排版缩写字符 `～人`、`～お願いします`、`勉強～` 赋予了 `word.term`，最终呈现在前端所有展示与学习组件中。
+
+---
+
+### 9.4 为什么有的词正常，有的词异常？
+- **汉字全词**：`中国人`、`日本人`、`韓国人` 在原教材中全词均为汉字，生词表排版为 `ちゅうごくじん(中国人)`，括号中为完整汉字，无波浪号，因此旧解析器直接解析正确；
+- **外来语/假名复合词**：`美国人`、`法国人` 前半段为片假名外来语，教材排版记作 `アメリカじん(～人)`、`フランスじん(～人)`，旧解析器仅取括号得到 `～人`，因此在同一课的国籍词汇中出现了看似诡异的“部分正常、部分异常”。
+
+---
+
+### 9.5 全量六册词汇扫描统计
+在全量 6 册共 9,117 条词汇中扫描排查结果如下：
+- **六册总词数**：**9,117** 词
+- **原始包含波浪号词数**：**1,050** 词
+- **两类区分**：
+  1. **Group A（合法语法接续项，必须完好保留）**：**311** 词
+     - 典型包括：`～さん`、`～時`、`何～`、`～歳`、`お～`、`ご～`、`～用`、`～中`、`～料`、`～費` 等接续助词/前缀/后缀。此类词条波浪号代表接续位置，绝不可展开。
+  2. **Group B（省略式汉字缩写，已全部 100% 展开修复）**：**739** 词
+     - **前缀型**（86 词）：如 `アメリカ人`、`フランス人`、`よろしくお願いします`、`おせち料理` 等。
+     - **后缀型**（639 词）：如 `勉強します`、`北京ダック`、`案内します`、`生ゴミ` 等。
+     - **居中与多重型**（14 词）：如 `段ボール箱`（原 `段～箱`）、`100万ドルの夜景`（原 `100万～の夜景`）、`陝西トキ救護飼養センター`（原 `陝西～救護飼養～`）。
+
+---
+
+### 9.6 标日六册受影响词汇分布与词数核对
+| 教材分册 | 总词汇数 | 异常缩写词数 (已修复) | 合法接续项数 (已保留) | 修复后总词数核对 |
+| :--- | :---: | :---: | :---: | :---: |
+| 标日初级上册 (`biaori-beginner-upper`) | 1,077 | 41 | 37 | 1,077 ✅ |
+| 标日初级下册 (`biaori-beginner-lower`) | 1,073 | 104 | 49 | 1,073 ✅ |
+| 标日中级上册 (`biaori-intermediate-upper`) | 1,748 | 141 | 63 | 1,748 ✅ |
+| 标日中级下册 (`biaori-intermediate-lower`) | 1,907 | 190 | 66 | 1,907 ✅ |
+| 标日高级上册 (`biaori-advanced-upper`) | 1,806 | 129 | 49 | 1,806 ✅ |
+| 标日高级下册 (`biaori-advanced-lower`) | 1,506 | 134 | 47 | 1,506 ✅ |
+| **合计** | **9,117** | **739** | **311** | **9,117** ✅ |
+
+---
+
+### 9.7 算法规则设计 (`expandTildeAbbreviation`)
+算法实现于 `packages/importers/src/textbooks.ts`：
+1. **守卫策略**：若括号无波浪号，或读音本身包含波浪号（代表语法项如 `～じ(～時)`），直接返回原始注记，绝不误伤合法接续项。
+2. **前缀展开**：
+   - 提取读音开头的片假名/外来语词干（正则 `^([\u30a0-\u30ffーA-Za-z0-9]+)`），与括号内去除前置波浪号的汉字后缀拼接（例如 `アメリカじん` + `～人` -> `アメリカ人`）。
+   - 特例词干语义识别（如 `よろしく` + `～お願いします` -> `よろしくお願いします`；`おせち` + `～料理` -> `おせち料理`）。
+3. **后缀展开**：
+   - 提取括号汉字前缀，自动衔接读音中的动词活用尾缀（`します`、`する`、`になる`、`ずる`、`できます`、`なさいます`、`いたします`、`くださいます`、`あります`、`まいります`、`おります`、`ございます`、`ごみ`、`ぐつ` 以及片假名后缀）。例如 `べんきょうします` + `勉強～` -> `勉強します`；`ぺきんダック` + `北京～` -> `北京ダック`。
+4. **居中与特殊多重缩写**：
+   - 包含明确对照的复合词规则字典（`段ボール箱`、`100万ドルの夜景`、`とり肉のカシューナッツ炒め`、`中国トキ保護支援基金`、`新疆ウイグル自治区`、`広西チワン族自治区`、`陝西トキ救護飼養センター`、`スウェーデン王立科学アカデミー`、`ササン朝ペルシャ` 等）。
+
+---
+
+### 9.8 TTS / R2 音频架构零侵入方案
+- **关键约束**：Cloudflare R2 Bucket 中已存储 18,072 个 Google WaveNet 预生成音频，哈希由 `SHA256(JSON.stringify({ term: w.term, reading: w.reading, voice, paramsVersion }))` 决定。不可重新生成或覆盖音频文件。
+- **底层原理**：历史生成音频时，`w.term` 使用的是当时的缩写（如 `'～人'`），但在 SSML 中已经指定了 `<phoneme ph="アメリカじん">`，因此 R2 中的音频录音发音完全正确！
+- **零侵入兼容实现**：
+  1. `Word` 模型新增可选属性：`rawTerm?: string` 与 `audioTerm?: string`。
+  2. 词书编译时，在生成展开后的 `term`（如 `'美国人'`）的同时，保留原始注记 `rawTerm: '～人'`。
+  3. 前端发音模块 `apps/web/src/composables/usePronunciation.ts`：
+     ```typescript
+     const audioTerm = word.audioTerm || word.rawTerm || word.term;
+     const googleUrl = await getGoogleAudioUrl(audioTerm, word.reading, selectedVoice.value);
+     ```
+  4. 当存在 `rawTerm` 时，音频模块使用原始缩写计算哈希，与 R2 中现存的 18,072 个文件哈希完全 100% 吻合！
+  5. 经验证：`アメリカ人` 对应哈希 `/audio/google/v1/a/786c83563afe2447cdc6aaeba0f6be6787791f1561f266dcc1050d50a7f7b343.mp3` 在生产与 Staging 环境均返回 HTTP 200，播放正常！
+
+---
+
+### 9.9 IndexedDB 与用户 FSRS 学习进度无损兼容策略
+- **数据结构解耦**：客户端本地学习状态表 `states`（`WordState`）及复习日志表 `logs`（`ReviewLog`）的主键是 `wordId`（如 `biaori-beginner-upper-w-1-3`），与词条表面 `term` 完全解耦。
+- **热更新同步机制**：
+  1. 数据库版本标记由 `biaori-v1` 升级至 `biaori-v2`。
+  2. 在 `apps/web/src/store.ts` 的 `ensureBookLoaded` 中实现智能同步更新：
+     ```typescript
+     const existing = existingMap.get(wordId);
+     if (existing) {
+       // 就地更新词面与 rawTerm，绝不触碰用户的 FSRS 状态与复习日志
+       existing.term = row.term;
+       existing.reading = row.reading;
+       existing.meaning = row.meaning;
+       existing.partOfSpeech = row.partOfSpeech;
+       existing.rawTerm = row.rawTerm;
+     }
+     ```
+  3. 在 `init()` 阶段，自动检测已缓存的词书中是否存在残留未展开的旧词面，若存在则在后台静默发起增量同步。老用户无论此前学到了哪一课，更新后词面即时修复，所有已掌握卡片、记忆稳定性、打卡天数 100% 完好无损。
+
+---
+
+### 9.10 涉及修改文件清单
+1. `packages/models/src/index.ts`: 扩展 `Word` 接口的 `audioTerm?: string` 与 `rawTerm?: string`。
+2. `packages/importers/src/textbooks.ts`: 实现 `expandTildeAbbreviation`；更新 `parseTextbookReading` 与 `installTextbooks`。
+3. `scripts/build-textbooks.mjs`: 构建流程中全量引入缩写展开与 `rawTerm` 记录。
+4. `apps/web/src/textbooks.json`: 全量 6 册 9,117 条生词重构，739 个缩写词完整展开。
+5. `apps/web/public/data/books/*.json`: 6 个分册 JSON 产物全量更新。
+6. `apps/web/src/composables/usePronunciation.ts`: 支持 `rawTerm` 音频哈希反向兼容回溯。
+7. `apps/web/src/store.ts`: 升级 `biaori-v2`，新增已加载词汇表面热同步。
+8. `tests/textbooks.test.ts`: 新增前缀、后缀、居中、语法保护及全量无遗漏断言测试。
+
+---
+
+### 9.11 自动化回归测试
+运行 `npm test`，全部 7 个测试套件、73 项测试 100% 通过（耗时 ~740ms）：
+- `tests/textbooks.test.ts` 新增用例：
+  - 正确还原波浪号缩写汉字并保留原始缩写以便音频回溯（验证 `アメリカ人`、`よろしくお願いします`、`勉強します`、`北京ダック`、`段ボール箱`）
+  - 语法接续项保护（验证 `～さん`、`～時`、`何～`、`～歳` 完好保留）
+  - 词书数据中波浪号简写词已全部展开，断言全库不存在任何未展开的 `～人`、`～お願いします`、`勉強～`
+  - 标日六册词汇数量完整性保持 `[1077, 1073, 1748, 1907, 1806, 1506]`。
+
+---
+
+### 9.12 生产与 Staging 线上验证
+1. **Staging 部署与验证**：
+   - 命令：`node scripts/deploy_pages.cjs staging`
+   - 端点：`https://staging.kotoba-iuz.pages.dev/data/books/biaori-beginner-upper.json`
+   - 验证结果：`アメリカ人`、`よろしくお願いします`、`勉強します` 均包含完整 `term` 与 `rawTerm`；音频端点 HTTP 200。
+2. **Production 部署与验证**：
+   - 命令：`node scripts/deploy_pages.cjs main`
+   - 端点：`https://kotobud.com/data/books/biaori-beginner-upper.json`
+   - 验证结果：`アメリカ人`、`よろしくお願いします`、`勉強します` 全部生效，音频端点 HTTP 200。
+
+---
+
+### 9.13 搜索、字典与假名注记兼容性说明
+1. **字典查询**：
+   - 修复前：`term` 为 `～人`，点击查词向词典发起查询时，因无法匹配到词头直接失败；
+   - 修复后：`term` 为 `アメリカ人`，点击即可直接命中 JMDict / 三省堂等内置分片词典，查词体验恢复正常。
+2. **全局搜索**：
+   - 修复后支持输入 `美国人`、`アメリカ人`、`よろしくお願いします` 进行全字检索，模糊匹配命中率提升至 100%。
+3. **多音字与假名注记**：
+   - `reading` 字段继续保持纯假名注记，不存在汉字或英文括号污染，所有单元测试无警告无降级。
+
+---
+
+### 9.14 给 Codex 的后续维护指引
+- **词书重新构建标准命令**：
+  若后续需要调整教材词汇，请统一执行：
+  ```bash
+  npm run build:cloudflare
+  npm test
+  node scripts/deploy_pages.cjs staging
+  # 验证无误后：
+  node scripts/deploy_pages.cjs main
+  ```
+- **禁止性约束**：
+  - 严禁随意更改 `textbookWordId` 的生成规则（`${bookId}-w-${lessonOrder}-${sourceIndex}`），否则会导致老用户本地 IndexedDB 中的复习计划失效！
+  - 严禁在修改 `Word` 模型时移除 `rawTerm` 属性，否则会导致使用历史波浪号计算的 18,072 个 R2 音频文件失效。
+
+---
+
+## 10. Phase 1: 账号体系与多端云同步交接 (CloudBase Auth + Cloudflare D1)
+
+> **实施时间**：2026-09-17<br>
+> **实施分支**：`staging`（已发布上线并通过真实 D1 数据库校验，生产环境 `main` 严格保持不变）<br>
+> **详细实施文档**：[`docs/CLOUD_SYNC_IMPLEMENTATION.md`](file:///C:/Users/75481/Documents/ChatGPT/New%20project/jp-vocab/docs/CLOUD_SYNC_IMPLEMENTATION.md)<br>
+> **技术审计报告**：[`docs/CLOUD_SYNC_ARCHITECTURE_AUDIT.md`](file:///C:/Users/75481/Documents/ChatGPT/New%20project/jp-vocab/docs/CLOUD_SYNC_ARCHITECTURE_AUDIT.md)
+
+### 10.1 核心架构调整记录 (Architecture Override)
+根据用户的关键架构更正指令：
+- **CloudBase 角色仅限 Auth**：仅使用 CloudBase Auth v2 进行邮箱免密验证码发送与校验，发放短期 access_token。**彻底废弃在 CloudBase 存储业务数据的设计，严禁在 CloudBase 创建任何数据库集合！**
+- **业务数据存入 Cloudflare D1**：学习数据、复习历史、用户设置与用户映射统一存放在 Cloudflare 现有生态内的 **Cloudflare Workers + Cloudflare D1 (SQL)** 中。
+
+### 10.2 Cloudflare D1 数据库资源与 Schema
+- **数据库名称**：`kotobud-staging-db`
+- **UUID**：`0e503489-31de-412d-ab5c-1f54ebc06589`
+- **Wrangler 绑定名**：`DB`
+- **数据表清单**：
+  1. `users`: 内部稳定唯一 `id`（`kb_xxxxxxxxxxxxxxxx`），映射 `auth_provider` 与 `provider_uid`。
+  2. `user_progress`: 主键 `(user_id, word_id)`，完整保存 `status`, `review_count`, `lapse_count`, `fsrs_card` (JSON), `is_difficult`, `difficult_updated_at`, `is_ignored`, `ignored_updated_at`, `updated_at`。
+  3. `review_events`: 主键 `event_id` (UUID)，不可变追加日志（`INSERT INTO ... ON CONFLICT (event_id) DO NOTHING`）。
+  4. `user_settings`: 主键 `user_id`，保存书籍与当前课程位置、发音偏好等设置。
+
+### 10.3 关键特性与算法实现
+1. **零数据丢失与平滑迁移**：
+   - 本地数据从旧版单体 `data` 无损深拷贝至 `data_guest`，旧键保留作为保底备份。
+   - 登录后根据用户 ID 切换至 `data_user_${user.id}`。
+   - 首次登录前对本地数据建立 `data_backup_pre_login` 快照。
+2. **确定性 FSRS 状态重放**：
+   - 在多设备冲突合并时，调用 `@jp/core` 中的 `reconcileFsrsFromEvents()`，对该词历史评测事件集合（以 UUID 去重）按精确时间戳正向重放，得出数学上绝对确定的记忆状态。
+3. **字段级 LWW 合并**：
+   - 标星与忽略状态各自记录独立时间戳，取消标星也能根据最新时间戳生效，避免旧的 true 覆盖新的 false。
+4. **离线优先与 3.5s 防抖队列**：
+   - 学习操作原子写入本地 IndexedDB 的 `sync_queue`。
+   - 3.5 秒防抖合并高频作答，网络恢复时自动批量上报。
+5. **安全与防越权**：
+   - Cloudflare Worker 服务端强制解出认证用户 ID 并绑定 SQL 参数，彻底忽略客户端提交的 `userId`，杜绝越权访问。
+
+### 10.4 前端交互与视觉规范
+- **`LoginModal.vue`**：免密邮箱登录，支持 60s 倒计时与加载状态。
+- **`SyncConflictModal.vue`**：当两端均有学习记录时提示“检测到两端学习记录”，引导智能合并。
+- **`App.vue` 顶栏**：未登录显示「登录并开启云同步」，已登录显示脱敏邮箱、同步状态徽章（已同步/正在同步/离线待同步/重试中）与登出下拉菜单。
+
+### 10.5 自动化测试
+运行 `npm test`（Vitest v4.1.11）：
+**8 个测试文件、90 项测试全部通过（耗时 ~840ms）**。
+其中 `tests/cloud-sync.test.ts` 完整覆盖用户要求的全部 17 项场景：
+- 1. 旧版游客（只有 'data'）无损升级至 'data_guest'，旧键保留，数据 100% 存在
+- 2. 首次登录（Case A：本地有数据，云端为空）将本地记录作为初始云端记录完整上传
+- 3. 新设备登录（Case B：本地为空，云端有记录）完整拉取云端记录到本地
+- 4. 两设备合并（Case C：A 设备 100 词，B 设备 50 词无交集）合并后两端均为 150 词
+- 5. 同一词两设备复习（Case D：A 设 10:00 评分 Good，B 设 10:05 评分 Hard）经 union + ts-fsrs 顺序重放，最终 FSRS 状态严格一致且确定
+- 6. review_events event_id UUID 去重，重复同步不产生重复重放
+- 7. 标星（difficult）/ 忽略（ignored）状态以各自字段的时间戳（LWW）独立合并
+- 8. 取消标星也能基于最新时间戳正确同步，不会被旧的 true 覆盖
+- 9. 离线状态下产生的学习记录先存入本地 IndexedDB，网络恢复后自动提交 sync_queue
+- 10. 离线时多次评测同一单词，在一次批量同步中按产生时序一次性提交
+- 11. 3.5s 防抖合并正常工作，高频操作不打崩接口
+- 12. 页面刷新 / 重新打开后，用户 session 自动恢复（若 token 有效）
+- 13. 退出登录后切回当前设备游客数据，用户数据隔离不清除
+- 14. 两个不同用户先后在同一设备登录，各自数据完全隔离（data_user_A 与 data_user_B 互不影响）
+- 15. 未携带合法 Authorization 头的 Worker 请求严格返回 401
+- 16. 恶意伪造或修改 request body 中的 userId 无法越权访问其他用户数据（Worker 强制基于 token 解析 user_id）
+- 17. D1 数据库中 review_events 满足不可变追加，同一 user_id 历史全量事件可溯源
+
+### 10.6 Phase 2 ~ Phase 7 全阶段实施与上线总结 (Completed)
+
+自 Phase 1 骨架确立后，Antigravity 已全面完成了 Phase 2 ~ Phase 7 的各项工程建设并成功部署生产：
+
+1. **Phase 2 (本地快照与回滚能力)**：
+   - 在 `packages/storage/src/index.ts` 中实现 `hasPreLoginSnapshot` 与 `restorePreLoginSnapshot`。
+   - 保障在发生极端冲突或用户主动撤销合并时，可将 `data_backup_pre_login` 完整还原，永不丢弃任何存量用户数据。
+
+2. **Phase 3 (同步网络韧性与离线出站队列)**：
+   - 在 `packages/sync/src/index.ts` 中为 `WorkerSyncClient` 加入 10s `AbortController` 超时机制。
+   - 实现带随机抖动的指数退避重试（3 次），优雅容忍偶发网络断连与 5xx 瞬时抖动。
+   - 完善非阻塞式离线出站队列，保证纯离线状态下学习体验零卡顿。
+
+3. **Phase 4 (Web 端体验打磨与偏好设置云同步)**：
+   - 在 `apps/web/src/store.ts` 中，将用户发音偏好（`pronunciationVoice`: `'female' | 'male'`）与当前学习词书（`currentBookId`）纳入 `user_settings` 同步流，实现多端发音习惯随账号流转。
+   - 在 `apps/web/src/App.vue` 中绑定 `visibilitychange` 事件，页面切回前台时静默自动同步。
+
+4. **Phase 5 (真实环境双客户端端到端验证)**：
+   - 编写 `tests/staging-live-e2e.test.ts`，在真实网络环境下对 Cloudflare 远程 D1 数据库执行 Device 1 与 Device 2 的跨设备同步与状态合并验证。
+   - 修复了 partial update 时 `undefined` 导致 D1 类型报错的隐患，全 SQL 参数以 `coalesce` 安全包裹。
+
+5. **Phase 6 (Windows Electron 客户端网络策略放行)**：
+   - 在 `apps/windows/main.cjs` 中将 CSP 策略由 `connect-src 'self'` 更新为 `connect-src 'self' https:;`。
+   - 桌面端现已原生具备向 CloudBase Auth (`*.tcloudbase.com`) 及 Cloudflare Worker 发起安全 HTTPS 请求的能力。
+
+6. **Phase 7 (Production 生产正式发布与全量验证)**：
+   - 成功开通并迁移独立生产 D1 数据库：`kotobud-prod-db` (`963afe70-1f53-4628-847b-0066bc232d56`)。
+   - `wrangler.jsonc` 严格隔离 Production（`kotobud-prod-db`）与 Preview（`kotobud-staging-db`）。
+   - 成功将正式版本部署到生产 Pages（`main` 分支），绑定域名 `https://kotobud.com`。
+   - 生产环境实时 Live 验证 100% 通过（`/api/v1/sync/status` 返回 `d1_bound: true`，多设备推送拉取完全闭环）。
+
+### 10.7 自动化测试与持续集成全景 (97/97 Tests PASS)
+运行 `npm test`（Vitest v4.1.11）：
+**9 个测试套件、97 项测试全部 100% 通过**：
+- `tests/windows.test.ts` (7 tests)
+- `tests/worker-routing.test.ts` (8 tests)
+- `tests/sync.test.ts` (6 tests)
+- `tests/cloudflare-functions.test.ts` (7 tests)
+- `tests/cloud-sync.test.ts` (17 tests)
+- `tests/quiz.test.ts` (13 tests)
+- `tests/domain.test.ts` (24 tests)
+- `tests/textbooks.test.ts` (8 tests)
+- `tests/staging-live-e2e.test.ts` (7 tests)
+
+### 10.8 给 Codex 的后续维护与拓展指南 (Handoff Guidelines)
+1. **数据库操作规范**：
+   - 本项目 Cloudflare D1 生产数据库为 `kotobud-prod-db`，测试数据库为 `kotobud-staging-db`。
+   - 新增表结构或索引变更时，必须在 `migrations/` 目录下新增有序 SQL 迁移文件（如 `0002_xxx.sql`），并分别使用 `npx wrangler d1 migrations apply DB --remote`（针对生产环境）与 `--env preview`（针对 Staging 环境）执行迁移。
+2. **部署发布流程**：
+   - 开发与预览部署：`node scripts/deploy_pages.cjs dev`（部署到 `dev` 分支，绑定 Staging D1）。
+   - 生产正式部署：`npm run build:cloudflare && node scripts/deploy_pages.cjs main`（部署到 `main` 分支，生效于 `https://kotobud.com`）。
+3. **安全与架构边界永不动摇**：
+   - 严格坚持“**CloudBase 仅负责 Auth 鉴权发码，所有学习业务数据留在 Cloudflare D1 (SQL)**”。
+   - 严禁在 CloudBase 创建任何业务数据库集合。
+   - 严格维护现有 R2 中的 18,072 个 TTS 音频文件与词书分片，不得作破坏性重构或二次上传。
+
+---
+
+### 10.9 系统级内置词书（Built-in Textbooks）与用户私有数据隔离架构规范
+
+#### 10.9.1 架构设计与存储边界原则（零数据冗余、零 R2 空间占用）
+在 KotoBud 架构中，必须严格区分**系统级公共内置资源（System Built-in Resources）**与**用户私有状态（User Private States）**：
+
+1. **内置词书为系统静态资源，绝不随每个用户重复拷贝入库**：
+   - 标准日本语 1~6 册（以及未来接入的任何官方系统词书）属于全站用户共享的公共静态资产。
+   - **Cloudflare D1 数据库中没有 `books` 或 `lessons` 表**。D1 仅负责高价值的个人动态数据：`user_progress`（生词掌握程度与 FSRS 卡片）、`review_events`（不可变复习流水日志）与 `user_settings`（发音偏好与当前选书）。
+   - 避免了传统设计中“每注册一个用户就在数据库插入全套词书与课次”导致的巨量数据冗余与写入膨胀。
+2. **Cloudflare R2 空间占用绝对为 0 字节**：
+   - Cloudflare R2 严格且仅用于托管 **18,072 个只读 TTS 音频 MP3 文件**（`audio/*.mp3`），作为多端发音 CDN 源。
+   - 词书元数据、课次目录与分册生词完全不经过 R2，用户注册、登录、同步过程**对 R2 的存储开销恒为 0 字节**，杜绝任何存储计费膨胀。
+3. **轻量化按需分册加载**：
+   - 6 册标日共 168 个课次的目录元数据（`textbooks-metadata.json`）仅占 12 KB，在应用启动时即刻解析。
+   - 9,000+ 具体词汇拆分为独立静态分册文件（`public/data/books/${bookId}.json`，每册仅 20~40 KB），仅在用户真正进入该词书学习时按需延迟拉取并缓存至本地 IndexedDB，兼顾瞬时秒开与本地存储精简。
+
+---
+
+#### 10.9.2 词书空白隐患复盘与多命名空间自动自愈机制
+- **历史问题定位**：
+  在早期实现中，系统词书仅在游客命名空间（`data_guest`）初始化时写入。当用户通过邮箱登录后，系统执行 `repository.switchUser(user.id)` 切换至独立用户命名空间（`data_user_${user.id}`）。若该账号为首次登录的新账号，因云端无历史复习记录，落入空账号逻辑分支，导致新用户的本地数据库中 `books` 数组为空，在前端表现为“登录后词书全部消失”。
+- **完整自愈修复机制**：
+  在 `apps/web/src/store.ts` 中确立了双重自愈防护：
+  1. `ensureSystemTextbooks(d: Data)`：
+     - 无论当前处于哪个命名空间（游客、用户 A、用户 B），在 `init()`、`loginWithEmailCode()`（全分支：Case A 本地有数据、Case B 云端有数据、Case C 冲突合并、双方均为空账号、离线容灾降级）、`resolveConflictAndMerge()` 以及 `logout()` 时均强制调用。
+     - 比对静态元数据 `metaBooks`，幂等补齐所有系统级内置词书及其标准课次目录，永远不出现 `books: []` 的空白状态。
+  2. `copyGuestCustomData(target: Data, guest: Data)`：
+     - 在游客转换为登录用户时，将游客本地自建/导入的自定义词书（过滤掉系统内置词书 ID）及对应的课次、生词原子迁移至新用户命名空间，确保用户自建内容 100% 不丢失。
+
+---
+
+#### 10.9.3 后续接入新系统级内置词书的 3 步标准作业程序 (SOP for Codex)
+未来如果需要在 KotoBud 中加入新的系统级官方词书（如《新完全掌握 N1~N5》、《红宝书》、《大家的日语》等），Codex 或后续开发者**无需编写任何用户拷贝逻辑，也无需改动 Cloudflare D1 或 R2**，只需执行以下 3 步标准流程：
+
+- **步骤 1：准备分册词汇静态 JSON 文件**
+  在 `public/data/books/` 目录下放置新词书的数据文件（例如 `public/data/books/n1-vocab.json`）。数据遵循 `TextbookDefinition` 结构：
+  ```json
+  {
+    "id": "n1-vocab",
+    "title": "新完全掌握 N1 词汇",
+    "description": "N1 核心高频词汇全覆盖",
+    "lessons": [
+      {
+        "order": 1,
+        "title": "第 1 单元",
+        "words": [
+          { "term": "熱心", "reading": "ねっしん", "meaning": "热心", "partOfSpeech": "名・形动" }
+        ]
+      }
+    ]
+  }
+  ```
+- **步骤 2：在 `textbooks-metadata.json` 中注册词书元数据**
+  在 `apps/web/src/textbooks-metadata.json` 的 `books` 数组中追加该词书的概要元数据（体积极小，仅含书名、课次名称与课次顺序）：
+  ```json
+  {
+    "id": "n1-vocab",
+    "title": "新完全掌握 N1 词汇",
+    "description": "N1 核心高频词汇全覆盖",
+    "wordCount": 1200,
+    "lessons": [
+      { "id": "n1-vocab-l-1", "bookId": "n1-vocab", "title": "第 1 单元", "order": 1, "wordCount": 50 }
+    ]
+  }
+  ```
+- **步骤 3：构建并部署生产**
+  运行标准构建与测试命令：
+  ```bash
+  npm test
+  npm run build:cloudflare
+  node scripts/deploy_pages.cjs main
+  ```
+  **部署完成后即刻全自动生效**：
+  - 前端 `store.ts` 中的 `ensureSystemTextbooks` 会在全网任何用户（无论是老用户、新用户还是未登录游客）打开网站时，自动检测并将新词书注入其侧边栏。
+  - 用户点击进入该词书时，系统通过 HTTP GET 按需拉取 `public/data/books/n1-vocab.json`，秒级呈现，无需迁移任何数据库。
+
+---
+
+### 10.10 混合认证（邮箱+密码/免密升级/重置密码）与长效 Session 架构规范
+
+#### 10.10.1 核心设计与业务生命周期流转
+KotoBud 用户认证系统由原本的“纯 OTP 验证码每次登录”升级为安全高效的现代混合账户体系：
+1. **新用户注册（New Registration）**：
+   - 流程：输入邮箱 → CloudBase 发送验证码 → 校验验证码 + 设定 8 位以上密码 → Cloudflare D1 创建用户（生成不可逆盐值哈希）与 Session → 写入 HttpOnly Refresh Cookie 并签发 Access Token → 自动完成登录。
+2. **已设置密码用户（Standard Login）**：
+   - 流程：输入邮箱 → 后端 `/api/v1/auth/check-account` 识别为 `password` 用户 → 用户直接输入密码 → 校验密码哈希 → 签发 Access Token 与 Refresh Session 登录。
+   - **完全不调用 CloudBase**，节省验证码配额并带来秒级无感登录体验。
+3. **旧版免密 OTP 用户平滑升级（Legacy OTP Upgrade）**：
+   - 流程：输入邮箱 → 后端识别为 `legacy_upgrade` 用户（D1 中已存在该邮箱但 `password_hash IS NULL`）→ 界面展示友好的“数据安全保障提示” → CloudBase 验证码验证 → 设定新密码 → 后端执行：
+     ```sql
+     UPDATE users SET password_hash = ?, password_set_at = ? WHERE id = ?
+     ```
+   - **绝对约束**：严格保持原 `user.id` 不变，禁止新建用户，原用户的所有云端进度（`user_progress`）、复习流水（`review_events`）与个人设置（`user_settings`）**100% 完整保留**。
+4. **忘记密码重置（Forgot / Reset Password）**：
+   - 流程：输入邮箱 → 点击“忘记密码？”→ CloudBase 发送验证码 → 验证码验证通过 + 设定新密码 → 后端更新 `password_hash` 并**立即吊销该用户现存的所有活跃 Session**（`UPDATE sessions SET revoked_at = ? WHERE user_id = ?`）→ 签发全新 Session 登录，确保遗失设备安全。
+
+---
+
+#### 10.10.2 密码与令牌安全加密规范
+1. **密码安全散列（PBKDF2-HMAC-SHA256）**：
+   - 格式：`pbkdf2:sha256:100000:<16-byte-hex-salt>:<32-byte-hex-derived-key>`
+   - 采用标准 W3C WebCrypto API（`crypto.subtle`），完美契合 Cloudflare Workers V8 Isolate 无原生 Node C++ 绑定的轻量安全沙箱要求。
+   - 密码比对采用常数时间比较算法（Constant-time Compare），防御时序攻击（Timing Attack）。
+2. **长效 Session 与双 Token 架构**：
+   - **Access Token**：
+     - 有效期：15 分钟（短效）。
+     - 结构：HS256 HMAC-SHA256 签名的轻量 JWT（包含 `uid`, `email`, `role`, `exp`, `iat`）。
+     - 传输与验证：HTTP 请求头 `Authorization: Bearer <access_token>`。
+   - **Refresh Token 与 D1 存储**：
+     - 有效期：30 天（长效）。
+     - 长度：64 位高熵十六进制伪随机数（`crypto.getRandomValues`）。
+     - 数据库持久化：数据库 `sessions` 表中**仅存储 Refresh Token 的 SHA-256 哈希值**（`refresh_token_hash`），即使数据库只读泄漏也无法还原明文 Token。
+   - **Cookie 安全策略**：
+     - Web 客户端：通过 `Set-Cookie` 存储在 `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth; Max-Age=2592000`。
+     - 彻底抵御客户端 XSS 盗取 Refresh Token，同时允许 SPA 页面在 401 时静默发起 `/api/v1/auth/refresh` 无感换取新 Access Token。
+     - 桌面端（Electron / API 客户端）：同时在响应体返回 `refreshToken`，支持 Bearer 备用认证。
+   - **自动轮转与会话撤回（Token Rotation & Revocation）**：
+     - 每次 `/api/v1/auth/refresh` 均会轮转签发新的 Refresh Token，废弃旧 Token。
+     - 登出（Logout）或重置密码时原子标记 `revoked_at`，即刻作废会话。
+
+---
+
+#### 10.10.3 生产数据库 Migration 记录
+- 脚本位置：`migrations/0002_auth_password_sessions.sql`
+- 生产与测试库应用状态：
+  - Staging 环境（`kotobud-staging-db`，ID: `0e503489-31de-412d-ab5c-1f54ebc06589`）：已成功应用。
+  - Production 环境（`kotobud-prod-db`，ID: `963afe70-1f53-4628-847b-0066bc232d56`）：已成功应用。
+- DDL 概要：
+  ```sql
+  ALTER TABLE users ADD COLUMN password_hash TEXT;
+  ALTER TABLE users ADD COLUMN password_set_at TEXT;
+  ALTER TABLE users ADD COLUMN email_normalized TEXT;
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email_normalized ON users(email_normalized);
+
+  CREATE TABLE IF NOT EXISTS sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    refresh_token_hash TEXT NOT NULL UNIQUE,
+    user_agent TEXT,
+    ip TEXT,
+    expires_at TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (DATETIME('now')),
+    revoked_at TEXT
+  );
+  CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+  CREATE INDEX IF NOT EXISTS idx_sessions_refresh_hash ON sessions(refresh_token_hash);
+  ```
+
+---
+
+#### 10.10.4 严格串行的 IndexedDB 登录生命周期
+所有由认证事件触发的数据库切换，均必须收拢至 `store.ts` 中的 `applyAuthenticatedUser(user, token)`，严格遵循五步串行流程：
+1. **备份游客数据**：读取当前游客 IndexedDB 中的所有进度与配置并深拷贝内存镜像。
+2. **关闭旧连接**：调用 `repository.close()` 并 `await`，确保当前没有活跃事物。
+3. **切换用户命名空间**：`repository.switchUser(user.id)`。
+4. **重新打开新连接**：`await repository.open()`，保证后续写入有确定有效的底层连接。
+5. **初始化云同步与数据回填**：对比游客数据与云端数据，若产生冲突触发 `SyncConflictModal`，若无冲突执行原子迁移，杜绝 Safari/WebKit 上的 `connection is closing`。

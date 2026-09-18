@@ -7,7 +7,8 @@ const root = pathResolve(import.meta.dirname, '..');
 execFileSync(process.platform === 'win32' ? 'node.exe' : 'node', [pathResolve(root, 'scripts', 'split-textbooks.mjs')], { cwd: root, stdio: 'inherit' });
 execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'check:cloudflare'], { cwd: root, stdio: 'inherit', shell: process.platform === 'win32' });
 const dataVersion = process.env.KOTOBA_DATA_VERSION ?? 'v1';
-execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], { cwd: root, stdio: 'inherit', shell: process.platform === 'win32', env: { ...process.env, CLOUDFLARE_BUILD: '1', VITE_KOTOBA_DATA_VERSION: dataVersion } });
+const downloadsReady = process.env.VITE_WINDOWS_DOWNLOADS_READY ?? 'true';
+execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], { cwd: root, stdio: 'inherit', shell: process.platform === 'win32', env: { ...process.env, CLOUDFLARE_BUILD: '1', VITE_KOTOBA_DATA_VERSION: dataVersion, VITE_WINDOWS_DOWNLOADS_READY: downloadsReady } });
 // Large shards and audio are served by the private R2 binding. Keep the small
 // dictionary metadata/license files and any non-generated links in the site.
 for (const [dir, pattern] of [['dictionary', /^(?:0|[1-9]\d{0,2})\.json$/], ['audio', /^\d+\.mp3$/]]) {

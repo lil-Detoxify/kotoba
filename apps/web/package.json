@@ -1,1 +1,14 @@
-{"name":"@jp/web","private":true,"version":"0.1.0","type":"module"}
+{
+  "name": "@jp/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "@jp/core": "*",
+    "@jp/importers": "*",
+    "@jp/models": "*",
+    "@jp/shared": "*",
+    "@jp/storage": "*",
+    "@jp/sync": "*"
+  }
+}

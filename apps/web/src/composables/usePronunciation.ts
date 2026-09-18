@@ -20,7 +20,8 @@ export function usePronunciation(){
  function update(){hasJapaneseVoice.value=!!deviceVoice()}
 
  function source(word:Word){
-   return word.audioUrl||bundled[`${word.term}|${word.reading}`];
+   const audioKey = `${word.audioTerm || word.rawTerm || word.term}|${word.reading}`;
+   return word.audioUrl || bundled[audioKey] || bundled[`${word.term}|${word.reading}`];
  }
 
  function available(word:Word){
@@ -45,7 +46,8 @@ export function usePronunciation(){
    const ticket=generation;
    speaking.value=true;
    try{
-     const googleUrl = await getGoogleAudioUrl(word.term, word.reading, selectedVoice.value);
+     const audioTerm = word.audioTerm || word.rawTerm || word.term;
+     const googleUrl = await getGoogleAudioUrl(audioTerm, word.reading, selectedVoice.value);
      const url = googleUrl || source(word);
      if(url){
        audio=new Audio(url);

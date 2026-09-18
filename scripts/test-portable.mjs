@@ -7,8 +7,8 @@ const profile = path.resolve('.cache/portable-qa-' + Date.now());
 mkdirSync(profile, {recursive: true});
 const env = {...process.env};
 delete env.ELECTRON_RUN_AS_NODE;
-const port = Number(process.env.KOTOBA_TEST_PORT ?? 9255);
-const executable = process.env.KOTOBA_TEST_EXE ?? `release/Kotoba-${process.env.KOTOBA_TEST_VERSION ?? '0.5.0'}-Windows-x64-Portable.exe`;
+const port = Number(process.env.KOTOBA_TEST_PORT ?? (9200 + Math.floor(Math.random() * 500)));
+const executable = process.env.KOTOBA_TEST_EXE ?? `release/Kotoba-${process.env.KOTOBA_TEST_VERSION ?? '0.6.0'}-Windows-x64-Portable.exe`;
 const launch = () => spawn(path.resolve(executable), [
   '--kotoba-test', '--kotoba-profile=' + profile,
   '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=' + port
@@ -17,7 +17,17 @@ let processHandle = launch();
 let browser;
 const readStoredData = page => page.evaluate(async () => {
   const db = await new Promise((resolve, reject) => { const request = indexedDB.open('kotoba-v1'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
-  return new Promise((resolve, reject) => { const request = db.transaction('app').objectStore('app').get('data'); request.onsuccess = () => { const value = request.result; db.close(); resolve(value); }; request.onerror = () => reject(request.error); });
+  return new Promise((resolve, reject) => {
+    const store = db.transaction('app').objectStore('app');
+    const req1 = store.get('data_guest');
+    req1.onsuccess = () => {
+      if (req1.result) { db.close(); resolve(req1.result); return; }
+      const req2 = store.get('data');
+      req2.onsuccess = () => { db.close(); resolve(req2.result); };
+      req2.onerror = () => { db.close(); reject(req2.error); };
+    };
+    req1.onerror = () => reject(req1.error);
+  });
 });
 try {
   let ready = false;

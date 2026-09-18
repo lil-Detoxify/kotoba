@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 // @ts-ignore Cloudflare Worker script is vanilla JS with no app-side types
 import worker from '../scripts/cloudflare-worker.js';
 
@@ -97,5 +97,96 @@ describe('Cloudflare Worker Domain & Environment Routing', () => {
     expect(res.headers.get('x-robots-tag')).toBeNull();
     const html = await res.text();
     expect(html).not.toContain('noindex');
+  });
+
+  it('validates email format on /api/v1/auth/send-code', async () => {
+    const req = new Request('https://kotobud.com/api/v1/auth/send-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'invalid-email' })
+    });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(400);
+    const data = await res.json() as any;
+    expect(data.error).toBe('invalid_email');
+  });
+
+  it('returns unauthenticated when session token is missing or invalid', async () => {
+    const req = new Request('https://kotobud.com/api/v1/session', { method: 'GET' });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(200);
+    const data = await res.json() as any;
+    expect(data.authenticated).toBe(false);
+    expect(data.user).toBeNull();
+  });
+
+  it('handles CORS OPTIONS preflight for kotoba://app origin', async () => {
+    const req = new Request('https://kotobud.com/api/v1/auth/login-password', {
+      method: 'OPTIONS',
+      headers: {
+        'Origin': 'kotoba://app',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'Content-Type, Authorization'
+      }
+    });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(204);
+    expect(res.headers.get('access-control-allow-origin')).toBe('kotoba://app');
+    expect(res.headers.get('access-control-allow-credentials')).toBe('true');
+    expect(res.headers.get('access-control-allow-methods')).toContain('POST');
+  });
+
+  it('injects CORS headers on API responses for kotoba://app origin', async () => {
+    const req = new Request('https://kotobud.com/api/v1/capabilities', {
+      method: 'GET',
+      headers: { 'Origin': 'kotoba://app' }
+    });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('access-control-allow-origin')).toBe('kotoba://app');
+    expect(res.headers.get('access-control-allow-credentials')).toBe('true');
+  });
+
+  it('routes /downloads/Kotoba-0.6.0-Windows-x64-Setup.exe to R2 releases/0.6.0/', async () => {
+    let requestedKey = '';
+    const env = makeEnv({
+      KOTOBA_R2: {
+        get: async (key: string) => {
+          requestedKey = key;
+          return {
+            size: 300000000,
+            httpEtag: '"test-etag-060"',
+            body: new ReadableStream()
+          };
+        }
+      }
+    });
+    const req = new Request('https://kotobud.com/downloads/Kotoba-0.6.0-Windows-x64-Setup.exe', { method: 'GET' });
+    const res = await worker.fetch(req, env);
+    expect(res.status).toBe(200);
+    expect(requestedKey).toBe('releases/0.6.0/Kotoba-0.6.0-Windows-x64-Setup.exe');
+    expect(res.headers.get('content-disposition')).toContain('Kotoba-0.6.0-Windows-x64-Setup.exe');
+    expect(res.headers.get('content-length')).toBe('300000000');
+  });
+
+  it('routes /releases/0.6.0/Kotoba-0.6.0-Windows-x64-Portable.exe to R2 releases/0.6.0/', async () => {
+    let requestedKey = '';
+    const env = makeEnv({
+      KOTOBA_R2: {
+        get: async (key: string) => {
+          requestedKey = key;
+          return {
+            size: 299000000,
+            httpEtag: '"test-etag-portable"',
+            body: new ReadableStream()
+          };
+        }
+      }
+    });
+    const req = new Request('https://kotobud.com/releases/0.6.0/Kotoba-0.6.0-Windows-x64-Portable.exe', { method: 'HEAD' });
+    const res = await worker.fetch(req, env);
+    expect(res.status).toBe(200);
+    expect(requestedKey).toBe('releases/0.6.0/Kotoba-0.6.0-Windows-x64-Portable.exe');
+    expect(res.headers.get('content-length')).toBe('299000000');
   });
 });

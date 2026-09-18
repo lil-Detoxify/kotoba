@@ -5,12 +5,44 @@
   "compatibility_date": "2026-09-16",
   "vars": {
     "KOTOBA_DATA_VERSION": "v1",
-    "ENABLE_LEGACY_301": "true"
+    "ENABLE_LEGACY_301": "true",
+    "CLOUDBASE_ENV_ID": "kotobud-staging-d4femojn7def1c91"
   },
   "r2_buckets": [
     {
       "binding": "KOTOBA_R2",
       "bucket_name": "kotoba-assets"
     }
-  ]
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kotobud-prod-db",
+      "database_id": "963afe70-1f53-4628-847b-0066bc232d56",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "env": {
+    "preview": {
+      "vars": {
+        "KOTOBA_DATA_VERSION": "v1",
+        "ENABLE_LEGACY_301": "true",
+        "CLOUDBASE_ENV_ID": "kotobud-staging-d4femojn7def1c91"
+      },
+      "r2_buckets": [
+        {
+          "binding": "KOTOBA_R2",
+          "bucket_name": "kotoba-assets"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "kotobud-staging-db",
+          "database_id": "0e503489-31de-412d-ab5c-1f54ebc06589",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
 }

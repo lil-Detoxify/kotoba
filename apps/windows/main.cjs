@@ -1,7 +1,7 @@
 const {app,BrowserWindow,protocol,net,shell,dialog}=require('electron');
 const path=require('node:path');const {pathToFileURL}=require('node:url');
 const {assetPath}=require('./protocol.cjs');
-protocol.registerSchemesAsPrivileged([{scheme:'kotoba',privileges:{standard:true,secure:true,supportFetchAPI:true,stream:true}}]);
+protocol.registerSchemesAsPrivileged([{scheme:'kotoba',privileges:{standard:true,secure:true,supportFetchAPI:true,stream:true,corsEnabled:true}}]);
 // QA uses an isolated profile; normal launches always keep the same app data path.
 const profile=process.argv.find(arg=>arg.startsWith('--kotoba-profile=')||arg.startsWith('--kotobud-profile='));if(profile)app.setPath('userData',path.resolve(profile.replace(/^--(kotoba|kotobud)-profile=/,'')));
 let window;
@@ -12,7 +12,7 @@ app.whenReady().then(()=>{
  const assets=app.isPackaged?path.join(process.resourcesPath,'web'):path.resolve(__dirname,'../../dist');
  protocol.handle('kotoba',async request=>{
   const file=assetPath(request.url,assets);if(!file)return new Response('Not found',{status:404});
-  try{const response=await net.fetch(pathToFileURL(file).toString(),{headers:request.headers});const headers=new Headers(response.headers);headers.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; media-src 'self' https: http: blob:; object-src 'none'; frame-src 'none'; base-uri 'none'");return new Response(response.body,{status:response.status,headers})}catch{return new Response('Not found',{status:404})}
+  try{const response=await net.fetch(pathToFileURL(file).toString(),{headers:request.headers});const headers=new Headers(response.headers);headers.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; media-src 'self' https: http: blob:; object-src 'none'; frame-src 'none'; base-uri 'none'");return new Response(response.body,{status:response.status,headers})}catch{return new Response('Not found',{status:404})}
  });
  window=new BrowserWindow({width:1280,height:900,minWidth:390,minHeight:640,title:'KotoBud · 日语背词',backgroundColor:'#f7f8f4',autoHideMenuBar:true,show:!process.argv.includes('--kotoba-test')&&!process.argv.includes('--kotobud-test'),icon:path.join(__dirname,'icon.png'),webPreferences:{nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true}});
  window.webContents.session.setPermissionRequestHandler((_contents,_permission,callback)=>callback(false));
