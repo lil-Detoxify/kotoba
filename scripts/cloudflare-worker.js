@@ -582,7 +582,19 @@ export default {
       });
     }
 
-    // 7. Download and Release handling (0.6.0 & backwards-compatible)
+    // 7. Bing Webmaster verification file
+    if (path === '/BingSiteAuth.xml' || path === '/bingsiteauth.xml') {
+      const xml = '<?xml version="1.0"?>\n<users>\n\t<user>B54034535F2BC5D891C5E32773794D82</user>\n</users>\n';
+      return new Response(xml, {
+        status: 200,
+        headers: {
+          'content-type': 'application/xml; charset=utf-8',
+          'cache-control': 'public, max-age=86400'
+        }
+      });
+    }
+
+    // 8. Download and Release handling (0.6.0 & backwards-compatible)
     const downloadMatch = path.match(/^\/downloads\/(Kotoba-(\d+\.\d+\.\d+)-Windows-x64-(Setup|Portable)\.exe)$/);
     const releaseMatch = path.match(/^\/releases\/(\d+\.\d+\.\d+)\/([a-zA-Z0-9._-]+)$/);
     const checksumMatch = path.match(/^\/downloads\/(SHA256SUMS-(\d+\.\d+\.\d+)\.txt)$/);

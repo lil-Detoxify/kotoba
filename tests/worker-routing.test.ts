@@ -98,6 +98,15 @@ describe('Cloudflare Worker Domain & Environment Routing', () => {
     expect(text.trim()).toBe('4b68e91c784e4b5bb8972cae6c7104f2');
   });
 
+  it('serves Bing Webmaster verification file BingSiteAuth.xml', async () => {
+    const req = new Request('https://kotobud.com/BingSiteAuth.xml', { method: 'GET' });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toContain('application/xml');
+    const xml = await res.text();
+    expect(xml).toContain('<user>B54034535F2BC5D891C5E32773794D82</user>');
+  });
+
   it('routes known SEO marketing pages to 200 OK', async () => {
     for (const p of ['/features', '/download', '/about', '/guide', '/changelog']) {
       const req = new Request(`https://kotobud.com${p}`, { method: 'GET' });

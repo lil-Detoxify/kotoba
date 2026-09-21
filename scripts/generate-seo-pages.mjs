@@ -548,6 +548,7 @@ function renderHtmlDocument({
   <link rel="canonical" href="${canonicalUrl}">
   <link rel="icon" type="image/png" href="/icon.png">
   <link rel="manifest" href="/manifest.json">
+  <meta name="msvalidate.01" content="B54034535F2BC5D891C5E32773794D82">
 
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="Kotobud">
@@ -1361,6 +1362,12 @@ export function generateAllSeoPages(targetDir) {
   const keyFile = pathResolve(targetDir, `${INDEXNOW_KEY}.txt`);
   writeFileSync(keyFile, `${INDEXNOW_KEY}\n`, 'utf-8');
   console.log(`  ✓ Created: ${INDEXNOW_KEY}.txt`);
+
+  // Ensure Bing verification file exists in targetDir
+  const bingFile = pathResolve(targetDir, 'BingSiteAuth.xml');
+  const bingXml = `<?xml version="1.0"?>\n<users>\n\t<user>B54034535F2BC5D891C5E32773794D82</user>\n</users>\n`;
+  writeFileSync(bingFile, bingXml, 'utf-8');
+  console.log(`  ✓ Created: BingSiteAuth.xml`);
 }
 
 // Allow CLI execution: node scripts/generate-seo-pages.mjs [targetDir]
