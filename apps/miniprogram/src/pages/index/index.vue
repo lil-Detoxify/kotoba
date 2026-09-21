@@ -1,34 +1,35 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
-import { statistics } from "@jp/core";
 import type { Data } from "@jp/models";
 import { defaultTextbooks, textbookCatalog } from "../../services/textbooks";
+import { calculateLearningStatistics, type LearningStatistics } from "../../services/learning-statistics";
 
 const appData = ref<Data | null>(null);
-const streak = ref(0);
-const dueCount = ref(0);
-const learnedCount = ref(0);
+const statistics = ref<LearningStatistics | null>(null);
+const loading = ref(true);
 const currentBookTitle = ref("标准日本语");
 const loadError = ref("");
 const currentMeta = computed(() => textbookCatalog.find((book) => book.id === appData.value?.currentBookId));
-const hasProgress = computed(() => !!appData.value?.logs.length);
 const catalogWordCount = textbookCatalog.reduce((sum, book) => sum + book.wordCount, 0);
+const activityMax = computed(() => Math.max(1, ...(statistics.value?.days.map((day) => day.count) || [0])));
+const activityDays = computed(() => statistics.value?.days || []);
+const currentBookProgress = computed(() => statistics.value?.books.find((book) => book.bookId === appData.value?.currentBookId));
+const learningActionLabel = computed(() => currentBookProgress.value?.learned ? "继续当前词书" : "开始当前词书");
 
 async function refreshData() {
   loadError.value = "";
+  loading.value = true;
   try { await loadData(); }
   catch { loadError.value = "学习记录暂时无法读取，请重试。原有记录未被覆盖。"; }
+  finally { loading.value = false; }
 }
 
 async function loadData() {
   const data = await defaultTextbooks.hydrate();
 
   appData.value = data;
-  const stats = statistics(data, new Date());
-  streak.value = stats.streak;
-  dueCount.value = stats.due;
-  learnedCount.value = stats.learned;
+  statistics.value = calculateLearningStatistics(data, new Date());
   const curBook = data.books.find((b) => b.id === data.currentBookId) || data.books[0];
   if (curBook) {
     currentBookTitle.value = curBook.title;
@@ -49,6 +50,8 @@ function goToBooks() {
 
 function goToLists() { uni.navigateTo({ url: "/pages/lists/lists" }); }
 function goToReview() { uni.switchTab({ url: "/pages/review/review" }); }
+function goToDifficult() { uni.navigateTo({ url: "/pages/study/study?mode=difficult" }); }
+function activityHeight(count: number) { return count ? Math.max(14, Math.round(count / activityMax.value * 76)) : 8; }
 
 onShow(() => {
   void refreshData();
@@ -56,11 +59,15 @@ onShow(() => {
 </script>
 
 <template>
-  <view class="container">
-    <view v-if="loadError" class="card">
+  <view class="container dashboard-page">
+    <view v-if="loading" class="card status-card">
+      <text>正在读取学习概览…</text>
+    </view>
+    <view v-else-if="loadError" class="card status-card">
       <text>{{ loadError }}</text>
       <button class="secondary-btn" @tap="refreshData">重新读取</button>
     </view>
+    <template v-else>
     <view class="hero-section">
       <text class="hero-eyebrow">今日、少しずつ。</text>
       <text class="hero-title">今天，也学一点吧</text>
@@ -70,27 +77,52 @@ onShow(() => {
     <view class="card today-panel">
       <view class="panel-header">
         <text class="panel-label">温故知新 · 今日复习</text>
-        <text class="streak-badge">连续 {{ streak }} 天</text>
+        <text class="streak-badge">连续 {{ statistics?.streak || 0 }} 天</text>
       </view>
       <view class="due-row">
-        <text class="due-number">{{ dueCount }}</text>
+        <text class="due-number">{{ statistics?.due || 0 }}</text>
         <text class="due-desc">个单词，等你再见</text>
       </view>
       <view class="action-row">
-        <button class="primary-btn" :disabled="!!loadError" @tap="goToStudy">{{ hasProgress ? '继续学习' : '开始学习' }}</button>
+        <button class="primary-btn" @tap="goToStudy">{{ learningActionLabel }}</button>
         <button class="secondary-btn" @tap="goToBooks">选择课次</button>
       </view>
-      <button v-if="dueCount" class="secondary-btn" @tap="goToReview">复习到期词</button>
+      <view class="quick-actions">
+        <button v-if="statistics?.due" class="secondary-btn quick-btn" @tap="goToReview">复习到期词（{{ statistics.due }}）</button>
+        <button v-if="statistics?.difficult" class="secondary-btn quick-btn" @tap="goToDifficult">巩固难词（{{ statistics.difficult }}）</button>
+      </view>
     </view>
 
     <view class="stats-grid">
       <view class="card stat-item">
-        <text class="stat-num">{{ learnedCount }}</text>
+        <text class="stat-num">{{ statistics?.todayNew || 0 }}</text>
+        <text class="stat-label">今日新学</text>
+      </view>
+      <view class="card stat-item">
+        <text class="stat-num">{{ statistics?.todayReview || 0 }}</text>
+        <text class="stat-label">今日复习</text>
+      </view>
+      <view class="card stat-item">
+        <text class="stat-num">{{ statistics?.learned || 0 }}</text>
         <text class="stat-label">累计已学</text>
       </view>
       <view class="card stat-item">
         <text class="stat-num">{{ catalogWordCount }}</text>
         <text class="stat-label">六册教材词汇</text>
+      </view>
+    </view>
+
+    <view class="card activity-card">
+      <view class="section-heading">
+        <text class="section-title">近 7 日活动</text>
+        <text class="section-caption">按本地日期统计</text>
+      </view>
+      <view class="activity-grid">
+        <view v-for="day in activityDays" :key="day.day" class="activity-day">
+          <view class="activity-track"><view class="activity-bar" :style="{ height: activityHeight(day.count) + 'rpx' }" /></view>
+          <text class="activity-count">{{ day.count }}</text>
+          <text class="activity-label">{{ day.label }}</text>
+        </view>
       </view>
     </view>
 
@@ -102,10 +134,15 @@ onShow(() => {
       </view>
     </view>
     <button class="secondary-btn" @tap="goToLists">打开生词本</button>
+    </template>
   </view>
 </template>
 
 <style scoped>
+.dashboard-page { padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
+.dashboard-page button { min-height: 96rpx; }
+.status-card { padding: 44rpx 32rpx; text-align: center; }
+.status-card .secondary-btn { min-height: 96rpx; margin-top: 20rpx; }
 .hero-section {
   margin-top: 16rpx;
   margin-bottom: 32rpx;
@@ -166,15 +203,30 @@ onShow(() => {
 }
 .action-row {
   display: flex;
-  gap: 20rpx;
+  gap: 16rpx;
 }
+.action-row button { flex: 1; min-height: 96rpx; }
+.quick-actions { display: flex; flex-wrap: wrap; gap: 16rpx; margin-top: 20rpx; }
+.quick-btn { flex: 1; min-width: 260rpx; min-height: 96rpx; margin: 0; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16rpx; margin-bottom: 20rpx; }
+.section-title { font-size: 28rpx; font-weight: 700; color: #273C35; }
+.section-caption { font-size: 22rpx; color: #9CA3AF; }
+.activity-card { padding-bottom: 28rpx; }
+.activity-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 16rpx; min-height: 136rpx; }
+.activity-day { display: flex; flex: 1; min-width: 0; flex-direction: column; align-items: center; gap: 8rpx; }
+.activity-track { display: flex; width: 100%; height: 84rpx; align-items: flex-end; justify-content: center; border-bottom: 1rpx solid #E5E7EB; }
+.activity-bar { width: 28rpx; min-height: 8rpx; border-radius: 8rpx 8rpx 0 0; background: #365D49; }
+.activity-count, .activity-label { font-size: 22rpx; color: #6B7280; }
+.activity-count { color: #365D49; font-weight: 600; }
+.activity-label { white-space: nowrap; }
 .stats-grid {
   display: flex;
-  gap: 20rpx;
-  margin-bottom: 24rpx;
+  flex-wrap: wrap;
+  gap: 16rpx;
 }
 .stat-item {
-  flex: 1;
+  flex: 1 1 42%;
+  min-width: 220rpx;
   text-align: center;
   padding: 24rpx;
   margin-bottom: 0;
@@ -205,9 +257,11 @@ onShow(() => {
   font-weight: 700;
   color: #111827;
   margin-bottom: 8rpx;
+  overflow-wrap: anywhere;
 }
 .book-meta {
   font-size: 24rpx;
   color: #6B7280;
+  overflow-wrap: anywhere;
 }
 </style>

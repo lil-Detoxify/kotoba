@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import type { Data, Lesson } from "@jp/models";
 import { defaultTextbooks, isBookLoaded, textbookCatalog } from "../../services/textbooks";
+import { calculateLearningStatistics, type LearningBookStatistics } from "../../services/learning-statistics";
 
 type CatalogBook = (typeof textbookCatalog)[number];
 
@@ -12,6 +13,7 @@ const loadingBook = ref("");
 const loadError = ref("");
 const bookErrors = ref<Record<string, string>>({});
 const selectedExercise = ref("card");
+const bookStatistics = ref<LearningBookStatistics[]>([]);
 
 const exercises = [
   { id: "card", label: "卡片" },
@@ -39,11 +41,28 @@ async function refresh() {
   loadError.value = "";
   try {
     data.value = await defaultTextbooks.hydrate();
+    // Progress is derived from the lightweight catalog and states/logs only;
+    // rendering this page must never download textbook bodies.
+    bookStatistics.value = calculateLearningStatistics(data.value, new Date()).books;
   } catch {
     loadError.value = "词书目录暂时无法读取，请重试。原有记录未被覆盖。";
   } finally {
     loading.value = false;
   }
+}
+
+function progressFor(book: CatalogBook): LearningBookStatistics {
+  return bookStatistics.value.find((item) => item.bookId === book.id) || {
+    bookId: book.id,
+    title: book.title,
+    learned: 0,
+    mastered: 0,
+    due: 0,
+    difficult: 0,
+    total: book.wordCount,
+    progress: 0,
+    percent: 0,
+  };
 }
 
 async function download(bookId: string) {
@@ -90,7 +109,7 @@ onShow(() => {
 </script>
 
 <template>
-  <view class="container">
+  <view class="container books-page">
     <view class="section-header">
       <text class="section-title">我的词书</text>
       <text class="section-desc">选择教材后下载，再开始学习课次</text>
@@ -126,6 +145,17 @@ onShow(() => {
         </view>
       </view>
 
+      <view class="progress-section">
+        <view class="progress-heading">
+          <text class="progress-label">已学 {{ progressFor(book).learned }} / {{ progressFor(book).total }} 词</text>
+          <text class="progress-percent">{{ progressFor(book).percent }}%</text>
+        </view>
+        <view class="progress-track" :aria-label="`${book.title} 已学 ${progressFor(book).learned} / ${progressFor(book).total}`">
+          <view class="progress-fill" :style="{ width: progressFor(book).percent + '%' }" />
+        </view>
+        <text class="download-state">{{ loadedIds.has(book.id) ? "正文已下载，可离线学习" : "正文未下载，进度仍按目录统计" }}</text>
+      </view>
+
       <text v-if="bookErrors[book.id]" class="error-text">{{ bookErrors[book.id] }}</text>
       <button
         v-if="!loadedIds.has(book.id)"
@@ -154,6 +184,8 @@ onShow(() => {
 </template>
 
 <style scoped>
+.books-page { padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
+.books-page button { min-height: 96rpx; }
 .section-header { margin-bottom: 24rpx; }
 .section-title { display: block; font-size: 40rpx; font-weight: 700; color: #111827; margin-bottom: 6rpx; }
 .section-desc { font-size: 26rpx; color: #6B7280; }
@@ -164,13 +196,20 @@ onShow(() => {
 .exercise-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 8rpx; margin-top: 14rpx; }
 .picker-label { font-size: 24rpx; color: #6B7280; }
 .book-item { margin-bottom: 28rpx; }
-.book-header { display: flex; align-items: flex-start; margin-bottom: 20rpx; }
-.book-badge { background: #D9532F; color: #FFF; padding: 16rpx 20rpx; border-radius: 12rpx; margin-right: 20rpx; }
+.book-header { display: flex; align-items: flex-start; margin-bottom: 20rpx; gap: 16rpx; }
+.book-badge { background: #D9532F; color: #FFF; padding: 16rpx 20rpx; border-radius: 12rpx; }
 .badge-text { font-size: 24rpx; font-weight: 700; }
 .book-meta { flex: 1; min-width: 0; }
 .title, .desc, .count, .error-text, .lesson-title { overflow-wrap: anywhere; }
 .title { display: block; font-size: 32rpx; font-weight: 700; color: #111827; }
 .desc, .count { display: block; font-size: 24rpx; color: #6B7280; margin-top: 6rpx; }
+.progress-section { margin: 18rpx 0 20rpx; }
+.progress-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16rpx; margin-bottom: 10rpx; }
+.progress-label, .download-state { color: #59675D; font-size: 24rpx; overflow-wrap: anywhere; }
+.progress-percent { color: #365D49; font-size: 24rpx; font-weight: 700; }
+.progress-track { height: 16rpx; overflow: hidden; border-radius: 16rpx; background: #E5EADF; }
+.progress-fill { height: 100%; border-radius: inherit; background: #365D49; }
+.download-state { display: block; margin-top: 10rpx; color: #9CA3AF; font-size: 22rpx; }
 .error-text { display: block; color: #B91C1C; font-size: 24rpx; margin-bottom: 12rpx; }
 .lesson-list { margin-top: 24rpx; border-top: 1rpx solid #F3F4F6; }
 .lesson-item { padding: 18rpx 0; border-bottom: 1rpx solid #F3F4F6; }
