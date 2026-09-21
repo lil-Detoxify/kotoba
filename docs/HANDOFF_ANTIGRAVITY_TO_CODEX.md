@@ -849,3 +849,103 @@ KotoBud 用户认证系统由原本的“纯 OTP 验证码每次登录”升级�
 3. **切换用户命名空间**：`repository.switchUser(user.id)`。
 4. **重新打开新连接**：`await repository.open()`，保证后续写入有确定有效的底层连接。
 5. **初始化云同步与数据回填**：对比游客数据与云端数据，若产生冲突触发 `SyncConflictModal`，若无冲突执行原子迁移，杜绝 Safari/WebKit 上的 `connection is closing`。
+
+---
+
+## 11. Windows 0.6.0 正式基线与交付归档
+
+1. **版本升级与废弃旧包**：
+   - 彻底废弃历史 0.5.0 Windows 安装包。
+   - 正式构建发布基线为 **0.6.0**。
+   - 产物清单：
+     - `release/Kotoba-0.6.0-Windows-x64-Setup.exe`
+     - `release/Kotoba-0.6.0-Windows-x64-Portable.exe`
+     - `release/Kotoba-0.6.0-Windows-x64-Setup.exe.sha256`
+     - `release/Kotoba-0.6.0-Windows-x64-Portable.exe.sha256`
+2. **桌面端运行时兼容性**：
+   - 桌面端完全兼容密码登录、邮箱验证码注册与找回密码。
+   - 离线协议 `kotoba://` 正常工作，本地静态资源与 IndexedDB 数据持久化稳定。
+   - **Codex 开发规则**：后续不要重新构建或发布 0.5.0，任何新桌面发布均以 0.6.0+ 为基线。
+
+---
+
+## 12. 云端学习记录“消失”排查与确定性双向对齐加固 (Deterministic Reconciliation)
+
+### 12.1 真实事故排查结果：0 数据丢失
+用户在手机端反馈“词书不见了、学习记录全部显示为 0”，经直接只读查询 Cloudflare D1 生产库 `kotobud-prod-db` (`963afe70-1f53-4628-847b-0066bc232d56`)：
+- 用户 `kb_a4bef5f880da486b` (`941994230@qq.com`) 的 **15 条学习进度记录与 15 条复习事件 100% 完好存在**。
+- **云端数据从未被删除或丢失**，数据完整度 100%。
+
+### 12.2 三大根本原因定位
+1. **启动时缺乏双向对齐 (Startup Pull-Reconciliation)**：旧代码启动时仅读取本地 IndexedDB。用户新登录或浏览器清空缓存后本地为空，未主动 pull 云端进度。
+2. **统计看板与动态词书过度耦合**：`statistics()` 之前直接调用 `progress(data, data.words, userId)`。用户实际学的是初级下册，而当前动态词库只加载了上册，`data.words` 中无下册词汇，导致即便本地存在 `data.states`，看板也计算出 `已学: 0, 待复习: 0`。
+3. **未就绪的空默认状态盲目 Push**：旧 `init()` 启动 3.5s 后无门禁触发 `flushSyncQueue()`，把默认生成的上册作为 `currentBookId` 覆盖了云端用户的真实下册设置。
+
+### 12.3 必须严格遵守的确定性双向同步规范 (CRITICAL)
+Codex 与后续任何 sub-agent 必须严格遵循以下同步架构，**严禁回退**：
+
+1. **严格的串行对齐时序**：
+   `local hydrate -> restore auth -> cloud pull -> deterministic merge -> persist -> isSyncReady = true -> allow push`
+   - 不管是页面加载初期还是异步 `onAuthStateChange` 恢复登录态，统一执行对齐流程。
+   - **推送门禁（`isSyncReady` Guard）**：在对齐完成前，任何 push 一律被拦截。若因断网 pull 失败，保留本地离线状态，严禁上传默认值。
+2. **区分程序默认值与用户真实操作**：
+   - `Data` 和 `UserSettings` 中定义 `currentBookIdSource: 'default' | 'user'` 与 `currentBookIdUpdatedAt`。
+   - 只有用户显式点击或从云端成功拉取才标为 `'user'`，程序启动默认生成的标为 `'default'`。
+   - 若本地队列为空且当前书来源为 `'default'`，前端直接跳过 settings 推送。
+3. **服务端过期写与默认值防御 (Stale-Write Defense)**：
+   - Cloudflare Worker 在 `/api/v1/sync/push` 中校验：若客户端上报的词书来源是 `'default'` 且云端已有用户的专属词书，自动保留云端词书。
+   - 校验 `incomingSettings.updatedAt >= existingSettings.updated_at`，过期的客户端写入判定为冲突并拒绝回退。
+4. **统计逻辑彻底解耦**：
+   - `packages/core/src/index.ts` 中的 `statistics()` 直接遍历 `activeStates`（`firstSeenAt || reviewCount > 0`）与 `logs`。
+   - 无论当前内存加载了哪本书，用户的全书已学单词数、待复习词数、打卡天数（Streak）都 100% 准确展示。
+5. **回归测试保障**：
+   - 必须通过 `tests/cloud-sync-reconciliation.test.ts`（包含 6 大极端边界用例）。
+
+---
+
+## 13. 微信小程序架构与 Phase 1 交付基线
+
+### 13.1 技术选型与代码复用架构
+- **技术栈**：`uni-app + Vue 3 + Vite + TypeScript`。
+- **复用率**：核心领域层约 **65% ~ 72%** 共享复用。
+  - **A 类（100% 直接复用）**：`@jp/models`（卡片与数据结构）、`@jp/core`（FSRS 算法、统计计算）、`@jp/shared`（拼音假名工具）、内置标日全册词库。
+  - **B 类（抽象适配复用）**：`apps/miniprogram/src/adapters/`（Storage、Audio、Network、Auth）。
+  - **C 类（小程序原生替代）**：`pages.json` 路由配置替代 `vue-router`；WXML/WXSS 模板。
+
+### 13.2 小程序工程目录
+- 根级子工程：`apps/miniprogram/`，已纳入 root `package.json` workspaces。
+- 路由骨架（5 大核心页面）：
+  - `src/pages/index/index.vue`（学习看板、继续学习、快捷操作）
+  - `src/pages/books/books.vue`（词书管理、切换当前教材）
+  - `src/pages/study/study.vue`（背词主界面、卡片翻转、评分打卡）
+  - `src/pages/review/review.vue`（复习模式与错题集）
+  - `src/pages/settings/settings.vue`（账户登录、音色设置、数据同步状态）
+- 适配层：
+  - `src/adapters/types.ts`：跨端接口规范。
+  - `src/adapters/storage.ts`：`UniStorageAdapter`（包装 `uni.getStorageSync`）与 `MiniProgramRepository`。
+  - `src/adapters/audio.ts`：`UniAudioPlayer`（包装 `uni.createInnerAudioContext`）。
+- 构建产物：`apps/miniprogram/dist/build/mp-weixin`，默认配置 `"appid": "touristappid"`，支持在微信开发者工具中即时预览。
+
+---
+
+## 14. Codex 与 Sub-agent 小程序开发铁律与避坑指南 (MUST-FOLLOW)
+
+后续由 Codex 或其 sub-agent 接手继续开发小程序时，**必须严格遵守以下规则，违者立即视为破坏性重构并回退**：
+
+1. **严禁调用浏览器专属 API**：
+   - 小程序运行在非浏览器环境中，**绝对不存在**以下对象：
+     `window`、`document`、`localStorage`、`sessionStorage`、`HTMLAudioElement`、`indexedDB`、`location.href`、`fetch`。
+   - 所有本地存储读写**必须**使用 `UniStorageAdapter` 或 `MiniProgramRepository`。
+   - 所有音频播放**必须**使用 `UniAudioPlayer`。
+   - 页面跳转**必须**使用 `uni.navigateTo` / `uni.switchTab`，严禁擅自引入 `vue-router`。
+2. **严禁在腾讯云 CloudBase 创建业务数据库**：
+   - 坚持“业务数据不出 Cloudflare”红线。CloudBase 仅用于邮箱短信验证码鉴权；学习进度、复习事件、词书记录等全部存储在 Cloudflare D1。
+3. **保持同步协议一致，不得在小程序造私有同步逻辑**：
+   - 小程序端的同步必须对齐现有的 `/api/v1/sync/bootstrap`, `/api/v1/sync/pull`, `/api/v1/sync/push` 标准 API。
+   - 同样必须遵循 `reconcileWithCloud` 启动对齐与 `isSyncReady` 防空状态推送原则。
+4. **Git 分支与开发边界**：
+   - 所有小程序开发必须在 `feature/miniprogram` 分支进行。
+   - 每次推进后必须运行：
+     - `npm test`（确保所有 122+ 单元与集成测试全部通过）。
+     - `npm run check:cloudflare`（确保 TypeScript 类型 0 错误）。
+     - `npm run build:miniprogram`（确保小程序编译产物正常无报错）。

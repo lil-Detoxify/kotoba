@@ -1,27 +1,39 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kotobud.com/</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kotobud.com/books</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://kotobud.com/features</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kotobud.com/download</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kotobud.com/guide</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kotobud.com/stats</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://kotobud.com/about</loc>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kotobud.com/import</loc>
-    <lastmod>2026-09-17</lastmod>
+    <loc>https://kotobud.com/changelog</loc>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.6</priority>
   </url>
 </urlset>

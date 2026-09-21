@@ -68,17 +68,63 @@ describe('Cloudflare Worker Domain & Environment Routing', () => {
     expect(res.status).toBe(200);
     const body = await res.text();
     expect(body).toContain('Allow: /');
+    expect(body).toContain('Disallow: /app/');
+    expect(body).toContain('User-agent: Baiduspider');
+    expect(body).toContain('User-agent: Bingbot');
     expect(body).toContain('Sitemap: https://kotobud.com/sitemap.xml');
   });
 
-  it('serves valid sitemap.xml on kotobud.com', async () => {
+  it('serves valid sitemap.xml on kotobud.com with public canonical URLs', async () => {
     const req = new Request('https://kotobud.com/sitemap.xml', { method: 'GET' });
     const res = await worker.fetch(req, makeEnv());
     expect(res.status).toBe(200);
     expect(res.headers.get('content-type')).toContain('application/xml');
     const xml = await res.text();
     expect(xml).toContain('<loc>https://kotobud.com/</loc>');
-    expect(xml).toContain('<loc>https://kotobud.com/books</loc>');
+    expect(xml).toContain('<loc>https://kotobud.com/features</loc>');
+    expect(xml).toContain('<loc>https://kotobud.com/download</loc>');
+    expect(xml).toContain('<loc>https://kotobud.com/guide</loc>');
+    expect(xml).toContain('<loc>https://kotobud.com/about</loc>');
+    expect(xml).toContain('<loc>https://kotobud.com/changelog</loc>');
+    expect(xml).not.toContain('<loc>https://kotobud.com/stats</loc>');
+    expect(xml).not.toContain('<loc>https://kotobud.com/import</loc>');
+  });
+
+  it('serves IndexNow key verification file', async () => {
+    const req = new Request('https://kotobud.com/4b68e91c784e4b5bb8972cae6c7104f2.txt', { method: 'GET' });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(200);
+    const text = await res.text();
+    expect(text.trim()).toBe('4b68e91c784e4b5bb8972cae6c7104f2');
+  });
+
+  it('serves Bing Webmaster verification file BingSiteAuth.xml', async () => {
+    const req = new Request('https://kotobud.com/BingSiteAuth.xml', { method: 'GET' });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toContain('application/xml');
+    const xml = await res.text();
+    expect(xml).toContain('<user>B54034535F2BC5D891C5E32773794D82</user>');
+  });
+
+  it('routes known SEO marketing pages to 200 OK', async () => {
+    for (const p of ['/features', '/download', '/about', '/guide', '/changelog']) {
+      const req = new Request(`https://kotobud.com${p}`, { method: 'GET' });
+      const res = await worker.fetch(req, makeEnv());
+      expect(res.status).toBe(200);
+    }
+  });
+
+  it('routes /app to 200 OK for study application', async () => {
+    const req = new Request('https://kotobud.com/app', { method: 'GET' });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(200);
+  });
+
+  it('returns true 404 for non-existent public URLs (preventing Soft 404)', async () => {
+    const req = new Request('https://kotobud.com/non-existent-xyz-page-12345', { method: 'GET' });
+    const res = await worker.fetch(req, makeEnv());
+    expect(res.status).toBe(404);
   });
 
   it('injects noindex header and meta tag on staging HTML responses', async () => {

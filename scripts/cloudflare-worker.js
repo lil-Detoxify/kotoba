@@ -4,10 +4,12 @@ const emptyHead = response => new Response(null, {status: response.status, heade
 
 const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://kotobud.com/</loc><lastmod>2026-09-17</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://kotobud.com/books</loc><lastmod>2026-09-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://kotobud.com/stats</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://kotobud.com/import</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://kotobud.com/</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://kotobud.com/features</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kotobud.com/download</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kotobud.com/guide</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kotobud.com/about</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kotobud.com/changelog</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>`;
 
 const CLOUDBASE_DEFAULT_ENV = 'kotobud-staging-d4femojn7def1c91';
@@ -525,18 +527,17 @@ export default {
       return Response.redirect(target.toString(), 301);
     }
 
-    // 2. Legacy Domain 301: https://kotoba-iuz.pages.dev/* -> https://kotobud.com/*
-    if (env.ENABLE_LEGACY_301 === 'true' && hostname === 'kotoba-iuz.pages.dev') {
+    // 2. Legacy Domain & Pages.dev 301: https://kotoba-iuz.pages.dev/* -> https://kotobud.com/*
+    const isStaging = hostname === 'staging.kotobud.com' || hostname === 'staging.kotoba-iuz.pages.dev';
+    const isPreview = !isStaging && (hostname.endsWith('.pages.dev') && hostname !== 'kotoba-iuz.pages.dev');
+
+    if (env.ENABLE_LEGACY_301 === 'true' && !isStaging && hostname.endsWith('.pages.dev')) {
       const target = new URL(request.url);
       target.hostname = 'kotobud.com';
       return Response.redirect(target.toString(), 301);
     }
 
-    // 3. Staging and Preview Environment Detection
-    const isStaging = hostname === 'staging.kotobud.com' || hostname === 'staging.kotoba-iuz.pages.dev';
-    const isPreview = !isStaging && (hostname.endsWith('.pages.dev') && hostname !== 'kotoba-iuz.pages.dev');
-
-    // 4. Staging / Preview robots.txt
+    // 3. Staging / Preview robots.txt
     if ((isStaging || isPreview) && path === '/robots.txt') {
       return new Response("User-agent: *\nDisallow: /\n", {
         status: 200,
@@ -547,9 +548,9 @@ export default {
       });
     }
 
-    // 5. Production robots.txt
+    // 4. Production robots.txt
     if (path === '/robots.txt') {
-      const robots = "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\n\nSitemap: https://kotobud.com/sitemap.xml\n";
+      const robots = "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\nDisallow: /app/\n\nUser-agent: Baiduspider\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\nDisallow: /app/\n\nUser-agent: Bingbot\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\nDisallow: /app/\n\nSitemap: https://kotobud.com/sitemap.xml\n";
       return new Response(robots, {
         status: 200,
         headers: {
@@ -559,7 +560,7 @@ export default {
       });
     }
 
-    // 6. Production sitemap.xml
+    // 5. Production sitemap.xml
     if (path === '/sitemap.xml') {
       return new Response(SITEMAP_XML, {
         status: 200,
@@ -570,7 +571,30 @@ export default {
       });
     }
 
-    // 7. Download and Release handling (0.6.0 & backwards-compatible)
+    // 6. IndexNow verification key file
+    if (path === '/4b68e91c784e4b5bb8972cae6c7104f2.txt') {
+      return new Response("4b68e91c784e4b5bb8972cae6c7104f2\n", {
+        status: 200,
+        headers: {
+          'content-type': 'text/plain; charset=utf-8',
+          'cache-control': 'public, max-age=86400'
+        }
+      });
+    }
+
+    // 7. Bing Webmaster verification file
+    if (path === '/BingSiteAuth.xml' || path === '/bingsiteauth.xml') {
+      const xml = '<?xml version="1.0"?>\n<users>\n\t<user>B54034535F2BC5D891C5E32773794D82</user>\n</users>\n';
+      return new Response(xml, {
+        status: 200,
+        headers: {
+          'content-type': 'application/xml; charset=utf-8',
+          'cache-control': 'public, max-age=86400'
+        }
+      });
+    }
+
+    // 8. Download and Release handling (0.6.0 & backwards-compatible)
     const downloadMatch = path.match(/^\/downloads\/(Kotoba-(\d+\.\d+\.\d+)-Windows-x64-(Setup|Portable)\.exe)$/);
     const releaseMatch = path.match(/^\/releases\/(\d+\.\d+\.\d+)\/([a-zA-Z0-9._-]+)$/);
     const checksumMatch = path.match(/^\/downloads\/(SHA256SUMS-(\d+\.\d+\.\d+)\.txt)$/);
@@ -1197,6 +1221,19 @@ export default {
           updatedAt: settingsRow.updated_at
         } : undefined;
 
+        const requestId = crypto.randomUUID();
+        console.log(JSON.stringify({
+          type: 'sync_diagnostics',
+          direction: 'pull',
+          requestId,
+          userId: user.id,
+          client: request.headers.get('user-agent') || 'unknown',
+          progressCount: progress.length,
+          eventCount: events.length,
+          currentBookId: settings?.currentBookId,
+          timestamp: new Date().toISOString()
+        }));
+
         return json({
           userId: user.id,
           progress,
@@ -1221,6 +1258,20 @@ export default {
         const incomingProgress = Array.isArray(body.progress) ? body.progress : [];
         const incomingSettings = body.settings;
         const now = new Date().toISOString();
+        const requestId = crypto.randomUUID();
+
+        console.log(JSON.stringify({
+          type: 'sync_diagnostics',
+          direction: 'push',
+          requestId,
+          userId: user.id,
+          client: request.headers.get('user-agent') || 'unknown',
+          incomingEventsCount: incomingEvents.length,
+          incomingProgressCount: incomingProgress.length,
+          incomingBookId: incomingSettings?.currentBookId,
+          incomingBookSource: incomingSettings?.currentBookIdSource,
+          timestamp: now
+        }));
 
         // 1. Insert review_events (append-only, idempotent by event_id)
         for (const ev of incomingEvents) {
@@ -1245,13 +1296,21 @@ export default {
           ).run();
         }
 
-        // 2. Upsert user_progress with Field-level LWW
+        // 2. Upsert user_progress with Field-level LWW and Stale-Write Defense
         for (const p of incomingProgress) {
           if (!p.wordId) continue;
           const wordId = String(p.wordId);
           const existing = await env.DB.prepare('SELECT * FROM user_progress WHERE user_id = ? AND word_id = ?').bind(user.id, wordId).first();
 
           if (existing) {
+            const incomingUpdatedAt = p.updatedAt || now;
+            // Stale-write protection on progress record:
+            // If existing record has updated_at and incoming is older, skip updating progress state
+            const isProgressStale = existing.updated_at && incomingUpdatedAt && (new Date(incomingUpdatedAt).getTime() < new Date(existing.updated_at).getTime());
+            if (isProgressStale) {
+              continue;
+            }
+
             const incomingDiff = p.isDifficult !== undefined ? p.isDifficult : p.difficult;
             const incomingIgnored = p.isIgnored !== undefined ? p.isIgnored : p.ignored;
             let isDifficult = incomingDiff !== undefined ? (incomingDiff ? 1 : 0) : existing.is_difficult;
@@ -1301,11 +1360,12 @@ export default {
               difficultUpdatedAt,
               isIgnored,
               ignoredUpdatedAt,
-              now,
+              incomingUpdatedAt,
               user.id,
               wordId
             ).run();
           } else {
+            const incomingUpdatedAt = p.updatedAt || now;
             const incomingDiff = p.isDifficult !== undefined ? p.isDifficult : p.difficult;
             const incomingIgnored = p.isIgnored !== undefined ? p.isIgnored : p.ignored;
             const isDifficult = incomingDiff ? 1 : 0;
@@ -1336,43 +1396,94 @@ export default {
               difficultUpdatedAt,
               isIgnored,
               ignoredUpdatedAt,
-              now
+              incomingUpdatedAt
             ).run();
           }
         }
 
-        // 3. Upsert user_settings
+        // 3. Upsert user_settings with Stale-Write Defense & Default Protection
+        let settingsConflict = false;
         if (incomingSettings) {
           const s = incomingSettings;
           const pos = s.lastStudiedPosition;
           const voice = s.preferences?.pronunciationVoice || s.pronunciationVoice || null;
-          await env.DB.prepare(`
-            INSERT INTO user_settings (user_id, current_book_id, last_studied_book_id, last_studied_lesson_id, last_studied_word_id, last_studied_updated_at, pronunciation_voice, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT (user_id) DO UPDATE SET
-              current_book_id = COALESCE(excluded.current_book_id, user_settings.current_book_id),
-              last_studied_book_id = COALESCE(excluded.last_studied_book_id, user_settings.last_studied_book_id),
-              last_studied_lesson_id = COALESCE(excluded.last_studied_lesson_id, user_settings.last_studied_lesson_id),
-              last_studied_word_id = COALESCE(excluded.last_studied_word_id, user_settings.last_studied_word_id),
-              last_studied_updated_at = COALESCE(excluded.last_studied_updated_at, user_settings.last_studied_updated_at),
-              pronunciation_voice = COALESCE(excluded.pronunciation_voice, user_settings.pronunciation_voice),
-              updated_at = excluded.updated_at
-          `).bind(
-            user.id,
-            s.currentBookId || null,
-            pos?.bookId || null,
-            pos?.lessonId || null,
-            pos?.wordId || null,
-            pos?.updatedAt || null,
-            voice,
-            now
-          ).run();
+          const incomingUpdatedAt = s.updatedAt || now;
+
+          const existingSettings = await env.DB.prepare('SELECT * FROM user_settings WHERE user_id = ?').bind(user.id).first();
+
+          if (existingSettings) {
+            const isStale = existingSettings.updated_at && (new Date(incomingUpdatedAt).getTime() < new Date(existingSettings.updated_at).getTime());
+            if (isStale) {
+              settingsConflict = true;
+            } else {
+              // Protect existing current_book_id from being overwritten by a client-side program default
+              let targetBookId = s.currentBookId || null;
+              if (s.currentBookIdSource === 'default' && existingSettings.current_book_id) {
+                targetBookId = existingSettings.current_book_id;
+              } else if (targetBookId && existingSettings.current_book_id && targetBookId !== existingSettings.current_book_id && s.currentBookIdSource !== 'user') {
+                // Check if user has progress in existingSettings.current_book_id, and 0 in targetBookId
+                const existingBookProgress = await env.DB.prepare(
+                  'SELECT count(*) as count FROM user_progress WHERE user_id = ? AND (book_id = ? OR word_id LIKE ?)'
+                ).bind(user.id, existingSettings.current_book_id, `${existingSettings.current_book_id}-%`).first();
+
+                const targetBookProgress = await env.DB.prepare(
+                  'SELECT count(*) as count FROM user_progress WHERE user_id = ? AND (book_id = ? OR word_id LIKE ?)'
+                ).bind(user.id, targetBookId, `${targetBookId}-%`).first();
+
+                const existingCount = Number(existingBookProgress?.count || 0);
+                const targetCount = Number(targetBookProgress?.count || 0);
+
+                const hasIncomingTargetEvents = incomingEvents.some(e => String(e.wordId).startsWith(`${targetBookId}-`));
+                const hasIncomingTargetProgress = incomingProgress.some(p => String(p.wordId).startsWith(`${targetBookId}-`));
+
+                if (existingCount > 0 && targetCount === 0 && !hasIncomingTargetEvents && !hasIncomingTargetProgress) {
+                  targetBookId = existingSettings.current_book_id;
+                }
+              }
+
+              await env.DB.prepare(`
+                UPDATE user_settings SET
+                  current_book_id = COALESCE(?, current_book_id),
+                  last_studied_book_id = COALESCE(?, last_studied_book_id),
+                  last_studied_lesson_id = COALESCE(?, last_studied_lesson_id),
+                  last_studied_word_id = COALESCE(?, last_studied_word_id),
+                  last_studied_updated_at = COALESCE(?, last_studied_updated_at),
+                  pronunciation_voice = COALESCE(?, pronunciation_voice),
+                  updated_at = ?
+                WHERE user_id = ?
+              `).bind(
+                targetBookId,
+                pos?.bookId || null,
+                pos?.lessonId || null,
+                pos?.wordId || null,
+                pos?.updatedAt || null,
+                voice,
+                incomingUpdatedAt,
+                user.id
+              ).run();
+            }
+          } else {
+            await env.DB.prepare(`
+              INSERT INTO user_settings (user_id, current_book_id, last_studied_book_id, last_studied_lesson_id, last_studied_word_id, last_studied_updated_at, pronunciation_voice, updated_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `).bind(
+              user.id,
+              s.currentBookId || null,
+              pos?.bookId || null,
+              pos?.lessonId || null,
+              pos?.wordId || null,
+              pos?.updatedAt || null,
+              voice,
+              incomingUpdatedAt
+            ).run();
+          }
         }
 
         return json({
           success: true,
           acceptedEvents: incomingEvents.length,
           updatedProgress: incomingProgress.length,
+          settingsConflict,
           serverTime: now
         }, 200);
       } catch (err) {
@@ -1413,8 +1524,47 @@ export default {
     }
     if (path.startsWith('/audio/')) return new Response('Not found', {status:404, headers:{'cache-control':'no-store'}});
 
-    // Static assets fetch
+    // Handle App Shell subroutes (e.g. /app/study -> serve /app)
+    if (path.startsWith('/app/')) {
+      const appUrl = new URL('/app', request.url);
+      return env.ASSETS.fetch(new Request(appUrl.toString(), request));
+    }
+
+    const KNOWN_STATIC_PATHS = new Set([
+      '/',
+      '/features',
+      '/features/',
+      '/download',
+      '/download/',
+      '/about',
+      '/about/',
+      '/guide',
+      '/guide/',
+      '/changelog',
+      '/changelog/',
+      '/app',
+      '/app/'
+    ]);
+
+    const isKnownPrefix = path.startsWith('/assets/') || path.startsWith('/data/') || path.startsWith('/dictionary/') || path.startsWith('/audio/') || path.startsWith('/downloads/') || path.startsWith('/releases/') || path.startsWith('/api/');
+    const hasExtension = /\.[a-zA-Z0-9]+$/.test(path);
+
+    // Unknown public route -> serve 404.html with true 404 HTTP status code
+    if (!KNOWN_STATIC_PATHS.has(path) && !isKnownPrefix && !hasExtension) {
+      const notFoundUrl = new URL('/404.html', request.url);
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString(), request));
+      const headers = new Headers(notFoundRes.headers);
+      headers.set('content-type', 'text/html; charset=utf-8');
+      headers.set('cache-control', 'no-cache, no-store, must-revalidate');
+      return new Response(notFoundRes.body, {
+        status: 404,
+        statusText: 'Not Found',
+        headers
+      });
+    }
+
     const response = await env.ASSETS.fetch(request);
+
     const contentType = response.headers.get('content-type') || '';
 
     // Handle HTML documents: Inject noindex on Staging / Preview

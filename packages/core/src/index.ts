@@ -21,8 +21,49 @@ export function statistics(data:Data,now=new Date(),userId?:string){
  const today=dayKey(now);const logs=data.logs.filter(l=>userId ? (l.userId===userId || l.userId==='local') : true);const todayLogs=logs.filter(l=>dayKey(new Date(l.reviewedAt))===today);
  const days=Array.from({length:7},(_,i)=>{const date=daysBefore(now,6-i);const key=dayKey(date);return {day:key,label:`${date.getMonth()+1}/${date.getDate()}`,count:logs.filter(l=>dayKey(new Date(l.reviewedAt))===key).length}});
  const activeDays=new Set(logs.map(l=>dayKey(new Date(l.reviewedAt))));let streak=0;let offset=activeDays.has(today)?0:1;while(activeDays.has(dayKey(daysBefore(now,offset++))))streak++;
- const counts={new:0,learning:0,review:0,mastered:0};for(const w of data.words){const s=stateFor(data,w.id,userId);if(!s?.isIgnored)counts[s?.status??'new']++}
- return {...progress(data,data.words,userId),due:getDueWords(data,now,userId).length,newToday:new Set(todayLogs.filter(l=>!l.previousState.firstSeenAt).map(l=>l.wordId)).size,reviewToday:todayLogs.filter(l=>!!l.previousState.firstSeenAt).length,totalReviews:logs.length,streak,days,counts};
+
+ const userStates=data.states.filter(s=>userId ? (s.userId===userId || s.userId==='local') : true);
+ const activeStates=userStates.filter(s=>!s.isIgnored);
+
+ const counts={new:0,learning:0,review:0,mastered:0};
+ for(const s of activeStates){
+   if(s.status in counts && s.status !== 'new'){
+     counts[s.status as keyof typeof counts]++;
+   }
+ }
+ for(const w of data.words){
+   const s=stateFor(data,w.id,userId);
+   if(!s || (!s.isIgnored && s.status==='new' && !s.firstSeenAt && s.reviewCount===0)){
+     counts.new++;
+   }
+ }
+
+ const baseProgress=progress(data,data.words,userId);
+ const globalLearned=activeStates.filter(s=>!!s.firstSeenAt || s.reviewCount>0).length;
+ const globalMastered=activeStates.filter(s=>s.status==='mastered').length;
+
+ const learned=Math.max(baseProgress.learned, globalLearned);
+ const mastered=Math.max(baseProgress.mastered, globalMastered);
+ const total=Math.max(baseProgress.total, learned);
+ const percent=total?Math.round(learned/total*100):0;
+
+ const dueStatesCount=activeStates.filter(s=>s.nextReviewAt && new Date(s.nextReviewAt)<=now).length;
+ const dueWordsCount=getDueWords(data,now,userId).length;
+ const due=Math.max(dueStatesCount, dueWordsCount);
+
+ return {
+   total,
+   learned,
+   mastered,
+   percent,
+   due,
+   newToday:new Set(todayLogs.filter(l=>!l.previousState?.firstSeenAt).map(l=>l.wordId)).size,
+   reviewToday:todayLogs.filter(l=>!!l.previousState?.firstSeenAt).length,
+   totalReviews:logs.length,
+   streak,
+   days,
+   counts
+ };
 }
 
 export function reconcileFsrsFromEvents(events: (ReviewEvent | ReviewLog)[], baseState?: WordState): WordState {
