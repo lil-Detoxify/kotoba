@@ -11,6 +11,13 @@ const streak = ref(0);
 const dueCount = ref(0);
 const learnedCount = ref(0);
 const currentBookTitle = ref("日语测试词书");
+const loadError = ref("");
+
+async function refreshData() {
+  loadError.value = "";
+  try { await loadData(); }
+  catch { loadError.value = "学习记录暂时无法读取，请重试。原有记录未被覆盖。"; }
+}
 
 async function loadData() {
   let data = await defaultRepository.read();
@@ -49,12 +56,16 @@ function goToBooks() {
 }
 
 onShow(() => {
-  loadData();
+  void refreshData();
 });
 </script>
 
 <template>
   <view class="container">
+    <view v-if="loadError" class="card">
+      <text>{{ loadError }}</text>
+      <button class="secondary-btn" @tap="refreshData">重新读取</button>
+    </view>
     <view class="hero-section">
       <text class="hero-eyebrow">今日、少しずつ。</text>
       <text class="hero-title">今天，也学一点吧</text>

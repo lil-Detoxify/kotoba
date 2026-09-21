@@ -6,6 +6,13 @@ import { getDueWords } from "@jp/core";
 import type { Word } from "@jp/models";
 
 const dueWords = ref<Word[]>([]);
+const loadError = ref("");
+
+async function refreshReview() {
+  loadError.value = "";
+  try { await loadReview(); }
+  catch { loadError.value = "复习记录暂时无法读取，请重试。原有记录未被覆盖。"; }
+}
 
 async function loadReview() {
   const data = await defaultRepository.read();
@@ -19,18 +26,22 @@ function startReview() {
 }
 
 onShow(() => {
-  loadReview();
+  void refreshReview();
 });
 </script>
 
 <template>
   <view class="container">
+    <view v-if="loadError" class="card">
+      <text>{{ loadError }}</text>
+      <button class="secondary-btn" @tap="refreshReview">重新读取</button>
+    </view>
     <view class="section-header">
       <text class="section-title">复习队列</text>
       <text class="section-desc">基于 FSRS 遗忘曲线科学规划</text>
     </view>
 
-    <view class="card review-summary">
+    <view v-if="!loadError" class="card review-summary">
       <view class="due-info">
         <text class="due-count">{{ dueWords.length }}</text>
         <text class="due-label">个待复习单词</text>

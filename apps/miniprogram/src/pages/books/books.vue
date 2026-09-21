@@ -9,6 +9,13 @@ const books = ref<Book[]>([]);
 const lessons = ref<Lesson[]>([]);
 const words = ref<Word[]>([]);
 const selectedBookId = ref<string>("");
+const loadError = ref("");
+
+async function refreshBooks() {
+  loadError.value = "";
+  try { await loadBooks(); }
+  catch { loadError.value = "词书暂时无法读取，请重试。原有记录未被覆盖。"; }
+}
 
 async function loadBooks() {
   let data = await defaultRepository.read();
@@ -39,12 +46,16 @@ function getLessonWordCount(lessonId: string): number {
 }
 
 onShow(() => {
-  loadBooks();
+  void refreshBooks();
 });
 </script>
 
 <template>
   <view class="container">
+    <view v-if="loadError" class="card">
+      <text>{{ loadError }}</text>
+      <button class="secondary-btn" @tap="refreshBooks">重新读取</button>
+    </view>
     <view class="section-header">
       <text class="section-title">我的词书</text>
       <text class="section-desc">自由选择课次，随时开始学习</text>

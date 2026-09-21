@@ -3,7 +3,7 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
@@ -12,8 +12,7 @@
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
     "types": [
-      "@dcloudio/types",
-      "miniprogram-api-typings"
+      "@dcloudio/types"
     ]
   },
   "include": [

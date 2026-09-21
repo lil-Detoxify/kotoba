@@ -8,6 +8,24 @@ const activeKey = ref("");
 const totalWords = ref(0);
 const totalLearned = ref(0);
 const clearMessage = ref("");
+const loadError = ref("");
+const resetting = ref(false);
+
+async function refreshSettings() {
+  loadError.value = "";
+  try { await loadSettings(); }
+  catch { loadError.value = "学习记录暂时无法读取，请重试。原有记录未被覆盖。"; }
+}
+
+async function resetData() {
+  if (resetting.value) return;
+  resetting.value = true;
+  loadError.value = "";
+  clearMessage.value = "";
+  try { await resetDemoData(); }
+  catch { loadError.value = "重置未完成，请稍后重试。"; }
+  finally { resetting.value = false; }
+}
 
 async function loadSettings() {
   activeKey.value = defaultRepository.getActiveKey();
@@ -34,12 +52,16 @@ async function resetDemoData() {
 }
 
 onShow(() => {
-  loadSettings();
+  void refreshSettings();
 });
 </script>
 
 <template>
   <view class="container">
+    <view v-if="loadError" class="card">
+      <text>{{ loadError }}</text>
+      <button class="secondary-btn" @tap="refreshSettings">重新读取</button>
+    </view>
     <view class="section-header">
       <text class="section-title">设置与关于</text>
       <text class="section-desc">KotoBud 小程序版基础配置</text>
@@ -67,7 +89,7 @@ onShow(() => {
 
     <view class="card">
       <text class="group-title">数据维护</text>
-      <button class="secondary-btn reset-btn" @tap="resetDemoData">重置演示词书与学习记录</button>
+      <button class="secondary-btn reset-btn" :disabled="resetting" :loading="resetting" @tap="resetData">重置演示词书与学习记录</button>
       <text v-if="clearMessage" class="toast-success">{{ clearMessage }}</text>
     </view>
 
