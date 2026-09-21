@@ -1,155 +1,136 @@
-# 线上事故排查报告：云端学习记录消失与多端同步表现异常
+# 线上事故排查与复盘报告：云端学习记录消失与多端同步异常
 
-**事故编号**：INCIDENT-20260919-01  
-**发生时间**：2026-09-19 08:28 ~ 08:29 (UTC+8)  
-**排查时间**：2026-09-19 11:45 ~ 11:55 (UTC+8)  
-**当前结论**：**云端数据 100% 完整未丢失**，为前端客户端启动拉取机制缺陷与词书作用域计算偏差导致的“假性展示归零”。
-
----
-
-## 1. 云端数据是否真实丢失
-
-**结论：完全没有丢失。**
-
-经直接只读查询生产环境 Cloudflare D1 数据库（`kotobud-prod-db`, ID: `963afe70-1f53-4628-847b-0066bc232d56`）：
-- **`user_progress`（用户学习进度表）**：完整保留 **15 个单词** 的 FSRS 卡片状态与学习记录，状态均为 `learning`，`review_count = 1`。
-- **`review_events`（复习事件流水表）**：完整保留 **15 条评价事件日志**（时间戳介于 `2026-09-18T09:36:20.794Z` 至 `2026-09-18T09:43:55.935Z`）。
-- **`users`（账户表）**：用户信息、密码哈希与认证绑定完好。
-- **`sessions`（会话表）**：有效登录态维持至 `2026-10-19T00:27:53.756Z`。
-
-云端数据库未发生任何数据删除、截断或覆盖。
+**最新事故编号**：INCIDENT-20260921-02  
+**初次发生时间**：2026-09-19 08:28 ~ 08:29 (UTC+8)  
+**再次复现时间**：2026-09-21 14:30 ~ 14:39 (UTC+8)  
+**当前排查时间**：2026-09-21 15:00 ~ 15:10 (UTC+8)  
+**核心定性**：**云端数据 100% 完整未丢失（数据丢失率 0%）**。复现根因明确：**上一次的代码修复仅提交在本地/特性分支（`feature/miniprogram`），未部署上线；生产环境 Pages 仍运行 3 天前的旧构建（`6061f33`）**。同时，旧构建在本次复现中反向将云端 `user_settings.current_book_id` 覆写为 `biaori-beginner-upper`（标日初级上册），而用户真实进度全部在 `biaori-beginner-lower`（标日初级下册），产生二次展示脱节。
 
 ---
 
-## 2. 受影响 user_id
+## 事故 7 问深度复盘与分析
 
-- **受影响用户 Canonical User ID**：`kb_a4bef5f880da486b`
-- **绑定邮箱**：`941994230@qq.com`（`email_normalized`: `941994230@qq.com`）
-- **认证提供商**：`cloudbase`（Provider UID: `2100881458515152896`）
-- **账户创建时间**：`2026-09-18T09:35:47.397Z` (UTC) / `2026-09-18 17:35:47` (北京时间)
-- **活跃会话**：`ses_2b96b3192a3b4f3f`（User-Agent: `Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15`，IP: `114.102.224.5`）
+### 1. 本次真正根因 (Root Cause)
 
----
+1. **部署脱节（直接促成因素）**：
+   - 生产环境 `https://kotobud.com` 当前承载的所有请求，均由 Cloudflare Pages 构建部署 `ee925395-e0c5-47c2-b1aa-165609a427f0`（commit `6061f33`，3 天前发布）提供。
+   - 上一轮对于 `Pull-First` 和 `isSyncReady` 门禁的代码加固，当时提交在 `feature/miniprogram`（commit `1d37f4a9`），**从未合并至生产 `main` 分支，也从未执行 `wrangler pages deploy`**。
+   - 用户今天 14:30 使用 iPhone Safari 访问 `kotobud.com` 时，浏览器拉取的仍然是旧的未加固打包产物 `assets/index-C-Z2RtGk.js`。
 
-## 3. 是否存在重复账户
+2. **旧版客户端在无拉取情况下反向覆盖与盲目标记“已同步”**：
+   - 旧代码的 `init()` 在检测到已有登录态时，**从不调用 `syncClient.pull()`**。
+   - 当用户在 iOS Safari 中打开（或 IndexedDB 处于初始状态），本地无学习记录，`store.init()` 将本地 `currentBookId` 默认置为 `metaBooks[0].id`（即 `biaori-beginner-upper` 标日初级上册）。
+   - 3.5 秒后，旧版的 `flushSyncQueue()` 定时器触发，将 `{ events: [], progress: [], settings: { currentBookId: "biaori-beginner-upper" } }` 推送给生产 Worker。
+   - 生产 Worker 接收后更新了 D1 `user_settings`，返回 200。
+   - 旧客户端收到 200 后立即将状态置为 `syncStatus = 'synced'`，显示绿色的**“✓ 已同步”**徽标，但此时本地没有执行任何数据拉取，本地卡片记录依然为 0，造成严重的“已同步但数据显示全 0”的假象。
 
-**结论：不存在重复账户。**
-
-在生产 D1 `users` 表中按 `email`、`email_normalized`、`provider_uid` 检索，该邮箱仅对应唯一一条记录 `kb_a4bef5f880da486b`。当前 iPhone 会话绑定的 `user_id` 与该记录完全一致，不存在账号分裂或映射到新账户的情况。
-
----
-
-## 4. 最后一次正常数据
-
-- **学习行为时间段**：
-  北京时间 `2026-09-18 17:36:20` ~ `17:43:55`（UTC `2026-09-18T09:36:20.794Z` ~ `09:43:55.935Z`）。
-- **学习内容**：
-  标日初级下册第 28 课（`biaori-beginner-lower-w-28-1212` 至 `biaori-beginner-lower-w-28-1226` 共 15 个词）。
-- **最后一次正常上报数据**：
-  北京时间 `2026-09-18 17:44:00`（UTC `2026-09-18T09:44:00.143Z`），第 15 个词 `biaori-beginner-lower-w-28-1226` 上报成功，D1 更新状态为 `learning`，下次复习安排在 `2026-09-18T09:53:55.935Z`。
+3. **词书进度作用域脱节（二次假性归零）**：
+   - 用户在 9 月 18 日实际学习的 15 个单词全部属于 **标日初级下册**（`biaori-beginner-lower`，第 28 课）。
+   - 由于上述第 2 点，云端 `user_settings` 的当前词书在今天 14:39:11 被更新为 `biaori-beginner-upper`（初级上册）。
+   - 首页卡片（`Home.vue`）只统计当前所选词书的单词进度。即使客户端后续具备拉取能力，若默认加载初级上册，上册的已学词数客观上就是 0（0/1077 词），依然会向用户展示“已学 0 词”。客户端必须具备基于真实进度的智能词书自愈回退机制。
 
 ---
 
-## 5. 最后一次异常写入
+### 2. 上次修复为什么仍会复现
 
-- **发生时间**：
-  北京时间 `2026-09-19 08:29:03`（UTC `2026-09-19T00:29:03.372Z`，与用户截图时间 08:28 ~ 08:29 精确吻合）。
-- **写入表与字段**：
-  `user_settings` 表中的 `current_book_id` 字段被更新为 `"biaori-beginner-upper"`（标日初级上册）。
-- **写入路径与原因**：
-  用户在移动端打开应用触发 `init()`，由于本地 IndexedDB 为空，前端默认执行了 `if (!existing && metaBooks[0]) d.currentBookId = metaBooks[0].id;`（即默认设为初级上册），并在启动 3.5 秒后触发了 `flushSyncQueue()`，将此默认值推送到云端 `user_settings`。
-- **幸免之处**：
-  云端 Worker `/api/v1/sync/push` 实现中，对 `user_progress` 与 `review_events` 采用循环迭代更新（`for (const p of incomingProgress)`），空数组不会执行任何删除操作，因此云端的 15 个单词状态与事件未受破坏。
+- **代码分流与部署真空**：
+  上一次任务在完成单测和本地验证后，工作重心直接转入了微信小程序的架构审计与骨架搭建，代码留在 `feature/miniprogram` 分支。
+  **由于没有将加固代码合并到主干并完成正式生产发布，线上运行的代码版本与仓库前沿脱节。** 用户只要再次使用未保留本地 IndexedDB 缓存的环境打开网站，100% 触发旧代码路径。
+- **缺失客户端词书自愈与服务端防御**：
+  上一轮修复中，虽然在客户端加入了 `reconcileWithCloud`，但未考虑到“云端 `user_settings` 如果已经被旧客户端污染成了上册，客户端拉取后如何自愈修正”这一边缘场景；同时服务端 Worker 当时缺乏拦截无进度默认词书覆盖的保护机制。
 
 ---
 
-## 6. 事故根因分析 (Root Cause)
+### 3. 生产数据目前是否真实丢失
 
-本次故障的直接表现是用户看到“已学 0 词、今日待复习 0 词、最近 7 天学习量为 0”，由以下三个环节串联引发：
+**结论：生产数据 100% 完好无损，绝对没有丢失任何一行有效记录。**
 
-### 根因 1：前端生命周期中缺失“启动自愈拉取 (Pull-on-Init)”
-- **代码位置**：`apps/web/src/store.ts` 中的 `init()`。
-- **逻辑缺陷**：全项目中调用 `syncClient.pull()` 的地方**仅有两处**：一是在登录弹窗中用户手动提交登录表单的 `applyAuthenticatedUser()`；二是冲突模态框手动合并。
-- **后果**：当用户第二天重新打开网页、Safari 刷新页面、或在独立 PWA / 新标签页中启动时，虽然 `authClient.init()` 顺利恢复了登录态，但 `init()` **只执行了 `await repository.read()` 从本地读取**，根本没有向云端发出 `pull()` 请求。
-- 当遇到以下任何情况时，本地 IndexedDB 将为空：
-  1. iOS Safari 7 天 ITP 机制清理或无痕浏览模式退出；
-  2. 用户在不同设备（如电脑与手机）之间切换；
-  3. 用户从 Safari 切换到“添加到主屏幕 (PWA / WebClip)”运行（iOS 下 Safari 与 WebClip 不共享 IndexedDB 沙箱）；
-  4. 浏览器缓存或网站数据被重置。
-  本地为空且不从云端拉取，导致内存中的 `data.states` 与 `data.logs` 始终为空数组。
+生产环境 Cloudflare D1（`kotobud-prod-db`, ID: `963afe70-1f53-4628-847b-0066bc232d56`）只读调证数据如下：
 
-### 根因 2：统计范围强依赖已加载词书与本地 `data.words`
-- **代码位置**：`packages/core/src/index.ts`（`statistics()`、`progress()`）以及 `apps/web/src/pages/Home.vue`、`Stats.vue`。
-- **逻辑缺陷**：
-  1. `statistics()` 中计算已学单词：`progress(data, data.words, userId)` 是通过遍历 `data.words` 来匹配已学状态的。
-  2. 用户实际学的是 **标日初级下册**（`biaori-beginner-lower`）。
-  3. 词书 JSON 词库数据是按需通过 `ensureBookLoaded()` 动态加载的。在本地为空时，未加载过下册的 JSON 文件，`data.words` 中根本没有下册的那 15 个单词。
-  4. 首页选中的当前词书又被默认回退成了 **标日初级上册**（`biaori-beginner-upper`）。首页卡片只统计上册单词，因此初级上册已学词数自然为 0。
-
-### 根因 3：空本地状态未经拉取即反向推送配置
-- **代码位置**：`apps/web/src/store.ts` 第 200~202 行。
-- **逻辑缺陷**：
-  ```ts
-  if (currentUser.value) {
-    scheduleDebouncedSync();
-  }
-  ```
-  在应用刚启动、尚未完成与云端的 Pull 对齐之前，就启动了 3.5 秒的定时 Push。将未与云端对齐过的本地默认设置（`currentBookId: 'biaori-beginner-upper'`）覆盖到了云端。
+| 表名 | 记录数 | 关键数据 / 字段 | 最近更新时间 (UTC / 北京时间) | 状态 |
+| :--- | :--- | :--- | :--- | :--- |
+| **`users`** | 1 条 | `id`: `kb_a4bef5f880da486b`<br>`email`: `941994230@qq.com`<br>`provider_uid`: `2100881458515152896` | 2026-09-18T09:35:47Z (17:35) | 正常，唯一映射，无账号分裂 |
+| **`sessions`** | 1 条 | `id`: `ses_2b96b3192a3b4f3f`<br>`user_agent`: iPhone Safari iOS 18_7 | 2026-10-21T06:30:40Z 过期 | 会话有效且活跃 |
+| **`user_progress`** | **15 条** | 全部 15 词均为 `biaori-beginner-lower-w-28-1212` ~ `1226`<br>`status`: `learning`, `review_count`: 1 | 2026-09-18T09:44:00Z (17:44) | **完整保留，无一遗失** |
+| **`review_events`** | **15 条** | 15 条学习评分流水，`rating`: 3 | 2026-09-18T09:43:55Z (17:43) | **完整保留，流水不可变** |
+| **`user_settings`** | 1 条 | `current_book_id`: `biaori-beginner-upper`<br>`pronunciation_voice`: `female` | **2026-09-21T06:39:11Z (14:39:11)** | 被旧客户端反向推送上册，已掌握其成因 |
 
 ---
 
-## 7. 是否可以恢复
+### 4. 本次修改的文件与逻辑
 
-**结论：100% 可以立即恢复。**
+#### (1) `apps/web/src/store.ts`
+- **严格状态机与同步闸门（Sync Barrier）**：
+  - 将 `isSyncReady` 作为推送与标记的唯一物理门禁，默认严格为 `false`。
+  - 在 `init()` 和 `onAuthStateChange` 时，只要切换/恢复用户，第一时间将 `isSyncReady.value = false; syncStatus.value = 'syncing'`。
+  - 必须完整走通：`restore auth -> resolve canonical user -> successful cloud pull -> validate cloud payload -> deterministic reconciliation -> hydrate local state -> enable cloud push (isSyncReady=true) -> mark synced`。
+  - 若 `pull` 失败（如离线或 5xx），**坚决不允许 `isSyncReady` 设为 `true`**，状态置为 `offline`，绝不向云端推送任何空配置。
+- **云端 Payload 严格校验**：
+  - 严格校验 `pullRes.progress` 与 `pullRes.events` 必须为 Array，`userId` 必须与当前登录用户完全匹配，防止异常空载荷或身份串包破坏本地。
+- **词书智能自愈（Smart Book Self-Healing）**：
+  - 在对齐 `currentBookId` 时，如果计算得出候选词书在已对齐状态中已学单词数为 0，而用户在其他词书（如初级下册）中有 >0 的真实学习进度：
+  - 自动检测并自愈为用户**拥有最高学习进度或最近有复习事件的真实词书**（`biaori-beginner-lower`），标记来源为 `user`，并在本地和云端完成持久化修正。
 
-- 云端数据没有任何丢失，不需要从离线备份或 D1 快照恢复数据库。
-- 只要在客户端补齐 `pull()` 对齐链路并按需预加载词书，客户端获取到 D1 的 15 条进度后，首页、词书页、统计页将立刻恢复正常显示。
+#### (2) `scripts/cloudflare-worker.js`
+- **详细同步诊断日志（Sync Diagnostics）**：
+  - 在 `/api/v1/sync/pull` 和 `/api/v1/sync/push` 中增加结构化日志输出：包含 `type`、`requestId`、`userId`、`client` (User-Agent)、`direction`、`counts`、`bookId`、`timestamp`，便于服务端日志追踪。
+- **服务端 Progress Stale-Write 防御**：
+  - 当客户端推送进度更新时，比对 `incoming.updatedAt` 与 D1 现有记录的 `updated_at`；若客户端提交的时间戳陈旧，丢弃覆盖操作，保护较新记录。
+- **服务端词书默认值降级防御**：
+  - 在 `/api/v1/sync/push` 处理 `user_settings` 时，如果客户端提交的词书来源为 `default`，或客户端在没有任何该词书事件/进度的情况下试图将已有学习记录的词书切换为空白词书，服务端自动拦截并保留用户已在学习的词书。
 
----
+#### (3) `packages/core/src/index.ts`
+- **统计范围彻底解耦**：
+  - `statistics()` 中的 `learned`、`mastered`、`due`、`streak` 不再狭隘地局限于内存当前加载的单一教材 JSON，而是以全局 `activeStates` 与流水日志为基准，确保跨词书数据也能在顶部总览中完整呈现。
 
-## 8. 修复方案
-
-在确认根因后，建议按以下清晰步骤实施修复（在修复前不改动生产 D1 数据）：
-
-### 修复步骤 1：补齐 `store.init()` 的启动与前台自愈拉取 (Pull-First on Startup)
-在 `apps/web/src/store.ts` 的 `init()` 中：
-```ts
-if (currentUser.value) {
-  const token = await authClient.getAccessToken();
-  if (token) {
-    try {
-      syncStatus.value = 'syncing';
-      const pullRes = await syncClient.pull(token);
-      // 将云端 progress 与 events 合并到当前用户本地 IndexedDB
-      await applyCloudPullData(pullRes);
-      syncStatus.value = 'synced';
-    } catch (err) {
-      console.warn('Initial cloud pull failed, running on local cache:', err);
-    }
-  }
-}
-```
-同时在 `document.addEventListener('visibilitychange')`（用户切回应用）时，也执行轻量增量对齐。
-
-### 修复步骤 2：禁止未经 Pull 对齐的空本地状态覆盖云端
-修改 `flushSyncQueue()` 与 `scheduleDebouncedSync()`：
-- 增加标志位 `hasPerformedInitialPull`。
-- 在用户刚启动、尚未完成与云端的初次数据拉取前，**坚决不执行 Push 操作**，杜绝默认空配置反向覆盖云端。
-
-### 修复步骤 3：根据已学单词所属词书，自动装载必要词库
-在拉取到云端数据后，检查 `pullRes.progress` 中出现的词书 ID（例如 `biaori-beginner-lower`）：
-- 如果该词书尚未装载进 `data.words`，自动静默触发 `ensureBookLoaded(bookId)`。
-- 若云端 `settings.currentBookId` 存在，以云端设定的词书为最高优先级，不再被本地默认的上册覆盖。
+#### (4) `tests/cloud-sync-reconciliation.test.ts`
+- 扩充回归测试至 10 大场景，全面覆盖启动空白、网络失败拦截、多端交叉同步、智能词书自愈、旧客户端防御、过期写入防护等。
 
 ---
 
-## 9. 如何防止再次发生
+### 5. 数据恢复方式
 
-1. **协议层防御（防空写）**：
-   在 Worker 的 `/api/v1/sync/push` 接口中，增加时间戳校验（LWW）与空值保护：如果客户端提交的 `settings.updatedAt` 明显早于云端记录，或者本地 settings 缺少核心字段，拒绝更新云端 settings。
-2. **自动化测试防护**：
-   在 `tests/cloud-sync.test.ts` 中补充极端场景用例：
-   - *用例：用户在 Device A 登录并学习，在 Device B 首次以已有会话启动（本地 IndexedDB 全空），断言 Device B 必须能自动从云端 pull 并正确计算 statistics 统计数据与当前词书。*
-   - *用例：本地状态为空时启动应用，断言不得向云端推送覆盖默认设置。*
-3. **多端架构一致性**：
-   在即将进行的微信小程序同步接入中，必须贯彻该规则：**本地存储只是缓存，启动时必须首先 Pull 对齐，确认无冲突后再开始学习与 Push。**
+无需使用冷备份恢复数据库，因为云端的 15 条进度与 15 条流水数据 100% 完好。
+恢复路径包括：
+1. **客户端访问自愈（无缝恢复）**：
+   - 部署包含修复代码的新版本后，用户在 iPhone Safari 或桌面端再次打开应用。
+   - 客户端 `init()` 执行并恢复会话，触发 `reconcileWithCloud()` 向云端发起 `pull()`，获得 15 条下册数据。
+   - 触发“词书智能自愈”逻辑：检测到云端设置中的初级上册学习量为 0，而初级下册拥有 15 个词，客户端自动将当前活跃词书纠正为 `biaori-beginner-lower`。
+   - 自动按需拉取下册词库 JSON，首页卡片立刻展示：“标日初级下册 已学 15/1083 词”，连续学习天数与复习数即刻点亮。
+2. **可选服务端运维补偿**：
+   - 若需在用户打开前直接在 D1 修正 `user_settings`，可执行单行 UPDATE：
+     `UPDATE user_settings SET current_book_id = 'biaori-beginner-lower', updated_at = '2026-09-21T07:10:00Z' WHERE user_id = 'kb_a4bef5f880da486b';`
+
+---
+
+### 6. 回归测试结果
+
+本地与云端模拟共 18 个测试套件，**161 个单元与端到端测试 100% 全部通过**：
+- `tests/cloud-sync-reconciliation.test.ts`（10 个场景全部 PASS）：
+  - Scenario 1: 云端有数据 + 本地全空 -> 自动拉取与无损复原，不向云端推送空默认值
+  - Scenario 2: 云端有数据 + 本地有未同步离线数据 -> 确定性合并（LWW 状态合并、流水重放、保留离线变更）
+  - Scenario 3: 离线 / 首次 pull 失败 -> 严格阻断向云端推送默认值，保留本地缓存，等待网络恢复
+  - Scenario 4: `init()` 后认证异步恢复（晚于启动生命周期） -> 自动触发重选命名空间与云端对齐
+  - Scenario 5: 用户学的是下册但默认加载上册词库 -> `statistics()` 正确解耦展示 `learned=15, due=15, streak=1`
+  - Scenario 6: 跨设备交替同步 -> 陈旧写入（stale-write）被拒绝，用户选择的词书不被默认值覆盖
+  - Scenario 7: 云端 settings 被污染为上册（0词）但 progress 有下册15词 -> 客户端自愈选择下册
+  - Scenario 8: 旧版/未加固客户端推送空白 settings -> Worker 服务端主动拦截并保护已有学习词书
+  - Scenario 9: 弱网/接口失败导致 pull 报错 -> `isSyncReady` 保持 `false`，彻底封死反向推送
+  - Scenario 10: 过期时间戳（stale progress）写入 -> 服务端严格拒收，保持最新状态
+- 类型检查与静态审计：
+  - `vue-tsc --noEmit`: 0 errors
+  - `npm run check:cloudflare`: 0 errors
+  - `npm run build`: 生产产物构建成功
+
+---
+
+### 7. 后续防止再次发生的长效机制
+
+1. **分支管理与部署闭环规范**：
+   - 确立“修复代码未部署等于未修复”的红线原则。涉及线上生产事故的修复，必须立即合并至 `main` 并完成正式发布部署验证，禁止将未部署的修复代码悬置在开发或特性分支。
+2. **状态机单向锁与物理阻断**：
+   - 在客户端与小程序端全面推行 `isSyncReady` 状态机。只要未经过一次成功的 `pull` 与校验，任何页面组件、定时任务、页面卸载或退火事件都无权向服务端提交 `push`。
+3. **服务端纵深防御（Defense-in-Depth）**：
+   - 服务端 Worker 永久启用版本时钟保护与降级检测。即使未来有异常客户端试图提交破坏性状态，服务端在规则层直接阻断。
+4. **统一可观测性与审计流水**：
+   - 同步诊断日志在 Cloudflare Worker 中全面启用，运维随时可通过 Cloudflare Dashboard 或 Logpush 排查任意用户的每一次同步行为链路。

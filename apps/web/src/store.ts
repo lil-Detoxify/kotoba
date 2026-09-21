@@ -173,8 +173,16 @@ export const useApp = defineStore('app', () => {
           console.warn('Initial cloud pull failed, running offline with local cache:', pullErr);
           syncStatus.value = 'offline';
           syncError.value = '云端连接失败，已保留本地学习记录。';
-          isSyncReady.value = true;
+          isSyncReady.value = false;
           return;
+        }
+
+        // Validate cloud payload
+        if (!pullRes || typeof pullRes !== 'object' || !Array.isArray(pullRes.progress) || !Array.isArray(pullRes.events)) {
+          throw new Error('Invalid cloud sync payload received from server');
+        }
+        if (pullRes.userId && pullRes.userId !== user.id) {
+          throw new Error(`Cloud user mismatch: expected ${user.id}, got ${pullRes.userId}`);
         }
 
         // 1. Read current local data for the user and local queue
@@ -239,7 +247,7 @@ export const useApp = defineStore('app', () => {
           }
         }
 
-        // C) Settings reconciliation:
+        // C) Settings reconciliation & smart active book healing:
         let resolvedBookId = localData.currentBookId;
         let resolvedBookIdSource = localData.currentBookIdSource;
         let resolvedBookIdUpdatedAt = localData.currentBookIdUpdatedAt;
@@ -262,6 +270,57 @@ export const useApp = defineStore('app', () => {
         } else if (!resolvedBookId && metaBooks[0]) {
           resolvedBookId = metaBooks[0].id;
           resolvedBookIdSource = 'default';
+        }
+
+        // Smart self-healing: if resolvedBookId has 0 learned words in mergedStates,
+        // but user has learned words in another book, auto-heal to the book with progress!
+        const bookLearnedCounts = new Map<string, number>();
+        for (const s of mergedStates) {
+          if (s.status !== 'new' && (s.firstSeenAt || s.reviewCount > 0)) {
+            let bId = s.bookId;
+            if (!bId) {
+              for (const mb of metaBooks) {
+                if (s.wordId.startsWith(`${mb.id}-w-`)) {
+                  bId = mb.id;
+                  break;
+                }
+              }
+            }
+            if (bId) {
+              bookLearnedCounts.set(bId, (bookLearnedCounts.get(bId) || 0) + 1);
+            }
+          }
+        }
+
+        if (bookLearnedCounts.size > 0 && (!resolvedBookId || (bookLearnedCounts.get(resolvedBookId) || 0) === 0)) {
+          let bestBookId: string | null = null;
+          let latestEventTime = 0;
+          for (const ev of allEvents) {
+            const t = new Date(ev.reviewedAt).getTime();
+            if (t > latestEventTime) {
+              for (const mb of metaBooks) {
+                if (ev.wordId.startsWith(`${mb.id}-w-`)) {
+                  bestBookId = mb.id;
+                  latestEventTime = t;
+                  break;
+                }
+              }
+            }
+          }
+          if (!bestBookId) {
+            let maxCount = 0;
+            for (const [bId, count] of bookLearnedCounts.entries()) {
+              if (count > maxCount) {
+                maxCount = count;
+                bestBookId = bId;
+              }
+            }
+          }
+          if (bestBookId) {
+            resolvedBookId = bestBookId;
+            resolvedBookIdSource = 'user';
+            resolvedBookIdUpdatedAt = new Date().toISOString();
+          }
         }
 
         if (pullRes.settings?.preferences?.pronunciationVoice) {
@@ -352,6 +411,8 @@ export const useApp = defineStore('app', () => {
         if (!u && currentUser.value) {
           await logout();
         } else if (u && (!currentUser.value || currentUser.value.id !== u.id)) {
+          isSyncReady.value = false;
+          syncStatus.value = 'syncing';
           currentUser.value = u;
           repository.switchUser(u.id);
           await refresh();
@@ -397,7 +458,7 @@ export const useApp = defineStore('app', () => {
     if (currentUser.value) {
       await reconcileWithCloud(currentUser.value);
     } else {
-      isSyncReady.value = true;
+      isSyncReady.value = false;
     }
 
     if (typeof window !== 'undefined') {

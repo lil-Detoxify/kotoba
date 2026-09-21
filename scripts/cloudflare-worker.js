@@ -1197,6 +1197,19 @@ export default {
           updatedAt: settingsRow.updated_at
         } : undefined;
 
+        const requestId = crypto.randomUUID();
+        console.log(JSON.stringify({
+          type: 'sync_diagnostics',
+          direction: 'pull',
+          requestId,
+          userId: user.id,
+          client: request.headers.get('user-agent') || 'unknown',
+          progressCount: progress.length,
+          eventCount: events.length,
+          currentBookId: settings?.currentBookId,
+          timestamp: new Date().toISOString()
+        }));
+
         return json({
           userId: user.id,
           progress,
@@ -1221,6 +1234,20 @@ export default {
         const incomingProgress = Array.isArray(body.progress) ? body.progress : [];
         const incomingSettings = body.settings;
         const now = new Date().toISOString();
+        const requestId = crypto.randomUUID();
+
+        console.log(JSON.stringify({
+          type: 'sync_diagnostics',
+          direction: 'push',
+          requestId,
+          userId: user.id,
+          client: request.headers.get('user-agent') || 'unknown',
+          incomingEventsCount: incomingEvents.length,
+          incomingProgressCount: incomingProgress.length,
+          incomingBookId: incomingSettings?.currentBookId,
+          incomingBookSource: incomingSettings?.currentBookIdSource,
+          timestamp: now
+        }));
 
         // 1. Insert review_events (append-only, idempotent by event_id)
         for (const ev of incomingEvents) {
@@ -1245,13 +1272,21 @@ export default {
           ).run();
         }
 
-        // 2. Upsert user_progress with Field-level LWW
+        // 2. Upsert user_progress with Field-level LWW and Stale-Write Defense
         for (const p of incomingProgress) {
           if (!p.wordId) continue;
           const wordId = String(p.wordId);
           const existing = await env.DB.prepare('SELECT * FROM user_progress WHERE user_id = ? AND word_id = ?').bind(user.id, wordId).first();
 
           if (existing) {
+            const incomingUpdatedAt = p.updatedAt || now;
+            // Stale-write protection on progress record:
+            // If existing record has updated_at and incoming is older, skip updating progress state
+            const isProgressStale = existing.updated_at && incomingUpdatedAt && (new Date(incomingUpdatedAt).getTime() < new Date(existing.updated_at).getTime());
+            if (isProgressStale) {
+              continue;
+            }
+
             const incomingDiff = p.isDifficult !== undefined ? p.isDifficult : p.difficult;
             const incomingIgnored = p.isIgnored !== undefined ? p.isIgnored : p.ignored;
             let isDifficult = incomingDiff !== undefined ? (incomingDiff ? 1 : 0) : existing.is_difficult;
@@ -1301,11 +1336,12 @@ export default {
               difficultUpdatedAt,
               isIgnored,
               ignoredUpdatedAt,
-              now,
+              incomingUpdatedAt,
               user.id,
               wordId
             ).run();
           } else {
+            const incomingUpdatedAt = p.updatedAt || now;
             const incomingDiff = p.isDifficult !== undefined ? p.isDifficult : p.difficult;
             const incomingIgnored = p.isIgnored !== undefined ? p.isIgnored : p.ignored;
             const isDifficult = incomingDiff ? 1 : 0;
@@ -1336,7 +1372,7 @@ export default {
               difficultUpdatedAt,
               isIgnored,
               ignoredUpdatedAt,
-              now
+              incomingUpdatedAt
             ).run();
           }
         }
@@ -1360,6 +1396,25 @@ export default {
               let targetBookId = s.currentBookId || null;
               if (s.currentBookIdSource === 'default' && existingSettings.current_book_id) {
                 targetBookId = existingSettings.current_book_id;
+              } else if (targetBookId && existingSettings.current_book_id && targetBookId !== existingSettings.current_book_id && s.currentBookIdSource !== 'user') {
+                // Check if user has progress in existingSettings.current_book_id, and 0 in targetBookId
+                const existingBookProgress = await env.DB.prepare(
+                  'SELECT count(*) as count FROM user_progress WHERE user_id = ? AND (book_id = ? OR word_id LIKE ?)'
+                ).bind(user.id, existingSettings.current_book_id, `${existingSettings.current_book_id}-%`).first();
+
+                const targetBookProgress = await env.DB.prepare(
+                  'SELECT count(*) as count FROM user_progress WHERE user_id = ? AND (book_id = ? OR word_id LIKE ?)'
+                ).bind(user.id, targetBookId, `${targetBookId}-%`).first();
+
+                const existingCount = Number(existingBookProgress?.count || 0);
+                const targetCount = Number(targetBookProgress?.count || 0);
+
+                const hasIncomingTargetEvents = incomingEvents.some(e => String(e.wordId).startsWith(`${targetBookId}-`));
+                const hasIncomingTargetProgress = incomingProgress.some(p => String(p.wordId).startsWith(`${targetBookId}-`));
+
+                if (existingCount > 0 && targetCount === 0 && !hasIncomingTargetEvents && !hasIncomingTargetProgress) {
+                  targetBookId = existingSettings.current_book_id;
+                }
               }
 
               await env.DB.prepare(`

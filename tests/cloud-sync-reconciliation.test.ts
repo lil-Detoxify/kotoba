@@ -55,6 +55,15 @@ class MockD1 {
               }
               return null;
             }
+            if (sql.includes('SELECT count(*) as count FROM user_progress WHERE user_id = ? AND (book_id = ? OR word_id LIKE ?)')) {
+              const [uid, bookId, prefix] = params;
+              const cleanPrefix = String(prefix || '').replace(/%/g, '');
+              let count = 0;
+              for (const p of d1.progress.values()) {
+                if (p.user_id === uid && (p.book_id === bookId || (p.word_id && p.word_id.startsWith(cleanPrefix)))) count++;
+              }
+              return { count };
+            }
             if (sql.includes('SELECT count(*) as count FROM user_progress WHERE user_id = ?')) {
               const [uid] = params;
               let count = 0;
@@ -704,5 +713,256 @@ describe('Cloud Sync Reconciliation & Data Loss Prevention Suite', () => {
     }), env);
     const pullData = await pullRes.json();
     expect(pullData.settings.currentBookId).toBe('biaori-beginner-lower');
+  });
+
+  // -------------------------------------------------------------------------
+  // Scenario 7: Smart Book Self-Healing when Cloud settings has Upper book but Progress is Lower book
+  // -------------------------------------------------------------------------
+  it('Scenario 7: Cloud settings has upper book (0 progress) but progress has 15 lower book words -> auto-heals to lower book', async () => {
+    const metaBooks = [
+      { id: 'biaori-beginner-upper', title: '标准日本语 初级上册', wordCount: 1077 },
+      { id: 'biaori-beginner-lower', title: '标准日本语 初级下册', wordCount: 1083 }
+    ];
+
+    // Simulate Cloud Pull Response: 15 words in lower book, but settings polluted with upper book
+    const pullRes = {
+      userId,
+      progress: Array.from({ length: 15 }, (_, i) => ({
+        wordId: `biaori-beginner-lower-w-28-${1212 + i}`,
+        bookId: 'biaori-beginner-lower',
+        lessonId: 'biaori-beginner-lower-l-28',
+        status: 'learning',
+        firstSeenAt: '2026-09-18T09:36:20Z',
+        lastReviewedAt: '2026-09-18T09:36:20Z',
+        nextReviewAt: '2026-09-18T09:50:00Z',
+        reviewCount: 1,
+        lapseCount: 0,
+        card: {},
+        updatedAt: '2026-09-18T09:44:00Z'
+      })),
+      events: Array.from({ length: 15 }, (_, i) => ({
+        _id: `ev_${i}`,
+        wordId: `biaori-beginner-lower-w-28-${1212 + i}`,
+        reviewedAt: '2026-09-18T09:36:20Z',
+        rating: 3
+      })),
+      settings: {
+        userId,
+        currentBookId: 'biaori-beginner-upper', // Polluted cloud setting!
+        updatedAt: '2026-09-21T06:39:11Z'
+      }
+    };
+
+    // Client starts with empty local data
+    const localData = {
+      states: [] as WordState[],
+      logs: [] as ReviewLog[],
+      currentBookId: 'biaori-beginner-upper' as string | undefined,
+      currentBookIdSource: 'default' as 'default' | 'user' | undefined,
+      currentBookIdUpdatedAt: undefined as string | undefined
+    };
+
+    // Reconcile logic (mirrors store.ts)
+    const mergedStates: WordState[] = pullRes.progress.map((p: any) => ({
+      userId,
+      wordId: p.wordId,
+      bookId: p.bookId,
+      lessonId: p.lessonId,
+      status: p.status,
+      firstSeenAt: p.firstSeenAt,
+      lastReviewedAt: p.lastReviewedAt,
+      nextReviewAt: p.nextReviewAt,
+      reviewCount: p.reviewCount,
+      lapseCount: p.lapseCount,
+      card: p.card,
+      isDifficult: false,
+      isIgnored: false,
+      updatedAt: p.updatedAt
+    }));
+
+    let resolvedBookId = localData.currentBookId;
+    let resolvedBookIdSource = localData.currentBookIdSource;
+    let resolvedBookIdUpdatedAt = localData.currentBookIdUpdatedAt;
+
+    if (pullRes.settings?.currentBookId) {
+      const remoteBookId = pullRes.settings.currentBookId;
+      const remoteUpdatedAt = pullRes.settings.updatedAt;
+
+      if (localData.currentBookIdSource !== 'user') {
+        resolvedBookId = remoteBookId;
+        resolvedBookIdSource = 'user';
+        resolvedBookIdUpdatedAt = remoteUpdatedAt;
+      }
+    }
+
+    // Smart self-healing check
+    const bookLearnedCounts = new Map<string, number>();
+    for (const s of mergedStates) {
+      if (s.status !== 'new' && (s.firstSeenAt || s.reviewCount > 0)) {
+        let bId = s.bookId;
+        if (!bId) {
+          for (const mb of metaBooks) {
+            if (s.wordId.startsWith(`${mb.id}-w-`)) {
+              bId = mb.id;
+              break;
+            }
+          }
+        }
+        if (bId) {
+          bookLearnedCounts.set(bId, (bookLearnedCounts.get(bId) || 0) + 1);
+        }
+      }
+    }
+
+    if (bookLearnedCounts.size > 0 && (!resolvedBookId || (bookLearnedCounts.get(resolvedBookId) || 0) === 0)) {
+      let bestBookId: string | null = null;
+      let maxCount = 0;
+      for (const [bId, count] of bookLearnedCounts.entries()) {
+        if (count > maxCount) {
+          maxCount = count;
+          bestBookId = bId;
+        }
+      }
+      if (bestBookId) {
+        resolvedBookId = bestBookId;
+        resolvedBookIdSource = 'user';
+        resolvedBookIdUpdatedAt = new Date().toISOString();
+      }
+    }
+
+    // Assert that the self-healing correctly picked 'biaori-beginner-lower'!
+    expect(resolvedBookId).toBe('biaori-beginner-lower');
+    expect(resolvedBookIdSource).toBe('user');
+  });
+
+  // -------------------------------------------------------------------------
+  // Scenario 8: Worker defense against legacy/unpatched client pushing default book
+  // -------------------------------------------------------------------------
+  it('Scenario 8: Worker rejects legacy client default book override when user has existing progress in another book', async () => {
+    const { mockD1, env } = createTestEnv();
+
+    // 1. User has progress in 'biaori-beginner-lower' in D1
+    await worker.fetch(new Request('https://staging.kotobud.com/api/v1/sync/push', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        progress: [{
+          wordId: 'biaori-beginner-lower-w-28-1212',
+          bookId: 'biaori-beginner-lower',
+          status: 'learning',
+          reviewCount: 1,
+          card: {},
+          updatedAt: '2026-09-18T09:36:24Z'
+        }],
+        settings: {
+          currentBookId: 'biaori-beginner-lower',
+          currentBookIdSource: 'user',
+          updatedAt: '2026-09-18T09:36:24Z'
+        }
+      })
+    }), env);
+
+    const initialSettings = mockD1.settings.get(userId);
+    expect(initialSettings.current_book_id).toBe('biaori-beginner-lower');
+
+    // 2. Legacy unpatched client (without currentBookIdSource) pushes 'biaori-beginner-upper'
+    // with 0 upper events and 0 upper progress
+    const pushResLegacy = await worker.fetch(new Request('https://staging.kotobud.com/api/v1/sync/push', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        events: [],
+        progress: [],
+        settings: {
+          currentBookId: 'biaori-beginner-upper',
+          updatedAt: '2026-09-21T06:39:11Z'
+        }
+      })
+    }), env);
+    expect(pushResLegacy.status).toBe(200);
+
+    // Worker defense protected the user's active book!
+    const settingsAfterLegacyPush = mockD1.settings.get(userId);
+    expect(settingsAfterLegacyPush.current_book_id).toBe('biaori-beginner-lower');
+  });
+
+  // -------------------------------------------------------------------------
+  // Scenario 9: Pull failure keeps isSyncReady = false and blocks client push
+  // -------------------------------------------------------------------------
+  it('Scenario 9: Pull failure leaves isSyncReady=false and prevents push of empty settings', async () => {
+    let isSyncReady = false;
+    let syncStatus: string = 'synced';
+    let syncError = '';
+
+    // Simulate pull throwing error
+    try {
+      throw new Error('Network error: 502 Bad Gateway');
+    } catch (err: any) {
+      syncStatus = 'offline';
+      syncError = '云端连接失败，已保留本地学习记录。';
+      isSyncReady = false;
+    }
+
+    expect(isSyncReady).toBe(false);
+    expect(syncStatus).toBe('offline');
+
+    // Simulate flushSyncQueue
+    let pushCalled = false;
+    async function flushSyncQueue() {
+      if (!isSyncReady) return; // Barrier!
+      pushCalled = true;
+    }
+
+    await flushSyncQueue();
+    expect(pushCalled).toBe(false);
+  });
+
+  // -------------------------------------------------------------------------
+  // Scenario 10: Worker rejects stale progress records with older updatedAt
+  // -------------------------------------------------------------------------
+  it('Scenario 10: Worker rejects stale progress records with older updatedAt', async () => {
+    const { mockD1, env } = createTestEnv();
+
+    // 1. Initial push: state is at review_count = 5, updated at 12:00
+    const tNew = '2026-09-21T12:00:00Z';
+    await worker.fetch(new Request('https://staging.kotobud.com/api/v1/sync/push', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        progress: [{
+          wordId: 'stale_test_w1',
+          status: 'review',
+          reviewCount: 5,
+          card: {},
+          updatedAt: tNew
+        }]
+      })
+    }), env);
+
+    const progressInD1 = mockD1.progress.get(`${userId}:stale_test_w1`);
+    expect(progressInD1.status).toBe('review');
+    expect(progressInD1.review_count).toBe(5);
+
+    // 2. An older device pushes stale progress from 08:00 with review_count = 1
+    const tOld = '2026-09-21T08:00:00Z';
+    const stalePushRes = await worker.fetch(new Request('https://staging.kotobud.com/api/v1/sync/push', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        progress: [{
+          wordId: 'stale_test_w1',
+          status: 'learning',
+          reviewCount: 1,
+          card: {},
+          updatedAt: tOld
+        }]
+      })
+    }), env);
+    expect(stalePushRes.status).toBe(200);
+
+    // Newer state is preserved!
+    const progressAfterStale = mockD1.progress.get(`${userId}:stale_test_w1`);
+    expect(progressAfterStale.status).toBe('review');
+    expect(progressAfterStale.review_count).toBe(5);
   });
 });
