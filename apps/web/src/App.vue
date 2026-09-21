@@ -15,7 +15,8 @@ import {
   AlertCircle,
   User,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  ExternalLink
 } from 'lucide-vue-next';
 import LoginModal from './components/LoginModal.vue';
 import SyncConflictModal from './components/SyncConflictModal.vue';
@@ -82,7 +83,7 @@ const nav = [
     <aside class="sidebar">
       <RouterLink to="/" class="brand">
         <span class="brand-mark">言</span>
-        <span>KotoBud<small>每天，认识一点日语。</small></span>
+        <span>Kotobud<small>每天，认识一点日语。</small></span>
       </RouterLink>
       <div class="nav-label">我的学习</div>
       <nav>
@@ -99,6 +100,16 @@ const nav = [
         <p v-else>
           一词一句，慢慢积累。<small>你的学习记录保存在此浏览器</small>
         </p>
+        <a
+          href="/features"
+          target="_blank"
+          rel="noopener"
+          class="features-quiet-link"
+          title="了解 Kotobud 产品功能、详细定位与更新日志"
+        >
+          <span>了解特性与日志</span>
+          <ExternalLink :size="11" />
+        </a>
       </div>
     </aside>
 
@@ -175,7 +186,14 @@ const nav = [
       <p v-else role="status">正在整理你的词书…</p>
 
       <footer>
-        ことばを、少しずつ。<span>KotoBud · 日语学习手帖</span>
+        <span>ことばを、少しずつ。</span>
+        <div class="footer-links">
+          <a href="/features" target="_blank" rel="noopener">特性与更新</a>
+          <span class="footer-sep">·</span>
+          <a href="/download" target="_blank" rel="noopener">客户端下载</a>
+          <span class="footer-sep">·</span>
+          <span>Kotobud · 日语学习手帖</span>
+        </div>
       </footer>
     </main>
 
@@ -354,6 +372,44 @@ const nav = [
   to {
     transform: rotate(360deg);
   }
+}
+
+.features-quiet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #798477;
+  text-decoration: none;
+  margin-top: 14px;
+  transition: color 0.15s;
+}
+
+.features-quiet-link:hover {
+  color: #365d49;
+}
+
+.footer-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover {
+  color: #365d49;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-sep {
+  opacity: 0.6;
 }
 
 @media (max-width: 760px) {
