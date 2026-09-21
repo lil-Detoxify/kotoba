@@ -4,6 +4,7 @@ import type { Data, WordState } from "@jp/models";
 import { evaluate, initialState } from "@jp/core";
 import { MiniProgramRepository, type StorageAdapter } from "../apps/miniprogram/src/adapters/storage";
 import { applyStudyRating, getStudyQueue } from "../apps/miniprogram/src/pages/study/study-session";
+import { createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer } from "../apps/miniprogram/src/pages/study/study-quiz";
 
 const word = (id: string, lessonId = "l1") => ({ id, lessonId, term: id, reading: id, meaning: id, order: 1 });
 
@@ -93,5 +94,31 @@ describe("mini program study session", () => {
     const restored = await repository.read();
     expect(restored.states[0].card.due).toBeInstanceOf(Date);
     expect(() => applyStudyRating(restored, restored.words[0], Rating.Good, "review")).not.toThrow();
+  });
+
+  it("creates safe quiz questions, records answers once, and maps uncertain answers to Hard", () => {
+    const source = makeData();
+    source.words.push(
+      { ...word("w5"), term: "猫", reading: "ねこ", meaning: "猫" },
+      { ...word("w6"), term: "犬", reading: "いぬ", meaning: "狗" },
+      { ...word("w7"), term: "鳥", reading: "とり", meaning: "鸟" },
+    );
+    const question = createStudyQuestion(source.words[4], source.words, "kana-meaning", () => 0.1);
+    expect(question).not.toBeNull();
+    expect(question?.options).toContain("猫");
+    const attempt = submitStudyAnswer(question!, "猫");
+    expect(attempt.isCorrect).toBe(true);
+    expect(ratingForStudyAnswer(attempt)).toBe(Rating.Good);
+    expect(ratingForStudyAnswer(attempt, true)).toBe(Rating.Hard);
+    const wrong = question!.options.find((option) => option !== "猫")!;
+    expect(ratingForStudyAnswer(submitStudyAnswer(question!, wrong))).toBe(Rating.Again);
+    expect(createStudyQuestion(source.words[4], source.words, "card")).toBeNull();
+  });
+
+  it("falls back safely when a requested quiz has no applicable question", () => {
+    const source = makeData();
+    const noKanji = { ...source.words[0], term: "あめ", reading: "あめ" };
+    expect(createStudyQuestion(noKanji, [noKanji], "kanji-reading")).toBeNull();
+    expect(createStudyQuestion(noKanji, [noKanji], "mixed")).toBeNull();
   });
 });

@@ -2,9 +2,8 @@
 import { ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { defaultRepository } from "../../adapters";
-import seedData from "../../seed.json";
+import { defaultTextbooks } from "../../services/textbooks";
 
-const activeKey = ref("");
 const totalWords = ref(0);
 const totalLearned = ref(0);
 const clearMessage = ref("");
@@ -20,31 +19,35 @@ async function refreshSettings() {
 async function resetData() {
   if (resetting.value) return;
   resetting.value = true;
-  loadError.value = "";
-  clearMessage.value = "";
-  try { await resetDemoData(); }
-  catch { loadError.value = "重置未完成，请稍后重试。"; }
+  const key = defaultRepository.getActiveKey();
+  try {
+    const confirmation = await uni.showModal({
+      title: "清空本机学习记录？",
+      content: "当前账户的本机学习进度和打卡记录将清空，已下载教材保留。此操作不会删除云端数据。",
+      confirmText: "清空记录",
+      cancelText: "取消",
+    });
+    if (!confirmation.confirm) return;
+    if (key !== defaultRepository.getActiveKey()) throw new Error("Account changed");
+    loadError.value = "";
+    clearMessage.value = "";
+    await resetLearningData(key);
+  } catch { loadError.value = "重置未完成，请稍后重试。"; }
   finally { resetting.value = false; }
 }
 
 async function loadSettings() {
-  activeKey.value = defaultRepository.getActiveKey();
-  const data = await defaultRepository.read();
+  const data = await defaultTextbooks.hydrate();
   totalWords.value = data.words?.length || 0;
   totalLearned.value = data.states?.filter((s) => s.firstSeenAt || s.reviewCount > 0)?.length || 0;
 }
 
-async function resetDemoData() {
+async function resetLearningData(key: string) {
   await defaultRepository.transact((d) => {
-    d.books = seedData.books as any;
-    d.lessons = seedData.lessons as any;
-    d.words = seedData.words as any;
     d.states = [];
     d.logs = [];
-    d.currentBookId = seedData.books[0]?.id;
-    d.seeded = true;
-  });
-  clearMessage.value = "已重置演示数据并清空学习状态";
+  }, key);
+  clearMessage.value = "已清空本机学习记录，已下载教材保留";
   await loadSettings();
   setTimeout(() => {
     clearMessage.value = "";
@@ -70,15 +73,15 @@ onShow(() => {
     <view class="card">
       <text class="group-title">运行状态</text>
       <view class="info-row">
-        <text class="info-label">存储适配器</text>
-        <text class="info-value">UniStorageAdapter (微信 Storage)</text>
+        <text class="info-label">学习数据</text>
+        <text class="info-value">保存在本机</text>
       </view>
       <view class="info-row">
-        <text class="info-label">活跃存储分区</text>
-        <text class="info-value">{{ activeKey }}</text>
+        <text class="info-label">云同步</text>
+        <text class="info-value">尚未开启</text>
       </view>
       <view class="info-row">
-        <text class="info-label">词库总数</text>
+        <text class="info-label">已下载词汇</text>
         <text class="info-value">{{ totalWords }} 词</text>
       </view>
       <view class="info-row">
@@ -89,13 +92,13 @@ onShow(() => {
 
     <view class="card">
       <text class="group-title">数据维护</text>
-      <button class="secondary-btn reset-btn" :disabled="resetting" :loading="resetting" @tap="resetData">重置演示词书与学习记录</button>
+      <button class="secondary-btn reset-btn" :disabled="resetting" :loading="resetting" @tap="resetData">清空本机学习记录</button>
       <text v-if="clearMessage" class="toast-success">{{ clearMessage }}</text>
     </view>
 
     <view class="card about-card">
       <text class="about-app">KotoBud 言葉</text>
-      <text class="about-version">版本 0.6.0 · WeChat Mini Program (Phase 1)</text>
+      <text class="about-version">版本 0.6.0 · 微信小程序</text>
       <text class="about-meta">Web / Windows / 微信小程序 多端日语背词体系</text>
     </view>
   </view>

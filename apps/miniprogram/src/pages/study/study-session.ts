@@ -1,6 +1,7 @@
 import { createStudyQueue, evaluate, getDifficultWords, getDueWords, initialState, stateFor } from "@jp/core";
 import type { Data, StudyMode, Word, WordState } from "@jp/models";
 import type { Grade } from "ts-fsrs";
+import type { QuizAttempt } from "@jp/models";
 import { ensureStudyRuntime } from "../../adapters/runtime";
 
 /** Build the queue without silently widening an invalid lesson selection. */
@@ -37,6 +38,7 @@ export function applyStudyRating(
   now = new Date(),
   id = `log_${now.getTime()}`,
   responseTime = 0,
+  quiz?: QuizAttempt,
 ): StudyRatingResult {
   if (![1, 2, 3, 4].includes(rating)) throw new Error("Invalid review rating");
   if (!data.words.some((item) => item.id === word.id)) throw new Error("Word no longer available");
@@ -50,6 +52,7 @@ export function applyStudyRating(
     ...evaluated.log,
     newState: state,
     studyMode: mode,
+    ...(quiz ? { quiz } : {}),
   };
   const index = data.states.findIndex((item) => item.wordId === word.id && item.userId === state.userId);
   if (index >= 0) data.states[index] = state;

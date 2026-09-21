@@ -1,23 +1,72 @@
 import type { Data, SyncQueueItem, WordState } from "@jp/models";
 import { emptyData } from "@jp/models";
 import type { StorageAdapter, MiniProgramRepositoryContract } from "./types";
+import { filePointerKey, isFileStorageKey, UniFileStorage } from "./file-storage";
+import type { FileStorageDriver, FileStoragePointerStore } from "./file-storage";
 export type { StorageAdapter, MiniProgramRepositoryContract };
 
 export class UniStorageAdapter implements StorageAdapter {
+  private fileStorage?: UniFileStorage;
+  private fileStorageResolved = false;
+
+  constructor(fileStorage?: UniFileStorage | { driver: FileStorageDriver; pointerStore: FileStoragePointerStore; userDataPath: string }) {
+    this.fileStorage = fileStorage instanceof UniFileStorage
+      ? fileStorage
+      : fileStorage
+        ? new UniFileStorage(fileStorage.driver, fileStorage.pointerStore, fileStorage.userDataPath)
+        : undefined;
+    this.fileStorageResolved = !!fileStorage;
+  }
+
   async getItem(key: string): Promise<string | null> {
     if (typeof uni === "undefined" || !uni.getStorageSync) throw new Error("Storage unavailable");
     const val = uni.getStorageSync(key);
-    return val === "" || val == null ? null : String(val);
+    const inline = val === "" || val == null ? null : String(val);
+    if (isFileStorageKey(key)) {
+      const fileStorage = this.getFileStorage();
+      const pointer = typeof uni.getStorageSync === "function" ? uni.getStorageSync(filePointerKey(key)) : "";
+      if (pointer && !fileStorage) throw new Error("File storage unavailable");
+      if (fileStorage) return fileStorage.getItem(key, inline);
+    }
+    return inline;
   }
 
   async setItem(key: string, value: string): Promise<void> {
     if (typeof uni === "undefined" || !uni.setStorageSync) throw new Error("Storage unavailable");
+    if (isFileStorageKey(key)) {
+      const fileStorage = this.getFileStorage();
+      const pointer = typeof uni.getStorageSync === "function" ? uni.getStorageSync(filePointerKey(key)) : "";
+      if (pointer && !fileStorage) throw new Error("File storage unavailable");
+      if (fileStorage) {
+        await fileStorage.setItem(key, value);
+        return;
+      }
+    }
     uni.setStorageSync(key, value);
   }
 
   async removeItem(key: string): Promise<void> {
     if (typeof uni === "undefined" || !uni.removeStorageSync) throw new Error("Storage unavailable");
+    if (isFileStorageKey(key)) {
+      // Remove the legacy inline copy first. Once a file pointer exists it is
+      // the authoritative snapshot; retaining inline data could resurrect a
+      // deleted learning partition if file cleanup fails.
+      uni.removeStorageSync(key);
+      const fileStorage = this.getFileStorage();
+      const pointer = typeof uni.getStorageSync === "function" ? uni.getStorageSync(filePointerKey(key)) : "";
+      if (pointer && !fileStorage) throw new Error("File storage unavailable");
+      if (fileStorage) await fileStorage.removeItem(key);
+      return;
+    }
     uni.removeStorageSync(key);
+  }
+
+  private getFileStorage(): UniFileStorage | undefined {
+    if (!this.fileStorageResolved) {
+      this.fileStorage = UniFileStorage.fromUni();
+      this.fileStorageResolved = true;
+    }
+    return this.fileStorage;
   }
 }
 

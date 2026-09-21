@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
-import { defaultRepository } from "../../adapters";
 import { statistics } from "@jp/core";
 import type { Data } from "@jp/models";
-import seedData from "../../seed.json";
+import { defaultTextbooks, textbookCatalog } from "../../services/textbooks";
 
 const appData = ref<Data | null>(null);
 const streak = ref(0);
 const dueCount = ref(0);
 const learnedCount = ref(0);
-const currentBookTitle = ref("日语测试词书");
+const currentBookTitle = ref("标准日本语");
 const loadError = ref("");
+const currentMeta = computed(() => textbookCatalog.find((book) => book.id === appData.value?.currentBookId));
+const hasProgress = computed(() => !!appData.value?.logs.length);
+const catalogWordCount = textbookCatalog.reduce((sum, book) => sum + book.wordCount, 0);
 
 async function refreshData() {
   loadError.value = "";
@@ -20,17 +22,7 @@ async function refreshData() {
 }
 
 async function loadData() {
-  let data = await defaultRepository.read();
-  if (!data.books || data.books.length === 0) {
-    // Auto-seed initial demo book
-    data = await defaultRepository.transact((d) => {
-      d.books = seedData.books as any;
-      d.lessons = seedData.lessons as any;
-      d.words = seedData.words as any;
-      d.currentBookId = seedData.books[0]?.id;
-      d.seeded = true;
-    });
-  }
+  const data = await defaultTextbooks.hydrate();
 
   appData.value = data;
   const stats = statistics(data, new Date());
@@ -55,6 +47,9 @@ function goToBooks() {
   });
 }
 
+function goToLists() { uni.navigateTo({ url: "/pages/lists/lists" }); }
+function goToReview() { uni.switchTab({ url: "/pages/review/review" }); }
+
 onShow(() => {
   void refreshData();
 });
@@ -75,16 +70,17 @@ onShow(() => {
     <view class="card today-panel">
       <view class="panel-header">
         <text class="panel-label">温故知新 · 今日复习</text>
-        <text class="streak-badge">🔥 连续 {{ streak }} 天</text>
+        <text class="streak-badge">连续 {{ streak }} 天</text>
       </view>
       <view class="due-row">
         <text class="due-number">{{ dueCount }}</text>
         <text class="due-desc">个单词，等你再见</text>
       </view>
       <view class="action-row">
-        <button class="primary-btn" @tap="goToStudy">开始学习</button>
+        <button class="primary-btn" :disabled="!!loadError" @tap="goToStudy">{{ hasProgress ? '继续学习' : '开始学习' }}</button>
         <button class="secondary-btn" @tap="goToBooks">选择课次</button>
       </view>
+      <button v-if="dueCount" class="secondary-btn" @tap="goToReview">复习到期词</button>
     </view>
 
     <view class="stats-grid">
@@ -93,8 +89,8 @@ onShow(() => {
         <text class="stat-label">累计已学</text>
       </view>
       <view class="card stat-item">
-        <text class="stat-num">{{ appData?.words?.length || 48 }}</text>
-        <text class="stat-label">词库总数</text>
+        <text class="stat-num">{{ catalogWordCount }}</text>
+        <text class="stat-label">六册教材词汇</text>
       </view>
     </view>
 
@@ -102,9 +98,10 @@ onShow(() => {
       <view class="book-info">
         <text class="book-tag">正在学习</text>
         <text class="book-title">{{ currentBookTitle }}</text>
-        <text class="book-meta">4 课 · 48 词 · 点击切换</text>
+        <text class="book-meta">{{ currentMeta ? currentMeta.lessons.length + ' 课 · ' + currentMeta.wordCount + ' 词' : '已保存的词书' }} · 点击切换</text>
       </view>
     </view>
+    <button class="secondary-btn" @tap="goToLists">打开生词本</button>
   </view>
 </template>
 

@@ -2,6 +2,7 @@ export * from "./types";
 export * from "./storage";
 export * from "./audio";
 export * from "./audio-url";
+export * from "./file-storage";
 export * from "./network";
 export * from "./auth";
 export * from "./api";

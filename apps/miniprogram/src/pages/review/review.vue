@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
-import { defaultRepository } from "../../adapters";
+import { defaultTextbooks } from "../../services/textbooks";
 import { getDueWords } from "@jp/core";
 import type { Word } from "@jp/models";
 
@@ -15,7 +15,7 @@ async function refreshReview() {
 }
 
 async function loadReview() {
-  const data = await defaultRepository.read();
+  const data = await defaultTextbooks.prepareStudy(undefined, "review");
   dueWords.value = getDueWords(data, new Date());
 }
 

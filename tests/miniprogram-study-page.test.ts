@@ -8,6 +8,7 @@ import type { Data, Word } from "@jp/models";
 import { computed as vueComputed, ref as vueRef } from "vue";
 import { applyStudyRating as realApplyStudyRating } from "../apps/miniprogram/src/pages/study/study-session";
 import { statistics as realStatistics } from "@jp/core";
+import { createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer } from "../apps/miniprogram/src/pages/study/study-quiz";
 
 type Harness = {
   initStudy: (lessonId?: string, requestedMode?: string) => Promise<void>;
@@ -19,13 +20,16 @@ type Harness = {
   onTouchMove: (event: any) => void;
   onTouchEnd: (event: any) => void;
   onTouchCancel: () => void;
+  selectExercise: (value: string) => void;
+  submitAnswer: (selected: string) => void;
+  toggleDifficult: () => Promise<void>;
   refs: Record<string, { value: any }>;
 };
 
 const word: Word = { id: "w1", lessonId: "lesson-a", term: "猫", reading: "ねこ", meaning: "猫", order: 1 };
 const data = (): Data => ({ books: [], lessons: [], words: [word], states: [], logs: [], seeded: true });
 
-function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word]), fallbackUrl = "https://kotobud.com/audio/legacy-w1.mp3"): { harness: Harness; lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void }; getQueue: any; players: any[] } {
+function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word]), fallbackUrl = "https://kotobud.com/audio/legacy-w1.mp3"): { harness: Harness; lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void }; getQueue: any; players: any[]; textbooks: any } {
   const source = readFileSync(resolve(process.cwd(), "apps/miniprogram/src/pages/study/study.vue"), "utf8");
   const descriptor = parse(source, { filename: "study.vue" }).descriptor;
   const script = compileScript(descriptor, { id: "study-page-test" });
@@ -35,7 +39,7 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
     compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext },
   }).outputText.replace(/__expose\(\);\s*/, "");
   code = code.replace(/^import .*?;\r?\n/gm, "");
-  code += "\nreturn { initStudy, flipCard, rate, playAudio, onCardTap, onTouchStart, onTouchMove, onTouchEnd, onTouchCancel, refs: { words, currentWord, revealed, message, saving, speaking, loading, loadError, mode } };";
+  code += "\nreturn { initStudy, flipCard, rate, playAudio, selectExercise, submitAnswer, toggleDifficult, onCardTap, onTouchStart, onTouchMove, onTouchEnd, onTouchCancel, refs: { words, currentWord, revealed, message, saving, speaking, loading, loadError, mode, exercise, attempt, question, uncertain, isDifficult, markingDifficult } };";
 
   const lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void } = {};
   const players: any[] = [];
@@ -46,30 +50,39 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
     destroy = vi.fn(() => audio.destroy?.());
   }
   const runner = new Function(
-    "ref", "computed", "onLoad", "onShow", "onHide", "onUnload", "defaultRepository", "UniAudioPlayer", "getWordAudioUrl", "getWordAudioFallbackUrl", "Rating", "statistics", "seedData", "applyStudyRating", "getStudyQueue", "uni",
+    "ref", "computed", "onLoad", "onShow", "onHide", "onUnload", "defaultRepository", "UniAudioPlayer", "getWordAudioUrl", "getWordAudioFallbackUrl", "Rating", "statistics", "applyStudyRating", "getStudyQueue", "uni", "defaultTextbooks", "createStudyQuestion", "ratingForStudyAnswer", "submitStudyAnswer", "setDifficult",
     code,
   );
-  const apply = vi.fn((d: Data, w: Word, rating: Rating, mode: any, now: Date, id: string, responseTime: number) => realApplyStudyRating(d, w, rating as any, mode, now, id, responseTime));
+  const apply = vi.fn((d: Data, w: Word, rating: Rating, mode: any, now: Date, id: string, responseTime: number, quiz?: any) => realApplyStudyRating(d, w, rating as any, mode, now, id, responseTime, quiz));
+  const textbooks = { prepareStudy: vi.fn(async () => repository.read()) };
   const harness = runner(
     vueRef, vueComputed,
     (callback: (query?: any) => void) => { lifecycle.load = callback; },
     (callback: () => void) => { lifecycle.show = callback; },
     (callback: () => void) => { lifecycle.hide = callback; },
     (callback: () => void) => { lifecycle.unload = callback; },
-    repository, MockPlayer, () => "https://kotobud.com/audio/w1.mp3", () => fallbackUrl, Rating, realStatistics, { books: [], lessons: [], words: [] }, apply, getQueue,
-    { switchTab: vi.fn() },
+    repository, MockPlayer, () => "https://kotobud.com/audio/w1.mp3", () => fallbackUrl, Rating, realStatistics, apply, getQueue,
+    { switchTab: vi.fn() }, textbooks, createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer,
+    vi.fn(async (wordId: string, value: boolean) => {
+      const snapshot = await repository.read();
+      const state = snapshot.states.find((item: any) => item.wordId === wordId);
+      if (state) state.isDifficult = value;
+      return snapshot;
+    }),
   ) as Harness;
-  return { harness, lifecycle, getQueue, players };
+  return { harness, lifecycle, getQueue, players, textbooks };
 }
 
 describe("study page script", () => {
   beforeEach(() => vi.restoreAllMocks());
+  const settle = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
   it("requires reveal before rating and allows a revealed rating", async () => {
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn(async (change: any) => { const d = data(); change(d); return d; }) };
     const audio = { play: vi.fn(async () => true), stop: vi.fn(), destroy: vi.fn() };
     const { harness, lifecycle } = loadStudyPage(repository, audio);
     await lifecycle.load?.({ mode: "new" });
+    await settle();
     await harness.rate(Rating.Good);
     expect(repository.transact).not.toHaveBeenCalled();
     harness.flipCard();
@@ -77,11 +90,93 @@ describe("study page script", () => {
     expect(repository.transact).toHaveBeenCalledOnce();
   });
 
+  it("resets quiz state after advancing and never rates a card before reveal", async () => {
+    const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn(async (change: any) => { const d = data(); change(d); return d; }) };
+    const { harness, lifecycle } = loadStudyPage(repository, {});
+    await lifecycle.load?.();
+    await settle();
+    await harness.rate(Rating.Good);
+    expect(repository.transact).not.toHaveBeenCalled();
+    harness.flipCard();
+    await harness.rate(Rating.Good);
+    expect(harness.refs.revealed.value).toBe(false);
+    expect(harness.refs.attempt.value).toBeNull();
+    expect(harness.refs.question.value).toBeNull();
+  });
+
+  it("stores a wrong quiz answer as Again and prevents a second manual rating", async () => {
+    const quizData = data();
+    quizData.words = [
+      word,
+      { ...word, id: "w2", term: "犬", reading: "いぬ", meaning: "狗" },
+      { ...word, id: "w3", term: "鳥", reading: "とり", meaning: "鸟" },
+      { ...word, id: "w4", term: "花", reading: "はな", meaning: "花" },
+    ];
+    let savedRating: Rating | undefined;
+    let savedQuiz: Data["logs"][number]["quiz"];
+    const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => quizData), transact: vi.fn(async (change: any) => { const d = quizData; change(d); savedRating = d.logs.at(-1)?.rating; savedQuiz = d.logs.at(-1)?.quiz; return d; }) };
+    const { harness, lifecycle } = loadStudyPage(repository, {});
+    await lifecycle.load?.();
+    await settle();
+    harness.selectExercise("kana-meaning");
+    const question = harness.refs.question.value;
+    if (!question) return;
+    const wrong = question.options.find((option: string) => option !== question.correct) || question.options[0];
+    harness.submitAnswer(wrong);
+    await harness.rate(Rating.Easy);
+    expect(repository.transact).toHaveBeenCalledOnce();
+    expect(savedRating).toBe(Rating.Again);
+    expect(savedQuiz).toMatchObject({ type: "kana-meaning", selected: wrong, isCorrect: false });
+    await harness.rate(Rating.Good);
+    expect(repository.transact).toHaveBeenCalledOnce();
+  });
+
+  it("discards an initialization result after the active account changes", async () => {
+    let activeKey = "data_guest";
+    let resolveRead!: (value: Data) => void;
+    const repository = {
+      getActiveKey: vi.fn(() => activeKey),
+      read: vi.fn(() => new Promise<Data>((resolve) => { resolveRead = resolve; })),
+      transact: vi.fn(),
+    };
+    const { harness, lifecycle } = loadStudyPage(repository, {});
+    lifecycle.load?.();
+    await vi.waitFor(() => expect(repository.read).toHaveBeenCalledOnce());
+    activeKey = "data_user_alice";
+    resolveRead(data());
+    await settle();
+    expect(harness.refs.currentWord.value).toBeNull();
+    expect(harness.refs.loadError.value).toContain("无法读取");
+  });
+
+  it("persists a difficult mark and blocks rating while the mark is in flight", async () => {
+    let resolveRead!: (value: Data) => void;
+    const repository = {
+      getActiveKey: vi.fn(() => "data_guest"),
+      read: vi.fn()
+        .mockResolvedValueOnce(data())
+        .mockImplementationOnce(() => new Promise<Data>((resolve) => { resolveRead = resolve; })),
+      transact: vi.fn(),
+    };
+    const { harness, lifecycle } = loadStudyPage(repository, {});
+    await lifecycle.load?.();
+    await settle();
+    const marking = harness.toggleDifficult();
+    expect(harness.refs.markingDifficult.value).toBe(true);
+    harness.flipCard();
+    await harness.rate(Rating.Good);
+    expect(repository.transact).not.toHaveBeenCalled();
+    resolveRead(data());
+    await marking;
+    expect(harness.refs.isDifficult.value).toBe(true);
+  });
+
   it("performs only one write when rating is tapped rapidly", async () => {
     let resolveWrite!: (value: Data) => void;
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn((change: any) => new Promise<Data>((resolve) => { const d = data(); change(d); resolveWrite = resolve; })) };
     const { harness, lifecycle } = loadStudyPage(repository, {});
     await lifecycle.load?.();
+    await settle();
     harness.flipCard();
     const first = harness.rate(Rating.Good);
     const second = harness.rate(Rating.Easy);
@@ -96,6 +191,7 @@ describe("study page script", () => {
       .mockImplementation(async (change: any) => { const d = data(); change(d); return d; }) };
     const { harness, lifecycle } = loadStudyPage(repository, {});
     await lifecycle.load?.();
+    await settle();
     const current = harness.refs.currentWord.value;
     harness.flipCard();
     await harness.rate(Rating.Good);
@@ -107,11 +203,12 @@ describe("study page script", () => {
 
   it("preserves the requested lesson and mode when retrying initialization", async () => {
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn().mockRejectedValueOnce(new Error("read failed")).mockResolvedValue(data()), transact: vi.fn() };
-    const { harness, lifecycle, getQueue } = loadStudyPage(repository, {});
+    const { harness, lifecycle, textbooks } = loadStudyPage(repository, {});
     await lifecycle.load?.({ lessonId: "lesson-a", mode: "difficult" });
+    await settle();
     expect(harness.refs.loadError.value).toContain("无法读取");
     await harness.initStudy();
-    expect(getQueue).toHaveBeenLastCalledWith(expect.anything(), "difficult", "lesson-a");
+    expect(textbooks.prepareStudy).toHaveBeenLastCalledWith("lesson-a", "difficult");
   });
 
   it("stops audio on hide and destroys it on unload", async () => {
@@ -119,6 +216,7 @@ describe("study page script", () => {
     const audio = { play: vi.fn(async () => true), stop: vi.fn(), destroy: vi.fn() };
     const { harness, lifecycle } = loadStudyPage(repository, audio);
     await lifecycle.load?.();
+    await settle();
     await harness.playAudio();
     lifecycle.hide?.();
     lifecycle.unload?.();
@@ -131,6 +229,7 @@ describe("study page script", () => {
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
     const { harness, lifecycle } = loadStudyPage(repository, {});
     await lifecycle.load?.();
+    await settle();
     harness.onTouchStart({ touches: [{ clientX: 0, clientY: 0 }] });
     harness.onTouchEnd({ changedTouches: [{ clientX: 90, clientY: 8 }] });
     expect(harness.refs.revealed.value).toBe(true);
@@ -161,6 +260,7 @@ describe("study page script", () => {
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
     const first = loadStudyPage(repository, audio);
     await first.lifecycle.load?.();
+    await settle();
     const firstPlay = first.harness.playAudio();
     expect(first.harness.refs.speaking.value).toBe(true);
     first.lifecycle.hide?.();
@@ -171,6 +271,7 @@ describe("study page script", () => {
     expect(first.players).toHaveLength(1);
     const second = loadStudyPage(repository, { play: vi.fn(async () => true), stop: vi.fn(), destroy: vi.fn() });
     await second.lifecycle.load?.();
+    await settle();
     await second.harness.playAudio();
     expect(second.players).toHaveLength(1);
     expect(second.players[0]).not.toBe(first.players[0]);
@@ -183,6 +284,7 @@ describe("study page script", () => {
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
     const { harness, lifecycle } = loadStudyPage(repository, audio, undefined, "https://kotobud.com/audio/legacy.mp3");
     await lifecycle.load?.();
+    await settle();
     await harness.playAudio();
     expect(audio.play).toHaveBeenCalledTimes(2);
     expect(audio.play.mock.calls.map((call: any[]) => call[0])).toEqual([
@@ -197,6 +299,7 @@ describe("study page script", () => {
     const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
     const { harness, lifecycle } = loadStudyPage(repository, audio);
     await lifecycle.load?.();
+    await settle();
     const pending = harness.playAudio();
     lifecycle.hide?.();
     resolvePrimary(false);
