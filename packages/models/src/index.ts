@@ -60,6 +60,7 @@ export interface UserSettings {
   userId: string;
   email?: string;
   currentBookId?: string;
+  currentBookIdSource?: 'default' | 'user';
   lastStudiedPosition?: {
     bookId: string;
     lessonId: string;
@@ -115,6 +116,8 @@ export interface Data {
   states: WordState[];
   logs: ReviewLog[];
   currentBookId?: string;
+  currentBookIdUpdatedAt?: string;
+  currentBookIdSource?: 'default' | 'user';
   seeded: boolean;
   textbooksVersion?: string;
   textbooksWordsVersion?: string;

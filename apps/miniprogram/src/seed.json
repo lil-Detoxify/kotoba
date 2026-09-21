@@ -1,0 +1,568 @@
+{
+  "books": [
+    {
+      "id": "demo-jp",
+      "title": "日语测试词书",
+      "description": "从初次见面到日常生活，48 个常用词。",
+      "language": "ja",
+      "createdAt": "2026-09-17T00:00:00.000Z",
+      "updatedAt": "2026-09-17T00:00:00.000Z"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "demo-jp-l-1",
+      "bookId": "demo-jp",
+      "title": "第1课 · 初次见面",
+      "order": 1
+    },
+    {
+      "id": "demo-jp-l-2",
+      "bookId": "demo-jp",
+      "title": "第2课 · 日常身边",
+      "order": 2
+    },
+    {
+      "id": "demo-jp-l-3",
+      "bookId": "demo-jp",
+      "title": "第3课 · 城市散步",
+      "order": 3
+    },
+    {
+      "id": "demo-jp-l-4",
+      "bookId": "demo-jp",
+      "title": "第4课 · 生活时光",
+      "order": 4
+    }
+  ],
+  "words": [
+    {
+      "id": "w_1",
+      "lessonId": "demo-jp-l-1",
+      "term": "私",
+      "reading": "わたし",
+      "meaning": "我",
+      "partOfSpeech": "名词",
+      "order": 1,
+      "example": "私の例文です。",
+      "exampleTranslation": "这是我的例句。"
+    },
+    {
+      "id": "w_2",
+      "lessonId": "demo-jp-l-1",
+      "term": "学生",
+      "reading": "がくせい",
+      "meaning": "学生",
+      "partOfSpeech": "名词",
+      "order": 2,
+      "example": "学生の例文です。",
+      "exampleTranslation": "这是学生的例句。"
+    },
+    {
+      "id": "w_3",
+      "lessonId": "demo-jp-l-1",
+      "term": "先生",
+      "reading": "せんせい",
+      "meaning": "老师",
+      "partOfSpeech": "名词",
+      "order": 3,
+      "example": "先生の例文です。",
+      "exampleTranslation": "这是老师的例句。"
+    },
+    {
+      "id": "w_4",
+      "lessonId": "demo-jp-l-1",
+      "term": "友達",
+      "reading": "ともだち",
+      "meaning": "朋友",
+      "partOfSpeech": "名词",
+      "order": 4,
+      "example": "友達の例文です。",
+      "exampleTranslation": "这是朋友的例句。"
+    },
+    {
+      "id": "w_5",
+      "lessonId": "demo-jp-l-1",
+      "term": "日本",
+      "reading": "にほん",
+      "meaning": "日本",
+      "partOfSpeech": "名词",
+      "order": 5,
+      "example": "日本の例文です。",
+      "exampleTranslation": "这是日本的例句。"
+    },
+    {
+      "id": "w_6",
+      "lessonId": "demo-jp-l-1",
+      "term": "中国",
+      "reading": "ちゅうごく",
+      "meaning": "中国",
+      "partOfSpeech": "名词",
+      "order": 6,
+      "example": "中国の例文です。",
+      "exampleTranslation": "这是中国的例句。"
+    },
+    {
+      "id": "w_7",
+      "lessonId": "demo-jp-l-1",
+      "term": "名前",
+      "reading": "なまえ",
+      "meaning": "名字",
+      "partOfSpeech": "名词",
+      "order": 7,
+      "example": "名前の例文です。",
+      "exampleTranslation": "这是名字的例句。"
+    },
+    {
+      "id": "w_8",
+      "lessonId": "demo-jp-l-1",
+      "term": "人",
+      "reading": "ひと",
+      "meaning": "人",
+      "partOfSpeech": "名词",
+      "order": 8,
+      "example": "人の例文です。",
+      "exampleTranslation": "这是人的例句。"
+    },
+    {
+      "id": "w_9",
+      "lessonId": "demo-jp-l-1",
+      "term": "会社",
+      "reading": "かいしゃ",
+      "meaning": "公司",
+      "partOfSpeech": "名词",
+      "order": 9,
+      "example": "会社の例文です。",
+      "exampleTranslation": "这是公司的例句。"
+    },
+    {
+      "id": "w_10",
+      "lessonId": "demo-jp-l-1",
+      "term": "学校",
+      "reading": "がっこう",
+      "meaning": "学校",
+      "partOfSpeech": "名词",
+      "order": 10,
+      "example": "学校の例文です。",
+      "exampleTranslation": "这是学校的例句。"
+    },
+    {
+      "id": "w_11",
+      "lessonId": "demo-jp-l-1",
+      "term": "言葉",
+      "reading": "ことば",
+      "meaning": "语言",
+      "partOfSpeech": "名词",
+      "order": 11,
+      "example": "言葉の例文です。",
+      "exampleTranslation": "这是语言的例句。"
+    },
+    {
+      "id": "w_12",
+      "lessonId": "demo-jp-l-1",
+      "term": "大学",
+      "reading": "だいがく",
+      "meaning": "大学",
+      "partOfSpeech": "名词",
+      "order": 12,
+      "example": "大学の例文です。",
+      "exampleTranslation": "这是大学的例句。"
+    },
+    {
+      "id": "w_13",
+      "lessonId": "demo-jp-l-2",
+      "term": "本",
+      "reading": "ほん",
+      "meaning": "书",
+      "partOfSpeech": "名词",
+      "order": 13,
+      "example": "本の例文です。",
+      "exampleTranslation": "这是书的例句。"
+    },
+    {
+      "id": "w_14",
+      "lessonId": "demo-jp-l-2",
+      "term": "机",
+      "reading": "つくえ",
+      "meaning": "桌子",
+      "partOfSpeech": "名词",
+      "order": 14,
+      "example": "机の例文です。",
+      "exampleTranslation": "这是桌子的例句。"
+    },
+    {
+      "id": "w_15",
+      "lessonId": "demo-jp-l-2",
+      "term": "椅子",
+      "reading": "いす",
+      "meaning": "椅子",
+      "partOfSpeech": "名词",
+      "order": 15,
+      "example": "椅子の例文です。",
+      "exampleTranslation": "这是椅子的例句。"
+    },
+    {
+      "id": "w_16",
+      "lessonId": "demo-jp-l-2",
+      "term": "時計",
+      "reading": "とけい",
+      "meaning": "钟表",
+      "partOfSpeech": "名词",
+      "order": 16,
+      "example": "時計の例文です。",
+      "exampleTranslation": "这是钟表的例句。"
+    },
+    {
+      "id": "w_17",
+      "lessonId": "demo-jp-l-2",
+      "term": "鞄",
+      "reading": "かばん",
+      "meaning": "包",
+      "partOfSpeech": "名词",
+      "order": 17,
+      "example": "鞄の例文です。",
+      "exampleTranslation": "这是包的例句。"
+    },
+    {
+      "id": "w_18",
+      "lessonId": "demo-jp-l-2",
+      "term": "鍵",
+      "reading": "かぎ",
+      "meaning": "钥匙",
+      "partOfSpeech": "名词",
+      "order": 18,
+      "example": "鍵の例文です。",
+      "exampleTranslation": "这是钥匙的例句。"
+    },
+    {
+      "id": "w_19",
+      "lessonId": "demo-jp-l-2",
+      "term": "傘",
+      "reading": "かさ",
+      "meaning": "伞",
+      "partOfSpeech": "名词",
+      "order": 19,
+      "example": "傘の例文です。",
+      "exampleTranslation": "这是伞的例句。"
+    },
+    {
+      "id": "w_20",
+      "lessonId": "demo-jp-l-2",
+      "term": "靴",
+      "reading": "くつ",
+      "meaning": "鞋",
+      "partOfSpeech": "名词",
+      "order": 20,
+      "example": "靴の例文です。",
+      "exampleTranslation": "这是鞋的例句。"
+    },
+    {
+      "id": "w_21",
+      "lessonId": "demo-jp-l-2",
+      "term": "新聞",
+      "reading": "しんぶん",
+      "meaning": "报纸",
+      "partOfSpeech": "名词",
+      "order": 21,
+      "example": "新聞の例文です。",
+      "exampleTranslation": "这是报纸的例句。"
+    },
+    {
+      "id": "w_22",
+      "lessonId": "demo-jp-l-2",
+      "term": "電話",
+      "reading": "でんわ",
+      "meaning": "电话",
+      "partOfSpeech": "名词",
+      "order": 22,
+      "example": "電話の例文です。",
+      "exampleTranslation": "这是电话的例句。"
+    },
+    {
+      "id": "w_23",
+      "lessonId": "demo-jp-l-2",
+      "term": "窓",
+      "reading": "まど",
+      "meaning": "窗户",
+      "partOfSpeech": "名词",
+      "order": 23,
+      "example": "窓の例文です。",
+      "exampleTranslation": "这是窗户的例句。"
+    },
+    {
+      "id": "w_24",
+      "lessonId": "demo-jp-l-2",
+      "term": "写真",
+      "reading": "しゃしん",
+      "meaning": "照片",
+      "partOfSpeech": "名词",
+      "order": 24,
+      "example": "写真の例文です。",
+      "exampleTranslation": "这是照片的例句。"
+    },
+    {
+      "id": "w_25",
+      "lessonId": "demo-jp-l-3",
+      "term": "駅",
+      "reading": "えき",
+      "meaning": "车站",
+      "partOfSpeech": "名词",
+      "order": 25,
+      "example": "駅の例文です。",
+      "exampleTranslation": "这是车站的例句。"
+    },
+    {
+      "id": "w_26",
+      "lessonId": "demo-jp-l-3",
+      "term": "道",
+      "reading": "みち",
+      "meaning": "道路",
+      "partOfSpeech": "名词",
+      "order": 26,
+      "example": "道の例文です。",
+      "exampleTranslation": "这是道路的例句。"
+    },
+    {
+      "id": "w_27",
+      "lessonId": "demo-jp-l-3",
+      "term": "店",
+      "reading": "みせ",
+      "meaning": "店铺",
+      "partOfSpeech": "名词",
+      "order": 27,
+      "example": "店の例文です。",
+      "exampleTranslation": "这是店铺的例句。"
+    },
+    {
+      "id": "w_28",
+      "lessonId": "demo-jp-l-3",
+      "term": "公園",
+      "reading": "こうえん",
+      "meaning": "公园",
+      "partOfSpeech": "名词",
+      "order": 28,
+      "example": "公園の例文です。",
+      "exampleTranslation": "这是公园的例句。"
+    },
+    {
+      "id": "w_29",
+      "lessonId": "demo-jp-l-3",
+      "term": "花",
+      "reading": "はな",
+      "meaning": "花",
+      "partOfSpeech": "名词",
+      "order": 29,
+      "example": "花の例文です。",
+      "exampleTranslation": "这是花的例句。"
+    },
+    {
+      "id": "w_30",
+      "lessonId": "demo-jp-l-3",
+      "term": "山",
+      "reading": "やま",
+      "meaning": "山",
+      "partOfSpeech": "名词",
+      "order": 30,
+      "example": "山の例文です。",
+      "exampleTranslation": "这是山的例句。"
+    },
+    {
+      "id": "w_31",
+      "lessonId": "demo-jp-l-3",
+      "term": "川",
+      "reading": "かわ",
+      "meaning": "河流",
+      "partOfSpeech": "名词",
+      "order": 31,
+      "example": "川の例文です。",
+      "exampleTranslation": "这是河流的例句。"
+    },
+    {
+      "id": "w_32",
+      "lessonId": "demo-jp-l-3",
+      "term": "空",
+      "reading": "そら",
+      "meaning": "天空",
+      "partOfSpeech": "名词",
+      "order": 32,
+      "example": "空の例文です。",
+      "exampleTranslation": "这是天空的例句。"
+    },
+    {
+      "id": "w_33",
+      "lessonId": "demo-jp-l-3",
+      "term": "雨",
+      "reading": "あめ",
+      "meaning": "雨",
+      "partOfSpeech": "名词",
+      "order": 33,
+      "example": "雨の例文です。",
+      "exampleTranslation": "这是雨的例句。"
+    },
+    {
+      "id": "w_34",
+      "lessonId": "demo-jp-l-3",
+      "term": "雪",
+      "reading": "ゆき",
+      "meaning": "雪",
+      "partOfSpeech": "名词",
+      "order": 34,
+      "example": "雪の例文です。",
+      "exampleTranslation": "这是雪的例句。"
+    },
+    {
+      "id": "w_35",
+      "lessonId": "demo-jp-l-3",
+      "term": "海",
+      "reading": "うみ",
+      "meaning": "海",
+      "partOfSpeech": "名词",
+      "order": 35,
+      "example": "海の例文です。",
+      "exampleTranslation": "这是海的例句。"
+    },
+    {
+      "id": "w_36",
+      "lessonId": "demo-jp-l-3",
+      "term": "風",
+      "reading": "かぜ",
+      "meaning": "风",
+      "partOfSpeech": "名词",
+      "order": 36,
+      "example": "風の例文です。",
+      "exampleTranslation": "这是风的例句。"
+    },
+    {
+      "id": "w_37",
+      "lessonId": "demo-jp-l-4",
+      "term": "朝",
+      "reading": "あさ",
+      "meaning": "早晨",
+      "partOfSpeech": "名词",
+      "order": 37,
+      "example": "朝の例文です。",
+      "exampleTranslation": "这是早晨的例句。"
+    },
+    {
+      "id": "w_38",
+      "lessonId": "demo-jp-l-4",
+      "term": "昼",
+      "reading": "ひる",
+      "meaning": "白天",
+      "partOfSpeech": "名词",
+      "order": 38,
+      "example": "昼の例文です。",
+      "exampleTranslation": "这是白天的例句。"
+    },
+    {
+      "id": "w_39",
+      "lessonId": "demo-jp-l-4",
+      "term": "夜",
+      "reading": "よる",
+      "meaning": "夜晚",
+      "partOfSpeech": "名词",
+      "order": 39,
+      "example": "夜の例文です。",
+      "exampleTranslation": "这是夜晚的例句。"
+    },
+    {
+      "id": "w_40",
+      "lessonId": "demo-jp-l-4",
+      "term": "今日",
+      "reading": "きょう",
+      "meaning": "今天",
+      "partOfSpeech": "名词",
+      "order": 40,
+      "example": "今日の例文です。",
+      "exampleTranslation": "这是今天的例句。"
+    },
+    {
+      "id": "w_41",
+      "lessonId": "demo-jp-l-4",
+      "term": "明日",
+      "reading": "あした",
+      "meaning": "明天",
+      "partOfSpeech": "名词",
+      "order": 41,
+      "example": "明日の例文です。",
+      "exampleTranslation": "这是明天的例句。"
+    },
+    {
+      "id": "w_42",
+      "lessonId": "demo-jp-l-4",
+      "term": "昨日",
+      "reading": "きのう",
+      "meaning": "昨天",
+      "partOfSpeech": "名词",
+      "order": 42,
+      "example": "昨日の例文です。",
+      "exampleTranslation": "这是昨天的例句。"
+    },
+    {
+      "id": "w_43",
+      "lessonId": "demo-jp-l-4",
+      "term": "時間",
+      "reading": "じかん",
+      "meaning": "时间",
+      "partOfSpeech": "名词",
+      "order": 43,
+      "example": "時間の例文です。",
+      "exampleTranslation": "这是时间的例句。"
+    },
+    {
+      "id": "w_44",
+      "lessonId": "demo-jp-l-4",
+      "term": "水",
+      "reading": "みず",
+      "meaning": "水",
+      "partOfSpeech": "名词",
+      "order": 44,
+      "example": "水の例文です。",
+      "exampleTranslation": "这是水的例句。"
+    },
+    {
+      "id": "w_45",
+      "lessonId": "demo-jp-l-4",
+      "term": "お茶",
+      "reading": "おちゃ",
+      "meaning": "茶",
+      "partOfSpeech": "名词",
+      "order": 45,
+      "example": "お茶の例文です。",
+      "exampleTranslation": "这是茶的例句。"
+    },
+    {
+      "id": "w_46",
+      "lessonId": "demo-jp-l-4",
+      "term": "ご飯",
+      "reading": "ごはん",
+      "meaning": "米饭",
+      "partOfSpeech": "名词",
+      "order": 46,
+      "example": "ご飯の例文です。",
+      "exampleTranslation": "这是米饭的例句。"
+    },
+    {
+      "id": "w_47",
+      "lessonId": "demo-jp-l-4",
+      "term": "休み",
+      "reading": "やすみ",
+      "meaning": "休息",
+      "partOfSpeech": "名词",
+      "order": 47,
+      "example": "休みの例文です。",
+      "exampleTranslation": "这是休息的例句。"
+    },
+    {
+      "id": "w_48",
+      "lessonId": "demo-jp-l-4",
+      "term": "約束",
+      "reading": "やくそく",
+      "meaning": "约定",
+      "partOfSpeech": "名词",
+      "order": 48,
+      "example": "約束の例文です。",
+      "exampleTranslation": "这是约定的例句。"
+    }
+  ]
+}

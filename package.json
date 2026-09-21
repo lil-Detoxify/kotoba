@@ -5,12 +5,14 @@
   "type": "module",
   "workspaces": [
     "apps/web",
+    "apps/miniprogram",
     "packages/*"
   ],
   "scripts": {
     "dev": "vite --configLoader native --host 127.0.0.1",
     "build": "vue-tsc --noEmit && vite build --configLoader native",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
+    "build:miniprogram": "npm run build:mp-weixin --workspace=apps/miniprogram",
     "check:cloudflare": "tsc -p tsconfig.cloudflare.json --noEmit",
     "upload:r2": "node scripts/upload-r2-assets.mjs",
     "test": "vitest run --configLoader native",

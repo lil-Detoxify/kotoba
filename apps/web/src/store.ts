@@ -4,7 +4,7 @@ import {emptyData,type Data,type StudyMode,type Word,type QuizAttempt,type Revie
 import {IndexedDbRepository,deleteBook} from '@jp/storage';
 import {createStudyQueue,evaluate,initialState,stateFor,statistics,mergeWordStateWithLww,reconcileFsrsFromEvents} from '@jp/core';
 import {importBook,type ImportRow,type TextbookDefinition,textbookWordId} from '@jp/importers';
-import {type AuthUser,type AuthClient,type SyncClient,CloudBaseAuthClient,MockAuthClient,WorkerSyncClient} from '@jp/sync';
+import {type AuthUser,type AuthClient,type SyncClient,type SyncPullResult,CloudBaseAuthClient,MockAuthClient,WorkerSyncClient} from '@jp/sync';
 import type {Grade} from 'ts-fsrs';
 import seed from './seed.json';
 import textbookMetaPayload from './textbooks-metadata.json';
@@ -60,6 +60,7 @@ export function ensureSystemTextbooks(d: Data) {
 
   if (!d.currentBookId && metaBooks.length > 0) {
     d.currentBookId = metaBooks[0].id;
+    d.currentBookIdSource = 'default';
   }
 }
 
@@ -87,6 +88,8 @@ export function copyGuestCustomData(target: Data, guest: Data) {
 
   if (guest.currentBookId && !target.currentBookId) {
     target.currentBookId = guest.currentBookId;
+    target.currentBookIdSource = guest.currentBookIdSource || 'user';
+    target.currentBookIdUpdatedAt = guest.currentBookIdUpdatedAt;
   }
 }
 
@@ -115,9 +118,11 @@ export const useApp = defineStore('app', () => {
   const syncStatus = ref<'synced' | 'syncing' | 'offline' | 'error'>('synced');
   const syncError = ref('');
   const lastSyncedAt = ref<string | null>(null);
+  const isSyncReady = ref(false);
   const showLoginModal = ref(false);
   const showConflictModal = ref(false);
   let syncTimer: any = null;
+  let reconciliationPromise: Promise<void> | null = null;
 
   let refreshingPromise: Promise<void> | null = null;
   async function refresh() {
@@ -151,6 +156,189 @@ export const useApp = defineStore('app', () => {
     }
   }
 
+  async function reconcileWithCloud(user: AuthUser, explicitToken?: string): Promise<void> {
+    if (reconciliationPromise) return reconciliationPromise;
+    reconciliationPromise = (async () => {
+      try {
+        const token = explicitToken || await authClient.getAccessToken();
+        if (!token) return;
+
+        syncStatus.value = 'syncing';
+        syncError.value = '';
+
+        let pullRes: SyncPullResult;
+        try {
+          pullRes = await syncClient.pull(token);
+        } catch (pullErr) {
+          console.warn('Initial cloud pull failed, running offline with local cache:', pullErr);
+          syncStatus.value = 'offline';
+          syncError.value = '云端连接失败，已保留本地学习记录。';
+          isSyncReady.value = true;
+          return;
+        }
+
+        // 1. Read current local data for the user and local queue
+        const localData = await repository.read();
+        const localQueue = await repository.getQueue();
+
+        // 2. Deterministic Merge:
+        // A) Combine all review events: localData.logs, localQueue events, and pullRes.events
+        const eventMap = new Map<string, ReviewEvent | ReviewLog>();
+        for (const l of localData.logs) {
+          eventMap.set(l.id, l);
+        }
+        for (const q of localQueue) {
+          if (q.type === 'review_event' && q.payload) {
+            const evId = q.payload._id || q.payload.id;
+            if (evId) eventMap.set(evId, q.payload);
+          }
+        }
+        for (const e of pullRes.events) {
+          eventMap.set(e._id, e);
+        }
+        const allEvents = Array.from(eventMap.values()).sort(
+          (a, b) => new Date(a.reviewedAt).getTime() - new Date(b.reviewedAt).getTime()
+        );
+
+        // B) Combine states and progress:
+        const allWordIds = new Set<string>([
+          ...localData.states.map(s => s.wordId),
+          ...pullRes.progress.map((p: CloudProgressDoc) => p.wordId),
+          ...localQueue.filter(q => q.type === 'progress').map(q => q.payload?.wordId).filter(Boolean)
+        ]);
+
+        const mergedStates: WordState[] = [];
+        for (const wId of allWordIds) {
+          const localS = localData.states.find(s => s.wordId === wId);
+          const remoteP = pullRes.progress.find((p: CloudProgressDoc) => p.wordId === wId);
+          const wordEvents = allEvents.filter(e => e.wordId === wId);
+
+          if (localS && remoteP) {
+            mergedStates.push(mergeWordStateWithLww(localS, remoteP, wordEvents));
+          } else if (localS) {
+            mergedStates.push(wordEvents.length > 0 ? reconcileFsrsFromEvents(wordEvents, localS) : localS);
+          } else if (remoteP) {
+            mergedStates.push({
+              userId: user.id,
+              wordId: remoteP.wordId,
+              bookId: remoteP.bookId,
+              lessonId: remoteP.lessonId,
+              status: remoteP.status,
+              firstSeenAt: remoteP.firstSeenAt,
+              lastReviewedAt: remoteP.lastReviewedAt,
+              nextReviewAt: remoteP.nextReviewAt,
+              reviewCount: remoteP.reviewCount,
+              lapseCount: remoteP.lapseCount,
+              card: remoteP.card,
+              isDifficult: remoteP.isDifficult,
+              difficultUpdatedAt: remoteP.difficultUpdatedAt,
+              isIgnored: remoteP.isIgnored,
+              ignoredUpdatedAt: remoteP.ignoredUpdatedAt,
+              updatedAt: remoteP.updatedAt
+            });
+          }
+        }
+
+        // C) Settings reconciliation:
+        let resolvedBookId = localData.currentBookId;
+        let resolvedBookIdSource = localData.currentBookIdSource;
+        let resolvedBookIdUpdatedAt = localData.currentBookIdUpdatedAt;
+
+        if (pullRes.settings?.currentBookId) {
+          const remoteBookId = pullRes.settings.currentBookId;
+          const remoteUpdatedAt = pullRes.settings.updatedAt;
+
+          if (localData.currentBookIdSource !== 'user') {
+            resolvedBookId = remoteBookId;
+            resolvedBookIdSource = 'user';
+            resolvedBookIdUpdatedAt = remoteUpdatedAt;
+          } else if (localData.currentBookIdUpdatedAt && remoteUpdatedAt) {
+            if (new Date(remoteUpdatedAt).getTime() > new Date(localData.currentBookIdUpdatedAt).getTime()) {
+              resolvedBookId = remoteBookId;
+              resolvedBookIdSource = 'user';
+              resolvedBookIdUpdatedAt = remoteUpdatedAt;
+            }
+          }
+        } else if (!resolvedBookId && metaBooks[0]) {
+          resolvedBookId = metaBooks[0].id;
+          resolvedBookIdSource = 'default';
+        }
+
+        if (pullRes.settings?.preferences?.pronunciationVoice) {
+          try {
+            if (typeof localStorage !== 'undefined') {
+              localStorage.setItem('jp-vocab.pronunciation-voice', pullRes.settings.preferences.pronunciationVoice);
+            }
+          } catch {}
+        }
+
+        // 3. Atomically persist merged data to local IndexedDB
+        await repository.transact(d => {
+          ensureSystemTextbooks(d);
+          d.states = mergedStates;
+          d.logs = allEvents.map(e => ({
+            id: (e as any)._id || (e as any).id,
+            userId: user.id,
+            wordId: e.wordId,
+            reviewedAt: e.reviewedAt,
+            rating: e.rating,
+            responseTime: e.responseTime,
+            previousState: (e as any).previousState,
+            newState: (e as any).newState,
+            studyMode: e.studyMode,
+            quiz: e.quiz,
+            clientCreatedAt: (e as any).clientCreatedAt || e.reviewedAt,
+            serverReceivedAt: (e as any).serverReceivedAt || new Date().toISOString()
+          }));
+          d.currentBookId = resolvedBookId;
+          d.currentBookIdSource = resolvedBookIdSource;
+          d.currentBookIdUpdatedAt = resolvedBookIdUpdatedAt;
+        });
+
+        // 4. Ensure the active textbook is loaded into data.words
+        if (resolvedBookId) {
+          await ensureBookLoaded(resolvedBookId);
+        }
+
+        // 5. Also progressively load other books that have progress
+        const learnedBookIds = new Set<string>();
+        for (const s of mergedStates) {
+          if (s.bookId) learnedBookIds.add(s.bookId);
+          else {
+            for (const mb of metaBooks) {
+              if (s.wordId.startsWith(`${mb.id}-w-`)) {
+                learnedBookIds.add(mb.id);
+                break;
+              }
+            }
+          }
+        }
+        for (const bId of learnedBookIds) {
+          if (bId !== resolvedBookId) {
+            ensureBookLoaded(bId).catch(() => {});
+          }
+        }
+
+        await refresh();
+        isSyncReady.value = true;
+        syncStatus.value = 'synced';
+        lastSyncedAt.value = new Date().toISOString();
+
+        // 6. If local had queue items that were newly generated locally, flush them now
+        if (localQueue.length > 0) {
+          await flushSyncQueue();
+        }
+      } catch (err) {
+        console.error('Cloud reconciliation failed:', err);
+        syncStatus.value = 'error';
+        syncError.value = String(err);
+      } finally {
+        reconciliationPromise = null;
+      }
+    })();
+    return reconciliationPromise;
+  }
+
   async function init() {
     // 1. Initialize Auth session & listeners first to determine user namespace
     try {
@@ -163,6 +351,11 @@ export const useApp = defineStore('app', () => {
       authClient.onAuthStateChange(async (u) => {
         if (!u && currentUser.value) {
           await logout();
+        } else if (u && (!currentUser.value || currentUser.value.id !== u.id)) {
+          currentUser.value = u;
+          repository.switchUser(u.id);
+          await refresh();
+          await reconcileWithCloud(u);
         }
       });
     } catch (e) {
@@ -181,7 +374,10 @@ export const useApp = defineStore('app', () => {
       }
       ensureSystemTextbooks(d);
       d.textbooksVersion = 'biaori-v2';
-      if (!existing && metaBooks[0]) d.currentBookId = metaBooks[0].id;
+      if (!existing && metaBooks[0] && !d.currentBookId) {
+        d.currentBookId = metaBooks[0].id;
+        d.currentBookIdSource = 'default';
+      }
     });
 
     // 4. Synchronously upgrade and cache-bust any already-loaded textbook words
@@ -197,20 +393,29 @@ export const useApp = defineStore('app', () => {
       });
     }
 
+    // 5. If user is logged in, perform reconciliation with cloud
     if (currentUser.value) {
-      scheduleDebouncedSync();
+      await reconcileWithCloud(currentUser.value);
+    } else {
+      isSyncReady.value = true;
     }
 
     if (typeof window !== 'undefined') {
       window.addEventListener('online', () => {
-        syncStatus.value = 'syncing';
-        flushSyncQueue();
+        if (currentUser.value && !isSyncReady.value) {
+          reconcileWithCloud(currentUser.value);
+        } else {
+          syncStatus.value = 'syncing';
+          flushSyncQueue();
+        }
       });
       window.addEventListener('offline', () => {
         syncStatus.value = 'offline';
       });
       document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden' && currentUser.value) {
+        if (document.visibilityState === 'visible' && currentUser.value) {
+          reconcileWithCloud(currentUser.value);
+        } else if (document.visibilityState === 'hidden' && currentUser.value && isSyncReady.value) {
           flushSyncQueue();
         }
       });
@@ -308,11 +513,29 @@ export const useApp = defineStore('app', () => {
     index.value = 0;
     mode.value = studyMode;
     sessionSize.value = queue.value.length;
-    if (bookId) await mutate(d => { d.currentBookId = bookId });
+    if (bookId) {
+      await mutate(d => {
+        d.currentBookId = bookId;
+        d.currentBookIdSource = 'user';
+        d.currentBookIdUpdatedAt = new Date().toISOString();
+      });
+      scheduleDebouncedSync();
+    }
+  }
+
+  async function setCurrentBook(bookId: string) {
+    await mutate(d => {
+      d.currentBookId = bookId;
+      d.currentBookIdSource = 'user';
+      d.currentBookIdUpdatedAt = new Date().toISOString();
+    });
+    await ensureBookLoaded(bookId);
+    scheduleDebouncedSync();
   }
 
   function scheduleDebouncedSync() {
     if (!currentUser.value) return;
+    if (!isSyncReady.value) return;
     if (syncTimer) clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
       flushSyncQueue();
@@ -323,6 +546,7 @@ export const useApp = defineStore('app', () => {
   async function flushSyncQueue() {
     if (flushing) return;
     if (!currentUser.value) return;
+    if (!isSyncReady.value) return;
     flushing = true;
     try {
       if (typeof navigator !== 'undefined' && !navigator.onLine) {
@@ -330,6 +554,12 @@ export const useApp = defineStore('app', () => {
         return;
       }
       const queue = await repository.getQueue();
+
+      // Guard: If queue is empty AND currentBookId is only a program default, do not push empty settings!
+      if (queue.length === 0 && data.value.currentBookIdSource === 'default') {
+        return;
+      }
+
       syncStatus.value = 'syncing';
       try {
         const token = await authClient.getAccessToken();
@@ -352,10 +582,11 @@ export const useApp = defineStore('app', () => {
         const settings = {
           userId: currentUser.value.id,
           currentBookId: data.value.currentBookId,
+          currentBookIdSource: data.value.currentBookIdSource || 'default',
           preferences: {
             pronunciationVoice
           },
-          updatedAt: new Date().toISOString()
+          updatedAt: data.value.currentBookIdUpdatedAt || new Date().toISOString()
         };
 
         const res = await syncClient.push(token, { events, progress, settings });
@@ -847,6 +1078,7 @@ export const useApp = defineStore('app', () => {
     syncStatus,
     syncError,
     lastSyncedAt,
+    isSyncReady,
     showLoginModal,
     showConflictModal,
     init,
@@ -856,6 +1088,7 @@ export const useApp = defineStore('app', () => {
     removeBook,
     editBook,
     start,
+    setCurrentBook,
     rate,
     flag,
     ensureBookLoaded,
@@ -866,6 +1099,7 @@ export const useApp = defineStore('app', () => {
     upgradeLegacyPassword,
     resetPassword,
     loginWithEmailCode,
+    reconcileWithCloud,
     resolveConflictAndMerge,
     logout,
     flushSyncQueue

@@ -1,0 +1,21 @@
+{
+  "name": "KotoBud 日语背词",
+  "appid": "",
+  "description": "按词书与课次组织的单机/云同步日语背词小程序",
+  "versionName": "0.6.0",
+  "versionCode": "60",
+  "transformPx": false,
+  "app-plus": {
+    "usingComponents": true
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true
+    },
+    "usingComponents": true
+  },
+  "vueVersion": "3"
+}

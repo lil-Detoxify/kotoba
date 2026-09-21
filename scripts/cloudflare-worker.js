@@ -1341,38 +1341,70 @@ export default {
           }
         }
 
-        // 3. Upsert user_settings
+        // 3. Upsert user_settings with Stale-Write Defense & Default Protection
+        let settingsConflict = false;
         if (incomingSettings) {
           const s = incomingSettings;
           const pos = s.lastStudiedPosition;
           const voice = s.preferences?.pronunciationVoice || s.pronunciationVoice || null;
-          await env.DB.prepare(`
-            INSERT INTO user_settings (user_id, current_book_id, last_studied_book_id, last_studied_lesson_id, last_studied_word_id, last_studied_updated_at, pronunciation_voice, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT (user_id) DO UPDATE SET
-              current_book_id = COALESCE(excluded.current_book_id, user_settings.current_book_id),
-              last_studied_book_id = COALESCE(excluded.last_studied_book_id, user_settings.last_studied_book_id),
-              last_studied_lesson_id = COALESCE(excluded.last_studied_lesson_id, user_settings.last_studied_lesson_id),
-              last_studied_word_id = COALESCE(excluded.last_studied_word_id, user_settings.last_studied_word_id),
-              last_studied_updated_at = COALESCE(excluded.last_studied_updated_at, user_settings.last_studied_updated_at),
-              pronunciation_voice = COALESCE(excluded.pronunciation_voice, user_settings.pronunciation_voice),
-              updated_at = excluded.updated_at
-          `).bind(
-            user.id,
-            s.currentBookId || null,
-            pos?.bookId || null,
-            pos?.lessonId || null,
-            pos?.wordId || null,
-            pos?.updatedAt || null,
-            voice,
-            now
-          ).run();
+          const incomingUpdatedAt = s.updatedAt || now;
+
+          const existingSettings = await env.DB.prepare('SELECT * FROM user_settings WHERE user_id = ?').bind(user.id).first();
+
+          if (existingSettings) {
+            const isStale = existingSettings.updated_at && (new Date(incomingUpdatedAt).getTime() < new Date(existingSettings.updated_at).getTime());
+            if (isStale) {
+              settingsConflict = true;
+            } else {
+              // Protect existing current_book_id from being overwritten by a client-side program default
+              let targetBookId = s.currentBookId || null;
+              if (s.currentBookIdSource === 'default' && existingSettings.current_book_id) {
+                targetBookId = existingSettings.current_book_id;
+              }
+
+              await env.DB.prepare(`
+                UPDATE user_settings SET
+                  current_book_id = COALESCE(?, current_book_id),
+                  last_studied_book_id = COALESCE(?, last_studied_book_id),
+                  last_studied_lesson_id = COALESCE(?, last_studied_lesson_id),
+                  last_studied_word_id = COALESCE(?, last_studied_word_id),
+                  last_studied_updated_at = COALESCE(?, last_studied_updated_at),
+                  pronunciation_voice = COALESCE(?, pronunciation_voice),
+                  updated_at = ?
+                WHERE user_id = ?
+              `).bind(
+                targetBookId,
+                pos?.bookId || null,
+                pos?.lessonId || null,
+                pos?.wordId || null,
+                pos?.updatedAt || null,
+                voice,
+                incomingUpdatedAt,
+                user.id
+              ).run();
+            }
+          } else {
+            await env.DB.prepare(`
+              INSERT INTO user_settings (user_id, current_book_id, last_studied_book_id, last_studied_lesson_id, last_studied_word_id, last_studied_updated_at, pronunciation_voice, updated_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `).bind(
+              user.id,
+              s.currentBookId || null,
+              pos?.bookId || null,
+              pos?.lessonId || null,
+              pos?.wordId || null,
+              pos?.updatedAt || null,
+              voice,
+              incomingUpdatedAt
+            ).run();
+          }
         }
 
         return json({
           success: true,
           acceptedEvents: incomingEvents.length,
           updatedProgress: incomingProgress.length,
+          settingsConflict,
           serverTime: now
         }, 200);
       } catch (err) {
