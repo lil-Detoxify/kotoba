@@ -126,8 +126,10 @@
 3. 点击左上角的“添加站点 (Add a site)”：
    - **方式一（最快）**：如果您之前用 Google Search Console 验证过该域名，直接点击“从 Google Search Console 导入”，一键同步。
    - **方式二（手动添加）**：在右侧输入框输入 `https://kotobud.com`，点击添加。
-     - 验证方式选择 **“HTML 标记 (HTML Meta Tag)”** 或 **“CNAME 记录”**。
-     - 如果选择 HTML 标记，将获取到的 `<meta name="msvalidate.01" content="xxx" />` 复制发给我，我帮您部署到页面；或者选择将 DNS TXT / CNAME 记录直接添加到 Cloudflare DNS 中（最快生效）。
+     - **站点所有权验证已就绪**：
+       - 生产环境已部署 `BingSiteAuth.xml` 验证文件（访问 `https://kotobud.com/BingSiteAuth.xml` 验证通过）。
+       - 生产环境全站 HTML `<head>` 中已注入 `<meta name="msvalidate.01" content="B54034535F2BC5D891C5E32773794D82">` 双重保障。
+       - 您只需在页面上直接点击 **“Verify”** 按钮即可通过验证！
 4. 验证通过后，在左侧导航栏点击 **“站点地图 (Sitemaps)”**：
    - 在输入框填入：`https://kotobud.com/sitemap.xml`，点击提交。
 5. 在左侧导航栏点击 **“URL 检查 (URL Inspection)”**：
