@@ -4,10 +4,12 @@ const emptyHead = response => new Response(null, {status: response.status, heade
 
 const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://kotobud.com/</loc><lastmod>2026-09-17</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://kotobud.com/books</loc><lastmod>2026-09-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://kotobud.com/stats</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://kotobud.com/import</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://kotobud.com/</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://kotobud.com/features</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kotobud.com/download</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kotobud.com/guide</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kotobud.com/about</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kotobud.com/changelog</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>`;
 
 const CLOUDBASE_DEFAULT_ENV = 'kotobud-staging-d4femojn7def1c91';
@@ -525,18 +527,17 @@ export default {
       return Response.redirect(target.toString(), 301);
     }
 
-    // 2. Legacy Domain 301: https://kotoba-iuz.pages.dev/* -> https://kotobud.com/*
-    if (env.ENABLE_LEGACY_301 === 'true' && hostname === 'kotoba-iuz.pages.dev') {
+    // 2. Legacy Domain & Pages.dev 301: https://kotoba-iuz.pages.dev/* -> https://kotobud.com/*
+    const isStaging = hostname === 'staging.kotobud.com' || hostname === 'staging.kotoba-iuz.pages.dev';
+    const isPreview = !isStaging && (hostname.endsWith('.pages.dev') && hostname !== 'kotoba-iuz.pages.dev');
+
+    if (env.ENABLE_LEGACY_301 === 'true' && !isStaging && hostname.endsWith('.pages.dev')) {
       const target = new URL(request.url);
       target.hostname = 'kotobud.com';
       return Response.redirect(target.toString(), 301);
     }
 
-    // 3. Staging and Preview Environment Detection
-    const isStaging = hostname === 'staging.kotobud.com' || hostname === 'staging.kotoba-iuz.pages.dev';
-    const isPreview = !isStaging && (hostname.endsWith('.pages.dev') && hostname !== 'kotoba-iuz.pages.dev');
-
-    // 4. Staging / Preview robots.txt
+    // 3. Staging / Preview robots.txt
     if ((isStaging || isPreview) && path === '/robots.txt') {
       return new Response("User-agent: *\nDisallow: /\n", {
         status: 200,
@@ -547,9 +548,9 @@ export default {
       });
     }
 
-    // 5. Production robots.txt
+    // 4. Production robots.txt
     if (path === '/robots.txt') {
-      const robots = "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\n\nSitemap: https://kotobud.com/sitemap.xml\n";
+      const robots = "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\nDisallow: /app/\n\nUser-agent: Baiduspider\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\nDisallow: /app/\n\nUser-agent: Bingbot\nAllow: /\nDisallow: /api/\nDisallow: /downloads/\nDisallow: /app/\n\nSitemap: https://kotobud.com/sitemap.xml\n";
       return new Response(robots, {
         status: 200,
         headers: {
@@ -559,12 +560,23 @@ export default {
       });
     }
 
-    // 6. Production sitemap.xml
+    // 5. Production sitemap.xml
     if (path === '/sitemap.xml') {
       return new Response(SITEMAP_XML, {
         status: 200,
         headers: {
           'content-type': 'application/xml; charset=utf-8',
+          'cache-control': 'public, max-age=86400'
+        }
+      });
+    }
+
+    // 6. IndexNow verification key file
+    if (path === '/4b68e91c784e4b5bb8972cae6c7104f2.txt') {
+      return new Response("4b68e91c784e4b5bb8972cae6c7104f2\n", {
+        status: 200,
+        headers: {
+          'content-type': 'text/plain; charset=utf-8',
           'cache-control': 'public, max-age=86400'
         }
       });
@@ -1500,8 +1512,47 @@ export default {
     }
     if (path.startsWith('/audio/')) return new Response('Not found', {status:404, headers:{'cache-control':'no-store'}});
 
-    // Static assets fetch
+    // Handle App Shell subroutes (e.g. /app/study -> serve /app)
+    if (path.startsWith('/app/')) {
+      const appUrl = new URL('/app', request.url);
+      return env.ASSETS.fetch(new Request(appUrl.toString(), request));
+    }
+
+    const KNOWN_STATIC_PATHS = new Set([
+      '/',
+      '/features',
+      '/features/',
+      '/download',
+      '/download/',
+      '/about',
+      '/about/',
+      '/guide',
+      '/guide/',
+      '/changelog',
+      '/changelog/',
+      '/app',
+      '/app/'
+    ]);
+
+    const isKnownPrefix = path.startsWith('/assets/') || path.startsWith('/data/') || path.startsWith('/dictionary/') || path.startsWith('/audio/') || path.startsWith('/downloads/') || path.startsWith('/releases/') || path.startsWith('/api/');
+    const hasExtension = /\.[a-zA-Z0-9]+$/.test(path);
+
+    // Unknown public route -> serve 404.html with true 404 HTTP status code
+    if (!KNOWN_STATIC_PATHS.has(path) && !isKnownPrefix && !hasExtension) {
+      const notFoundUrl = new URL('/404.html', request.url);
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString(), request));
+      const headers = new Headers(notFoundRes.headers);
+      headers.set('content-type', 'text/html; charset=utf-8');
+      headers.set('cache-control', 'no-cache, no-store, must-revalidate');
+      return new Response(notFoundRes.body, {
+        status: 404,
+        statusText: 'Not Found',
+        headers
+      });
+    }
+
     const response = await env.ASSETS.fetch(request);
+
     const contentType = response.headers.get('content-type') || '';
 
     // Handle HTML documents: Inject noindex on Staging / Preview

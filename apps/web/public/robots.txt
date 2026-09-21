@@ -1,6 +1,19 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /downloads/
+Disallow: /app/
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /api/
+Disallow: /downloads/
+Disallow: /app/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /downloads/
+Disallow: /app/
 
 Sitemap: https://kotobud.com/sitemap.xml
