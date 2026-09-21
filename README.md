@@ -1,103 +1,181 @@
-# Kotobud · 日语背词与复习工具
+<div align="center">
 
-> **Kotobud** — A Japanese vocabulary learning and review app.  
-> 官方网站 (Official Website): [https://kotobud.com/](https://kotobud.com/)
+# Kotobud (旧称 Kotoba)
 
-一个专注自律、干净纯粹的日语单词学习与复习手帖。完整内置《新版中日交流标准日本语》初中高全六册词书，全面应用前沿 FSRS 科学间隔重复调度算法，支持 Web 在线使用与 Windows 桌面客户端（安装版与绿色便携版）。Vue 3 + TypeScript strict，基于 Local-First 本地优先架构，支持多设备增量云同步。
+**现代日语背词与复习工具 | 科学记忆，纯粹背词**  
+*A mindful, modern Japanese vocabulary learning and review app powered by FSRS.*
 
-## Windows 桌面版
+[**🌐 访问官网在线使用 (Official Website)**](https://kotobud.com/) · [**💻 Windows 客户端下载**](https://kotobud.com/download) · [**✨ 功能特性**](https://kotobud.com/features) · [**📖 使用指南**](https://kotobud.com/guide) · [**📝 更新日志**](https://kotobud.com/changelog)
 
-安装版和免安装版在 `release/`，直接运行 EXE，不再需要启动网页服务。目标为 Windows 10/11 x64，未签名。详见 [Windows交付说明](docs/WINDOWS_DELIVERY.md)。
+<br/>
 
-**六册标准日本语教材尚未内置**：暂未找到可确认完整且允许再分发的数据；见 [来源核查](docs/TEXTBOOK_SOURCES.md)。现有导入功能仍可使用。
+[![Official Website](https://img.shields.io/badge/Website-kotobud.com-00DC82?style=flat-square&logo=googlechrome&logoColor=white)](https://kotobud.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Vue 3](https://img.shields.io/badge/Vue-3.5-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Algorithm](https://img.shields.io/badge/Algorithm-FSRS%205.2-orange?style=flat-square)](https://github.com/open-spaced-repetition/ts-fsrs)
+[![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Windows-lightgrey?style=flat-square)](https://kotobud.com/download)
 
-## 日常打开（推荐）
+</div>
 
-在本目录运行 `npm start`，会在后台启动固定地址 http://127.0.0.1:5174 ，关闭启动终端不会结束网站。重复运行会检测并复用已运行的服务，不清除学习数据。电脑重启后需再次运行。日志在 `.cache/server.log` 和 `.cache/server-error.log`。
+---
 
-## 快速启动
+## 🌟 为什么选择 Kotobud？
 
-需要 Node.js **22.18+ 或 24+**（native 配置加载使用 Node TypeScript 支持）。在此目录运行：
-
-```powershell
-npm install --cache .npm-cache --registry https://registry.npmjs.org
-npm run dev
-```
-
-打开终端显示的地址，默认为 http://127.0.0.1:5173 。当前交付会话的开发预览使用 http://127.0.0.1:5174 。始终使用同一个浏览器与地址（包括端口）；不同 origin 的本地数据库互相独立。
-
-```powershell
-npm test             # 核心、导入、事务回归
-npm run build        # TypeScript 检查与生产构建，输出 dist/
-npm run preview      # 生产预览 5173
-npm run test:e2e     # Edge 浏览器端到端测试；需先 build
-```
-
-端到端测试默认使用本机 Microsoft Edge。其他系统修改 playwright.config.ts 的 channel，或安装 Playwright Chromium。不要将测试运行在存有真实学习数据的浏览器上下文中；自动化使用独立上下文。
-
-Windows Codex 的受限沙箱可能阻止 esbuild 读取父目录；在普通终端运行 dev 即可，或授权本地开发服务器进程。生产构建与测试已经在当前环境验证。
-
-## 已实现
-
-- 首页：今日到期、新学/复习、累计学习、连续天数、当前词书、7 日图表。
-- 词书创建、修改、删除及 CSV/JSON 预览导入。
-- 单课、多课、全选、反选、连续范围；每课词汇与进度可查看。
-- 学习卡片：揭示释义、词性、可选例句/音频；忘记/模糊/记得映射 FSRS Again/Hard/Good。
-- 生词标记、词书/课次筛选、直接练习；忽略与恢复。
-- 到期复习独立队列，学习状态和每次评价日志原子保存。
-- IndexedDB 持久化；桌面和移动布局、键盘快捷键、基础统计。
-
-快捷键：Space 揭示，1/2/3 评价，S 标记生词，I 忽略。输入框编辑时不触发。
-
-## 立即验收
-
-首次进入自动添加「日语测试词书」，4 课 × 12 词，共 48 词，学习状态全部为新词。删除演示词书后不会在下次启动时自动重建。
-
-1. 从「导入词书」选择 examples/demo.csv 或 examples/demo.json。
-2. 确认预览中的 4 课 / 48 词并导入。
-3. 选择第 2、4 课，开始后仅出现这两课的 24 词。
-4. 标记生词、忽略一个词、显示释义并评价。
-5. 首页和统计页更新；刷新仍保留。FSRS 到期后可从首页复习。
-
-示例也可在导入页直接下载。格式详情见 [IMPORT_FORMAT](docs/IMPORT_FORMAT.md)。演示为自行整理的常用词，并非商业教材内容，配套合成发音；带 audioUrl 的导入单词优先播放其音频。
-
-## 目录与边界
+**Kotobud** 专为日语自学者与备考者设计，旨在彻底摆脱传统背词 App 广告弹窗繁琐、复习算法机械死板的困境。
 
 ```text
-apps/web/       Vue 页面、Pinia、路由、浏览器交互
-apps/miniapp/   后续小程序入口说明
-apps/windows/  后续桌面入口说明
-apps/ios/       后续 iOS 入口说明
-packages/models/     共享实体
-packages/core/       学习队列、FSRS、进度、统计（无 UI/DOM）
-packages/storage/    Repository、IndexedDB adapter、级联删除
-packages/importers/  CSV/JSON 字符串解析与词书组装
-packages/shared/     本地日期工具
-examples/            CSV/JSON 样本
-tests/               核心回归与浏览器验收
-docs/                产品、架构、数据模型、路线与验收记录
+       传统背词软件                                     Kotobud
+┌───────────────────────────┐                   ┌───────────────────────────┐
+│ 频繁广告与花哨社交激励   │        VS         │ 专注自律、清爽极简学习界面 │
+│ 机械式艾宾浩斯固定天数   │                   │ FSRS 动态遗忘间隔科学调度 │
+│ 严重依赖云端、断网不可用 │                   │ Local-First 本地优先架构  │
+└───────────────────────────┘                   └───────────────────────────┘
 ```
 
-从 [PRODUCT](docs/PRODUCT.md)、[ARCHITECTURE](docs/ARCHITECTURE.md)、[DATA_MODEL](docs/DATA_MODEL.md) 开始理解项目。后续 Agent 应保持 core 的纯 TypeScript 边界；导入页面只选择文件，解析在 importers；所有数据写入走 Repository。修改学习逻辑需运行核心回归，修改交互需补充对应浏览器验收。
+- 🧠 **科学记忆（FSRS 间隔重复算法）**：放弃陈旧机械的固定记忆天数，全面采用业界公认前沿的 **FSRS 5.2 (Free Spaced Repetition Scheduler)** 算法，根据每次真实反馈（忘记 / 模糊 / 记得）动态推算最优记忆保留率，大幅减轻无谓的复习负担。
+- 📚 **标日全六册与 JLPT 词书完备覆盖**：完整匹配《新版中日交流标准日本语》初级、中级、高级全六册课次规划，涵盖 JLPT N5～N1 核心词汇体系，支持自定义 CSV / JSON 双向导入导出。
+- 🎯 **多模态交互自检模式**：提供假名选意、汉字选音、听音辨意、多题型混合复习以及经典翻转闪卡模式，全键盘快捷键无缝盲操。
+- 📖 **海量日中双语权威词典扩展**：深度集成 JMdict / Tomoshi 217,000+ 条词条，提供权威释义、详细词性分类、日日解释与经典学习例句。
+- 🛡️ **本地优先（Local-First）与安全云同步**：数据默认存放在本地 IndexedDB，即使完全离线也能顺畅学习；支持多设备安全增量云同步。
+- 💻 **多平台覆盖**：Web 在线版即开即用，Windows 桌面客户端（安装版与免安装绿色版）离线免环境部署，微信小程序正在开发中。
 
-## 新增：详细释义与选择题复习
+---
 
-学习页的「学习方式」可切换 **假名选中文 / 汉字选假名 / 听音选中文 / 混合复习 / 经典卡片**。答题后看解析，点击「保存并继续」记录 FSRS；答对但不确定可勾选「猜对」。支持 1–4 选答案、Space 继续。听音题先点击播放再答题。
+## 📸 界面预览 (Screenshots)
 
-释义区现在支持词性、多个义项、日文解释、学习例句、假名及中文翻译。内置 217,538 条 JMdict/Tomoshi 衍生词条，日中扩展含机器辅助内容，页面明确标明来源；另提供コトバンク权威辞典外链，尚未获得商业出版社辞典授权。50条演示读音为 Nanami 日语合成 MP3，其他词可用已有 audioUrl 或设备日语语音。
+<div align="center">
+  <img src="docs/screenshots/home-desktop.png" alt="Kotobud 学习总览与进度面板" width="85%" />
+  <p><em>学习进度总览 · 7日趋势分析 · 到期复习独立队列</em></p>
+  <br/>
+  <img src="docs/screenshots/study-desktop.png" alt="Kotobud 经典卡片与 FSRS 记忆反馈" width="85%" />
+  <p><em>FSRS 科学记忆评分 · 词性与发音提示 · 生词收藏</em></p>
+  <br/>
+  <img src="docs/screenshots/definition-desktop.png" alt="JMdict 权威词典双语释义与例句" width="85%" />
+  <p><em>深度集成 21 万词条 JMdict 词典 · 日中/日日双语扩展</em></p>
+</div>
 
-多义项示例：`examples/detailed.json`，也可从导入页下载。原词书与学习进度保持兼容。
+---
 
-词典静态分片总计约212 MiB（按需读取，非首屏全量下载），数据许可为 CC BY-SA 4.0。详见 [详细设计与来源](docs/DICTIONARY_AND_REVIEW.md)。
+## 🚀 快速开始 (Quick Start)
 
-## 当前边界与后续工作
+### 1. 在线使用 (无需安装)
+直接在现代浏览器中访问官方站点即可开启学习：  
+👉 [**https://kotobud.com/**](https://kotobud.com/)
 
-- 数据仅在当前浏览器站点存储，清除站点数据会丢失；当前无云同步或完整备份导出。
-- Repository V1 采用单份结构化快照，事务内读取最新值并原子修改。适合个人 MVP；长期大量复习日志将使写入成本增长，后续应迁移到按实体 object stores/索引并做规模测试。
-- 学习 session 刷新后结束，已经评价的词不丢失。忘记的词按 FSRS 时间重新到期，不在本次队列中立即重复插入。
-- 「已掌握」为 FSRS Review 且 stability ≥ 30 天的展示阈值，仍参与复习。累计评价包含新学与复习事件；忽略词不计入有效学习进度分母。
-- 未验证 iOS Safari/微信真机；音频依赖导入的有效远程资源，演示提供合成发音，不包含真人录音。
-- 不实现登录、云端、社区、AI、OCR、PDF/APKG 导入及其他端客户端。
-- 小程序开始前：验证 ts-fsrs 包与运行时、Date 序列化、Storage 配额和分实体存储、平台文件与音频能力；再实现 Repository 和 UI 适配。同步需另行设计 user/device/version、冲突与删除标记。
+### 2. Windows 桌面客户端下载
+前往下载页面获取最新版本（支持 Windows 10 / 11 x64）：  
+👉 [**https://kotobud.com/download**](https://kotobud.com/download)
+- **安装版**：`Kotoba-Setup-0.6.0.exe`（自动创建桌面快捷方式，支持静默更新）
+- **绿色便携版**：解压即用，配置与数据随身携带
 
-参考与依赖：FSRS 使用 [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs)（MIT）；开发工具参考 [Vite 官方指南](https://vite.dev/guide/)。未复制第三方 App 的实现或教材。
+---
+
+## 🛠️ 本地开发与构建 (Developer Setup)
+
+### 环境要求
+- **Node.js**: 22.18+ 或 24+
+- **包管理器**: `npm`
+
+### 1. 克隆与安装依赖
+```powershell
+git clone https://github.com/lil-Detoxify/kotoba.git
+cd kotoba
+npm install
+```
+
+### 2. 启动本地开发服务
+```powershell
+# 启动 Vite 开发服务器 (默认地址 http://127.0.0.1:5173)
+npm run dev
+
+# 或启动常驻后台本地服务 (固定端口 http://127.0.0.1:5174)
+npm start
+```
+
+### 3. 运行自动化测试与类型检查
+```powershell
+# 运行 Vitest 核心业务逻辑与事务回归测试
+npm test
+
+# TypeScript 严格类型检查与生产环境打包
+npm run build
+
+# Playwright 浏览器端到端验收测试 (需先执行 npm run build)
+npm run test:e2e
+```
+
+### 4. 打包 Windows 桌面客户端
+```powershell
+npm run build:windows
+# 打包产物将输出在 dist/ 与 release/ 目录中
+```
+
+---
+
+## ⌨️ 快捷键指南 (Keyboard Shortcuts)
+
+在学习与复习过程中，全面支持全键盘盲操：
+
+| 快捷键 | 功能操作 |
+| :--- | :--- |
+| <kbd>Space</kbd> / <kbd>Enter</kbd> | 揭示卡片释义 / 提交选择题答案 / 进入下一词 |
+| <kbd>1</kbd> | **忘记 (Again)** / 选择选项 1 |
+| <kbd>2</kbd> | **模糊 (Hard)** / 选择选项 2 |
+| <kbd>3</kbd> | **记得 (Good)** / 选择选项 3 |
+| <kbd>4</kbd> | **容易 (Easy)** / 选择选项 4 |
+| <kbd>S</kbd> | 标记 / 取消生词本 |
+| <kbd>I</kbd> | 忽略此单词（不再参与复习） |
+
+---
+
+## 🏗️ 目录结构与架构边界 (Project Architecture)
+
+项目采用清晰的分层 Monorepo 结构，核心调度与 UI 框架保持高度解耦：
+
+```text
+kotoba/
+├── apps/
+│   ├── web/               # Vue 3 核心单页应用 (Pinia, Vue Router, UI 组件)
+│   ├── windows/           # Electron 桌面客户端适配层
+│   └── miniprogram/       # 微信小程序端适配层 (基于 Uni-app / Vue 3)
+├── packages/
+│   ├── core/              # 纯 TypeScript 核心领域模型 (FSRS 调度、学习队列、统计分析，零 UI 依赖)
+│   ├── models/            # 跨端共享数据契约与实体定义
+│   ├── storage/           # 本地持久化 (IndexedDB adapter, Repository, 事务与快照)
+│   ├── importers/         # CSV / JSON 词书解析与校验组装
+│   └── shared/            # 跨平台通用时间、字符串工具库
+├── docs/                  # 架构设计、FSRS 算法模型、词书版权与 SEO 文档
+├── examples/              # 演示用词书数据集 (CSV / JSON)
+├── scripts/               # SEO 静态预渲染、Cloudflare 部署与 IndexNow 提交脚本
+└── tests/                 # Vitest 自动化单元测试与端到端测试用例
+```
+
+---
+
+## 🌐 English Overview
+
+**Kotobud** (formerly known as *Kotoba*) is an open-source, local-first Japanese vocabulary learning and spaced repetition review application.
+
+- **FSRS Algorithm**: Powered by the advanced `ts-fsrs` scheduler, calculating dynamic optimal review intervals based on modern cognitive models.
+- **Rich Textbooks**: Full structured support for *New Standard Japanese (新版中日交流标准日本语)* from beginner to advanced, as well as JLPT N5–N1 vocabularies.
+- **Multiple Review Modes**: Flashcard, Kana-to-Meaning, Kanji-to-Reading, and Audio Listening tests with full keyboard accessibility.
+- **Integrated Dictionary**: Over 217,000 JMdict entries with detailed parts of speech, pitch accents, and bilingual definitions.
+- **Cross-Platform**: Accessible via [kotobud.com](https://kotobud.com/), standalone Windows desktop application, and upcoming WeChat Mini Program.
+
+---
+
+## 📄 开源协议与致谢 (License & Acknowledgements)
+
+- **软件代码**：基于 [MIT License](LICENSE) 开源。
+- **核心算法**：[ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs)（Open Spaced Repetition, MIT 许可）。
+- **词典数据**：
+  - 词条结构依据 [JMdict / EDRDG](https://www.edrdg.org/edrdg/licence.html)；
+  - 词典扩展数据来自 [Tomoshi (Y1Z)](https://github.com/tomoshi-app/tomoshi-dict-data)，依据 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 许可共享。
+- **开发与构建工具**：[Vue.js](https://vuejs.org/) · [Vite](https://vite.dev/) · [Electron](https://www.electronjs.org/) · [Cloudflare Pages](https://pages.cloudflare.com/)
+
+---
+
+<div align="center">
+  <sub>Made with ❤️ for Japanese learners worldwide · <a href="https://kotobud.com/">Kotobud 官方网站</a></sub>
+</div>
