@@ -447,7 +447,7 @@ function renderHeader(activePath = '/') {
     <header class="site-header">
       <div class="container nav-inner">
         <a href="/" class="brand-logo" title="Kotobud 日语背词与复习工具">
-          <span class="brand-mark">言</span>
+          <span class="brand-mark" aria-label="Kotobud">言</span>
           <div>
             <span>Kotobud</span>
             <small>每天，认识一点日语。</small>
@@ -478,11 +478,11 @@ function renderFooter() {
         <div class="footer-grid">
           <div class="footer-col">
             <div class="brand-logo" style="margin-bottom: 12px;">
-              <span class="brand-mark" style="width: 32px; height: 35px; font-size: 20px;">言</span>
+              <span class="brand-mark" style="width: 32px; height: 35px; font-size: 20px;" aria-label="Kotobud">言</span>
               <span>Kotobud</span>
             </div>
             <p style="font-size: 13px; line-height: 1.7; max-width: 320px; margin-bottom: 14px;">
-              每天，认识一点日语。Kotobud 是一款专注纯粹的单机日语学习手帖，内置新版标准日本语全六册词书与现代 FSRS 科学间隔重复复习算法。
+              每天，认识一点日语。Kotobud 是一款专注高效的日语背词与复习工具（Japanese vocabulary learning and review app），内置新版标准日本语全六册词书与现代 FSRS 科学间隔重复算法。
             </p>
             <p style="font-size: 12px; color: var(--text-light);">
               ことばを、少しずつ。<br>持之以恒，终有回响。
@@ -491,18 +491,18 @@ function renderFooter() {
           <div class="footer-col">
             <h4>产品与下载</h4>
             <ul>
-              <li><a href="/app/">Web 在线学习版</a></li>
+              <li><a href="/app/">Web 在线背词版</a></li>
               <li><a href="/download">Windows 桌面端安装包</a></li>
-              <li><a href="/download">Windows 绿色便携版</a></li>
-              <li><a href="/features">词书与算法特性</a></li>
-              <li><a href="/changelog">版本历史 (v0.6.0)</a></li>
+              <li><a href="/download#portable">Windows 绿色便携版</a></li>
+              <li><a href="/features">标日词书与 FSRS 算法特性</a></li>
+              <li><a href="/changelog">版本更新日志 (v0.6.0)</a></li>
             </ul>
           </div>
           <div class="footer-col">
             <h4>学习与指南</h4>
             <ul>
               <li><a href="/guide">标日六册学习路径</a></li>
-              <li><a href="/guide#fsrs">FSRS 间隔复习打分法</a></li>
+              <li><a href="/guide#fsrs">FSRS 间隔复习打分准则</a></li>
               <li><a href="/guide#habits">高效背词记忆法则</a></li>
               <li><a href="/guide#sync">多端云同步说明</a></li>
             </ul>
@@ -544,7 +544,7 @@ function renderHtmlDocument({
   <meta name="theme-color" content="#f7f8f4">
   <title>${title}</title>
   <meta name="description" content="${description}">
-  <meta name="keywords" content="Kotobud, 日语背词, 日语学习, 标日词汇, 标准日本语, FSRS, 日语单词, 日语复习, JLPT, 日语词典">
+  <meta name="keywords" content="Kotobud, 日语背词, 日语背词软件, 日语学习, 标日词汇, 标准日本语, FSRS, 日语单词, 日语复习, JLPT背词, Japanese vocabulary learning">
   <link rel="canonical" href="${canonicalUrl}">
   <link rel="icon" type="image/png" href="/icon.png">
   <link rel="manifest" href="/manifest.json">
@@ -553,10 +553,12 @@ function renderHtmlDocument({
   <!-- Open Graph / Social -->
   <meta property="og:site_name" content="Kotobud">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:url" content="${canonicalUrl}">
   <meta property="og:image" content="${DOMAIN}/icon.png">
+  <meta property="og:image:alt" content="Kotobud 日语背词与复习工具">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
@@ -615,7 +617,7 @@ ${getSharedStyles()}
 // 1. Homepage
 function generateHomePage() {
   const title = 'Kotobud – 日语背词与复习工具 | Web & Windows';
-  const description = 'Kotobud 是一款专注高效的日语背词与复习工具。内置《新版中日交流标准日本语》初级、中级、高级全六册官方词书与现代 FSRS 智能间隔重复算法，支持假名、汉字、听音自适应测验、生词本管理与多端云同步。支持浏览器在线使用与 Windows 桌面版。';
+  const description = 'Kotobud 是一款专注高效的日语背词与复习工具（Japanese vocabulary learning and review app）。内置《新版中日交流标准日本语》初级、中级、高级全六册官方词书与现代 FSRS 智能间隔重复算法，支持假名、汉字、听音自适应测验、生词本管理与多端云同步。支持浏览器在线使用与 Windows 桌面客户端。';
   const canonicalUrl = `${DOMAIN}/`;
 
   const jsonLd = {
@@ -625,13 +627,25 @@ function generateHomePage() {
         "@type": "SoftwareApplication",
         "@id": `${DOMAIN}/#software`,
         "name": "Kotobud",
+        "alternateName": ["Kotobud 日语背词软件", "Kotobud App"],
         "url": DOMAIN,
         "applicationCategory": "EducationalApplication",
+        "applicationSubCategory": "Language Learning Application",
         "operatingSystem": "Windows 10, Windows 11, Web Browser",
         "softwareVersion": "0.6.0",
         "description": description,
         "downloadUrl": `${DOMAIN}/download`,
         "image": `${DOMAIN}/icon.png`,
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "featureList": [
+          "新版中日交流标准日本语初中高全六册词书",
+          "FSRS 现代科学间隔重复复习调度算法",
+          "假名、汉字、中文释义与真人口播多模式测验",
+          "易混淆与顽固生词专属收藏本攻坚",
+          "Local-First 本地优先架构与断网无忧学习",
+          "Cloudflare D1 跨端增量数据云同步",
+          "提供 Web 浏览器免安装版与 Windows 桌面客户端"
+        ],
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -643,13 +657,25 @@ function generateHomePage() {
         "@id": `${DOMAIN}/#organization`,
         "name": "Kotobud",
         "url": DOMAIN,
-        "logo": `${DOMAIN}/icon.png`
+        "logo": `${DOMAIN}/icon.png`,
+        "description": "Kotobud 官方开发团队，致力于打造专注自律、干净纯粹的现代化日语背词与科学复习工具。",
+        "sameAs": [
+          "https://github.com/lil-Detoxify/kotoba"
+        ]
       },
       {
         "@type": "WebSite",
         "@id": `${DOMAIN}/#website`,
         "name": "Kotobud",
+        "alternateName": [
+          "kotobud.com",
+          "Kotobud 日语",
+          "Kotobud 日语背词",
+          "Kotobud Japanese Vocabulary"
+        ],
         "url": DOMAIN,
+        "inLanguage": "zh-CN",
+        "description": "Kotobud 官方网站，提供新版标准日本语全六册课次词书与科学 FSRS 间隔复习背词工具。",
         "publisher": { "@id": `${DOMAIN}/#organization` }
       }
     ]
@@ -659,11 +685,11 @@ function generateHomePage() {
     <section class="hero-section">
       <div class="container">
         <div class="badge-pill">
-          <span>🌿</span> 纯粹自律的日语背词与学习手帖 · 现已支持 Windows 桌面版
+          <span>🌿</span> 纯粹自律的日语背词与复习手帖 · 现已支持 Web 在线与 Windows 桌面版
         </div>
         <h1 class="hero-title">Kotobud：日语背词与复习工具</h1>
         <p class="hero-desc">
-          一词一句，慢慢积累。集成《新版中日交流标准日本语》初级、中级、高级全六册课次词书，结合最新 FSRS 科学间隔重复算法，帮助日语学习者建立扎实的词汇网络与听音记忆。
+          Kotobud 是一款专注高效的日语单词学习与复习软件（Japanese vocabulary learning and review app）。完整收录《新版中日交流标准日本语》初级、中级、高级全六册官方词书，深度融合前沿 FSRS 科学间隔重复算法，提供假名、汉字与听音多维度自适应测验，帮助学习者攻克“背了就忘、假名汉字脱节”的记忆难题。
         </p>
         <div class="cta-group">
           <a href="/app/" class="btn btn-primary btn-lg" id="hero-primary-btn">
@@ -684,10 +710,45 @@ function generateHomePage() {
       </div>
     </section>
 
+    <section class="content-section" style="padding-top: 0;">
+      <div class="container">
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-icon">🎯</div>
+            <h3>Kotobud 是什么？</h3>
+            <p>
+              Kotobud 是一款现代化、纯粹克制的日语背词与间隔重复复习工具。摒弃繁琐花哨的社交裂变与开屏广告，回归“看词、识字、听音、记忆”的自律学习手帖本质。
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">👥</div>
+            <h3>Kotobud 面向谁？</h3>
+            <p>
+              专为《新标日》自学读者、日语五十音进阶者、JLPT（N5/N4/N3/N2/N1）备考考生，以及希望通过科学记忆模型告别死记硬背的日语学习者量身设计。
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">💡</div>
+            <h3>解决什么学习痛点？</h3>
+            <p>
+              彻底解决传统背词工具广告繁多、打卡干扰、机械式生硬重复已熟词汇，以及“认得汉字却读不出假名、会读假名却听不出真音”的形音义割裂痛点。
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>提供哪些核心能力？</h3>
+            <p>
+              标日全六册课次词库、FSRS 自适应遗忘曲线算法、假名/汉字/听音自测流、个人生词本攻坚，并支持 Local-First 离线背词与多端云同步。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="content-section">
       <div class="container">
         <div class="section-header">
-          <h2>全套官方标日词书与科学记忆体系</h2>
+          <h2>Kotobud 核心功能与科学背词体系</h2>
           <p>从五十音到 N1 级别，为每一个课次定制高效的复习与检测路径</p>
         </div>
         <div class="grid-3">
@@ -702,6 +763,9 @@ function generateHomePage() {
               <li>中级上下册：攻克 N3/N2 进阶语法与阅读词</li>
               <li>高级上下册：冲刺 N1 商务、新闻与学术词汇</li>
             </ul>
+            <div style="margin-top: 14px;">
+              <a href="/features" style="font-size: 13px; color: var(--green); font-weight: 600;">深入了解标日全六册划分 →</a>
+            </div>
           </div>
           <div class="card">
             <div class="card-icon">🧠</div>
@@ -714,6 +778,9 @@ function generateHomePage() {
               <li>Again (重来) / Hard (困难) / Good (良好) 三档评分</li>
               <li>大幅减少重复学习已掌握单词的疲劳感</li>
             </ul>
+            <div style="margin-top: 14px;">
+              <a href="/guide#fsrs" style="font-size: 13px; color: var(--green); font-weight: 600;">了解 FSRS 三档打分评分标准 →</a>
+            </div>
           </div>
           <div class="card">
             <div class="card-icon">🎧</div>
@@ -726,6 +793,9 @@ function generateHomePage() {
               <li>听音辨析：真人发音听力抓词</li>
               <li>反向测试：看中文释义回忆日文拼写</li>
             </ul>
+            <div style="margin-top: 14px;">
+              <a href="/features" style="font-size: 13px; color: var(--green); font-weight: 600;">查看自适应测验功能详情 →</a>
+            </div>
           </div>
           <div class="card">
             <div class="card-icon">⭐</div>
@@ -733,6 +803,9 @@ function generateHomePage() {
             <p>
               随时将易混淆、难记的单词加入生词本。支持按难词标记、忽略熟悉词、错题重练等灵活筛选，让精力聚焦在提分刀刃上。
             </p>
+            <div style="margin-top: 14px;">
+              <a href="/guide#habits" style="font-size: 13px; color: var(--green); font-weight: 600;">查阅高效背词习惯指南 →</a>
+            </div>
           </div>
           <div class="card">
             <div class="card-icon">☁️</div>
@@ -740,13 +813,19 @@ function generateHomePage() {
             <p>
               采用 Local-First 本地优先架构，断网也能在离线状态下顺畅背词。联网后自动增量合并多设备学习进度，Web 端与桌面端无缝协同。
             </p>
+            <div style="margin-top: 14px;">
+              <a href="/download" style="font-size: 13px; color: var(--green); font-weight: 600;">下载 Windows 桌面端或体验 Web 版 →</a>
+            </div>
           </div>
           <div class="card">
             <div class="card-icon">📖</div>
-            <h3>权威词典扩展与例句</h3>
+            <h3>权威词典扩展与品牌初心</h3>
             <p>
-              内置详尽的词典释义扩展、词性剖析与日汉对照例句，词汇放在真实语境中理解，知其然更知其所以然。
+              内置详尽的词典释义扩展、词性剖析与日汉对照例句，词汇放在真实语境中理解；遵循 JMdict / EDICT 开源协议，纯净无私。
             </p>
+            <div style="margin-top: 14px;">
+              <a href="/about" style="font-size: 13px; color: var(--green); font-weight: 600;">了解 Kotobud 品牌故事与开源协议 →</a>
+            </div>
           </div>
         </div>
       </div>
@@ -755,7 +834,7 @@ function generateHomePage() {
     <section class="content-section" style="background: #edf2e8; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
       <div class="container">
         <div class="section-header">
-          <h2>为什么坚持使用 Kotobud？</h2>
+          <h2>为什么选择 Kotobud 学习日语单词？</h2>
           <p>一份安静、克制、纯粹的日语学习手帖，尊重你的时间和注意力</p>
         </div>
         <div class="grid-3">
@@ -779,12 +858,15 @@ function generateHomePage() {
       <div class="container">
         <div class="highlight-box">
           <div>
-            <h3>准备好开始今日份的日语学习了吗？</h3>
+            <h3>准备好使用 Kotobud 开始今日份的日语背词了吗？</h3>
             <p>无论你是刚刚掌握五十音图的新手，还是正在备战 JLPT N2/N1 的进阶者，Kotobud 都将成为你最长情的单词伙伴。</p>
+            <div style="margin-top: 8px;">
+              <a href="/guide" style="font-size: 13px; color: var(--green); text-decoration: underline;">新手先读：标日背词与复习实用指南 →</a>
+            </div>
           </div>
           <div style="display: flex; gap: 12px; flex-shrink: 0;">
-            <a href="/app/" class="btn btn-primary btn-lg">进入在线背词</a>
-            <a href="/download" class="btn btn-lg">下载客户端</a>
+            <a href="/app/" class="btn btn-primary btn-lg">进入在线背词 (Web 版)</a>
+            <a href="/download" class="btn btn-lg">下载 Windows 客户端</a>
           </div>
         </div>
       </div>
@@ -803,25 +885,48 @@ function generateHomePage() {
 
 // 2. Features Page
 function generateFeaturesPage() {
-  const title = '功能特性 - Kotobud 日语背词与复习工具';
-  const description = '深入了解 Kotobud 的功能特性：新版中日交流标准日本语初中高六册课次词书、FSRS 科学间隔重复复习算法、假名汉字听音多维度测验、生词本集中攻坚与多端云同步。';
+  const title = 'Kotobud 功能介绍 – 日语单词学习与 FSRS 科学复习特性';
+  const description = '深入了解 Kotobud 的功能特性：新版中日交流标准日本语初中高全六册课次词书、FSRS 科学间隔重复复习算法、假名汉字听音多维度测验、生词本集中攻坚与多端云同步。';
   const canonicalUrl = `${DOMAIN}/features`;
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": title,
-    "url": canonicalUrl,
-    "description": description,
-    "isPartOf": { "@type": "WebSite", "name": "Kotobud", "url": DOMAIN }
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${DOMAIN}/features#webpage`,
+        "name": title,
+        "url": canonicalUrl,
+        "description": description,
+        "isPartOf": { "@type": "WebSite", "@id": `${DOMAIN}/#website`, "name": "Kotobud", "url": DOMAIN }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${DOMAIN}/features#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": `${DOMAIN}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "功能特性",
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
   };
 
   const bodyContent = `
     <div class="container" style="padding-top: 48px;">
       <div class="section-header">
         <div class="badge-pill">深入了解产品</div>
-        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 核心功能特性</h1>
-        <p>为日语学习者量身定制的课次规划、记忆算法与测试闭环</p>
+        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 核心功能特性：日语背词与科学记忆体系</h1>
+        <p>为日语自学者与考级读者量身定制的课次规划、记忆算法与测试闭环</p>
       </div>
 
       <div class="article-body">
@@ -835,6 +940,9 @@ function generateFeaturesPage() {
           <li><strong>中级上/下册</strong>：篇章阅读核心词、长难复合动词、副词固定搭配，对应 JLPT N3/N2 水平。</li>
           <li><strong>高级上/下册</strong>：涵盖新闻政经、文学评论、职场敬语高级表达，直通 JLPT N1。</li>
         </ul>
+        <p style="margin-top: 10px;">
+          想了解如何在各阶段制定科学学习进度？请参阅 <a href="/guide" style="color: var(--green); text-decoration: underline; font-weight: 600;">Kotobud 标日六册教材背词学习规划指南 →</a>。
+        </p>
 
         <h2>2. FSRS 智能间隔重复算法</h2>
         <p>
@@ -849,7 +957,7 @@ function generateFeaturesPage() {
           <li><strong>可提取性 (Retrievability, R)</strong>：当前时刻你在无提示下成功回忆起该单词的概率。</li>
         </ul>
         <div class="quote-block">
-          通过针对每个单词打分（Again 重来、Hard 困难、Good 良好），系统动态校准你的个人遗忘参数，将每天无效的重复复习时间缩短 30% 以上。
+          通过针对每个单词打分（Again 重来、Hard 困难、Good 良好），系统动态校准你的个人遗忘参数，将每天无效的重复复习时间缩短 30% 以上。详细评分准则参见 <a href="/guide#fsrs" style="color: var(--green); text-decoration: underline; font-weight: 600;">FSRS 算法三档打分详解 →</a>。
         </div>
 
         <h2>3. 假名、汉字与听音多维度测验</h2>
@@ -865,7 +973,7 @@ function generateFeaturesPage() {
 
         <h2>4. 专属生词本与复习清单</h2>
         <p>
-          背词过程中遇到特别顽固、多次遗忘的词汇？一键点亮星标收藏至生词本。你可以在生词本中进行针对性单练，攻克之后再一键移出。
+          背词过程中遇到特别顽固、多次遗忘的词汇？一键点亮星标收藏至生词本。你可以在生词本中进行针对性单练，攻克之后再一键移出。建议配合 <a href="/guide#habits" style="color: var(--green); text-decoration: underline; font-weight: 600;">高效背词习惯法 →</a> 每日少量高频集中清理。
         </p>
 
         <h2>5. 本地优先（Local-First）与多端数据安全</h2>
@@ -875,13 +983,14 @@ function generateFeaturesPage() {
         <ul>
           <li>学习记录和进度第一时间保存在设备本地（IndexedDB），断网环境下体验丝滑顺畅。</li>
           <li>登录账号后，本地数据通过 Cloudflare D1 数据库执行增量同步，采用最后写入者胜（LWW）与冲突防御算法，确保学习数据零丢失。</li>
-          <li>提供纯正 Windows 桌面端（Electron 原生沙箱），免受网页浏览器标签页误关困扰。</li>
+          <li>提供纯正 Windows 桌面端（Electron 原生沙箱），免受网页浏览器标签页误关困扰。支持在 <a href="/download" style="color: var(--green); text-decoration: underline; font-weight: 600;">Windows 客户端下载页 →</a> 获取免安装便携版。</li>
         </ul>
       </div>
 
-      <div style="text-align: center; margin-bottom: 60px;">
-        <a href="/app/" class="btn btn-primary btn-lg">立即体验 Kotobud</a>
-        <a href="/download" class="btn btn-lg" style="margin-left: 12px;">下载桌面端</a>
+      <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="/app/" class="btn btn-primary btn-lg">进入 Kotobud 在线学习</a>
+        <a href="/download" class="btn btn-lg">下载 Windows 客户端</a>
+        <a href="/guide" class="btn btn-lg">查看使用指南</a>
       </div>
     </div>
   `;
@@ -898,32 +1007,56 @@ function generateFeaturesPage() {
 
 // 3. Download Page
 function generateDownloadPage() {
-  const title = 'Windows 客户端与应用下载 - Kotobud';
-  const description = '下载 Kotobud Windows 桌面版客户端（支持 Windows 10/11 64 位），提供安装版（Setup）与免安装绿色便携版（Portable）。无需复杂配置，解压即用，支持离线词书与多端云同步。也可以直接使用 Web 在线版。';
+  const title = '下载 Kotobud – Windows 日语背词软件客户端 | 安装版与便携版';
+  const description = '下载 Kotobud Windows 桌面端客户端（支持 Windows 10/11 64 位），提供安装版（Setup）与免安装绿色便携版（Portable）。内置标日全套词书与 FSRS 记忆算法，支持离线背词与多端云同步。亦可直接使用 Web 在线学习版。';
   const canonicalUrl = `${DOMAIN}/download`;
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Kotobud Windows 桌面端",
-    "url": canonicalUrl,
-    "applicationCategory": "EducationalApplication",
-    "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-    "softwareVersion": "0.6.0",
-    "description": description,
-    "downloadUrl": `${DOMAIN}/downloads/Kotoba-0.6.0-Windows-x64-Setup.exe`,
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "CNY"
-    }
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${DOMAIN}/download#software`,
+        "name": "Kotobud Windows 桌面客户端",
+        "url": canonicalUrl,
+        "applicationCategory": "EducationalApplication",
+        "applicationSubCategory": "Language Learning Application",
+        "operatingSystem": "Windows 10, Windows 11 (64-bit)",
+        "softwareVersion": "0.6.0",
+        "description": description,
+        "downloadUrl": `${DOMAIN}/downloads/Kotoba-0.6.0-Windows-x64-Setup.exe`,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "CNY"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${DOMAIN}/download#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": `${DOMAIN}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "客户端下载",
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
   };
 
   const bodyContent = `
     <div class="container" style="padding-top: 48px;">
       <div class="section-header">
         <div class="badge-pill">官方下载通道</div>
-        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 客户端与版本下载</h1>
+        <h1 class="hero-title" style="margin-bottom: 12px;">下载 Kotobud 客户端：Windows 桌面版与 Web 在线学习</h1>
         <p>无论在桌面端大屏专注背词，还是在浏览器随时随地学习，Kotobud 都能完美胜任</p>
       </div>
 
@@ -937,6 +1070,7 @@ function generateDownloadPage() {
               <div><strong>版本号：</strong>v0.6.0 (x64)</div>
               <div><strong>系统要求：</strong>Windows 10 (1809+) / Windows 11</div>
               <div><strong>文件大小：</strong>约 70MB (离线辞书与资源按需云端缓存)</div>
+              <div><strong>发布文件名：</strong>Kotoba-0.6.0-Windows-x64-Setup.exe</div>
             </div>
           </div>
           <a href="/downloads/Kotoba-0.6.0-Windows-x64-Setup.exe" class="btn btn-primary btn-lg" style="width: 100%;">
@@ -944,7 +1078,7 @@ function generateDownloadPage() {
           </a>
         </div>
 
-        <div class="download-card">
+        <div class="download-card" id="portable">
           <div>
             <div class="card-icon" style="margin: 0 auto 18px;">💼</div>
             <h3>Windows 绿色便携版 (Portable)</h3>
@@ -953,6 +1087,7 @@ function generateDownloadPage() {
               <div><strong>版本号：</strong>v0.6.0 (x64 Portable)</div>
               <div><strong>特性：</strong>单文件直接运行，数据目录自包含</div>
               <div><strong>文件大小：</strong>约 68MB</div>
+              <div><strong>发布文件名：</strong>Kotoba-0.6.0-Windows-x64-Portable.exe</div>
             </div>
           </div>
           <a href="/downloads/Kotoba-0.6.0-Windows-x64-Portable.exe" class="btn btn-lg" style="width: 100%;">
@@ -987,8 +1122,19 @@ function generateDownloadPage() {
 
         <h3>3. 桌面端如何与手机/网页端同步学习记录？</h3>
         <p>
-          在 Windows 客户端右上角点击“登录并开启云同步”，使用你的邮箱接收验证码完成登录。随后在手机或电脑浏览器中登录同一个账号，两端的数据便会自动保持一致。
+          在 Windows 客户端右上角点击“登录并开启云同步”，使用你的邮箱接收验证码完成登录。随后在手机或电脑浏览器中登录同一个账号，两端的数据便会自动保持一致。详细步骤请参考 <a href="/guide#sync" style="color: var(--green); text-decoration: underline; font-weight: 600;">多端数据同步与备份指南 →</a>。
         </p>
+
+        <h3>4. 关于发布包文件名命名说明</h3>
+        <p>
+          安装包与便携版文件名保留为 <code>Kotoba-0.6.0-Windows-x64-...</code>，继承自产品技术立项早期的代码代号，为 Kotobud v0.6.0 官方团队唯一的正版二进制分发文件。更多演进历史请阅读 <a href="/about#brand" style="color: var(--green); text-decoration: underline;">Kotobud 品牌命名由来 →</a>，技术特性请见 <a href="/changelog" style="color: var(--green); text-decoration: underline;">版本更新日志 →</a>。
+        </p>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="/app/" class="btn btn-primary btn-lg">打开在线背词</a>
+        <a href="/features" class="btn btn-lg">查看功能特性</a>
+        <a href="/guide" class="btn btn-lg">查看学习指南</a>
       </div>
     </div>
   `;
@@ -1005,24 +1151,47 @@ function generateDownloadPage() {
 
 // 4. About Page
 function generateAboutPage() {
-  const title = '关于 Kotobud - 纯粹的日语背词工具与辞书开源说明';
-  const description = '了解 Kotobud 的初心与产品故事：为什么做一款没有广告的纯粹日语背词工具，从代码名 Kotoba 到正式品牌 Kotobud 的演化，词库来源与开源辞书协议声明（JMdict / EDICT / Kanjidic）。';
+  const title = '关于 Kotobud – 日语词汇学习工具的产品初心与品牌介绍';
+  const description = '了解 Kotobud 的初心与产品故事：为什么做一款没有广告与弹窗骚扰的纯粹日语背词工具，从代码名 Kotoba 到正式品牌 Kotobud 的演化含义，词库来源与开源辞书协议声明（JMdict / EDICT / Kanjidic）。';
   const canonicalUrl = `${DOMAIN}/about`;
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "name": title,
-    "url": canonicalUrl,
-    "description": description,
-    "isPartOf": { "@type": "WebSite", "name": "Kotobud", "url": DOMAIN }
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${DOMAIN}/about#webpage`,
+        "name": title,
+        "url": canonicalUrl,
+        "description": description,
+        "isPartOf": { "@type": "WebSite", "@id": `${DOMAIN}/#website`, "name": "Kotobud", "url": DOMAIN }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${DOMAIN}/about#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": `${DOMAIN}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "关于产品",
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
   };
 
   const bodyContent = `
     <div class="container" style="padding-top: 48px;">
       <div class="section-header">
         <div class="badge-pill">产品初心与故事</div>
-        <h1 class="hero-title" style="margin-bottom: 12px;">关于 Kotobud：打造纯粹的日语学习手帖</h1>
+        <h1 class="hero-title" style="margin-bottom: 12px;">关于 Kotobud：打造纯粹克制的日语学习手帖</h1>
         <p>厌倦了浮躁的社交打卡与算法推荐，重回安安静静背单词的本质</p>
       </div>
 
@@ -1041,7 +1210,7 @@ function generateAboutPage() {
           我们希望有一款工具，它就像一本纸质的日语学习手帖：<strong>干净、纯粹、温润，打开就背，背完就走，不打扰，但足够高效。</strong>
         </p>
         <p>
-          于是有了 Kotobud。
+          于是有了 Kotobud。它全面融合了 <a href="/features" style="color: var(--green); text-decoration: underline;">《新标日》全六册课次词书与 FSRS 记忆算法</a>，支持离线背词与多端云同步。
         </p>
 
         <h2 id="brand">品牌名称的演进：从 Kotoba 到 Kotobud</h2>
@@ -1082,9 +1251,11 @@ function generateAboutPage() {
         </ul>
       </div>
 
-      <div style="text-align: center; margin-bottom: 60px;">
+      <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <a href="/app/" class="btn btn-primary btn-lg">进入 Kotobud 在线学习</a>
-        <a href="/guide" class="btn btn-lg" style="margin-left: 12px;">查看学习指南</a>
+        <a href="/features" class="btn btn-lg">查看功能特性</a>
+        <a href="/download" class="btn btn-lg">下载客户端</a>
+        <a href="/guide" class="btn btn-lg">查看学习指南</a>
       </div>
     </div>
   `;
@@ -1101,23 +1272,46 @@ function generateAboutPage() {
 
 // 5. Guide Page
 function generateGuidePage() {
-  const title = '日语背词学习指南与 FSRS 复习手册 - Kotobud';
-  const description = 'Kotobud 官方日语背词与复习实用指南：新标日教材六册学习规划（N5到N1）、FSRS 算法三档评分（Again/Hard/Good）如何科学选择、如何利用碎片时间对抗遗忘曲线。';
+  const title = 'Kotobud 使用指南 – 标日词汇背诵与 FSRS 间隔复习方法';
+  const description = 'Kotobud 官方日语背词与复习实用指南：新标日教材六册学习规划（N5到N1）、FSRS 算法三档评分（Again/Hard/Good）如何科学选择、如何利用碎片时间对抗遗忘曲线与建立长期记忆。';
   const canonicalUrl = `${DOMAIN}/guide`;
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": title,
-    "description": description,
-    "url": canonicalUrl
+    "@graph": [
+      {
+        "@type": "HowTo",
+        "@id": `${DOMAIN}/guide#howto`,
+        "name": title,
+        "description": description,
+        "url": canonicalUrl
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${DOMAIN}/guide#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": `${DOMAIN}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "使用指南",
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
   };
 
   const bodyContent = `
     <div class="container" style="padding-top: 48px;">
       <div class="section-header">
         <div class="badge-pill">学习指南与方法论</div>
-        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 日语背词与复习实用指南</h1>
+        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 日语背词使用指南：教材规划与 FSRS 记忆法</h1>
         <p>掌握正确的单词记忆法则与 FSRS 算法配合技巧，事半功倍学日语</p>
       </div>
 
@@ -1144,6 +1338,9 @@ function generateGuidePage() {
             攻克抽象思辨、学术评论与政经用词。重点关注四字熟语与敬语高频词。
           </li>
         </ul>
+        <p style="margin-top: 12px;">
+          想了解各册教材在软件中的收录分布？请查看 <a href="/features" style="color: var(--green); text-decoration: underline; font-weight: 600;">Kotobud 标日词库与核心功能特性 →</a>。
+        </p>
 
         <h2 id="fsrs">二、FSRS 算法复习评分标准详解</h2>
         <p>
@@ -1179,13 +1376,14 @@ function generateGuidePage() {
 
         <h2 id="sync">四、多端学习与数据同步技巧</h2>
         <p>
-          在公司或自习室，打开 Windows 桌面版专心复习；在通勤途中或床上，用手机 Safari/Chrome 登录同个账号。只要网络畅通，学习事件会在后台静默完成同步。
+          在公司或自习室，打开 <a href="/download" style="color: var(--green); text-decoration: underline;">Windows 桌面客户端</a> 专心复习；在通勤途中或床上，用手机 Safari/Chrome 登录同个账号。只要网络畅通，学习事件会在后台静默完成同步。
         </p>
       </div>
 
-      <div style="text-align: center; margin-bottom: 60px;">
+      <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <a href="/app/" class="btn btn-primary btn-lg">现在开始今日复习</a>
-        <a href="/features" class="btn btn-lg" style="margin-left: 12px;">深入了解 FSRS</a>
+        <a href="/features" class="btn btn-lg">深入了解功能特性</a>
+        <a href="/download" class="btn btn-lg">下载 Windows 客户端</a>
       </div>
     </div>
   `;
@@ -1202,24 +1400,47 @@ function generateGuidePage() {
 
 // 6. Changelog Page
 function generateChangelogPage() {
-  const title = '更新日志与版本历史 - Kotobud';
-  const description = '查看 Kotobud 的历史版本与更新记录：了解 v0.6.0、v0.5.0 等版本的新功能发布、FSRS 间隔重复算法迭代、桌面客户端优化与稳定性修复。';
+  const title = 'Kotobud 更新日志 – 版本演进与新特性记录';
+  const description = '查看 Kotobud 的历史版本与更新记录：了解 v0.6.0、v0.5.0 等版本的新功能发布、FSRS 间隔重复算法迭代、标日初中高全六册词库支持与 Windows 客户端深度优化详情。';
   const canonicalUrl = `${DOMAIN}/changelog`;
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": title,
-    "url": canonicalUrl,
-    "description": description,
-    "isPartOf": { "@type": "WebSite", "name": "Kotobud", "url": DOMAIN }
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${DOMAIN}/changelog#webpage`,
+        "name": title,
+        "url": canonicalUrl,
+        "description": description,
+        "isPartOf": { "@type": "WebSite", "@id": `${DOMAIN}/#website`, "name": "Kotobud", "url": DOMAIN }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${DOMAIN}/changelog#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": `${DOMAIN}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "更新日志",
+            "item": canonicalUrl
+          }
+        ]
+      }
+    ]
   };
 
   const bodyContent = `
     <div class="container" style="padding-top: 48px;">
       <div class="section-header">
         <div class="badge-pill">版本演进历程</div>
-        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 版本更新日志</h1>
+        <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 版本更新日志与迭代历程</h1>
         <p>每一次迭代，都为更纯粹、更科学的日语背词体验而努力</p>
       </div>
 
@@ -1280,9 +1501,11 @@ function generateChangelogPage() {
         </div>
       </div>
 
-      <div style="text-align: center; margin-bottom: 60px;">
+      <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <a href="/download" class="btn btn-primary btn-lg">下载最新 v0.6.0 客户端</a>
-        <a href="/app/" class="btn btn-lg" style="margin-left: 12px;">打开在线版</a>
+        <a href="/features" class="btn btn-lg">查看功能与算法特性</a>
+        <a href="/about#brand" class="btn btn-lg">了解品牌演进</a>
+        <a href="/app/" class="btn btn-lg">打开在线版</a>
       </div>
     </div>
   `;

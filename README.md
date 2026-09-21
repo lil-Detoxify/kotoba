@@ -1,6 +1,9 @@
-# KotoBud · 日语背词 Web MVP
+# Kotobud · 日语背词与复习工具
 
-一个按「词书 → 任意课次 → 学习 → FSRS 复习」组织的单机日语学习应用。Vue 3 + TypeScript strict，核心业务独立于浏览器与 UI。当前只实现 Web。
+> **Kotobud** — A Japanese vocabulary learning and review app.  
+> 官方网站 (Official Website): [https://kotobud.com/](https://kotobud.com/)
+
+一个专注自律、干净纯粹的日语单词学习与复习手帖。完整内置《新版中日交流标准日本语》初中高全六册词书，全面应用前沿 FSRS 科学间隔重复调度算法，支持 Web 在线使用与 Windows 桌面客户端（安装版与绿色便携版）。Vue 3 + TypeScript strict，基于 Local-First 本地优先架构，支持多设备增量云同步。
 
 ## Windows 桌面版
 
