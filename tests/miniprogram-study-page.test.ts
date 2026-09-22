@@ -30,6 +30,13 @@ const word: Word = { id: "w1", lessonId: "lesson-a", term: "猫", reading: "ね�
 const data = (): Data => ({ books: [], lessons: [], words: [word], states: [], logs: [], seeded: true });
 
 function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word]), fallbackUrl = "https://kotobud.com/audio/legacy-w1.mp3"): { harness: Harness; lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void }; getQueue: any; players: any[]; textbooks: any } {
+  if (!repository.transactAndEnqueue) {
+    repository.transactAndEnqueue = vi.fn(async (change: any, itemsFactory: any, key?: string) => {
+      const updated = await repository.transact(change, key);
+      await itemsFactory(updated);
+      return updated;
+    });
+  }
   const source = readFileSync(resolve(process.cwd(), "apps/miniprogram/src/pages/study/study.vue"), "utf8");
   const descriptor = parse(source, { filename: "study.vue" }).descriptor;
   const script = compileScript(descriptor, { id: "study-page-test" });
@@ -50,7 +57,7 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
     destroy = vi.fn(() => audio.destroy?.());
   }
   const runner = new Function(
-    "ref", "computed", "onLoad", "onShow", "onHide", "onUnload", "defaultRepository", "UniAudioPlayer", "getWordAudioUrl", "getWordAudioFallbackUrl", "Rating", "statistics", "applyStudyRating", "getStudyQueue", "uni", "defaultTextbooks", "createStudyQuestion", "ratingForStudyAnswer", "submitStudyAnswer", "setDifficult",
+    "ref", "computed", "onLoad", "onShow", "onHide", "onUnload", "defaultRepository", "defaultSyncCoordinator", "UniAudioPlayer", "getWordAudioUrl", "getWordAudioFallbackUrl", "Rating", "statistics", "applyStudyRating", "getStudyQueue", "uni", "defaultTextbooks", "createStudyQuestion", "ratingForStudyAnswer", "submitStudyAnswer", "setDifficult", "reviewQueueItems",
     code,
   );
   const apply = vi.fn((d: Data, w: Word, rating: Rating, mode: any, now: Date, id: string, responseTime: number, quiz?: any) => realApplyStudyRating(d, w, rating as any, mode, now, id, responseTime, quiz));
@@ -61,7 +68,7 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
     (callback: () => void) => { lifecycle.show = callback; },
     (callback: () => void) => { lifecycle.hide = callback; },
     (callback: () => void) => { lifecycle.unload = callback; },
-    repository, MockPlayer, () => "https://kotobud.com/audio/w1.mp3", () => fallbackUrl, Rating, realStatistics, apply, getQueue,
+    repository, { flush: vi.fn(async () => true) }, MockPlayer, () => "https://kotobud.com/audio/w1.mp3", () => fallbackUrl, Rating, realStatistics, apply, getQueue,
     { switchTab: vi.fn() }, textbooks, createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer,
     vi.fn(async (wordId: string, value: boolean) => {
       const snapshot = await repository.read();
@@ -69,6 +76,7 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
       if (state) state.isDifficult = value;
       return snapshot;
     }),
+    (log: any, state: any) => [{ id: log.id, type: "review_event", payload: log, createdAt: log.reviewedAt, retries: 0 }, { id: `progress:${state.wordId}`, type: "progress", payload: state, createdAt: state.updatedAt, retries: 0 }],
   ) as Harness;
   return { harness, lifecycle, getQueue, players, textbooks };
 }

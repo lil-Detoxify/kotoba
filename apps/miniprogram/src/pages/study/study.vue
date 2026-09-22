@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { onHide, onLoad, onShow, onUnload } from "@dcloudio/uni-app";
-import { defaultRepository } from "../../adapters";
+import { defaultRepository, defaultSyncCoordinator } from "../../adapters";
 import { UniAudioPlayer } from "../../adapters/audio";
 import { getWordAudioUrl, getWordAudioFallbackUrl } from "../../adapters/audio-url";
 import { Rating, type Grade } from "ts-fsrs";
@@ -11,6 +11,7 @@ import { applyStudyRating, getStudyQueue } from "./study-session";
 import { createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer } from "./study-quiz";
 import { defaultTextbooks } from "../../services/textbooks";
 import { setDifficult } from "../../services/word-flags";
+import { reviewQueueItems } from "../../services/sync-outbox";
 
 const words = ref<Word[]>([]);
 const studyPool = ref<Word[]>([]);
@@ -262,15 +263,17 @@ async function rate(grade: Grade) {
   const responseTime = Math.max(0, now.getTime() - startedAt.value);
   const logId = `log_${now.getTime()}_${Math.random().toString(36).slice(2)}_${word.id}`;
   try {
-    const updated = await defaultRepository.transact((data: Data) => {
-      applyStudyRating(data, word, finalGrade, mode.value, now, logId, responseTime, attemptSnapshot ?? undefined);
-    }, sessionKey);
+    let result: ReturnType<typeof applyStudyRating> | undefined;
+    const updated = await defaultRepository.transactAndEnqueue((data: Data) => {
+      result = applyStudyRating(data, word, finalGrade, mode.value, now, logId, responseTime, attemptSnapshot ?? undefined);
+    }, () => result ? reviewQueueItems(result.log, result.state) : [], sessionKey);
     if (disposed) return;
     loadedData.value = updated;
     currentIndex.value++;
     streak.value = statistics(updated, now).streak;
     loadWord();
     message.value = `已保存「${ratingOptions.find((item) => item.grade === finalGrade)?.label ?? "困难"}」 · 今日已打卡`;
+    void defaultSyncCoordinator.flush("timer");
   } catch {
     if (!disposed) message.value = "保存失败，当前卡片已保留，请重试。";
   } finally {

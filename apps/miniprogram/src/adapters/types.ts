@@ -34,6 +34,8 @@ export interface AuthSession {
   userId: string;
   token: string;
   refreshToken?: string;
+  email?: string;
+  provider?: string;
 }
 
 export interface AuthAdapter {
@@ -47,7 +49,16 @@ export interface MiniProgramRepositoryContract {
   transact(change: (data: Data) => void, key?: string): Promise<Data>;
   switchUser(userId: string | null): void;
   getActiveKey(): string;
-  getQueue(): Promise<SyncQueueItem[]>;
+  getQueue(owner?: string): Promise<SyncQueueItem[]>;
   enqueue(items: SyncQueueItem[]): Promise<void>;
   dequeue(itemIds: string[]): Promise<void>;
+  transactAndEnqueue?(
+    change: (data: Data) => void,
+    itemsFactory: (data: Data) => SyncQueueItem[] | Promise<SyncQueueItem[]>,
+    key?: string,
+  ): Promise<Data>;
+  dequeueConfirmed?(items: Array<string | { id: string; owner: string; identity: string }>, expectedOwner?: string): Promise<number>;
+  claimGuestLearning?(userId: string): Promise<boolean>;
+  releaseGuestLearning?(userId: string): Promise<void>;
+  clearQueue?(owner?: string): Promise<void>;
 }

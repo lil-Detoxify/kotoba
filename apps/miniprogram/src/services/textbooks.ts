@@ -1,5 +1,6 @@
 import type { Data, StudyMode, Word } from "@jp/models";
 import type { MiniProgramRepositoryContract, NetworkAdapter } from "../adapters/types";
+import { settingsQueueItem } from "./sync-outbox";
 import { defaultRepository, defaultNetwork } from "../adapters";
 import catalog from "./textbooks-catalog.json";
 
@@ -131,16 +132,21 @@ export class TextbookService {
     const key = this.repository.getActiveKey();
     await this.ensureBookLoaded(bookId, key);
     if (request !== this.selection || key !== this.repository.getActiveKey()) throw new Error("选书操作已失效，请重试");
-    return this.repository.transact((data) => {
+    const change = (data: Data) => {
       data.currentBookId = bookId;
       data.currentBookIdSource = "user";
       data.currentBookIdUpdatedAt = new Date().toISOString();
-      if (data.userSettings) {
-        data.userSettings.currentBookId = bookId;
-        data.userSettings.currentBookIdSource = "user";
-        data.userSettings.updatedAt = data.currentBookIdUpdatedAt;
-      }
-    }, key);
+      data.userSettings = {
+        ...(data.userSettings ?? { userId: "local" }),
+        currentBookId: bookId,
+        currentBookIdSource: "user",
+        updatedAt: data.currentBookIdUpdatedAt,
+      };
+    };
+    if (this.repository.transactAndEnqueue) {
+      return this.repository.transactAndEnqueue(change, (data) => data.userSettings ? [settingsQueueItem(data.userSettings)] : [], key);
+    }
+    return this.repository.transact(change, key);
   }
 
   async prepareStudy(lessonId?: string, mode: StudyMode = "new"): Promise<Data> {

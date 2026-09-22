@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
+import { defaultSyncCoordinator } from "./adapters";
 
 onLaunch(() => {
-  console.log("KotoBud Mini Program launched");
+  void defaultSyncCoordinator.init();
 });
 
 onShow(() => {
-  console.log("KotoBud Mini Program shown");
+  if (defaultSyncCoordinator.state.phase === "error") void defaultSyncCoordinator.init();
+  else void defaultSyncCoordinator.flush("onShow");
 });
 
 onHide(() => {
-  console.log("KotoBud Mini Program hidden");
+  void defaultSyncCoordinator.flush("onHide");
 });
 </script>
 

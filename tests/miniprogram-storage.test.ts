@@ -74,4 +74,90 @@ describe("mini program durable learning storage", () => {
     expect(await repository.read()).toMatchObject({ seeded: true });
     expect((await repository.read()).currentBookId).toBeUndefined();
   });
+
+  it("isolates outbound queues by guest/account partition and stamps owner identity", async () => {
+    const { values, adapter } = memory();
+    const repository = new MiniProgramRepository(adapter);
+    await repository.enqueue([{ id: "guest-event", type: "review_event", payload: { wordId: "w1" }, createdAt: "2026-09-22T01:00:00.000Z", retries: 0 }]);
+    repository.switchUser("alice");
+    expect(await repository.getQueue()).toEqual([]);
+    await repository.enqueue([{ id: "alice-event", type: "review_event", payload: { wordId: "w2" }, createdAt: "2026-09-22T01:01:00.000Z", retries: 0 }]);
+    expect((await repository.getQueue())[0]).toMatchObject({ id: "alice-event", owner: "data_user_alice", identity: "alice" });
+    repository.switchUser(null);
+    expect((await repository.getQueue())[0]).toMatchObject({ id: "guest-event", owner: "data_guest", identity: "guest" });
+    expect(values.has("sync_queue")).toBe(false);
+    expect(values.has("sync_queue:data_guest")).toBe(true);
+    expect(values.has("sync_queue:data_user_alice")).toBe(true);
+  });
+
+  it("fails explicitly when a persisted queue is damaged", async () => {
+    const { values, adapter } = memory();
+    values.set("sync_queue:data_guest", "{broken");
+    const repository = new MiniProgramRepository(adapter);
+    await expect(repository.getQueue()).rejects.toThrow("Invalid persisted sync queue for data_guest");
+  });
+
+  it("migrates the legacy global queue only into safe owner partitions", async () => {
+    const { values, adapter } = memory();
+    values.set("sync_queue", JSON.stringify([
+      { id: "old-guest", type: "progress", payload: {}, createdAt: "2026-09-22T01:00:00.000Z", retries: 0 },
+      { id: "old-alice", type: "progress", payload: {}, createdAt: "2026-09-22T01:01:00.000Z", retries: 0, identity: "alice" },
+      { id: "unknown-owner", type: "progress", payload: {}, createdAt: "2026-09-22T01:02:00.000Z", retries: 0, identity: "alice:attacker" },
+    ]));
+    const repository = new MiniProgramRepository(adapter);
+    expect((await repository.getQueue()).map((item) => item.id)).toEqual(["old-guest"]);
+    repository.switchUser("alice");
+    expect((await repository.getQueue()).map((item) => item.id)).toEqual(["old-alice"]);
+    expect(values.has("sync_queue")).toBe(false);
+  });
+
+  it("rejects acknowledgements from another active partition without deleting them", async () => {
+    const { adapter } = memory();
+    const repository = new MiniProgramRepository(adapter);
+    await repository.enqueue([{ id: "guest-event", type: "review_event", payload: {}, createdAt: "2026-09-22T01:00:00.000Z", retries: 0 }]);
+    const guestQueue = await repository.getQueue();
+    repository.switchUser("alice");
+    await expect(repository.dequeueConfirmed(guestQueue, "data_guest")).rejects.toThrow("active owner changed");
+    repository.switchUser(null);
+    expect(await repository.getQueue()).toHaveLength(1);
+    expect(await repository.dequeueConfirmed(guestQueue)).toBe(1);
+    expect(await repository.getQueue()).toEqual([]);
+  });
+
+  it("persists the learning snapshot before queue and supports idempotent queue retry", async () => {
+    const base = memory();
+    const originalSet = base.adapter.setItem;
+    let queueWriteFailed = true;
+    base.adapter.setItem = vi.fn(async (key, value) => {
+      if (key === "sync_queue:data_guest" && queueWriteFailed) {
+        queueWriteFailed = false;
+        throw new Error("queue disk full");
+      }
+      await originalSet(key, value);
+    });
+    const repository = new MiniProgramRepository(base.adapter);
+    await expect(repository.transactAndEnqueue(
+      (data) => { data.seeded = true; },
+      () => [{ id: "stable-event", type: "progress", payload: { wordId: "w1" }, createdAt: "2026-09-22T01:00:00.000Z", retries: 0 }],
+    )).rejects.toThrow("queue disk full");
+    expect((await repository.read()).seeded).toBe(true);
+    await repository.enqueue([{ id: "stable-event", type: "progress", payload: { wordId: "w1" }, createdAt: "2026-09-22T01:00:00.000Z", retries: 0 }]);
+    expect(await repository.getQueue()).toHaveLength(1);
+  });
+
+  it("allows only one canonical account to claim pending guest learning", async () => {
+    const { adapter } = memory();
+    const repository = new MiniProgramRepository(adapter);
+    const [alice, bob] = await Promise.all([
+      repository.claimGuestLearning("alice"),
+      repository.claimGuestLearning("bob"),
+    ]);
+    expect([alice, bob].filter(Boolean)).toHaveLength(1);
+    const owner = alice ? "alice" : "bob";
+    const other = alice ? "bob" : "alice";
+    expect(await repository.claimGuestLearning(owner)).toBe(true);
+    expect(await repository.claimGuestLearning(other)).toBe(false);
+    await repository.releaseGuestLearning(owner);
+    expect(await repository.claimGuestLearning(other)).toBe(true);
+  });
 });
