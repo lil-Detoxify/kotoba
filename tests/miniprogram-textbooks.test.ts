@@ -80,6 +80,7 @@ describe("complete mini-program textbooks", () => {
     const { service, repository, request } = setup();
     const [first, second] = await Promise.all([service.ensureBookLoaded(bookId), service.ensureBookLoaded(bookId)]);
     expect(request).toHaveBeenCalledOnce();
+    expect(request).toHaveBeenCalledWith(`/data/books/${bookId}.json?v=biaori-v2`);
     expect(first.words).toHaveLength(1077);
     expect(second.words).toEqual(first.words);
     request.mockRejectedValue(new Error("offline"));

@@ -1,7 +1,8 @@
 import type { Word } from "@jp/models";
 import seedAudioMap from "./seed-audio-map.json";
+import { MINIPROGRAM_AUDIO_ASSET_BASE_URL, assetUrl } from "./asset-url";
 
-const BASE_URL = "https://kotobud.com";
+const LEGACY_AUDIO_ORIGIN = "https://kotobud.com";
 const PARAMS_VERSION = "google-wavenet-v1-ssml-yomigana-rate1-pitch0-volume0";
 const VOICES = {
   female: "ja-JP-Wavenet-A",
@@ -12,20 +13,27 @@ type AudioVoice = keyof typeof VOICES;
 
 type AudioWord = Pick<Word, "term" | "reading" | "audioUrl" | "audioTerm" | "rawTerm">;
 
+/** Preserve old saved Cloudflare URLs when the audio origin moves to COS. */
+export function rebaseAudioUrl(value: string, baseUrl = MINIPROGRAM_AUDIO_ASSET_BASE_URL): string | undefined {
+  if (value.startsWith("/audio/")) return assetUrl(value, baseUrl);
+  for (const origin of [baseUrl, LEGACY_AUDIO_ORIGIN]) {
+    if (value.startsWith(`${origin}/audio/`)) return assetUrl(value.slice(origin.length), baseUrl);
+  }
+  return undefined;
+}
+
 /** Resolve the bundled legacy audio for the Phase 1 seed vocabulary. */
 export function getWordAudioFallbackUrl(word: AudioWord): string | undefined {
   if (word.audioUrl) return undefined;
   const key = `${word.audioTerm || word.rawTerm || word.term}|${word.reading}`;
   const path = (seedAudioMap as Record<string, string>)[key];
-  return path ? `${BASE_URL}${path}` : undefined;
+  return path ? assetUrl(path, MINIPROGRAM_AUDIO_ASSET_BASE_URL) : undefined;
 }
 
 /** Resolve a word's pre-generated audio URL without browser-only APIs. */
 export function getWordAudioUrl(word: AudioWord, voice: AudioVoice = "female"): string | undefined {
   if (word.audioUrl) {
-    if (word.audioUrl.startsWith("/")) return `${BASE_URL}${word.audioUrl}`;
-    if (word.audioUrl.startsWith(`${BASE_URL}/`)) return word.audioUrl;
-    return undefined;
+    return rebaseAudioUrl(word.audioUrl);
   }
   if (!word.reading) return undefined;
 
@@ -34,7 +42,7 @@ export function getWordAudioUrl(word: AudioWord, voice: AudioVoice = "female"): 
   const payload = JSON.stringify({ term, reading: word.reading, voice: voiceName, paramsVersion: PARAMS_VERSION });
   const hash = sha256(utf8Bytes(payload));
   const sub = voice === "male" ? "c" : "a";
-  return `${BASE_URL}/audio/google/v1/${sub}/${hash}.mp3`;
+  return assetUrl(`/audio/google/v1/${sub}/${hash}.mp3`, MINIPROGRAM_AUDIO_ASSET_BASE_URL);
 }
 
 function utf8Bytes(value: string): number[] {

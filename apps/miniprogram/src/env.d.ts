@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  readonly VITE_MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL?: string;
+  readonly VITE_MINIPROGRAM_AUDIO_ASSET_BASE_URL?: string;
+}
+
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types

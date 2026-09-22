@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import seedData from "../apps/miniprogram/src/seed.json";
-import { getWordAudioFallbackUrl, getWordAudioUrl } from "../apps/miniprogram/src/adapters/audio-url";
+import { getWordAudioFallbackUrl, getWordAudioUrl, rebaseAudioUrl } from "../apps/miniprogram/src/adapters/audio-url";
 
 const paramsVersion = "google-wavenet-v1-ssml-yomigana-rate1-pitch0-volume0";
 
@@ -39,5 +39,13 @@ describe("mini-program audio URL", () => {
     expect(getWordAudioFallbackUrl({ term: "学生", reading: "がくせい" })).toBe("https://kotobud.com/audio/1.mp3");
     expect(getWordAudioFallbackUrl({ term: "unknown", reading: "しらない" })).toBeUndefined();
     expect(getWordAudioFallbackUrl({ term: "私", reading: "わたし", audioUrl: "/audio/custom.mp3" })).toBeUndefined();
+  });
+
+  it("rebases saved Cloudflare audio URLs onto a future COS origin", () => {
+    const cos = "https://kotobud-assets-1234567890.cos.ap-beijing.myqcloud.com";
+    expect(rebaseAudioUrl("https://kotobud.com/audio/google/v1/a/hash.mp3", cos))
+      .toBe(`${cos}/audio/google/v1/a/hash.mp3`);
+    expect(rebaseAudioUrl("/audio/1.mp3", cos)).toBe(`${cos}/audio/1.mp3`);
+    expect(rebaseAudioUrl("https://evil.example/audio/1.mp3", cos)).toBeUndefined();
   });
 });

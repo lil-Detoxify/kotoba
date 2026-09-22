@@ -7,6 +7,7 @@ export * from "./file-storage";
 export * from "./network";
 export * from "./auth";
 export * from "./api";
+export * from "./asset-url";
 
 import { MiniProgramRepository, UniStorageAdapter } from "./storage";
 import { UniAudioPlayer } from "./audio";
@@ -17,12 +18,14 @@ import { MiniProgramApiClient } from "./api";
 import { MiniProgramAuthService } from "../services/auth-service";
 import { MiniSyncCoordinator } from "../services/sync-coordinator";
 import { defaultPrivacyConsent } from "../services/privacy-consent";
+import { MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL } from "./asset-url";
 
 export const defaultStorage = new UniStorageAdapter();
 export const defaultRepository = new MiniProgramRepository(defaultStorage);
 export const defaultAudioCache = new UniAudioCache({ storage: defaultStorage });
 export const defaultAudio = new UniAudioPlayer();
 export const defaultNetwork = new UniNetworkAdapter("https://kotobud.com");
+export const defaultTextbookNetwork = new UniNetworkAdapter(MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL);
 export const defaultAuth = new UniAuthAdapter(defaultStorage);
 export const defaultApi = new MiniProgramApiClient("https://kotobud.com", defaultNetwork);
 export const defaultAuthService = new MiniProgramAuthService(defaultAuth, defaultApi, defaultPrivacyConsent);

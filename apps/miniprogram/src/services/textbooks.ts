@@ -1,7 +1,7 @@
 import type { Data, StudyMode, Word } from "@jp/models";
 import type { MiniProgramRepositoryContract, NetworkAdapter } from "../adapters/types";
 import { settingsQueueItem } from "./sync-outbox";
-import { defaultRepository, defaultNetwork } from "../adapters";
+import { defaultRepository, defaultTextbookNetwork } from "../adapters";
 import catalog from "./textbooks-catalog.json";
 
 // Only the 6-book directory is bundled. Vocabulary stays on the existing CDN.
@@ -168,4 +168,4 @@ export class TextbookService {
   }
 }
 
-export const defaultTextbooks = new TextbookService(defaultRepository, defaultNetwork);
+export const defaultTextbooks = new TextbookService(defaultRepository, defaultTextbookNetwork);
