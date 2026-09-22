@@ -17,8 +17,26 @@ type PendingPlay = {
   resolve: (result: boolean) => void;
   onEnded: () => void;
   onError: (error: unknown) => void;
+  onInterrupted?: () => void;
   timer: ReturnType<typeof setTimeout>;
 };
+
+// Inner audio contexts are process-wide on mini-program runtimes. Keep one
+// logical owner so two pages/components cannot speak over one another.
+let focusedPlayer: UniAudioPlayer | null = null;
+
+function acquireAudioFocus(player: UniAudioPlayer): void {
+  if (focusedPlayer && focusedPlayer !== player) {
+    focusedPlayer.stop(true);
+  }
+  focusedPlayer = player;
+}
+
+function releaseAudioFocus(player: UniAudioPlayer): void {
+  if (focusedPlayer === player) {
+    focusedPlayer = null;
+  }
+}
 
 /** uni-app audio adapter with cancellable plays and page-lifecycle cleanup. */
 export class UniAudioPlayer implements AudioAdapter {
@@ -60,6 +78,7 @@ export class UniAudioPlayer implements AudioAdapter {
         this.detach(pending);
         this.pending = null;
         this.speaking = false;
+        releaseAudioFocus(this);
         resolve(result);
         // A failed load/play can leave the native context active even after
         // its error callback. Stop it after invalidating the request so a
@@ -80,10 +99,12 @@ export class UniAudioPlayer implements AudioAdapter {
         resolve,
         onEnded,
         onError,
+        onInterrupted: options.onInterrupted,
         // A failed download can otherwise leave the page speaking forever
         // when a native runtime never emits error or ended.
         timer: setTimeout(() => finish(false, new Error("audio playback timed out")), 15_000)
       };
+      acquireAudioFocus(this);
       this.pending = pending;
       this.speaking = true;
       try {
@@ -98,7 +119,7 @@ export class UniAudioPlayer implements AudioAdapter {
     });
   }
 
-  stop(): void {
+  stop(interrupted = false): void {
     const context = this.innerAudioContext;
     const pending = this.pending;
     this.pending = null;
@@ -107,9 +128,13 @@ export class UniAudioPlayer implements AudioAdapter {
     if (pending) {
       clearTimeout(pending.timer);
       this.detach(pending);
+      if (interrupted) {
+        try { pending.onInterrupted?.(); } catch { /* Consumer cleanup is best effort. */ }
+      }
       pending.resolve(false);
     }
     if (context && pending) this.stopNative(context);
+    releaseAudioFocus(this);
   }
 
   destroy(): void {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
-import { defaultAuthService, defaultRepository, defaultSyncCoordinator } from "../../adapters";
+import { defaultAudioCache, defaultAuthService, defaultRepository, defaultSyncCoordinator } from "../../adapters";
 import { defaultTextbooks } from "../../services/textbooks";
 
 const totalWords = ref(0);
@@ -9,6 +9,10 @@ const totalLearned = ref(0);
 const clearMessage = ref("");
 const loadError = ref("");
 const resetting = ref(false);
+const cacheBusy = ref(false);
+const cacheEntries = ref(0);
+const cacheBytes = ref(0);
+const cacheMessage = ref("");
 const email = ref("");
 const password = ref("");
 const code = ref("");
@@ -17,6 +21,9 @@ const authBusy = ref(false);
 const authMessage = ref("");
 const syncState = defaultSyncCoordinator.state;
 const signedIn = computed(() => !!syncState.userId);
+const cacheSizeLabel = computed(() => cacheBytes.value < 1024 * 1024
+  ? `${Math.ceil(cacheBytes.value / 1024)} KB`
+  : `${(cacheBytes.value / 1024 / 1024).toFixed(1)} MB`);
 const syncBusy = computed(() => ["local_hydrating", "auth_restoring", "pulling", "reconciling"].includes(syncState.phase));
 const syncStatusLabel = computed(() => {
   if (syncState.phase === "ready") return "已对齐，可安全上传";
@@ -55,6 +62,37 @@ async function loadSettings() {
   const data = await defaultTextbooks.hydrate();
   totalWords.value = data.words?.length || 0;
   totalLearned.value = data.states?.filter((state) => state.firstSeenAt || state.reviewCount > 0)?.length || 0;
+  try {
+    const entries = await defaultAudioCache.getEntries();
+    cacheEntries.value = entries.length;
+    cacheBytes.value = entries.reduce((sum, entry) => sum + entry.size, 0);
+  } catch {
+    cacheEntries.value = 0;
+    cacheBytes.value = 0;
+  }
+}
+
+async function clearAudioCache() {
+  if (cacheBusy.value) return;
+  cacheBusy.value = true;
+  cacheMessage.value = "";
+  try {
+    const confirmation = await uni.showModal({
+      title: "清理发音缓存？",
+      content: "只删除已缓存的发音文件，不会影响词书、学习进度或云同步记录。",
+      confirmText: "清理缓存",
+      cancelText: "取消",
+    });
+    if (!confirmation.confirm) return;
+    await defaultAudioCache.clear();
+    cacheEntries.value = 0;
+    cacheBytes.value = 0;
+    cacheMessage.value = "发音缓存已清理，学习记录未改变。";
+  } catch {
+    cacheMessage.value = "缓存清理未完成，请稍后重试。";
+  } finally {
+    cacheBusy.value = false;
+  }
 }
 
 async function resetLearningData(key: string) {
@@ -169,6 +207,8 @@ onShow(() => { void refreshSettings(); });
       <text class="group-title">数据维护</text>
       <button class="secondary-btn reset-btn" :disabled="resetting || syncBusy" :loading="resetting" @tap="resetData">清空本机学习记录</button>
       <text v-if="clearMessage" class="toast-success">{{ clearMessage }}</text>
+      <view class="cache-row"><view><text class="cache-title">发音缓存</text><text class="cache-meta">{{ cacheEntries }} 条 · {{ cacheSizeLabel }}</text></view><button class="secondary-btn cache-btn" :disabled="cacheBusy" :loading="cacheBusy" @tap="clearAudioCache">清理</button></view>
+      <text v-if="cacheMessage" class="toast-success">{{ cacheMessage }}</text>
     </view>
 
     <view class="card about-card"><text class="about-app">KotoBud 言葉</text><text class="about-version">版本 0.6.0 · 微信小程序</text><text class="about-meta">Web / Windows / 微信小程序 多端日语背词体系</text></view>
@@ -196,6 +236,11 @@ onShow(() => { void refreshSettings(); });
 .wechat-btn { min-height: 88rpx; margin-top: 24rpx; border: 1rpx dashed #D6D3D1; border-radius: 16rpx; background: #F5F5F4; color: #78716C; font-size: 24rpx; }
 .auth-message, .sync-error { display: block; margin-top: 16rpx; font-size: 24rpx; line-height: 1.5; }
 .reset-btn { width: 100%; min-height: 88rpx; }
+.cache-row { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; margin-top: 24rpx; padding-top: 24rpx; border-top: 1rpx solid #F3F4F6; }
+.cache-title, .cache-meta { display: block; }
+.cache-title { color: #374151; font-size: 26rpx; font-weight: 600; }
+.cache-meta { margin-top: 6rpx; color: #9CA3AF; font-size: 22rpx; }
+.cache-btn { min-width: 176rpx; min-height: 88rpx; margin: 0; padding: 12rpx 24rpx; }
 .toast-success { display: block; text-align: center; font-size: 24rpx; color: #059669; margin-top: 16rpx; }
 .about-card { text-align: center; padding: 48rpx 32rpx; }
 .about-app { display: block; font-size: 36rpx; font-weight: 800; color: #D9532F; margin-bottom: 8rpx; }

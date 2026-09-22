@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { onHide, onLoad, onShow, onUnload } from "@dcloudio/uni-app";
-import { defaultRepository, defaultSyncCoordinator } from "../../adapters";
+import { defaultAudioCache, defaultRepository, defaultSyncCoordinator } from "../../adapters";
 import { UniAudioPlayer } from "../../adapters/audio";
 import { getWordAudioUrl, getWordAudioFallbackUrl } from "../../adapters/audio-url";
 import { Rating, type Grade } from "ts-fsrs";
@@ -222,12 +222,29 @@ async function playAudio(slow = false) {
   message.value = "";
   try {
     player ||= new UniAudioPlayer();
-    let played = await player.play(audioUrl.value, { slow });
+    const primaryUrl = audioUrl.value;
+    const cachedUrl = await defaultAudioCache.getCached(primaryUrl);
+    if (ticket !== audioGeneration || disposed || !visible) return;
+    const onInterrupted = () => {
+      if (ticket === audioGeneration) audioGeneration++;
+      speaking.value = false;
+    };
+    let played = await player.play(cachedUrl || primaryUrl, { slow, onInterrupted });
     if (ticket !== audioGeneration || disposed) return;
+    if (!played && cachedUrl) {
+      await defaultAudioCache.invalidate(primaryUrl);
+      if (ticket !== audioGeneration || disposed || !visible) return;
+      played = await player.play(primaryUrl, { slow, onInterrupted });
+      if (ticket !== audioGeneration || disposed) return;
+    }
+    if (played && !cachedUrl) void defaultAudioCache.warm(primaryUrl);
     const fallback = word ? getWordAudioFallbackUrl(word) : undefined;
     if (!played && fallback && fallback !== audioUrl.value) {
-      played = await player.play(fallback, { slow });
+      const cachedFallback = await defaultAudioCache.getCached(fallback);
+      if (ticket !== audioGeneration || disposed || !visible) return;
+      played = await player.play(cachedFallback || fallback, { slow, onInterrupted });
       if (ticket !== audioGeneration || disposed) return;
+      if (played && !cachedFallback) void defaultAudioCache.warm(fallback);
     }
     if (!played) {
       const isListeningQuestion = question.value?.type === "audio-meaning";

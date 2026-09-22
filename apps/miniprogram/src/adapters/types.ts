@@ -11,6 +11,7 @@ export interface AudioPlayOptions {
   slow?: boolean;
   onEnded?: () => void;
   onError?: (err: any) => void;
+  onInterrupted?: () => void;
 }
 
 export interface AudioAdapter {

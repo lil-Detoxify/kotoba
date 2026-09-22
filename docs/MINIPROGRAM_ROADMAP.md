@@ -59,3 +59,12 @@ Phase 7 的审核规则需以当时官方文档核验；开发构建通过不等
 - 同步对齐对事件去重后稳定排序；完整重建复习日志。旧云端缺少 `currentBookIdSource` 时不会覆盖本地用户主动选书，也不会用空启动状态覆盖已有云端进度。
 - `npm test`：28 个文件、241 项通过；小程序类型检查、`check:cloudflare`、`build:miniprogram` 通过。构建产物 49 个文件，共 232,595 bytes（约 0.222 MiB），不含音频文件；源码扫描未发现浏览器专属 API 或 `vue-router`。
 - 微信 `code` 换取统一 KotoBud session 仍需正式小程序 AppID、微信侧配置和 Worker 服务端换码契约。当前界面保持不可用提示，不伪造微信身份；邮箱账号已可继承既有云端数据。
+
+## Phase 6 音频体验与包体积（2026-09-22）
+
+- 发音继续由 `UniAudioPlayer` 直接播放 `https://kotobud.com/audio/...` 的 R2/CDN 地址；缓存未命中时保持远程流式首播，成功播放后后台预热本地缓存，下一次优先使用已校验的本地文件。
+- 新增独立音频 LRU 缓存，默认上限 32 MiB / 100 条；相同 URL 并发下载去重，严格校验 HTTPS、HTTP 200、临时/保存路径和文件大小。解码失败会删除单条缓存并回退 CDN。
+- 所有播放器实例共享单一音频焦点；新播放会停止旧实例并通知旧页面取消 fallback，避免页面之间反复抢回焦点。页面隐藏/卸载仍会停止并释放播放器。
+- 设置页显示缓存条数与容量，并提供独立清理。清理只处理音频缓存 manifest 与保存文件，不读取或删除词书、学习进度及同步队列。
+- `npm test`：29 个文件、256 项通过；小程序类型检查、`check:cloudflare`、`build:miniprogram` 通过。构建产物 50 个文件，共 240,860 bytes（约 0.23 MiB），低于 2 MiB 且不含 MP3/M4A/WAV/AAC/OGG。
+- 已扫描 `apps/miniprogram/src`，未引入浏览器专属 API 或 `vue-router`。`obeyMuteSwitch: false` 为 iOS 静音兼容的代码级保障，仍需正式 AppID 与真实 iPhone 完成物理静音开关验收后才能标记真机通过。

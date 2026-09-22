@@ -93,6 +93,59 @@ describe("UniAudioPlayer", () => {
     expect(context.ended).toHaveLength(2);
   });
 
+  it("gives focus to the newest player and ignores late callbacks from the old instance", async () => {
+    const firstContext = audioMock(false);
+    const secondContext = audioMock(false);
+    let createCount = 0;
+    vi.stubGlobal("uni", {
+      createInnerAudioContext: () => (createCount++ === 0 ? firstContext : secondContext)
+    });
+    const firstError = vi.fn();
+    const secondError = vi.fn();
+    const firstPlayer = new UniAudioPlayer();
+    const secondPlayer = new UniAudioPlayer();
+
+    const interrupted = vi.fn();
+    const first = firstPlayer.play("first.mp3", { onError: firstError, onInterrupted: interrupted });
+    const second = secondPlayer.play("second.mp3", { onError: secondError });
+
+    expect(firstContext.stop).toHaveBeenCalledOnce();
+    expect(await first).toBe(false);
+    expect(firstError).not.toHaveBeenCalled();
+    expect(interrupted).toHaveBeenCalledOnce();
+    expect(secondPlayer.isSpeaking()).toBe(true);
+
+    // The old native context can still deliver callbacks on runtimes without
+    // offEnded/offError. They must not settle or interrupt the new play.
+    firstContext.errors[0]({ errMsg: "late old error" });
+    firstContext.ended[0]();
+    expect(secondPlayer.isSpeaking()).toBe(true);
+    expect(secondError).not.toHaveBeenCalled();
+
+    secondContext.ended[0]();
+    expect(await second).toBe(true);
+    expect(secondPlayer.isSpeaking()).toBe(false);
+  });
+
+  it("does not let an old instance release the newer instance's focus", async () => {
+    const firstContext = audioMock();
+    const secondContext = audioMock();
+    let createCount = 0;
+    vi.stubGlobal("uni", {
+      createInnerAudioContext: () => (createCount++ === 0 ? firstContext : secondContext)
+    });
+    const firstPlayer = new UniAudioPlayer();
+    const secondPlayer = new UniAudioPlayer();
+    const first = firstPlayer.play("first.mp3");
+    const second = secondPlayer.play("second.mp3");
+
+    firstPlayer.stop();
+    expect(secondPlayer.isSpeaking()).toBe(true);
+    secondContext.ended[0]();
+    expect(await first).toBe(false);
+    expect(await second).toBe(true);
+  });
+
   it("reports native errors and releases the context on destroy", async () => {
     const context = audioMock();
     vi.stubGlobal("uni", { createInnerAudioContext: () => context });
