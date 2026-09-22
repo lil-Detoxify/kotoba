@@ -12,12 +12,13 @@
   - `npm run type-check --workspace=apps/miniprogram`
   - `npm run build:miniprogram`
   - `npm run verify:build --workspace=apps/miniprogram`
-- 最近一次 Phase 7 开发构建：55 个文件、254,293 bytes（约 0.243 MiB）、0 个音频文件。
-- 当前构建仍使用 `touristappid`，所以只属于编译验证，不属于正式 AppID 验收或发布产物。
+- 最近一次正式 AppID 构建：55 个文件、254,356 bytes（约 0.243 MiB）、0 个音频文件；`verify:build` 与 `verify:release` 均通过。
+- 源码已配置正式 AppID `wx63a1b41c7c7e9de2`；是否属于可上传发布产物，仍取决于对应账号权限、后台域名、隐私配置和真机验收。
 
 ## 2. 正式账号与服务端前置
 
-- [ ] 在微信公众平台确认正式小程序 AppID 和管理员权限。
+- [x] 源码配置正式小程序 AppID：`wx63a1b41c7c7e9de2`。
+- [ ] 在微信公众平台确认当前开发者工具账号具备该小程序的开发与上传权限。
 - [ ] 在本机微信开发者工具登录该小程序账号。
 - [ ] 将 `https://kotobud.com` 登记为 `request` 与 `downloadFile` 合法域名；源码已开启合法域名校验，必须在后台登记后复测。
 - [ ] 在微信后台配置《小程序用户隐私保护指引》的真实运营主体、联系方式、数据种类、用途和第三方服务说明。
@@ -26,15 +27,14 @@
 
 ## 3. 正式构建
 
-在 PowerShell 中临时设置正式 AppID 后构建：
+当前源码已包含正式 AppID，可直接构建：
 
 ```powershell
-$env:VITE_WX_APPID = "wx0000000000000000"
 npm run build:miniprogram
 npm run verify:release --workspace=apps/miniprogram
 ```
 
-`verify:release` 必须同时满足：真实格式 AppID、代码包小于 2 MiB、无音频文件入包、源码无浏览器专属 API。示例 AppID 只能说明命令格式，不能用于发布。
+`verify:release` 必须同时满足：真实格式 AppID、合法域名校验开启、代码包小于 2 MiB、无音频文件入包、源码无浏览器专属 API，并验证编译后的隐私页、隐私检查和竖屏配置。`VITE_WX_APPID` / `WX_APPID` 仍可用于受控构建环境覆盖 AppID。
 
 ## 4. 微信开发者工具验收
 

@@ -75,5 +75,5 @@ Phase 7 的审核规则需以当时官方文档核验；开发构建通过不等
 - 新增本地隐私说明页，列出当前代码真实处理的词书、学习记录、发音缓存、邮箱与会话数据；支持微信 `getPrivacySetting` 检测、`agreePrivacyAuthorization` 官方授权事件和平台《小程序用户隐私保护指引》入口，官方授权能力可用时不会用普通点击代替。真实运营主体与联系方式必须以微信后台配置为准。
 - 全部页面补齐底部安全区，应用明确锁定竖屏；学习页已有窄屏四档评分换行、横向滑动阈值和多指取消保护。大字体、刘海屏、旋转行为和物理静音仍需真机记录。
 - 新增开发构建与正式发布验证脚本。两者都会检查包体积、音频入包和禁用 Web API；正式验证另外强制真实格式 AppID，`touristappid` 会直接失败。
-- `npm test`：31 个文件、274 项通过；小程序类型检查、`check:cloudflare`、`build:miniprogram` 和开发构建验证通过。构建产物 55 个文件，共 254,293 bytes（约 0.243 MiB），无音频文件；编译后的 `app.json` 已包含隐私检查、隐私页和竖屏配置，`project.config.json` 已开启合法域名校验。
-- `verify:release` 当前按设计失败，因为构建仍为 `touristappid`。正式 AppID、微信后台合法域名/隐私主体配置、微信 code 换统一 session 的 Worker 前置接口及 iOS/Android 真机验收仍是发布硬门禁；当前不得宣称已审核或上线。
+- `npm test`：31 个文件、274 项通过；小程序类型检查、`check:cloudflare`、`build:miniprogram`、开发构建验证和正式发布验证通过。正式 AppID 构建产物 55 个文件，共 254,356 bytes（约 0.243 MiB），无音频文件；编译后的 `app.json` 已包含隐私检查、隐私页和竖屏配置，`project.config.json` 已开启合法域名校验。
+- 正式 AppID 已配置为 `wx63a1b41c7c7e9de2`，`verify:release` 已通过。微信后台合法域名/隐私主体配置、账号上传权限、微信 code 换统一 session 的 Worker 前置接口及 iOS/Android 真机验收仍是发布硬门禁；完成这些外部验收前不得宣称已审核或上线。

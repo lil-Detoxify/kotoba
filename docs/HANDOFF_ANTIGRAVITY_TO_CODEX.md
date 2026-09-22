@@ -926,7 +926,7 @@ Codex 与后续任何 sub-agent 必须严格遵循以下同步架构，**严禁�
   - `src/adapters/types.ts`：跨端接口规范。
   - `src/adapters/storage.ts`：`UniStorageAdapter`（包装 `uni.getStorageSync`）与 `MiniProgramRepository`。
   - `src/adapters/audio.ts`：`UniAudioPlayer`（包装 `uni.createInnerAudioContext`）。
-- 构建产物：`apps/miniprogram/dist/build/mp-weixin`，默认配置 `"appid": "touristappid"`，支持在微信开发者工具中即时预览。
+- 构建产物：`apps/miniprogram/dist/build/mp-weixin`。Phase 7 已配置正式 AppID `wx63a1b41c7c7e9de2`；导入微信开发者工具时必须使用对应账号权限。
 
 ---
 

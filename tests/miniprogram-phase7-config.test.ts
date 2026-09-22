@@ -10,6 +10,7 @@ describe("mini-program phase 7 release configuration", () => {
     const pages = JSON.parse(read("apps/miniprogram/src/pages.json"));
 
     expect(manifest["mp-weixin"].__usePrivacyCheck__).toBe(true);
+    expect(manifest["mp-weixin"].appid).toBe("wx63a1b41c7c7e9de2");
     expect(manifest["mp-weixin"].setting.urlCheck).toBe(true);
     expect(pages.globalStyle.pageOrientation).toBe("portrait");
     expect(pages.pages.some((page: { path?: string }) => page.path === "pages/privacy/privacy")).toBe(true);
