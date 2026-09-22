@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { defaultAudioCache, defaultAuthService, defaultRepository, defaultSyncCoordinator } from "../../adapters";
+import { defaultPrivacyConsent } from "../../services/privacy-consent";
 import { defaultTextbooks } from "../../services/textbooks";
 
 const totalWords = ref(0);
@@ -21,6 +22,8 @@ const authBusy = ref(false);
 const authMessage = ref("");
 const syncState = defaultSyncCoordinator.state;
 const signedIn = computed(() => !!syncState.userId);
+const privacyStatus = computed(() => defaultPrivacyConsent.state.status);
+const privacyStatusLabel = computed(() => privacyStatus.value === "accepted" ? "已同意，可登录和同步" : privacyStatus.value === "declined" ? "已拒绝，仅离线学习" : "尚未选择");
 const cacheSizeLabel = computed(() => cacheBytes.value < 1024 * 1024
   ? `${Math.ceil(cacheBytes.value / 1024)} KB`
   : `${(cacheBytes.value / 1024 / 1024).toFixed(1)} MB`);
@@ -104,6 +107,7 @@ async function resetLearningData(key: string) {
 
 async function loginWithPassword() {
   if (authBusy.value || !email.value.trim() || !password.value) { authMessage.value = "请输入邮箱和密码。"; return; }
+  if (!await requestPrivacyConsent()) return;
   authBusy.value = true;
   authMessage.value = "";
   try {
@@ -118,6 +122,7 @@ async function loginWithPassword() {
 
 async function sendCode() {
   if (authBusy.value || !email.value.trim()) { authMessage.value = "请先输入邮箱。"; return; }
+  if (!await requestPrivacyConsent()) return;
   authBusy.value = true;
   try {
     const result = await defaultAuthService.sendCode(email.value);
@@ -129,6 +134,7 @@ async function sendCode() {
 
 async function loginWithCode() {
   if (authBusy.value || !verificationId.value || !code.value.trim()) { authMessage.value = "请先获取并输入邮箱验证码。"; return; }
+  if (!await requestPrivacyConsent()) return;
   authBusy.value = true;
   try {
     const session = await defaultAuthService.loginWithCode(email.value, code.value, verificationId.value);
@@ -143,6 +149,7 @@ async function loginWithCode() {
 
 async function retrySync() {
   if (authBusy.value || syncBusy.value) return;
+  if (!await requestPrivacyConsent()) return;
   authBusy.value = true;
   authMessage.value = "";
   try {
@@ -165,11 +172,46 @@ async function logout() {
   finally { defaultSyncCoordinator.signOutToGuest(); authBusy.value = false; await refreshSettings(); }
 }
 
-onShow(() => { void refreshSettings(); });
+async function requestPrivacyConsent(): Promise<boolean> {
+  if (await defaultPrivacyConsent.isConsented()) return true;
+  const accepted = await defaultPrivacyConsent.requestConsent();
+  if (!accepted) authMessage.value = "请先在隐私说明页完成平台授权；同意后可返回登录或同步。";
+  if (accepted && ["idle", "signed_out", "error"].includes(syncState.phase)) await defaultSyncCoordinator.init();
+  return accepted;
+}
+
+async function openPrivacyNotice() {
+  uni.navigateTo({ url: "/pages/privacy/privacy" });
+}
+
+async function withdrawPrivacyConsent() {
+  if (authBusy.value) return;
+  const confirmation = await uni.showModal({
+    title: "撤回隐私同意？",
+    content: "撤回后会立即退出账号并关闭登录、验证码和云同步；本机离线学习仍可继续。",
+    confirmText: "撤回并退出",
+    cancelText: "取消",
+  });
+  if (!confirmation.confirm) return;
+  authBusy.value = true;
+  try {
+    defaultSyncCoordinator.signOutToGuest();
+    await defaultPrivacyConsent.revoke();
+    await defaultAuthService.clearLocalSession();
+    authMessage.value = "已撤回同意，当前仅可离线学习。";
+    await refreshSettings();
+  } catch {
+    authMessage.value = "撤回未完成，请稍后重试。";
+  } finally {
+    authBusy.value = false;
+  }
+}
+
+onShow(() => { void defaultPrivacyConsent.load(); void refreshSettings(); });
 </script>
 
 <template>
-  <view class="container">
+  <view class="container settings-page">
     <view v-if="loadError" class="card"><text>{{ loadError }}</text><button class="secondary-btn" @tap="refreshSettings">重新读取</button></view>
     <view class="section-header"><text class="section-title">设置与关于</text><text class="section-desc">KotoBud 小程序版基础配置</text></view>
 
@@ -177,8 +219,16 @@ onShow(() => { void refreshSettings(); });
       <text class="group-title">运行状态</text>
       <view class="info-row"><text class="info-label">学习数据</text><text class="info-value">保存在本机</text></view>
       <view class="info-row"><text class="info-label">云同步</text><text class="info-value" :class="{ 'status-error': syncState.phase === 'error' }">{{ syncStatusLabel }}</text></view>
+      <view class="info-row"><text class="info-label">隐私同意</text><text class="info-value">{{ privacyStatusLabel }}</text></view>
       <view class="info-row"><text class="info-label">已下载词汇</text><text class="info-value">{{ totalWords }} 词</text></view>
       <view class="info-row"><text class="info-label">已学习词数</text><text class="info-value">{{ totalLearned }} 词</text></view>
+    </view>
+
+    <view class="card privacy-card">
+      <text class="group-title">隐私保护</text>
+      <text class="account-note">查看本地隐私说明，了解当前代码处理的数据、用途和存储位置。平台主体与联系方式以微信配置的《小程序用户隐私保护指引》为准。</text>
+      <button class="secondary-btn account-btn" :disabled="authBusy" @tap="openPrivacyNotice">查看隐私说明</button>
+      <button v-if="privacyStatus === 'accepted'" class="secondary-btn account-btn revoke-btn" :disabled="authBusy" @tap="withdrawPrivacyConsent">撤回同意并关闭同步</button>
     </view>
 
     <view class="card">
@@ -216,6 +266,7 @@ onShow(() => { void refreshSettings(); });
 </template>
 
 <style scoped>
+.settings-page { padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
 .section-header { margin-bottom: 24rpx; }
 .section-title { display: block; font-size: 40rpx; font-weight: 700; color: #111827; margin-bottom: 6rpx; }
 .section-desc { font-size: 26rpx; color: #6B7280; }
@@ -230,6 +281,7 @@ onShow(() => { void refreshSettings(); });
 .form-input { width: 100%; min-height: 88rpx; padding: 0 24rpx; margin-bottom: 16rpx; border: 1rpx solid #D6D3D1; border-radius: 16rpx; background: #FAFAF9; font-size: 28rpx; }
 .account-actions { display: flex; gap: 16rpx; margin-top: 20rpx; }
 .account-btn { min-height: 88rpx; line-height: 1.35; width: 100%; margin-top: 12rpx; }
+.revoke-btn { color: #B42318; }
 .code-row { display: flex; gap: 16rpx; align-items: stretch; }
 .code-input { flex: 1; margin-bottom: 0; }
 .code-btn { min-width: 210rpx; min-height: 88rpx; padding: 12rpx 24rpx; }

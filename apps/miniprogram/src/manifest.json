@@ -10,8 +10,9 @@
   },
   "mp-weixin": {
     "appid": "",
+    "__usePrivacyCheck__": true,
     "setting": {
-      "urlCheck": false,
+      "urlCheck": true,
       "es6": true,
       "minified": true
     },

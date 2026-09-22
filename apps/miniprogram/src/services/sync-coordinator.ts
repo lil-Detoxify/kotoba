@@ -3,6 +3,7 @@ import type { Data, ReviewEvent } from "@jp/models";
 import type { AuthSession, MiniProgramRepositoryContract } from "../adapters/types";
 import type { MiniProgramSyncPushPayload, MiniProgramWorkerClient } from "../adapters/worker-client";
 import type { MiniProgramAuthService } from "./auth-service";
+import type { PrivacyConsentGate } from "./privacy-consent";
 import { eventPayload, progressPayload, settingsFromData } from "./sync-outbox";
 import { reconcileMiniProgramData, validateSyncPull } from "./sync-reconciliation";
 
@@ -39,6 +40,7 @@ export class MiniSyncCoordinator {
     private readonly repository: MiniProgramRepositoryContract,
     private readonly auth: MiniProgramAuthService,
     private readonly client: SyncClient,
+    private readonly privacyConsent?: PrivacyConsentGate,
   ) {}
 
   init(): Promise<void> {
@@ -70,6 +72,11 @@ export class MiniSyncCoordinator {
     this.repository.switchUser(null);
     this.state.activeKey = this.repository.getActiveKey();
     try {
+      if (!await this.hasPrivacyConsent()) {
+        this.session = null;
+        this.state.phase = "signed_out";
+        return;
+      }
       const guest = await this.repository.read();
       this.assertCurrent(ticket);
       this.state.phase = "auth_restoring";
@@ -101,6 +108,7 @@ export class MiniSyncCoordinator {
       const guestQueue = guestClaimed ? candidateGuestQueue : [];
       this.assertCurrent(ticket, session.userId, activeKey);
       this.state.phase = "pulling";
+      await this.assertPrivacyConsent(ticket);
       const pulled = await this.client.pull(session.token);
       this.assertCurrent(ticket, session.userId, activeKey);
       const validated = validateSyncPull(pulled, session.userId);
@@ -145,11 +153,16 @@ export class MiniSyncCoordinator {
     const session = this.session!;
     const activeKey = this.repository.getActiveKey();
     try {
+      if (!await this.hasPrivacyConsent()) {
+        this.signOutToGuest();
+        return false;
+      }
       const queue = await this.repository.getQueue();
       const data = await this.repository.read(activeKey);
       this.assertCurrent(ticket, session.userId, activeKey);
       const payload = buildPushPayload(data, session.userId);
       if (payload.events.length === 0 && payload.progress.length === 0 && !payload.settings && queue.length === 0) return true;
+      await this.assertPrivacyConsent(ticket);
       const response = await this.client.push(session.token, payload);
       this.assertCurrent(ticket, session.userId, activeKey);
       if (this.repository.dequeueConfirmed) await this.repository.dequeueConfirmed(queue as any, activeKey);
@@ -180,6 +193,19 @@ export class MiniSyncCoordinator {
     this.state.provider = undefined;
     this.state.activeKey = this.repository.getActiveKey();
     this.state.error = undefined;
+  }
+
+  private async hasPrivacyConsent(): Promise<boolean> {
+    return !this.privacyConsent || await this.privacyConsent.isConsented();
+  }
+
+  private async assertPrivacyConsent(ticket: number): Promise<void> {
+    if (await this.hasPrivacyConsent()) {
+      this.assertCurrent(ticket);
+      return;
+    }
+    if (ticket === this.state.generation) this.signOutToGuest();
+    throw new StaleSyncGeneration();
   }
 }
 

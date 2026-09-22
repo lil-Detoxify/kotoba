@@ -634,7 +634,9 @@ node scripts/verify_deployments.cjs
 - 16. 恶意伪造或修改 request body 中的 userId 无法越权访问其他用户数据（Worker 强制基于 token 解析 user_id）
 - 17. D1 数据库中 review_events 满足不可变追加，同一 user_id 历史全量事件可溯源
 
-### 10.6 Phase 2 ~ Phase 7 全阶段实施与上线总结 (Completed)
+### 10.6 历史 Web / Windows Phase 2 ~ Phase 7 实施与上线总结 (Completed)
+
+> 本节沿用的是早期 Web / Windows 与 Cloudflare 生产部署阶段编号，不代表 `apps/miniprogram/` 的 Phase 2 ~ Phase 7 已完成。小程序当前状态以 `docs/MINIPROGRAM_ROADMAP.md` 和发布验收清单为准。
 
 自 Phase 1 骨架确立后，Antigravity 已全面完成了 Phase 2 ~ Phase 7 的各项工程建设并成功部署生产：
 

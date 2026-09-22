@@ -59,7 +59,7 @@ onShow(() => {
 </script>
 
 <template>
-  <view class="container">
+  <view class="container lists-page">
     <view class="section-header">
       <text class="section-title">生词本</text>
       <text class="section-desc">把值得多见几次的词留在这里</text>
@@ -104,6 +104,7 @@ onShow(() => {
 </template>
 
 <style scoped>
+.lists-page { padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
 .section-header { margin-bottom: 24rpx; }
 .section-title { display: block; margin-bottom: 6rpx; color: #111827; font-size: 40rpx; font-weight: 700; }
 .section-desc { color: #6B7280; font-size: 26rpx; }

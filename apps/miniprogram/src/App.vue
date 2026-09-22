@@ -1,18 +1,60 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { defaultSyncCoordinator } from "./adapters";
+import { defaultAuthService, defaultSyncCoordinator } from "./adapters";
+import { defaultPrivacyConsent } from "./services/privacy-consent";
+
+let startupConsent: Promise<boolean> | undefined;
+let syncStarted = false;
+
+function consentAtStartup(): Promise<boolean> {
+  if (!startupConsent) {
+    const task = defaultPrivacyConsent.promptOnLaunch();
+    const wrapped = task.finally(() => {
+      if (startupConsent === wrapped) startupConsent = undefined;
+    });
+    startupConsent = wrapped;
+  }
+  return startupConsent;
+}
+
+function startSyncIfConsented(): void {
+  if (!syncStarted) {
+    syncStarted = true;
+    void defaultSyncCoordinator.init();
+  }
+}
+
+function stopSyncForPrivacy(): void {
+  syncStarted = false;
+  defaultSyncCoordinator.signOutToGuest();
+  void defaultAuthService.clearLocalSession();
+}
 
 onLaunch(() => {
-  void defaultSyncCoordinator.init();
+  void consentAtStartup().then((consented) => {
+    if (consented) startSyncIfConsented();
+    else stopSyncForPrivacy();
+  });
 });
 
 onShow(() => {
-  if (defaultSyncCoordinator.state.phase === "error") void defaultSyncCoordinator.init();
-  else void defaultSyncCoordinator.flush("onShow");
+  void consentAtStartup().then((consented) => {
+    if (!consented) {
+      stopSyncForPrivacy();
+      return;
+    }
+    if (["idle", "signed_out", "error"].includes(defaultSyncCoordinator.state.phase)) void defaultSyncCoordinator.init();
+    else {
+      syncStarted = true;
+      void defaultSyncCoordinator.flush("onShow");
+    }
+  });
 });
 
 onHide(() => {
-  void defaultSyncCoordinator.flush("onHide");
+  void defaultPrivacyConsent.isConsented().then((consented) => {
+    if (consented) void defaultSyncCoordinator.flush("onHide");
+  });
 });
 </script>
 

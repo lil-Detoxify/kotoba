@@ -1,5 +1,6 @@
 import type { AuthAdapter, AuthSession } from "../adapters/types";
 import type { MiniProgramAuthResponse, MiniProgramWorkerClient } from "../adapters/worker-client";
+import type { PrivacyConsentGate } from "./privacy-consent";
 
 type AuthClient = Pick<MiniProgramWorkerClient, "getSession" | "refresh" | "loginPassword" | "sendCode" | "verifyCode" | "logout">;
 
@@ -14,18 +15,31 @@ function sessionFromResponse(response: MiniProgramAuthResponse): AuthSession {
 }
 
 export class MiniProgramAuthService {
-  constructor(private readonly storage: AuthAdapter, private readonly client: AuthClient) {}
+  constructor(
+    private readonly storage: AuthAdapter,
+    private readonly client: AuthClient,
+    private readonly privacyConsent?: PrivacyConsentGate,
+  ) {}
+
+  private async assertPrivacyConsent(): Promise<void> {
+    if (this.privacyConsent && !(await this.privacyConsent.isConsented())) {
+      throw new Error("请先同意隐私保护指引后再登录或同步。");
+    }
+  }
 
   /** Restore only a server-confirmed canonical account session. */
   async restore(): Promise<AuthSession | null> {
+    await this.assertPrivacyConsent();
     const saved = await this.storage.getSession();
     if (!saved) return null;
+    await this.assertPrivacyConsent();
     let status: Awaited<ReturnType<AuthClient["getSession"]>>;
     try {
       status = await this.client.getSession(saved.token);
     } catch {
       // Keep the durable session during an outage. The coordinator will switch
       // to its local partition, attempt Pull, and keep Push physically gated.
+      await this.assertPrivacyConsent();
       return saved;
     }
     if (status.authenticated) {
@@ -42,6 +56,7 @@ export class MiniProgramAuthService {
       return restored;
     }
     if (saved.refreshToken) {
+      await this.assertPrivacyConsent();
       try {
         const refreshed = sessionFromResponse(await this.client.refresh(saved.refreshToken));
         if (refreshed.userId !== saved.userId) throw new Error("Refreshed account does not match saved account");
@@ -56,6 +71,7 @@ export class MiniProgramAuthService {
   }
 
   async loginWithPassword(email: string, password: string): Promise<AuthSession> {
+    await this.assertPrivacyConsent();
     const response = await this.client.loginPassword(email.trim(), password);
     const session = sessionFromResponse(response);
     await this.storage.setSession(session);
@@ -63,22 +79,30 @@ export class MiniProgramAuthService {
   }
 
   async loginWithCode(email: string, code: string, verificationId: string): Promise<AuthSession> {
+    await this.assertPrivacyConsent();
     const response = await this.client.verifyCode(email.trim(), code.trim(), verificationId);
     const session = sessionFromResponse(response);
     await this.storage.setSession(session);
     return session;
   }
 
-  sendCode(email: string): Promise<{ success: true; verificationId: string; expiresIn: number }> {
+  async sendCode(email: string): Promise<{ success: true; verificationId: string; expiresIn: number }> {
+    await this.assertPrivacyConsent();
     return this.client.sendCode(email.trim());
   }
 
   async logout(): Promise<void> {
     const session = await this.storage.getSession();
     try {
-      if (session) await this.client.logout(session.refreshToken);
+      const canCallRemote = !this.privacyConsent || await this.privacyConsent.isConsented();
+      if (session && canCallRemote) await this.client.logout(session.refreshToken);
     } finally {
       await this.storage.clearSession();
     }
+  }
+
+  /** Clear local credentials after privacy withdrawal without making a network request. */
+  clearLocalSession(): Promise<void> {
+    return this.storage.clearSession();
   }
 }

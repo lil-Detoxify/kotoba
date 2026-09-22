@@ -5,6 +5,8 @@
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
     "build:mp-weixin": "uni build -p mp-weixin",
+    "verify:build": "node scripts/verify-build.mjs",
+    "verify:release": "node scripts/verify-build.mjs --release",
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
