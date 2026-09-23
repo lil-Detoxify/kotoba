@@ -1,6 +1,7 @@
 import { createQuestion, quizAttempt, quizRating, type Question } from "@jp/core";
 import type { ExerciseType, QuizAttempt, QuizType, Word } from "@jp/models";
 import type { Grade } from "ts-fsrs";
+import { normalizeLegacyQuizAttempt } from "../../services/quiz-compat";
 
 export type StudyExercise = ExerciseType;
 
@@ -26,7 +27,7 @@ export function createStudyQuestion(
 }
 
 export function submitStudyAnswer(question: Question, selected: string | null): QuizAttempt {
-  return quizAttempt(question, selected);
+  return normalizeLegacyQuizAttempt(quizAttempt(question, selected));
 }
 
 export function ratingForStudyAnswer(attempt: QuizAttempt, uncertain = false): Grade {

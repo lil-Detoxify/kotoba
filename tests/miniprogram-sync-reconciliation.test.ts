@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { initialState } from "@jp/core";
-import type { Data, SyncQueueItem, Word } from "@jp/models";
+import type { Data, ReviewLog, SyncQueueItem, Word } from "@jp/models";
+import { eventPayload } from "../apps/miniprogram/src/services/sync-outbox";
+import { submitStudyAnswer } from "../apps/miniprogram/src/pages/study/study-quiz";
 import {
   reconcileMiniProgramData,
   validateSyncPull,
@@ -89,6 +91,32 @@ function localData(): Data {
 }
 
 describe("mini program sync payload and deterministic reconciliation", () => {
+  it("repairs historical listening prompts without dropping events or altering the original", () => {
+    const historical = {
+      type: "audio-meaning", prompt: "", options: ["猫", "狗"], selected: "猫", correct: "猫", isCorrect: true,
+    } as const;
+    const events = Array.from({ length: 51 }, (_, index) => ({
+      ...event(`e-${index}`, "2026-09-20T00:00:00.000Z"),
+      ...(index === 50 ? { quiz: historical } : {}),
+    }));
+    const validated = validateSyncPull(pull({ events }), userId);
+    expect(validated.events).toHaveLength(51);
+    expect(validated.events[50].quiz).toMatchObject({ prompt: "听音辨意", selected: "猫" });
+
+    const newAttempt = submitStudyAnswer({ type: "audio-meaning", wordId: knownWord.id, prompt: "", options: ["猫", "狗"], correct: "猫" }, "猫");
+    expect(newAttempt.prompt).toBe("听音辨意");
+    const outbound = eventPayload({ ...event("old-local", "2026-09-20T00:00:00.000Z"), id: "old-local", quiz: historical } as unknown as ReviewLog);
+    expect(outbound.quiz?.prompt).toBe("听音辨意");
+    expect(historical.prompt).toBe("");
+  });
+
+  it("continues rejecting empty prompts for non-listening quizzes", () => {
+    const bad = { ...event("bad-quiz", "2026-09-20T00:00:00.000Z"), quiz: {
+      type: "kana-meaning", prompt: "", options: ["猫", "狗"], selected: "猫", correct: "猫", isCorrect: true,
+    } };
+    expect(() => validateSyncPull(pull({ events: [bad] }), userId)).toThrow(/quiz.prompt/);
+  });
+
   it("rejects mismatched identities, malformed cards, and invalid ratings", () => {
     expect(() => validateSyncPull({ ...pull(), userId: "another-user" }, userId)).toThrow(/userId/);
     expect(() => validateSyncPull({ ...pull(), progress: [progress(knownWord.id, undefined, { card: { ...cardPayload(), due: "bad" } })] }, userId)).toThrow(/card.due/);

@@ -2,6 +2,7 @@ import { evaluate, initialState, mergeWordStateWithLww, reconcileFsrsFromEvents 
 import type { Grade } from "ts-fsrs";
 import type { Data, CloudProgressDoc, ReviewEvent, ReviewLog, SyncQueueItem, UserSettings, WordState } from "@jp/models";
 import { ensureStudyRuntime } from "../adapters/runtime";
+import { normalizeLegacyAudioPrompt, normalizeLegacyQuizAttempt } from "./quiz-compat";
 
 type FsrsCard = WordState["card"];
 type RecordValue = Record<string, unknown>;
@@ -102,7 +103,7 @@ function normalizeQuiz(value: unknown, path: string): ReviewEvent["quiz"] {
   const raw = object(value, path);
   const type = string(raw.type, `${path}.type`);
   if (!["kana-meaning", "kanji-reading", "audio-meaning"].includes(type)) throw new SyncPayloadError(`${path}.type 无效`);
-  const prompt = string(raw.prompt, `${path}.prompt`);
+  const prompt = string(normalizeLegacyAudioPrompt(type, raw.prompt), `${path}.prompt`);
   if (!Array.isArray(raw.options) || raw.options.length === 0 || !raw.options.every((item) => typeof item === "string" && item.length > 0)) {
     throw new SyncPayloadError(`${path}.options 无效`);
   }
@@ -259,7 +260,7 @@ function localEvent(log: ReviewLog, userId: string, index: number): ReviewEvent 
     rating: log.rating,
     responseTime: log.responseTime,
     studyMode: log.studyMode,
-    quiz: log.quiz,
+    quiz: log.quiz ? normalizeLegacyQuizAttempt(log.quiz) : undefined,
     clientCreatedAt: log.clientCreatedAt ?? log.reviewedAt,
     serverReceivedAt: log.serverReceivedAt,
   };

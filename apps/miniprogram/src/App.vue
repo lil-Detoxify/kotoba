@@ -77,6 +77,13 @@ view, text, button, input {
   box-sizing: border-box;
 }
 
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.35;
+}
+
 .container {
   padding: 32rpx;
 }

@@ -1,4 +1,5 @@
 import type { Data, ReviewEvent, ReviewLog, SyncQueueItem, UserSettings, WordState } from "@jp/models";
+import { normalizeLegacyQuizAttempt } from "./quiz-compat";
 
 function iso(value: Date | string | undefined): Date | string | undefined {
   return value instanceof Date ? value.toISOString() : value;
@@ -23,7 +24,7 @@ export function eventPayload(log: ReviewLog): ReviewEvent {
     responseTime: log.responseTime,
     studyMode: log.studyMode,
     ...(log.deviceId ? { deviceId: log.deviceId } : {}),
-    ...(log.quiz ? { quiz: log.quiz } : {}),
+    ...(log.quiz ? { quiz: normalizeLegacyQuizAttempt(log.quiz) } : {}),
     clientCreatedAt: log.clientCreatedAt ?? log.reviewedAt,
     ...(log.serverReceivedAt ? { serverReceivedAt: log.serverReceivedAt } : {}),
   };

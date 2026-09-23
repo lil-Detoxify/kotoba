@@ -61,6 +61,22 @@ describe("mini-program strict sync gate", () => {
     expect((await h.repository.read()).states[0]).toMatchObject({ wordId: "future-word", reviewCount: 3 });
   });
 
+  it("completes cloud hydration when a historical listening event has an empty prompt", async () => {
+    const h = coordinator({ userId: "kb_1", token: "at" });
+    h.client.pull.mockResolvedValue(pull("kb_1", [progress("kb_1", "w1")], [{
+      _id: "legacy-listening", userId: "kb_1", wordId: "w1",
+      reviewedAt: "2026-09-20T00:00:00.000Z", rating: 3, responseTime: 1200,
+      studyMode: "review", clientCreatedAt: "2026-09-20T00:00:00.000Z",
+      quiz: { type: "audio-meaning", prompt: "", options: ["猫", "狗"], selected: "猫", correct: "猫", isCorrect: true },
+    }]));
+    await h.sync.init();
+    expect(h.sync.state).toMatchObject({ phase: "ready", isSyncReady: true });
+    expect((await h.repository.read()).logs).toEqual([
+      expect.objectContaining({ id: "legacy-listening", quiz: expect.objectContaining({ prompt: "听音辨意" }) }),
+    ]);
+    expect(h.client.push).not.toHaveBeenCalled();
+  });
+
   it("keeps the local snapshot and queue when pull payload is invalid", async () => {
     const h = coordinator({ userId: "kb_1", token: "at" });
     h.repository.switchUser("kb_1");
