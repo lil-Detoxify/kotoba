@@ -6,8 +6,8 @@ import {
 } from "../apps/miniprogram/src/adapters/asset-url";
 
 describe("mini-program asset origins", () => {
-  it("keeps the staged rollout on Cloudflare until a COS origin is injected", () => {
-    expect(MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL).toBe("https://kotobud.com");
+  it("uses the verified COS origin for textbooks while audio stays on Cloudflare", () => {
+    expect(MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL).toBe("https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com");
     expect(MINIPROGRAM_AUDIO_ASSET_BASE_URL).toBe("https://kotobud.com");
   });
 

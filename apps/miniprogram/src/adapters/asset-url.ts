@@ -1,4 +1,5 @@
 const CLOUDFLARE_ORIGIN = "https://kotobud.com";
+const TEXTBOOK_COS_ORIGIN = "https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com";
 
 function normalizeHttpsOrigin(value: string | undefined, fallback: string): string {
   const configured = value?.trim();
@@ -11,12 +12,12 @@ function normalizeHttpsOrigin(value: string | undefined, fallback: string): stri
 
 /**
  * Textbook payloads can move independently from the Cloudflare API and audio.
- * The production COS origin is injected at build time after its exact hostname
- * has been added to the WeChat request-domain allowlist.
+ * The verified COS origin is the default; builds may override it with an
+ * explicit HTTPS origin when rolling back a release.
  */
 export const MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL = normalizeHttpsOrigin(
   import.meta.env.VITE_MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL,
-  CLOUDFLARE_ORIGIN,
+  TEXTBOOK_COS_ORIGIN,
 );
 
 /** Audio deliberately stays on Cloudflare until the textbook-only rollout is verified. */

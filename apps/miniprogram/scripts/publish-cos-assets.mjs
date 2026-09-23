@@ -79,30 +79,44 @@ async function remoteContentHash(cos, target, item) {
   return createHash("sha256").update(response.Body).digest("hex");
 }
 
-async function remoteMatches(cos, target, item) {
+async function inspectRemote(cos, target, item) {
+  let response;
   try {
-    const response = await call(cos, "headObject", { Bucket: target.Bucket, Region: target.Region, Key: item.key });
-    const headers = headersOf(response);
-    if (!headerMatches(headers, item)) return false;
-    return await remoteContentHash(cos, target, item) === item.sha256;
+    response = await call(cos, "headObject", { Bucket: target.Bucket, Region: target.Region, Key: item.key });
   } catch (error) {
-    if (error?.statusCode === 404) return false;
+    if (error?.statusCode === 404) return "missing";
     throw error;
   }
+  const headers = headersOf(response);
+  const contentHash = await remoteContentHash(cos, target, item);
+  if (!headerMatches(headers, item) || contentHash !== item.sha256) {
+    throw new Error(`现有 COS 对象与本地清单不一致，已停止且未覆盖: ${item.key}`);
+  }
+  return "same";
 }
 
-function anonymousHead(target, item) {
+function anonymousGet(target, item) {
   const objectPath = item.key.split("/").map(encodeURIComponent).join("/");
   const url = `${target.PublicBaseUrl}/${objectPath}`;
   return new Promise((resolve, reject) => {
-    const request = https.request(url, { method: "HEAD", timeout: 15_000 }, (response) => {
-      response.resume();
+    const request = https.request(url, { method: "GET", timeout: 15_000 }, (response) => {
       const headers = Object.fromEntries(Object.entries(response.headers).map(([key, value]) => [key.toLowerCase(), Array.isArray(value) ? value.join(", ") : String(value ?? "")]));
-      if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) {
+      if (response.statusCode !== 200) {
+        response.resume();
         reject(new Error(`匿名读取失败 ${response.statusCode ?? "unknown"}: ${item.key}`));
       } else if (!publicHeadersMatch(headers, item)) {
+        response.resume();
         reject(new Error(`匿名响应头不符: ${item.key}`));
-      } else resolve();
+      } else {
+        const hash = createHash("sha256");
+        let bytes = 0;
+        response.on("data", (chunk) => { bytes += chunk.length; hash.update(chunk); });
+        response.on("end", () => {
+          if (bytes !== item.size || hash.digest("hex") !== item.sha256) reject(new Error(`匿名下载内容校验失败: ${item.key}`));
+          else resolve();
+        });
+        response.on("error", reject);
+      }
     });
     request.on("timeout", () => request.destroy(new Error(`匿名读取超时: ${item.key}`)));
     request.on("error", reject);
@@ -114,14 +128,20 @@ async function listObjects(cos, target, prefix) {
   const result = new Map();
   let Marker;
   do {
-    const page = await call(cos, "getBucket", { Bucket: target.Bucket, Region: target.Region, Prefix: prefix, Marker, MaxKeys: 1000 });
+    let page;
+    try {
+      page = await call(cos, "getBucket", { Bucket: target.Bucket, Region: target.Region, Prefix: prefix, Marker, MaxKeys: 1000 });
+    } catch (error) {
+      if (error?.statusCode === 403) throw new Error(`COS 列目录权限不足: ${prefix}（GetBucket HTTP 403）`);
+      throw error;
+    }
     for (const object of page.Contents || []) result.set(object.Key, Number(object.Size));
     Marker = page.IsTruncated === "true" || page.IsTruncated === true ? page.NextMarker : undefined;
   } while (Marker);
   return result;
 }
 
-async function verify(cos, target, manifest, concurrency, alreadyVerified = new Set()) {
+async function verify(cos, target, manifest, concurrency) {
   const expected = new Map(manifest.entries.map((item) => [item.key, item]));
   const prefixes = manifest.scope === "books" ? ["data/books/"] : manifest.scope === "audio" ? ["audio/"] : ["data/books/", "audio/"];
   const remote = new Map();
@@ -135,10 +155,10 @@ async function verify(cos, target, manifest, concurrency, alreadyVerified = new 
   if (errors.length) throw new Error(`COS 清单校验失败\n${errors.slice(0, 20).join("\n")}${errors.length > 20 ? `\n另有 ${errors.length - 20} 项` : ""}`);
 
   await pooled(manifest.entries, concurrency, async (item) => {
-    if (!alreadyVerified.has(item.key) && !await remoteMatches(cos, target, item)) {
+    if (await inspectRemote(cos, target, item) !== "same") {
       throw new Error(`远端内容或响应头不符: ${item.key}`);
     }
-    await anonymousHead(target, item);
+    await anonymousGet(target, item);
   });
 }
 
@@ -156,13 +176,17 @@ async function main() {
   const cos = new COS({ SecretId: target.SecretId, SecretKey: target.SecretKey, SecurityToken: target.SecurityToken });
 
   if (!options.verifyOnly) {
+    // Preflight every key before the first upload so an existing divergent
+    // object can never be silently overwritten or discovered mid-batch.
+    const statuses = new Map();
+    await pooled(manifest.entries, options.concurrency, async (item) => {
+      statuses.set(item.key, await inspectRemote(cos, target, item));
+    });
     let uploaded = 0;
     let skipped = 0;
-    const alreadyVerified = new Set();
     await pooled(manifest.entries, options.concurrency, async (item) => {
-      if (await remoteMatches(cos, target, item)) {
+      if (statuses.get(item.key) === "same") {
         skipped += 1;
-        alreadyVerified.add(item.key);
         return;
       }
       await call(cos, "putObject", {
@@ -180,7 +204,7 @@ async function main() {
       if ((uploaded + skipped) % 100 === 0) console.log(`进度: ${uploaded} 上传, ${skipped} 跳过`);
     });
     console.log(`上传完成: ${uploaded} 上传, ${skipped} 跳过`);
-    await verify(cos, target, manifest, options.concurrency, alreadyVerified);
+    await verify(cos, target, manifest, options.concurrency);
   } else {
     await verify(cos, target, manifest, options.concurrency);
   }
@@ -188,6 +212,12 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
+  // SDK errors can contain request details. Never print raw error objects,
+  // URLs, headers or credential-bearing diagnostics to CI or terminal logs.
+  const code = typeof error?.code === "string" ? error.code : undefined;
+  const status = Number.isInteger(error?.statusCode) ? error.statusCode : undefined;
+  const safeLocalMessage = error instanceof Error && /^(现有 COS 对象|COS 清单校验失败|COS 列目录权限不足|远端内容|匿名读取|匿名响应头|匿名下载内容|匿名读取超时|无法读取远端对象内容|缺少 COS 环境变量|TENCENT_COS_|未知参数|--concurrency|不支持的资源范围|教材)/.test(error.message)
+    ? error.message : undefined;
+  console.error(safeLocalMessage || `COS 操作失败${code ? `: ${code}` : ""}${status ? ` (HTTP ${status})` : ""}`);
   process.exitCode = 1;
 });
