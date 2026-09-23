@@ -9,6 +9,7 @@ import { computed as vueComputed, ref as vueRef } from "vue";
 import { applyStudyRating as realApplyStudyRating } from "../apps/miniprogram/src/pages/study/study-session";
 import { statistics as realStatistics } from "@jp/core";
 import { createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer } from "../apps/miniprogram/src/pages/study/study-quiz";
+import { getCloudflareAudioUrl } from "../apps/miniprogram/src/adapters/audio-url";
 
 type Harness = {
   initStudy: (lessonId?: string, requestedMode?: string) => Promise<void>;
@@ -23,13 +24,16 @@ type Harness = {
   selectExercise: (value: string) => void;
   submitAnswer: (selected: string) => void;
   toggleDifficult: () => Promise<void>;
+  ignoreCurrentWord: () => Promise<void>;
+  selectVoice: (voice: "female" | "male") => Promise<void>;
+  preloader: { schedule: ReturnType<typeof vi.fn>; cancel: ReturnType<typeof vi.fn> };
   refs: Record<string, { value: any }>;
 };
 
 const word: Word = { id: "w1", lessonId: "lesson-a", term: "猫", reading: "ねこ", meaning: "猫", order: 1 };
 const data = (): Data => ({ books: [], lessons: [], words: [word], states: [], logs: [], seeded: true });
 
-function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word]), fallbackUrl = "https://kotobud.com/audio/legacy-w1.mp3", audioCache: any = { getCached: vi.fn(async () => undefined), warm: vi.fn(async () => undefined), invalidate: vi.fn(async () => undefined) }): { harness: Harness; lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void }; getQueue: any; players: any[]; textbooks: any; audioCache: any } {
+function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word]), fallbackUrl = "https://kotobud.com/audio/legacy-w1.mp3", audioCache: any = { getCached: vi.fn(async () => undefined), warm: vi.fn(async () => undefined), invalidate: vi.fn(async () => undefined) }, primaryUrl = "https://kotobud.com/audio/w1.mp3"): { harness: Harness; lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void }; getQueue: any; players: any[]; textbooks: any; audioCache: any } {
   if (!repository.transactAndEnqueue) {
     repository.transactAndEnqueue = vi.fn(async (change: any, itemsFactory: any, key?: string) => {
       const updated = await repository.transact(change, key);
@@ -42,11 +46,11 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
   const script = compileScript(descriptor, { id: "study-page-test" });
   const setupMatch = script.content.match(/setup\(__props, \{ expose: __expose \}\) \{\n([\s\S]*?)\n\nconst __returned__/);
   if (!setupMatch) throw new Error("Unable to extract script setup body");
-  let code = ts.transpileModule(setupMatch[1], {
+  let code = ts.transpileModule(setupMatch[1].replaceAll("import.meta.env.DEV", "false"), {
     compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext },
   }).outputText.replace(/__expose\(\);\s*/, "");
   code = code.replace(/^import .*?;\r?\n/gm, "");
-  code += "\nreturn { initStudy, flipCard, rate, playAudio, selectExercise, submitAnswer, toggleDifficult, onCardTap, onTouchStart, onTouchMove, onTouchEnd, onTouchCancel, refs: { words, currentWord, revealed, message, saving, speaking, loading, loadError, mode, exercise, attempt, question, uncertain, isDifficult, markingDifficult } };";
+  code += "\nreturn { initStudy, flipCard, rate, playAudio, selectExercise, submitAnswer, toggleDifficult, ignoreCurrentWord, selectVoice, onCardTap, onTouchStart, onTouchMove, onTouchEnd, onTouchCancel, preloader, refs: { words, currentWord, revealed, message, saving, speaking, loading, loadError, mode, voice, exercise, attempt, question, uncertain, isDifficult, markingDifficult } };";
 
   const lifecycle: { load?: (query?: any) => void; show?: () => void; hide?: () => void; unload?: () => void } = {};
   const players: any[] = [];
@@ -56,8 +60,13 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
     stop = vi.fn(() => audio.stop?.());
     destroy = vi.fn(() => audio.destroy?.());
   }
+  class MockPreloader {
+    schedule = vi.fn();
+    cancel = vi.fn();
+    isActive = vi.fn(() => false);
+  }
   const runner = new Function(
-    "ref", "computed", "onLoad", "onShow", "onHide", "onUnload", "defaultAudioCache", "defaultRepository", "defaultSyncCoordinator", "UniAudioPlayer", "getWordAudioUrl", "getWordAudioFallbackUrl", "Rating", "statistics", "applyStudyRating", "getStudyQueue", "uni", "defaultTextbooks", "createStudyQuestion", "ratingForStudyAnswer", "submitStudyAnswer", "setDifficult", "reviewQueueItems",
+    "ref", "computed", "onLoad", "onShow", "onHide", "onUnload", "defaultAudioCache", "defaultRepository", "defaultSyncCoordinator", "UniAudioPlayer", "AudioPreloader", "AUDIO_VOICE_OPTIONS", "getWordAudioUrl", "getWordAudioFallbackUrl", "getCloudflareAudioUrl", "Rating", "statistics", "applyStudyRating", "getStudyQueue", "uni", "defaultTextbooks", "createStudyQuestion", "ratingForStudyAnswer", "submitStudyAnswer", "setDifficult", "setIgnored", "setPronunciationVoice", "reviewQueueItems",
     code,
   );
   const apply = vi.fn((d: Data, w: Word, rating: Rating, mode: any, now: Date, id: string, responseTime: number, quiz?: any) => realApplyStudyRating(d, w, rating as any, mode, now, id, responseTime, quiz));
@@ -68,12 +77,26 @@ function loadStudyPage(repository: any, audio: any, getQueue = vi.fn(() => [word
     (callback: () => void) => { lifecycle.show = callback; },
     (callback: () => void) => { lifecycle.hide = callback; },
     (callback: () => void) => { lifecycle.unload = callback; },
-    audioCache, repository, { flush: vi.fn(async () => true) }, MockPlayer, () => "https://kotobud.com/audio/w1.mp3", () => fallbackUrl, Rating, realStatistics, apply, getQueue,
+    audioCache, repository, { flush: vi.fn(async () => true) }, MockPlayer, MockPreloader,
+    [{ value: "female", label: "女声 · A" }, { value: "male", label: "男声 · C" }],
+    () => primaryUrl, () => fallbackUrl, getCloudflareAudioUrl,
+    Rating, realStatistics, apply, getQueue,
     { switchTab: vi.fn() }, textbooks, createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer,
     vi.fn(async (wordId: string, value: boolean) => {
       const snapshot = await repository.read();
       const state = snapshot.states.find((item: any) => item.wordId === wordId);
       if (state) state.isDifficult = value;
+      return snapshot;
+    }),
+    vi.fn(async (wordId: string, value: boolean) => {
+      const snapshot = await repository.read();
+      const state = snapshot.states.find((item: any) => item.wordId === wordId);
+      if (state) state.isIgnored = value;
+      return snapshot;
+    }),
+    vi.fn(async (value: "female" | "male") => {
+      const snapshot = await repository.read();
+      snapshot.userSettings = { userId: "local", updatedAt: new Date().toISOString(), preferences: { pronunciationVoice: value } };
       return snapshot;
     }),
     (log: any, state: any) => [{ id: log.id, type: "review_event", payload: log, createdAt: log.reviewedAt, retries: 0 }, { id: `progress:${state.wordId}`, type: "progress", payload: state, createdAt: state.updatedAt, retries: 0 }],
@@ -352,5 +375,60 @@ describe("study page script", () => {
     resolvePrimary(false);
     await pending;
     expect(audio.play).toHaveBeenCalledOnce();
+  });
+
+  it("tries Cloudflare's same audio path after COS playback fails", async () => {
+    const audio = { play: vi.fn().mockResolvedValueOnce(false).mockResolvedValueOnce(true), stop: vi.fn(), destroy: vi.fn() };
+    const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
+    const primary = "https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com/audio/google/v1/a/example.mp3";
+    const { harness, lifecycle } = loadStudyPage(repository, audio, undefined, undefined, undefined, primary);
+    await lifecycle.load?.();
+    await settle();
+    await harness.playAudio();
+    expect(audio.play.mock.calls.map((call: any[]) => call[0])).toEqual([
+      primary,
+      "https://kotobud.com/audio/google/v1/a/example.mp3",
+    ]);
+  });
+
+  it("invalidates a corrupt cached Cloudflare fallback and retries its remote URL", async () => {
+    const primary = "https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com/audio/google/v1/a/example.mp3";
+    const cloudflare = "https://kotobud.com/audio/google/v1/a/example.mp3";
+    const cache = {
+      getCached: vi.fn(async (url: string) => url === cloudflare ? "/saved/bad-cloudflare.mp3" : undefined),
+      invalidate: vi.fn(async () => undefined), warm: vi.fn(async () => undefined),
+    };
+    const audio = { play: vi.fn().mockResolvedValueOnce(false).mockResolvedValueOnce(false).mockResolvedValueOnce(true), stop: vi.fn(), destroy: vi.fn() };
+    const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
+    const { harness, lifecycle } = loadStudyPage(repository, audio, undefined, undefined, cache, primary);
+    await lifecycle.load?.();
+    await settle();
+    await harness.playAudio();
+    expect(audio.play.mock.calls.map((call: any[]) => call[0])).toEqual([primary, "/saved/bad-cloudflare.mp3", cloudflare]);
+    expect(cache.invalidate).toHaveBeenCalledWith(cloudflare);
+    expect(cache.warm).toHaveBeenCalledWith(cloudflare);
+  });
+
+  it("saves a voice change and skips an ignored word without rating it", async () => {
+    const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
+    const { harness, lifecycle } = loadStudyPage(repository, {});
+    await lifecycle.load?.();
+    await settle();
+    await harness.selectVoice("male");
+    expect(harness.refs.voice.value).toBe("male");
+    await harness.ignoreCurrentWord();
+    expect(harness.refs.currentWord.value).toBeNull();
+    expect(harness.refs.message.value).toContain("已忽略");
+    expect(repository.transact).not.toHaveBeenCalled();
+  });
+
+  it("prefetches the current card and cancels page work when hidden", async () => {
+    const repository = { getActiveKey: vi.fn(() => "data_guest"), read: vi.fn(async () => data()), transact: vi.fn() };
+    const { harness, lifecycle } = loadStudyPage(repository, {});
+    await lifecycle.load?.();
+    await settle();
+    expect(harness.preloader.schedule).toHaveBeenCalledWith(["https://kotobud.com/audio/w1.mp3"]);
+    lifecycle.hide?.();
+    expect(harness.preloader.cancel).toHaveBeenCalled();
   });
 });

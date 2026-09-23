@@ -60,7 +60,7 @@ function event(id: string, reviewedAt: string, wordId = knownWord.id) {
   };
 }
 
-function pull(overrides: Record<string, unknown> = {}): unknown {
+function pull(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     userId,
     progress: [progress(knownWord.id)],

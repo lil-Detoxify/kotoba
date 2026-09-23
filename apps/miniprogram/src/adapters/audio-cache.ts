@@ -14,11 +14,28 @@ export interface AudioCacheFileInfo {
   size: number;
 }
 
+export interface AudioCacheCancellation {
+  readonly aborted: boolean;
+  onAbort(callback: () => void): () => void;
+}
+
+export type AudioDownloadDiagnosticEvent =
+  | { type: "downloadStart"; progressObservable: boolean }
+  | { type: "firstProgress" }
+  | { type: "progressUnavailable" }
+  | { type: "downloadComplete" }
+  | { type: "downloadFailed"; cancelled: boolean };
+
+export interface AudioCacheResolveOptions {
+  cancellation?: AudioCacheCancellation;
+  onDiagnostic?: (event: AudioDownloadDiagnosticEvent) => void;
+}
+
 /** The small surface used by the cache. The default implementation is backed
  * by uni's mini-program download and saved-file APIs; tests can inject a
  * deterministic driver without installing a native uni runtime. */
 export interface AudioCacheDriver {
-  downloadFile(url: string): Promise<AudioCacheDownloadResult>;
+  downloadFile(url: string, options?: AudioCacheResolveOptions): Promise<AudioCacheDownloadResult>;
   saveFile(tempFilePath: string): Promise<string>;
   getFileInfo(filePath: string): Promise<AudioCacheFileInfo>;
   removeSavedFile(filePath: string): Promise<void>;
@@ -49,7 +66,7 @@ type UniAudioCacheRuntime = {
     url: string;
     success?: (result: { statusCode?: unknown; tempFilePath?: unknown }) => void;
     fail?: (error: unknown) => void;
-  }) => void;
+  }) => void | { abort?: () => void; onProgressUpdate?: (callback: (event: unknown) => void) => void; offProgressUpdate?: (callback: (event: unknown) => void) => void };
   saveFile?: (options: {
     tempFilePath: string;
     success?: (result: { savedFilePath?: unknown }) => void;
@@ -67,6 +84,8 @@ type UniAudioCacheRuntime = {
   }) => void;
 };
 
+type UniDownloadTask = Exclude<ReturnType<NonNullable<UniAudioCacheRuntime["downloadFile"]>>, void>;
+
 /**
  * A bounded cache for remote pronunciation files.
  *
@@ -81,6 +100,7 @@ export class UniAudioCache {
   private readonly maxEntries: number;
   private readonly now: () => number;
   private readonly inFlight = new Map<string, Promise<string>>();
+  private readonly cancelDownloads = new Map<string, () => void>();
   private manifestLoad?: Promise<AudioCacheManifest>;
   private mutationQueue: Promise<unknown> = Promise.resolve();
   private generation = 0;
@@ -94,11 +114,15 @@ export class UniAudioCache {
   }
 
   /** Resolve a URL to a local saved-file path when possible. */
-  async resolve(url: string): Promise<string> {
+  async resolve(url: string, options: AudioCacheResolveOptions = {}): Promise<string> {
     if (!isRemoteUrl(url)) return url;
     const existing = this.inFlight.get(url);
-    if (existing) return existing;
-    const operation = this.resolveRemote(url);
+    if (existing) {
+      const unsubscribe = options.cancellation?.onAbort(() => this.cancelWarm(url));
+      try { return await existing; }
+      finally { unsubscribe?.(); }
+    }
+    const operation = this.resolveRemote(url, options);
     this.inFlight.set(url, operation);
     try {
       return await operation;
@@ -115,8 +139,13 @@ export class UniAudioCache {
   }
 
   /** Download a remote file for a later play while preserving CDN fallback. */
-  async warm(url: string): Promise<void> {
-    await this.resolve(url);
+  async warm(url: string, options: AudioCacheResolveOptions = {}): Promise<void> {
+    await this.resolve(url, options);
+  }
+
+  /** Cancel the active native download for a URL, if one is in progress. */
+  cancelWarm(url: string): void {
+    this.cancelDownloads.get(url)?.();
   }
 
   /** Remove one bad cache entry after the native decoder rejects it. */
@@ -149,7 +178,7 @@ export class UniAudioCache {
     return this.enqueueMutation(async () => (await this.loadManifest()).entries.map((entry) => ({ ...entry })));
   }
 
-  private async resolveRemote(url: string): Promise<string> {
+  private async resolveRemote(url: string, options: AudioCacheResolveOptions): Promise<string> {
     let cached: string | undefined;
     try {
       cached = await this.touch(url);
@@ -157,16 +186,25 @@ export class UniAudioCache {
       return url;
     }
     if (cached) return cached;
+    if (options.cancellation?.aborted) return url;
 
     const generation = this.generation;
     let savedPath = "";
+    const cancellation = createCancellationSource();
+    const unsubscribe = options.cancellation?.onAbort(cancellation.abort);
+    this.cancelDownloads.set(url, cancellation.abort);
     try {
-      const downloaded = await this.driver.downloadFile(url);
+      if (cancellation.aborted) throw new Error("Audio download cancelled");
+      const downloaded = await this.driver.downloadFile(url, { ...options, cancellation });
+      notifyDownload(options, { type: "downloadComplete" });
+      if (cancellation.aborted) throw new Error("Audio download cancelled");
       if (downloaded.statusCode !== 200 || !isSafePath(downloaded.tempFilePath)) throw new Error("Invalid audio download response");
       const candidatePath = await this.driver.saveFile(downloaded.tempFilePath);
+      if (cancellation.aborted) throw new Error("Audio download cancelled");
       if (!isSafePath(candidatePath)) throw new Error("Invalid saved audio path");
       savedPath = candidatePath;
       const info = await this.driver.getFileInfo(savedPath);
+      if (cancellation.aborted) throw new Error("Audio download cancelled");
       if (!isValidSize(info.size) || info.size > this.maxBytes) throw new Error("Invalid audio file size");
       if (generation !== this.generation) throw new Error("Audio cache was cleared during download");
 
@@ -180,8 +218,12 @@ export class UniAudioCache {
       });
       return savedPath;
     } catch {
+      notifyDownload(options, { type: "downloadFailed", cancelled: cancellation.aborted });
       if (savedPath) await this.driver.removeSavedFile(savedPath).catch(() => undefined);
       return url;
+    } finally {
+      unsubscribe?.();
+      if (this.cancelDownloads.get(url) === cancellation.abort) this.cancelDownloads.delete(url);
     }
   }
 
@@ -287,16 +329,66 @@ function unique(values: string[]): string[] {
   return [...new Set(values)];
 }
 
+function createCancellationSource(): AudioCacheCancellation & { abort: () => void } {
+  let aborted = false;
+  const listeners = new Set<() => void>();
+  return {
+    get aborted() { return aborted; },
+    onAbort(callback) {
+      if (aborted) { callback(); return () => undefined; }
+      listeners.add(callback);
+      return () => listeners.delete(callback);
+    },
+    abort() {
+      if (aborted) return;
+      aborted = true;
+      for (const callback of [...listeners]) callback();
+      listeners.clear();
+    },
+  };
+}
+
 function createUniAudioCacheDriver(): AudioCacheDriver {
   const runtime = getUniAudioCacheRuntime();
   return {
-    downloadFile: (url) => new Promise((resolve, reject) => {
+    downloadFile: (url, options = {}) => new Promise((resolve, reject) => {
       if (!runtime?.downloadFile) return reject(new Error("uni.downloadFile unavailable"));
-      runtime.downloadFile({
+      if (options.cancellation?.aborted) return reject(new Error("Audio download cancelled"));
+      let settled = false;
+      let sawProgress = false;
+      let task: UniDownloadTask | undefined;
+      let removeAbortListener: () => void = () => undefined;
+      const onProgress = (_event: unknown) => {
+        if (sawProgress || settled) return;
+        sawProgress = true;
+        notifyDownload(options, { type: "firstProgress" });
+      };
+      const finish = (callback: () => void) => {
+        if (settled) return;
+        settled = true;
+        removeAbortListener();
+        if (task?.offProgressUpdate) task.offProgressUpdate(onProgress);
+        callback();
+      };
+      task = runtime.downloadFile({
         url,
-        success: (result) => resolve({ statusCode: Number(result.statusCode), tempFilePath: String(result.tempFilePath ?? "") }),
-        fail: reject,
-      });
+        success: (result) => finish(() => resolve({ statusCode: Number(result.statusCode), tempFilePath: String(result.tempFilePath ?? "") })),
+        fail: (error) => finish(() => reject(error)),
+      }) || undefined;
+      const progressObservable = typeof task?.onProgressUpdate === "function";
+      notifyDownload(options, { type: "downloadStart", progressObservable });
+      if (progressObservable) task?.onProgressUpdate?.(onProgress);
+      else notifyDownload(options, { type: "progressUnavailable" });
+      removeAbortListener = options.cancellation?.onAbort(() => finish(() => {
+        try { task?.abort?.(); } catch { /* Best effort if native request settled. */ }
+        reject(new Error("Audio download cancelled"));
+      })) ?? (() => undefined);
+      if (options.cancellation?.aborted) {
+        finish(() => {
+          try { task?.abort?.(); } catch { /* Best effort if native request settled. */ }
+          reject(new Error("Audio download cancelled"));
+        });
+      }
     }),
     saveFile: (tempFilePath) => new Promise((resolve, reject) => {
       if (!runtime?.saveFile) return reject(new Error("uni.saveFile unavailable"));
@@ -311,6 +403,10 @@ function createUniAudioCacheDriver(): AudioCacheDriver {
       runtime.removeSavedFile({ filePath, success: resolve, fail: reject });
     }),
   };
+}
+
+function notifyDownload(options: AudioCacheResolveOptions, event: AudioDownloadDiagnosticEvent): void {
+  try { options.onDiagnostic?.(event); } catch { /* Diagnostics cannot affect cache operations. */ }
 }
 
 function getUniAudioCacheRuntime(): UniAudioCacheRuntime | undefined {

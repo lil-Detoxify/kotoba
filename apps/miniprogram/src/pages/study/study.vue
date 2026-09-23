@@ -3,14 +3,16 @@ import { computed, ref } from "vue";
 import { onHide, onLoad, onShow, onUnload } from "@dcloudio/uni-app";
 import { defaultAudioCache, defaultRepository, defaultSyncCoordinator } from "../../adapters";
 import { UniAudioPlayer } from "../../adapters/audio";
-import { getWordAudioUrl, getWordAudioFallbackUrl } from "../../adapters/audio-url";
+import { AudioPreloader } from "../../adapters/audio-preload";
+import { AUDIO_VOICE_OPTIONS, getCloudflareAudioUrl, getWordAudioUrl, getWordAudioFallbackUrl, type AudioVoice } from "../../adapters/audio-url";
 import { Rating, type Grade } from "ts-fsrs";
 import { statistics } from "@jp/core";
 import type { Data, ExerciseType, StudyMode, Word, QuizAttempt } from "@jp/models";
 import { applyStudyRating, getStudyQueue } from "./study-session";
 import { createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer } from "./study-quiz";
 import { defaultTextbooks } from "../../services/textbooks";
-import { setDifficult } from "../../services/word-flags";
+import { setDifficult, setIgnored } from "../../services/word-flags";
+import { setPronunciationVoice } from "../../services/pronunciation";
 import { reviewQueueItems } from "../../services/sync-outbox";
 
 const words = ref<Word[]>([]);
@@ -31,16 +33,18 @@ const voice = ref<"female" | "male">("female");
 const exercise = ref<ExerciseType>("card");
 const question = ref<ReturnType<typeof createStudyQuestion>>(null);
 const attempt = ref<QuizAttempt | null>(null);
+const heard = ref(false);
 const uncertain = ref(false);
 const streak = ref(0);
 const isDifficult = ref(false);
 const markingDifficult = ref(false);
+const markingIgnored = ref(false);
+const changingVoice = ref(false);
 const startedAt = ref(Date.now());
 const ratingOptions = [
-  { grade: Rating.Again, label: "忘记", hint: "还没记住", style: "again" },
-  { grade: Rating.Hard, label: "困难", hint: "费力想起", style: "hard" },
+  { grade: Rating.Again, label: "忘记了", hint: "还没记住", style: "again" },
+  { grade: Rating.Hard, label: "模糊", hint: "费力想起", style: "hard" },
   { grade: Rating.Good, label: "记得", hint: "正常想起", style: "good" },
-  { grade: Rating.Easy, label: "简单", hint: "轻松掌握", style: "easy" },
 ] as const;
 
 // Each page owns its player; unloading must not destroy the next page's audio.
@@ -57,11 +61,34 @@ let touchStartX = 0;
 let touchStartY = 0;
 let touchStarted = false;
 let suppressTapUntil = 0;
+let audioTraceStart: number | undefined;
+let preloadTraceStart: number | undefined;
+const audioDiagnosticsEnabled = import.meta.env.DEV;
+const preloader = new AudioPreloader(defaultAudioCache, {
+  onDiagnostic: (event) => {
+    if (!audioDiagnosticsEnabled) return;
+    if (event.type === "downloadStart") preloadTraceStart = Date.now();
+    if (preloadTraceStart !== undefined) console.info(`[KotoBud audio] preload.${event.type}: ${Date.now() - preloadTraceStart}ms`);
+    traceAudioStage(`download.${event.type}`);
+  },
+});
+
+function traceAudioStage(stage: string): void {
+  if (!audioDiagnosticsEnabled || audioTraceStart === undefined) return;
+  // Deliberately log timing only: no audio URLs, words, account data or native errors.
+  console.info(`[KotoBud audio] ${stage}: ${Date.now() - audioTraceStart}ms`);
+}
 
 const progressLabel = computed(() => `${currentIndex.value} / ${words.value.length}`);
 const progressPercent = computed(() => words.value.length ? currentIndex.value / words.value.length * 100 : 0);
 const modeLabel = computed(() => mode.value === "review" ? "到期复习" : mode.value === "difficult" ? "难词巩固" : "新词学习");
-const audioUrl = computed(() => currentWord.value ? getWordAudioUrl(currentWord.value, voice.value) : undefined);
+const audioUrl = computed(() => {
+  if (!currentWord.value) return undefined;
+  const started = Date.now();
+  const resolved = getWordAudioUrl(currentWord.value, voice.value);
+  if (import.meta.env.DEV) console.info(`[KotoBud audio] urlCompute: ${Date.now() - started}ms`);
+  return resolved;
+});
 const exerciseOptions: Array<{ value: ExerciseType; label: string }> = [
   { value: "card", label: "卡片" }, { value: "mixed", label: "混合" },
   { value: "kana-meaning", label: "假名选义" }, { value: "kanji-reading", label: "汉字选音" },
@@ -82,6 +109,7 @@ async function initStudy(lessonId = requestedLesson, selectedMode = requestedMod
   message.value = "";
   question.value = null;
   attempt.value = null;
+  heard.value = false;
   uncertain.value = false;
   mode.value = selectedMode === "review" || selectedMode === "difficult" ? selectedMode : "new";
   if (["card", "kana-meaning", "kanji-reading", "audio-meaning", "mixed"].includes(selectedExercise || "")) {
@@ -115,10 +143,21 @@ function stopAudio() {
   speaking.value = false;
 }
 
+function preloadNearbyWords(): void {
+  if (!visible || disposed || !currentWord.value) { preloader.cancel(); return; }
+  const started = Date.now();
+  const urls = words.value.slice(currentIndex.value, currentIndex.value + 3)
+    .map((word) => getWordAudioUrl(word, voice.value))
+    .filter((url): url is string => !!url);
+  if (audioDiagnosticsEnabled) console.info(`[KotoBud audio] preloadUrlCompute: ${Date.now() - started}ms`);
+  preloader.schedule(urls);
+}
+
 function loadWord() {
   stopAudio();
   touchStarted = false;
   attempt.value = null;
+  heard.value = false;
   uncertain.value = false;
   question.value = null;
   if (requestedExercise && ["card", "kana-meaning", "kanji-reading", "audio-meaning", "mixed"].includes(requestedExercise)) {
@@ -126,6 +165,7 @@ function loadWord() {
   }
   revealed.value = false;
   currentWord.value = words.value[currentIndex.value] || null;
+  preloadNearbyWords();
   isDifficult.value = !!loadedData.value?.states.find((state) => state.wordId === currentWord.value?.id)?.isDifficult;
   finished.value = words.value.length > 0 && !currentWord.value;
   startedAt.value = Date.now();
@@ -137,7 +177,7 @@ function loadWord() {
 }
 
 async function toggleDifficult() {
-  if (!currentWord.value || markingDifficult.value || saving.value || disposed) return;
+  if (!currentWord.value || markingDifficult.value || markingIgnored.value || changingVoice.value || saving.value || disposed) return;
   if (defaultRepository.getActiveKey() !== sessionKey) {
     message.value = "账户已切换，请返回首页后重新开始学习。";
     return;
@@ -158,20 +198,66 @@ async function toggleDifficult() {
   }
 }
 
+async function ignoreCurrentWord() {
+  if (!currentWord.value || markingIgnored.value || markingDifficult.value || changingVoice.value || saving.value || attempt.value || disposed) return;
+  if (defaultRepository.getActiveKey() !== sessionKey) {
+    message.value = "账户已切换，请返回首页后重新开始学习。";
+    return;
+  }
+  const word = currentWord.value;
+  markingIgnored.value = true;
+  try {
+    const updated = await setIgnored(word.id, true, defaultRepository);
+    if (disposed || defaultRepository.getActiveKey() !== sessionKey || currentWord.value?.id !== word.id) return;
+    loadedData.value = updated;
+    currentIndex.value++;
+    loadWord();
+    message.value = "已忽略，可在生词本中恢复";
+    void defaultSyncCoordinator.flush("timer");
+  } catch {
+    if (!disposed) message.value = "忽略操作保存失败，请重试";
+  } finally {
+    if (!disposed) markingIgnored.value = false;
+  }
+}
+
+async function selectVoice(value: AudioVoice) {
+  if (value === voice.value || changingVoice.value || markingIgnored.value || markingDifficult.value || saving.value || disposed) return;
+  if (defaultRepository.getActiveKey() !== sessionKey) {
+    message.value = "账户已切换，请返回首页后重新开始学习。";
+    return;
+  }
+  changingVoice.value = true;
+  stopAudio();
+  try {
+    const updated = await setPronunciationVoice(value, defaultRepository);
+    if (disposed || defaultRepository.getActiveKey() !== sessionKey) return;
+    loadedData.value = updated;
+    voice.value = value;
+    preloadNearbyWords();
+    message.value = `已切换为${AUDIO_VOICE_OPTIONS.find((item) => item.value === value)?.label ?? "所选发音"}`;
+    void defaultSyncCoordinator.flush("timer");
+  } catch {
+    if (!disposed) message.value = "发音偏好保存失败，请重试";
+  } finally {
+    if (!disposed) changingVoice.value = false;
+  }
+}
+
 function selectExercise(value: ExerciseType) {
-  if (saving.value || markingDifficult.value || attempt.value || value === exercise.value) return;
+  if (saving.value || markingDifficult.value || markingIgnored.value || changingVoice.value || attempt.value || value === exercise.value) return;
   exercise.value = value;
   requestedExercise = value;
   loadWord();
 }
 
-function submitAnswer(selected: string) {
-  if (!question.value || attempt.value || saving.value) return;
+function submitAnswer(selected: string | null) {
+  if (!question.value || attempt.value || saving.value || (question.value.type === "audio-meaning" && !heard.value)) return;
   attempt.value = submitStudyAnswer(question.value, selected);
   revealed.value = true;
 }
 
-function playQuestionAudio() { if (question.value?.type === "audio-meaning") void playAudio(); }
+function playQuestionAudio(slow = false) { if (question.value?.type === "audio-meaning") void playAudio(slow); }
 
 function flipCard() {
   if (exercise.value !== "card") return;
@@ -214,42 +300,69 @@ function onTouchCancel() {
 }
 
 async function playAudio(slow = false) {
-  if (!audioUrl.value || saving.value || disposed || !visible) return;
+  if (!audioUrl.value || saving.value || changingVoice.value || disposed || !visible) return;
   if (speaking.value) { stopAudio(); return; }
   const ticket = ++audioGeneration;
+  audioTraceStart = Date.now();
+  traceAudioStage("tap");
   const word = currentWord.value;
   speaking.value = true;
   message.value = "";
   try {
-    player ||= new UniAudioPlayer();
+    player ||= new UniAudioPlayer(({ playId, type }) => traceAudioStage(`native#${playId}.${type}`));
     const primaryUrl = audioUrl.value;
-    const cachedUrl = await defaultAudioCache.getCached(primaryUrl);
+    traceAudioStage("urlReady");
+    traceAudioStage("cacheLookupStart");
+    let cachedUrl = await defaultAudioCache.getCached(primaryUrl);
+    if (!cachedUrl && preloader.isActive(primaryUrl)) {
+      const resolved = await defaultAudioCache.resolve(primaryUrl);
+      if (resolved !== primaryUrl) cachedUrl = resolved;
+    }
+    traceAudioStage(cachedUrl ? "cacheHit" : "cacheMiss");
     if (ticket !== audioGeneration || disposed || !visible) return;
     const onInterrupted = () => {
       if (ticket === audioGeneration) audioGeneration++;
       speaking.value = false;
     };
     let played = await player.play(cachedUrl || primaryUrl, { slow, onInterrupted });
+    traceAudioStage(played ? "primaryEnded" : "primaryFailed");
     if (ticket !== audioGeneration || disposed) return;
+    let retriedPrimary = false;
     if (!played && cachedUrl) {
       await defaultAudioCache.invalidate(primaryUrl);
       if (ticket !== audioGeneration || disposed || !visible) return;
       played = await player.play(primaryUrl, { slow, onInterrupted });
+      retriedPrimary = true;
       if (ticket !== audioGeneration || disposed) return;
     }
-    if (played && !cachedUrl) void defaultAudioCache.warm(primaryUrl);
-    const fallback = word ? getWordAudioFallbackUrl(word) : undefined;
-    if (!played && fallback && fallback !== audioUrl.value) {
+    if (played && (!cachedUrl || retriedPrimary)) void defaultAudioCache.warm(primaryUrl);
+    const cloudflareUrl = getCloudflareAudioUrl(primaryUrl);
+    const legacyUrl = word ? getWordAudioFallbackUrl(word) : undefined;
+    const fallbackUrls = [cloudflareUrl, legacyUrl, legacyUrl ? getCloudflareAudioUrl(legacyUrl) : undefined]
+      .filter((url, index, urls): url is string => !!url && url !== primaryUrl && urls.indexOf(url) === index);
+    for (const fallback of fallbackUrls) {
+      if (played) break;
       const cachedFallback = await defaultAudioCache.getCached(fallback);
       if (ticket !== audioGeneration || disposed || !visible) return;
       played = await player.play(cachedFallback || fallback, { slow, onInterrupted });
+      traceAudioStage(played ? "fallbackEnded" : "fallbackFailed");
       if (ticket !== audioGeneration || disposed) return;
-      if (played && !cachedFallback) void defaultAudioCache.warm(fallback);
+      let retriedRemote = false;
+      if (!played && cachedFallback) {
+        await defaultAudioCache.invalidate(fallback);
+        if (ticket !== audioGeneration || disposed || !visible) return;
+        played = await player.play(fallback, { slow, onInterrupted });
+        retriedRemote = true;
+        if (ticket !== audioGeneration || disposed) return;
+      }
+      if (played && (!cachedFallback || retriedRemote)) void defaultAudioCache.warm(fallback);
     }
     if (!played) {
       const isListeningQuestion = question.value?.type === "audio-meaning";
       message.value = isListeningQuestion ? "题目音频暂时无法播放，已切回卡片模式。" : "发音暂时无法播放，请稍后重试。";
       if (isListeningQuestion) { exercise.value = "card"; question.value = null; attempt.value = null; revealed.value = false; }
+    } else if (question.value?.type === "audio-meaning") {
+      heard.value = true;
     }
   } catch {
     if (ticket === audioGeneration && !disposed) {
@@ -263,7 +376,7 @@ async function playAudio(slow = false) {
 }
 
 async function rate(grade: Grade) {
-  if (!currentWord.value || saving.value || markingDifficult.value || disposed || !visible) return;
+  if (!currentWord.value || saving.value || markingDifficult.value || markingIgnored.value || changingVoice.value || disposed || !visible) return;
   if (exercise.value === "card" && !revealed.value) return;
   if (exercise.value !== "card" && !attempt.value) return;
   const attemptSnapshot = attempt.value;
@@ -289,7 +402,7 @@ async function rate(grade: Grade) {
     currentIndex.value++;
     streak.value = statistics(updated, now).streak;
     loadWord();
-    message.value = `已保存「${ratingOptions.find((item) => item.grade === finalGrade)?.label ?? "困难"}」 · 今日已打卡`;
+    message.value = `已保存「${ratingOptions.find((item) => item.grade === finalGrade)?.label ?? "模糊"}」 · 今日已打卡`;
     void defaultSyncCoordinator.flush("timer");
   } catch {
     if (!disposed) message.value = "保存失败，当前卡片已保留，请重试。";
@@ -300,9 +413,9 @@ async function rate(grade: Grade) {
 
 function backToHome() { uni.switchTab({ url: "/pages/index/index" }); }
 onLoad((query) => { void initStudy(query?.lessonId, query?.mode, query?.exercise); });
-onShow(() => { visible = true; });
-onHide(() => { visible = false; onTouchCancel(); stopAudio(); });
-onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
+onShow(() => { visible = true; preloadNearbyWords(); });
+onHide(() => { visible = false; onTouchCancel(); stopAudio(); preloader.cancel(); });
+onUnload(() => { disposed = true; stopAudio(); preloader.cancel(); player?.destroy(); });
 </script>
 
 <template>
@@ -321,8 +434,12 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
     </view>
     <view v-else>
       <scroll-view class="exercise-picker" scroll-x="true" :show-scrollbar="false">
-        <button v-for="item in exerciseOptions" :key="item.value" class="exercise-btn" :class="{ selected: exercise === item.value }" :disabled="saving" @tap="selectExercise(item.value)">{{ item.label }}</button>
+        <button v-for="item in exerciseOptions" :key="item.value" class="exercise-btn" :class="{ selected: exercise === item.value }" :disabled="saving || markingDifficult || markingIgnored || changingVoice" @tap="selectExercise(item.value)">{{ item.label }}</button>
       </scroll-view>
+      <view class="voice-picker">
+        <text>声音</text>
+        <button v-for="item in AUDIO_VOICE_OPTIONS" :key="item.value" class="voice-option" :class="{ selected: voice === item.value }" :disabled="changingVoice || markingDifficult || markingIgnored || saving" @tap="selectVoice(item.value)">{{ item.label }}</button>
+      </view>
       <view class="progress-info">
         <text>{{ modeLabel }}</text>
         <text>已完成 {{ progressLabel }}</text>
@@ -342,9 +459,25 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
           <text v-if="exercise === 'card' || question?.type === 'kanji-reading' || attempt" class="term">{{ currentWord.term }}</text>
           <text v-if="exercise === 'card' || attempt" class="reading">{{ currentWord.reading }}</text>
           <text v-if="currentWord.partOfSpeech" class="pos-badge">{{ currentWord.partOfSpeech }}</text>
-          <view v-if="exercise !== 'card' && question && !attempt" class="quiz-options">
-            <button v-if="question.type === 'audio-meaning'" class="study-button quiz-audio" @tap.stop="playQuestionAudio">{{ speaking ? '停止发音' : '播放题目音频' }}</button>
-            <button v-for="option in question.options" :key="option" class="quiz-option" @tap.stop="submitAnswer(option)">{{ option }}</button>
+          <view v-if="exercise !== 'card' && question" class="quiz-options">
+            <view v-if="question.type === 'audio-meaning'" class="quiz-listen">
+              <button class="study-button quiz-audio" :disabled="saving" @tap.stop="playQuestionAudio(false)">{{ speaking ? '停止发音' : '播放题目音频' }}</button>
+              <button class="study-button quiz-audio" :disabled="saving || speaking" @tap.stop="playQuestionAudio(true)">慢速听</button>
+            </view>
+            <text v-if="question.type === 'audio-meaning' && !heard && !attempt" class="card-hint">播放后即可选择答案</text>
+            <button v-for="option in question.options" :key="option" class="quiz-option"
+              :class="{ 'option-correct': attempt && option === question.correct, 'option-wrong': attempt && !attempt.isCorrect && option === attempt.selected }"
+              :disabled="!!attempt || saving || (question.type === 'audio-meaning' && !heard)" @tap.stop="submitAnswer(option)">{{ option }}</button>
+            <button v-if="!attempt" class="dont-know" :disabled="saving || (question.type === 'audio-meaning' && !heard)" @tap.stop="submitAnswer(null)">不认识，查看解析</button>
+            <text v-if="attempt" class="quiz-feedback" :class="{ incorrect: !attempt.isCorrect }">{{ attempt.isCorrect ? '答对了，继续巩固这份记忆。' : `再记住一次。正确答案：${attempt.correct}` }}</text>
+            <view v-if="attempt" class="word-details">
+              <text class="meaning">{{ currentWord.meaning }}</text>
+              <view v-if="currentWord.example" class="example-box">
+                <text class="example-ja">{{ currentWord.example }}</text>
+                <text v-if="currentWord.exampleReading" class="example-reading">{{ currentWord.exampleReading }}</text>
+                <text v-if="currentWord.exampleTranslation" class="example-zh">{{ currentWord.exampleTranslation }}</text>
+              </view>
+            </view>
           </view>
           <view v-else-if="revealed" class="word-details">
             <text class="meaning">{{ currentWord.meaning }}</text>
@@ -362,7 +495,9 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
           </button>
           <button class="study-button" :disabled="!audioUrl || saving || speaking" @tap="playAudio(true)">慢速听</button>
         </view>
-        <button class="difficult-button" :disabled="markingDifficult || saving" @tap="toggleDifficult">{{ isDifficult ? '★ 已标记难词' : '☆ 标记为难词' }}</button>
+        <text v-if="audioUrl" class="audio-source">{{ currentWord.reading ? `Google WaveNet · ${voice === 'male' ? '男声 C' : '女声 A'}` : '词书发音' }}</text>
+        <button class="difficult-button" :disabled="markingDifficult || markingIgnored || changingVoice || saving" @tap="toggleDifficult">{{ isDifficult ? '★ 已标记难词' : '☆ 标记为难词' }}</button>
+        <button class="ignore-button" :disabled="markingIgnored || markingDifficult || changingVoice || saving || !!attempt" @tap="ignoreCurrentWord">忽略此词</button>
         <text v-if="!audioUrl" class="card-hint">这个词暂时没有可用发音</text>
       </view>
       <button v-if="currentWord && exercise === 'card'" class="study-button flip-button" :disabled="saving" @tap="flipCard">
@@ -378,15 +513,15 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
             :key="item.grade"
             class="rate-btn"
             :class="item.style"
-            :disabled="saving || !revealed || (exercise !== 'card' && !attempt)"
+            :disabled="saving || markingDifficult || markingIgnored || changingVoice || !revealed"
             @tap="rate(item.grade)"
           >
             <text>{{ item.label }}</text>
             <text class="rating-hint">{{ item.hint }}</text>
           </button>
         </view>
-        <button v-else class="study-button quiz-save" :disabled="saving || !attempt" @tap="rate(Rating.Good)">
-          保存并继续（{{ attempt?.isCorrect ? (uncertain ? '困难' : '记得') : '忘记' }}）
+        <button v-else class="study-button quiz-save" :disabled="saving || markingDifficult || markingIgnored || changingVoice || !attempt" @tap="rate(Rating.Good)">
+          保存并继续（{{ attempt?.isCorrect ? (uncertain ? '模糊' : '记得') : '忘记了' }}）
         </button>
       </view>
       <view v-if="finished" class="card status-card">
@@ -402,19 +537,22 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
 <style scoped>
 .study-page {
   --ink: #273c35;
-  --muted: #59675d;
+  --muted: #69746b;
   --green: #365d49;
   --line: #dfe5db;
   color: var(--ink);
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
 }
+.voice-picker { display: flex; align-items: center; gap: 10rpx; margin: 0 0 20rpx; color: var(--muted); font-size: 25rpx; }
+.voice-option { margin: 0; min-height: 42px; padding: 4rpx 20rpx; border: 1rpx solid var(--line); border-radius: 12rpx; background: #fffefb; color: var(--muted); font-size: 25rpx; }
+.voice-option.selected { background: #eaf0e3; border-color: #a8bbac; color: var(--green); font-weight: 600; }
 .progress-info { display: flex; justify-content: space-between; gap: 16rpx; font-size: 26rpx; color: var(--muted); }
 .exercise-picker { display: flex; white-space: nowrap; margin-bottom: 18rpx; }
 .exercise-btn { display: inline-flex; min-height: 48px; margin-right: 10rpx; padding: 0 22rpx; border: 1rpx solid var(--line); border-radius: 24rpx; background: #fffefb; color: var(--muted); align-items: center; justify-content: center; font-size: 24rpx; }
 .exercise-btn.selected { background: #eaf0e3; border-color: #a8bbac; color: var(--green); font-weight: 600; }
 .progress-track { height: 8rpx; margin: 18rpx 0 28rpx; border-radius: 8rpx; background: #e5eadf; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--green); }
-.word-card { padding: 0 28rpx 28rpx; text-align: center; border-color: var(--line); }
+.word-card { padding: 0 28rpx 28rpx; text-align: center; border-color: var(--line); background: #fffefb; box-shadow: none; border-radius: 18rpx; }
 .is-revealed { border-color: #a8bbac; background: #fffefb; }
 .card-surface { min-height: 460rpx; padding: 36rpx 0 28rpx; display: flex; flex-direction: column; align-items: center; }
 .surface-pressed { opacity: .85; }
@@ -437,6 +575,14 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
 .uncertain-toggle { display: flex; min-height: 48px; align-items: center; justify-content: center; gap: 8rpx; margin-bottom: 14rpx; color: var(--muted); font-size: 25rpx; }
 .quiz-options { width: 100%; display: flex; flex-direction: column; gap: 12rpx; margin-top: 24rpx; }
 .quiz-option { width: 100%; min-height: 52px; border: 1rpx solid var(--line); border-radius: 12rpx; background: #fffefb; color: var(--ink); font-size: 30rpx; }
+.quiz-option.option-correct { border-color: #9cba9a; background: #e3efdf; color: var(--green); }
+.quiz-option.option-wrong { border-color: #d5a79a; background: #fce5df; color: #8d3025; }
+.quiz-listen { display: flex; gap: 8rpx; }
+.quiz-feedback { padding: 16rpx 20rpx; border-radius: 12rpx; background: #e3efdf; color: var(--green); font-size: 27rpx; }
+.quiz-feedback.incorrect { background: #fce5df; color: #8d3025; }
+.dont-know { margin-top: 4rpx; min-height: 44px; border: 0; background: transparent; color: var(--muted); font-size: 25rpx; }
+.audio-source { display: block; margin-top: 14rpx; color: var(--muted); font-size: 23rpx; }
+.ignore-button { min-height: 42px; border: 0; background: transparent; color: var(--muted); font-size: 24rpx; }
 .quiz-audio { width: 100%; }
 .quiz-save { width: 100%; margin-top: 14rpx; }
 .rating-bar { display: flex; gap: 8px; }
@@ -445,7 +591,6 @@ onUnload(() => { disposed = true; stopAudio(); player?.destroy(); });
 .again { background: #fce5df; color: #8d3025; }
 .hard { background: #f8eed6; color: #795717; }
 .good { background: #e3efdf; color: #365d49; }
-.easy { background: #e1ecf1; color: #2e5869; }
 button[disabled] { color: #767c76; background: #eceee9; opacity: .75; }
 .status-card { display: flex; flex-direction: column; align-items: center; gap: 28rpx; text-align: center; padding: 56rpx 32rpx; font-size: 28rpx; }
 .status-title { font-size: 40rpx; font-weight: 700; }

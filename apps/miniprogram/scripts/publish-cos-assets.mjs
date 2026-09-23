@@ -44,6 +44,17 @@ function call(cos, method, params) {
   return new Promise((resolve, reject) => cos[method](params, (error, data) => error ? reject(error) : resolve(data)));
 }
 
+async function retryTransientRead(operation) {
+  for (let attempt = 0; ; attempt += 1) {
+    try { return await operation(); }
+    catch (error) {
+      if (attempt >= 3 || !["ECONNRESET", "ETIMEDOUT", "EPIPE", "EAI_AGAIN"].includes(error?.code)
+        && ![429, 500, 502, 503, 504].includes(Number(error?.statusCode))) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 250 * 2 ** attempt));
+    }
+  }
+}
+
 async function pooled(items, concurrency, operation) {
   let cursor = 0;
   const workers = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
@@ -103,7 +114,7 @@ function anonymousGet(target, item) {
       const headers = Object.fromEntries(Object.entries(response.headers).map(([key, value]) => [key.toLowerCase(), Array.isArray(value) ? value.join(", ") : String(value ?? "")]));
       if (response.statusCode !== 200) {
         response.resume();
-        reject(new Error(`匿名读取失败 ${response.statusCode ?? "unknown"}: ${item.key}`));
+        reject(Object.assign(new Error(`匿名读取失败 ${response.statusCode ?? "unknown"}: ${item.key}`), { statusCode: response.statusCode }));
       } else if (!publicHeadersMatch(headers, item)) {
         response.resume();
         reject(new Error(`匿名响应头不符: ${item.key}`));
@@ -118,7 +129,7 @@ function anonymousGet(target, item) {
         response.on("error", reject);
       }
     });
-    request.on("timeout", () => request.destroy(new Error(`匿名读取超时: ${item.key}`)));
+    request.on("timeout", () => request.destroy(Object.assign(new Error(`匿名读取超时: ${item.key}`), { code: "ETIMEDOUT" })));
     request.on("error", reject);
     request.end();
   });
@@ -130,7 +141,7 @@ async function listObjects(cos, target, prefix) {
   do {
     let page;
     try {
-      page = await call(cos, "getBucket", { Bucket: target.Bucket, Region: target.Region, Prefix: prefix, Marker, MaxKeys: 1000 });
+      page = await retryTransientRead(() => call(cos, "getBucket", { Bucket: target.Bucket, Region: target.Region, Prefix: prefix, Marker, MaxKeys: 1000 }));
     } catch (error) {
       if (error?.statusCode === 403) throw new Error(`COS 列目录权限不足: ${prefix}（GetBucket HTTP 403）`);
       throw error;
@@ -155,10 +166,10 @@ async function verify(cos, target, manifest, concurrency) {
   if (errors.length) throw new Error(`COS 清单校验失败\n${errors.slice(0, 20).join("\n")}${errors.length > 20 ? `\n另有 ${errors.length - 20} 项` : ""}`);
 
   await pooled(manifest.entries, concurrency, async (item) => {
-    if (await inspectRemote(cos, target, item) !== "same") {
+    if (await retryTransientRead(() => inspectRemote(cos, target, item)) !== "same") {
       throw new Error(`远端内容或响应头不符: ${item.key}`);
     }
-    await anonymousGet(target, item);
+    await retryTransientRead(() => anonymousGet(target, item));
   });
 }
 
@@ -180,7 +191,7 @@ async function main() {
     // object can never be silently overwritten or discovered mid-batch.
     const statuses = new Map();
     await pooled(manifest.entries, options.concurrency, async (item) => {
-      statuses.set(item.key, await inspectRemote(cos, target, item));
+      statuses.set(item.key, await retryTransientRead(() => inspectRemote(cos, target, item)));
     });
     let uploaded = 0;
     let skipped = 0;

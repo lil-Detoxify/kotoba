@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { compileScript, parse } from "@vue/compiler-sfc";
 import ts from "typescript";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getDifficultWords, getDueWords } from "@jp/core";
+import { getDifficultWords, getDueWords, initialState } from "@jp/core";
 import type { Data, Word } from "@jp/models";
 import { computed as vueComputed, ref as vueRef } from "vue";
 
@@ -24,7 +24,7 @@ function sourceData(word: Word, state: Partial<Data["states"][number]>): Data {
     words: [word],
     states: [{
       userId: "local", wordId: word.id, status: "review", isIgnored: false, isDifficult: false,
-      reviewCount: 1, lapseCount: 0, card: {}, ...state,
+      reviewCount: 1, lapseCount: 0, card: initialState(word.id).card, ...state,
     }],
     logs: [],
     seeded: true,

@@ -1,6 +1,6 @@
 # KotoBud 微信小程序发布验收清单
 
-更新时间：2026-09-22。此清单区分自动化结果、开发者工具结果和真机结果；未填写证据的项目不得标记为通过。
+更新时间：2026-09-23。此清单区分自动化结果、开发者工具结果和真机结果；未填写证据的项目不得标记为通过。
 
 ## 1. 当前自动化基线
 
@@ -12,7 +12,7 @@
   - `npm run type-check --workspace=apps/miniprogram`
   - `npm run build:miniprogram`
   - `npm run verify:build --workspace=apps/miniprogram`
-- 最近一次正式 AppID 构建：55 个文件、254,356 bytes（约 0.243 MiB）、0 个音频文件；`verify:build` 与 `verify:release` 均通过。
+- 本轮正式 AppID 构建：59 个文件、271,022 bytes（约 0.258 MiB）、0 个音频文件；`verify:build` 与 `verify:release` 均通过。仅为待真机验收产物，尚未上传或发布微信正式版本。
 - 源码已配置正式 AppID `wx63a1b41c7c7e9de2`；是否属于可上传发布产物，仍取决于对应账号权限、后台域名、隐私配置和真机验收。
 
 ## 2. 正式账号与服务端前置
@@ -21,6 +21,7 @@
 - [ ] 在微信公众平台确认当前开发者工具账号具备该小程序的开发与上传权限。
 - [ ] 在本机微信开发者工具登录该小程序账号。
 - [ ] 将 `https://kotobud.com` 登记为 `request` 与 `downloadFile` 合法域名；源码已开启合法域名校验，必须在后台登记后复测。
+- [ ] 将 `https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com` 登记为 `request`（教材）与 `downloadFile`（音频预加载）合法域名；保留 Cloudflare 域名作为 API/音频回退，不关闭域名校验。
 - [ ] 在微信后台配置《小程序用户隐私保护指引》的真实运营主体、联系方式、数据种类、用途和第三方服务说明。
 - [ ] AppSecret 只配置在 Cloudflare Worker Secret；不得写入源码、环境文件、构建产物或聊天记录。
 - [ ] 若启用微信快速登录，先在 Worker 新增安全的 `code` 换取统一 KotoBud session 接口，再接客户端。当前生产后端没有此端点，客户端不得伪造 OpenID 或 session。
@@ -41,7 +42,7 @@ npm run verify:release --workspace=apps/miniprogram
 - [ ] 导入 `apps/miniprogram/dist/build/mp-weixin`，确认项目 AppID 与后台一致。
 - [ ] 清除缓存后冷启动；未同意隐私说明时只允许离线学习，不恢复账号、不 Pull、不 Push。
 - [ ] 同意隐私说明后按 `local hydrate → restore auth → cloud pull → validate payload → deterministic reconciliation → hydrate local → isSyncReady → allow push` 完成恢复。
-- [ ] 开启合法域名校验，验证六册教材按需下载、R2 发音、音频缓存命中和缓存清理。
+- [ ] 开启合法域名校验，验证六册教材按需下载、COS 女声/男声发音、Cloudflare 失败回退、音频缓存命中和缓存清理。
 - [ ] 使用代码依赖分析确认教材正文、词典分片和批量音频未进入主包。
 - [ ] 验证隐私说明页、微信平台隐私指引入口、拒绝后的离线降级和撤回同意后的立即停同步。
 
@@ -55,7 +56,7 @@ npm run verify:release --workspace=apps/miniprogram
 | 320px 级窄屏与系统大字体 | [ ] | [ ] | 截图/录屏 |
 | 竖屏锁定及旋转后布局 | [ ] | [ ] | 录屏 |
 | 点击/左右滑动翻卡、多指取消 | [ ] | [ ] | 录屏 |
-| 四档 FSRS 评分只保存一次 | [ ] | [ ] | 操作记录 |
+| 与 Web 一致的三档评分只保存一次 | [ ] | [ ] | 操作记录 |
 | 卡片、听音题、慢速发音 | [ ] | [ ] | 录屏 |
 | 多页面音频焦点互斥、离页即停 | [ ] | [ ] | 录屏 |
 | iOS 物理静音开关开/关 | [ ] | 不适用 | 录屏 |

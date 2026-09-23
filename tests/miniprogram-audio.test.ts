@@ -65,6 +65,21 @@ describe("UniAudioPlayer", () => {
     expect(player.isSpeaking()).toBe(false);
   });
 
+  it("reuses one native context for consecutive words on the same study page", async () => {
+    const context = audioMock();
+    const create = vi.fn(() => context);
+    vi.stubGlobal("uni", { createInnerAudioContext: create });
+    const player = new UniAudioPlayer();
+    const first = player.play("https://kotobud.com/audio/first.mp3");
+    context.ended[0]();
+    expect(await first).toBe(true);
+    const second = player.play("https://kotobud.com/audio/second.mp3");
+    context.ended[0]();
+    expect(await second).toBe(true);
+    expect(create).toHaveBeenCalledOnce();
+    expect(context.play).toHaveBeenCalledTimes(2);
+  });
+
   it("settles a pending play when stopped and removes listeners", async () => {
     const context = audioMock();
     vi.stubGlobal("uni", { createInnerAudioContext: () => context });

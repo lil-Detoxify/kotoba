@@ -60,8 +60,14 @@ onHide(() => {
 
 <style>
 page {
-  background-color: #F9F8F6;
-  color: #1F2937;
+  --kotoba-bg: #f7f8f4;
+  --kotoba-paper: #fffefb;
+  --kotoba-ink: #273c35;
+  --kotoba-green: #365d49;
+  --kotoba-muted: #69746b;
+  --kotoba-line: #dfe5db;
+  background-color: var(--kotoba-bg);
+  color: var(--kotoba-ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 28rpx;
   line-height: 1.5;
@@ -85,24 +91,24 @@ view, text, button, input {
 }
 
 .primary-btn {
-  background: #D9532F;
+  background: var(--kotoba-green);
   color: #FFFFFF;
-  border-radius: 40rpx;
+  border-radius: 16rpx;
   font-weight: 600;
   font-size: 30rpx;
   padding: 20rpx 48rpx;
   text-align: center;
-  border: none;
+  border: 1rpx solid var(--kotoba-green);
 }
 
 .secondary-btn {
-  background: #EFECE6;
-  color: #4B5563;
-  border-radius: 40rpx;
+  background: var(--kotoba-paper);
+  color: var(--kotoba-ink);
+  border-radius: 16rpx;
   font-weight: 500;
   font-size: 28rpx;
   padding: 16rpx 40rpx;
   text-align: center;
-  border: none;
+  border: 1rpx solid var(--kotoba-line);
 }
 </style>

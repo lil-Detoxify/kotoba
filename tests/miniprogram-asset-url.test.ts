@@ -6,9 +6,9 @@ import {
 } from "../apps/miniprogram/src/adapters/asset-url";
 
 describe("mini-program asset origins", () => {
-  it("uses the verified COS origin for textbooks while audio stays on Cloudflare", () => {
+  it("uses the verified COS origin for textbooks and audio", () => {
     expect(MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL).toBe("https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com");
-    expect(MINIPROGRAM_AUDIO_ASSET_BASE_URL).toBe("https://kotobud.com");
+    expect(MINIPROGRAM_AUDIO_ASSET_BASE_URL).toBe("https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com");
   });
 
   it("joins only root-relative asset paths", () => {

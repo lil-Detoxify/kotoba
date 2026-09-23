@@ -1,41 +1,49 @@
 import type { Word } from "@jp/models";
 import seedAudioMap from "./seed-audio-map.json";
-import { MINIPROGRAM_AUDIO_ASSET_BASE_URL, assetUrl } from "./asset-url";
+import { MINIPROGRAM_AUDIO_ASSET_BASE_URL, MINIPROGRAM_COS_ORIGIN, assetUrl } from "./asset-url";
 
-const LEGACY_AUDIO_ORIGIN = "https://kotobud.com";
+export const CLOUDFLARE_AUDIO_ORIGIN = "https://kotobud.com";
 const PARAMS_VERSION = "google-wavenet-v1-ssml-yomigana-rate1-pitch0-volume0";
 const VOICES = {
   female: "ja-JP-Wavenet-A",
   male: "ja-JP-Wavenet-C"
 } as const;
 
-type AudioVoice = keyof typeof VOICES;
+export type AudioVoice = keyof typeof VOICES;
+export const AUDIO_VOICE_OPTIONS = [
+  { value: "female", label: "女声 · A", googleName: VOICES.female },
+  { value: "male", label: "男声 · C", googleName: VOICES.male },
+] as const;
 
 type AudioWord = Pick<Word, "term" | "reading" | "audioUrl" | "audioTerm" | "rawTerm">;
 
 /** Preserve old saved Cloudflare URLs when the audio origin moves to COS. */
 export function rebaseAudioUrl(value: string, baseUrl = MINIPROGRAM_AUDIO_ASSET_BASE_URL): string | undefined {
-  if (value.startsWith("/audio/")) return assetUrl(value, baseUrl);
-  for (const origin of [baseUrl, LEGACY_AUDIO_ORIGIN]) {
-    if (value.startsWith(`${origin}/audio/`)) return assetUrl(value.slice(origin.length), baseUrl);
+  if (safeAudioPath(value)) return assetUrl(value, baseUrl);
+  for (const origin of [baseUrl, MINIPROGRAM_AUDIO_ASSET_BASE_URL, MINIPROGRAM_COS_ORIGIN, CLOUDFLARE_AUDIO_ORIGIN]) {
+    if (value.startsWith(`${origin}/audio/`)) {
+      const path = value.slice(origin.length);
+      return safeAudioPath(path) ? assetUrl(path, baseUrl) : undefined;
+    }
   }
   return undefined;
 }
 
-/** Resolve the bundled legacy audio for the Phase 1 seed vocabulary. */
+function safeAudioPath(path: string): boolean {
+  return /^\/audio\/[a-z0-9/_-]+\.mp3$/i.test(path) && !path.split("/").includes("..");
+}
+
+/** Resolve a book-supplied or seed audio when the selected WaveNet voice is unavailable. */
 export function getWordAudioFallbackUrl(word: AudioWord): string | undefined {
-  if (word.audioUrl) return undefined;
+  if (word.audioUrl) return rebaseAudioUrl(word.audioUrl);
   const key = `${word.audioTerm || word.rawTerm || word.term}|${word.reading}`;
   const path = (seedAudioMap as Record<string, string>)[key];
   return path ? assetUrl(path, MINIPROGRAM_AUDIO_ASSET_BASE_URL) : undefined;
 }
 
-/** Resolve a word's pre-generated audio URL without browser-only APIs. */
+/** Resolve the selected WaveNet voice first, matching Web's pronunciation semantics. */
 export function getWordAudioUrl(word: AudioWord, voice: AudioVoice = "female"): string | undefined {
-  if (word.audioUrl) {
-    return rebaseAudioUrl(word.audioUrl);
-  }
-  if (!word.reading) return undefined;
+  if (!word.reading) return getWordAudioFallbackUrl(word);
 
   const term = word.audioTerm || word.rawTerm || word.term;
   const voiceName = VOICES[voice] || VOICES.female;
@@ -43,6 +51,11 @@ export function getWordAudioUrl(word: AudioWord, voice: AudioVoice = "female"): 
   const hash = sha256(utf8Bytes(payload));
   const sub = voice === "male" ? "c" : "a";
   return assetUrl(`/audio/google/v1/${sub}/${hash}.mp3`, MINIPROGRAM_AUDIO_ASSET_BASE_URL);
+}
+
+/** The same verified object path on Cloudflare, used after COS playback fails. */
+export function getCloudflareAudioUrl(primaryUrl: string): string | undefined {
+  return rebaseAudioUrl(primaryUrl, CLOUDFLARE_AUDIO_ORIGIN);
 }
 
 function utf8Bytes(value: string): number[] {

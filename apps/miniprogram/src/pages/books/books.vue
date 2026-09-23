@@ -185,39 +185,40 @@ onShow(() => {
 
 <style scoped>
 .books-page { padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
+.books-page .card { background: var(--kotoba-paper); border: 1rpx solid var(--kotoba-line); border-radius: 20rpx; box-shadow: none; }
 .books-page button { min-height: 96rpx; }
 .section-header { margin-bottom: 24rpx; }
-.section-title { display: block; font-size: 40rpx; font-weight: 700; color: #111827; margin-bottom: 6rpx; }
-.section-desc { font-size: 26rpx; color: #6B7280; }
+.section-title { display: block; font-size: 40rpx; font-weight: 700; color: var(--kotoba-ink); margin-bottom: 6rpx; }
+.section-desc { font-size: 26rpx; color: var(--kotoba-muted); }
 .status-card { text-align: center; padding: 36rpx; }
 .retry-btn { margin-top: 20rpx; }
 .top-actions { margin-bottom: 22rpx; }
 .list-link { margin: 0; }
 .exercise-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 8rpx; margin-top: 14rpx; }
-.picker-label { font-size: 24rpx; color: #6B7280; }
+.picker-label { font-size: 24rpx; color: var(--kotoba-muted); }
 .book-item { margin-bottom: 28rpx; }
 .book-header { display: flex; align-items: flex-start; margin-bottom: 20rpx; gap: 16rpx; }
-.book-badge { background: #D9532F; color: #FFF; padding: 16rpx 20rpx; border-radius: 12rpx; }
+.book-badge { background: var(--kotoba-green); color: #FFF; padding: 16rpx 20rpx; border-radius: 12rpx; }
 .badge-text { font-size: 24rpx; font-weight: 700; }
 .book-meta { flex: 1; min-width: 0; }
 .title, .desc, .count, .error-text, .lesson-title { overflow-wrap: anywhere; }
-.title { display: block; font-size: 32rpx; font-weight: 700; color: #111827; }
-.desc, .count { display: block; font-size: 24rpx; color: #6B7280; margin-top: 6rpx; }
+.title { display: block; font-size: 32rpx; font-weight: 700; color: var(--kotoba-ink); }
+.desc, .count { display: block; font-size: 24rpx; color: var(--kotoba-muted); margin-top: 6rpx; }
 .progress-section { margin: 18rpx 0 20rpx; }
 .progress-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16rpx; margin-bottom: 10rpx; }
-.progress-label, .download-state { color: #59675D; font-size: 24rpx; overflow-wrap: anywhere; }
-.progress-percent { color: #365D49; font-size: 24rpx; font-weight: 700; }
-.progress-track { height: 16rpx; overflow: hidden; border-radius: 16rpx; background: #E5EADF; }
-.progress-fill { height: 100%; border-radius: inherit; background: #365D49; }
-.download-state { display: block; margin-top: 10rpx; color: #9CA3AF; font-size: 22rpx; }
-.error-text { display: block; color: #B91C1C; font-size: 24rpx; margin-bottom: 12rpx; }
-.lesson-list { margin-top: 24rpx; border-top: 1rpx solid #F3F4F6; }
-.lesson-item { padding: 18rpx 0; border-bottom: 1rpx solid #F3F4F6; }
+.progress-label, .download-state { color: var(--kotoba-muted); font-size: 24rpx; overflow-wrap: anywhere; }
+.progress-percent { color: var(--kotoba-green); font-size: 24rpx; font-weight: 700; }
+.progress-track { height: 16rpx; overflow: hidden; border-radius: 16rpx; background: #e1e6dc; }
+.progress-fill { height: 100%; border-radius: inherit; background: var(--kotoba-green); }
+.download-state { display: block; margin-top: 10rpx; color: var(--kotoba-muted); font-size: 22rpx; }
+.error-text { display: block; color: #873c2c; font-size: 24rpx; margin-bottom: 12rpx; }
+.lesson-list { margin-top: 24rpx; border-top: 1rpx solid var(--kotoba-line); }
+.lesson-item { padding: 18rpx 0; border-bottom: 1rpx solid var(--kotoba-line); }
 .lesson-heading { display: flex; align-items: center; gap: 14rpx; margin-bottom: 12rpx; flex-wrap: wrap; }
-.lesson-order { font-size: 24rpx; color: #D9532F; font-weight: 600; }
-.lesson-title { font-size: 28rpx; color: #1F2937; flex: 1; min-width: 240rpx; }
-.exercise-btn, .lesson-study-btn { margin: 0; padding: 0 16rpx; min-height: 96rpx; line-height: 1.35; font-size: 22rpx; color: #365D49; background: #F7F8F4; border: 1rpx solid #DFE5DB; border-radius: 8rpx; }
+.lesson-order { font-size: 24rpx; color: var(--kotoba-green); font-weight: 600; }
+.lesson-title { font-size: 28rpx; color: var(--kotoba-ink); flex: 1; min-width: 240rpx; }
+.exercise-btn, .lesson-study-btn { margin: 0; padding: 0 16rpx; min-height: 96rpx; line-height: 1.35; font-size: 22rpx; color: var(--kotoba-green); background: var(--kotoba-paper); border: 1rpx solid var(--kotoba-line); border-radius: 8rpx; }
 .exercise-btn { min-height: 96rpx; }
-.exercise-btn.selected { background: #DCEBDD; border-color: #365D49; }
+.exercise-btn.selected { background: #eaf0e3; border-color: var(--kotoba-green); }
 .lesson-study-btn { width: 100%; font-size: 24rpx; }
 </style>

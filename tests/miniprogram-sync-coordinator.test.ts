@@ -30,7 +30,7 @@ function coordinator(saved: any = null) {
   const auth = { restore: vi.fn(async () => saved) };
   const client = {
     pull: vi.fn(),
-    push: vi.fn(async () => ({ success: true, acceptedEvents: 0, updatedProgress: 0, settingsConflict: false, serverTime: "2026-09-22T02:00:00.000Z" })),
+    push: vi.fn(async (_session: unknown, _batch: { progress: unknown[] }) => ({ success: true, acceptedEvents: 0, updatedProgress: 0, settingsConflict: false, serverTime: "2026-09-22T02:00:00.000Z" })),
   };
   return { mem, repository, auth, client, sync: new MiniSyncCoordinator(repository, auth as any, client as any) };
 }

@@ -1,4 +1,7 @@
 import type { AudioAdapter, AudioPlayOptions } from "./types";
+import type { AudioDiagnosticEventType } from "./audio-diagnostics";
+
+export interface AudioDiagnosticNotice { playId: number; type: AudioDiagnosticEventType; }
 
 type AudioContextLike = {
   src?: string;
@@ -8,8 +11,12 @@ type AudioContextLike = {
   destroy?: () => void;
   onEnded: (callback: () => void) => void;
   onError: (callback: (error: unknown) => void) => void;
+  onCanplay?: (callback: () => void) => void;
+  onPlay?: (callback: () => void) => void;
   offEnded?: (callback: () => void) => void;
   offError?: (callback: (error: unknown) => void) => void;
+  offCanplay?: (callback: () => void) => void;
+  offPlay?: (callback: () => void) => void;
 };
 
 type PendingPlay = {
@@ -17,6 +24,8 @@ type PendingPlay = {
   resolve: (result: boolean) => void;
   onEnded: () => void;
   onError: (error: unknown) => void;
+  onCanplay: () => void;
+  onPlay: () => void;
   onInterrupted?: () => void;
   timer: ReturnType<typeof setTimeout>;
 };
@@ -46,6 +55,12 @@ export class UniAudioPlayer implements AudioAdapter {
   private pending: PendingPlay | null = null;
   private destroyed = false;
 
+  constructor(private readonly onDiagnostic?: (notice: AudioDiagnosticNotice) => void) {}
+
+  private diagnose(playId: number, type: AudioDiagnosticEventType): void {
+    try { this.onDiagnostic?.({ playId, type }); } catch { /* Diagnostics must not affect playback. */ }
+  }
+
   private initContext(): void {
     // @ts-ignore uni global supplied by uni-app at runtime
     if (typeof uni === "undefined" || typeof uni.createInnerAudioContext !== "function") return;
@@ -61,19 +76,25 @@ export class UniAudioPlayer implements AudioAdapter {
   async play(url: string, options: AudioPlayOptions = {}): Promise<boolean> {
     this.stop();
     if (this.destroyed || !url) return false;
+    const id = ++this.nextPlayId;
     try {
-      if (!this.innerAudioContext) this.initContext();
+      if (!this.innerAudioContext) {
+        this.diagnose(id, "contextCreateStart");
+        this.initContext();
+        if (this.innerAudioContext) this.diagnose(id, "contextCreateReady");
+      }
     } catch {
+      this.diagnose(id, "error");
       return false;
     }
     const context = this.innerAudioContext;
-    if (!context) return false;
+    if (!context) { this.diagnose(id, "error"); return false; }
 
-    const id = ++this.nextPlayId;
     return new Promise<boolean>((resolve) => {
       const finish = (result: boolean, error?: unknown): void => {
         const pending = this.pending;
         if (!pending || pending.id !== id) return;
+        this.diagnose(id, result ? "ended" : "error");
         clearTimeout(pending.timer);
         this.detach(pending);
         this.pending = null;
@@ -94,11 +115,15 @@ export class UniAudioPlayer implements AudioAdapter {
       };
       const onEnded = (): void => finish(true);
       const onError = (error: unknown): void => finish(false, error);
+      const onCanplay = (): void => { if (this.pending?.id === id) this.diagnose(id, "canplay"); };
+      const onPlay = (): void => { if (this.pending?.id === id) this.diagnose(id, "playEvent"); };
       const pending: PendingPlay = {
         id,
         resolve,
         onEnded,
         onError,
+        onCanplay,
+        onPlay,
         onInterrupted: options.onInterrupted,
         // A failed download can otherwise leave the page speaking forever
         // when a native runtime never emits error or ended.
@@ -110,8 +135,12 @@ export class UniAudioPlayer implements AudioAdapter {
       try {
         context.onEnded(onEnded);
         context.onError(onError);
+        context.onCanplay?.(onCanplay);
+        context.onPlay?.(onPlay);
         context.src = url;
+        this.diagnose(id, "srcAssigned");
         context.playbackRate = options.slow ? 0.75 : 1;
+        this.diagnose(id, "playCalled");
         context.play();
       } catch (error) {
         finish(false, error);
@@ -159,6 +188,8 @@ export class UniAudioPlayer implements AudioAdapter {
     try {
       context.offEnded?.(pending.onEnded);
       context.offError?.(pending.onError);
+      context.offCanplay?.(pending.onCanplay);
+      context.offPlay?.(pending.onPlay);
     } catch {
       // Older uni runtimes may not support removing listeners.
     }

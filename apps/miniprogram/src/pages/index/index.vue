@@ -140,6 +140,7 @@ onShow(() => {
 
 <style scoped>
 .dashboard-page { padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
+.dashboard-page .card { background: var(--kotoba-paper); border: 1rpx solid var(--kotoba-line); border-radius: 20rpx; box-shadow: none; }
 .dashboard-page button { min-height: 96rpx; }
 .status-card { padding: 44rpx 32rpx; text-align: center; }
 .status-card .secondary-btn { min-height: 96rpx; margin-top: 20rpx; }
@@ -151,21 +152,21 @@ onShow(() => {
 }
 .hero-eyebrow {
   font-size: 24rpx;
-  color: #9CA3AF;
+  color: var(--kotoba-muted);
   margin-bottom: 8rpx;
 }
 .hero-title {
   font-size: 44rpx;
   font-weight: 700;
-  color: #111827;
+  color: var(--kotoba-ink);
   margin-bottom: 8rpx;
 }
 .hero-subtitle {
   font-size: 26rpx;
-  color: #6B7280;
+  color: var(--kotoba-muted);
 }
 .today-panel {
-  border-left: 8rpx solid #D9532F;
+  border-left: 8rpx solid var(--kotoba-green);
 }
 .panel-header {
   display: flex;
@@ -175,13 +176,13 @@ onShow(() => {
 }
 .panel-label {
   font-size: 24rpx;
-  color: #D9532F;
+  color: var(--kotoba-green);
   font-weight: 600;
 }
 .streak-badge {
   font-size: 24rpx;
-  background: #FFF4ED;
-  color: #C2410C;
+  background: #eaf0e3;
+  color: var(--kotoba-green);
   padding: 6rpx 16rpx;
   border-radius: 20rpx;
   font-weight: 600;
@@ -194,12 +195,12 @@ onShow(() => {
 .due-number {
   font-size: 64rpx;
   font-weight: 800;
-  color: #111827;
+  color: var(--kotoba-ink);
   margin-right: 12rpx;
 }
 .due-desc {
   font-size: 26rpx;
-  color: #6B7280;
+  color: var(--kotoba-muted);
 }
 .action-row {
   display: flex;
@@ -209,15 +210,15 @@ onShow(() => {
 .quick-actions { display: flex; flex-wrap: wrap; gap: 16rpx; margin-top: 20rpx; }
 .quick-btn { flex: 1; min-width: 260rpx; min-height: 96rpx; margin: 0; }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16rpx; margin-bottom: 20rpx; }
-.section-title { font-size: 28rpx; font-weight: 700; color: #273C35; }
-.section-caption { font-size: 22rpx; color: #9CA3AF; }
+.section-title { font-size: 28rpx; font-weight: 700; color: var(--kotoba-ink); }
+.section-caption { font-size: 22rpx; color: var(--kotoba-muted); }
 .activity-card { padding-bottom: 28rpx; }
 .activity-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 16rpx; min-height: 136rpx; }
 .activity-day { display: flex; flex: 1; min-width: 0; flex-direction: column; align-items: center; gap: 8rpx; }
-.activity-track { display: flex; width: 100%; height: 84rpx; align-items: flex-end; justify-content: center; border-bottom: 1rpx solid #E5E7EB; }
-.activity-bar { width: 28rpx; min-height: 8rpx; border-radius: 8rpx 8rpx 0 0; background: #365D49; }
-.activity-count, .activity-label { font-size: 22rpx; color: #6B7280; }
-.activity-count { color: #365D49; font-weight: 600; }
+.activity-track { display: flex; width: 100%; height: 84rpx; align-items: flex-end; justify-content: center; border-bottom: 1rpx solid var(--kotoba-line); }
+.activity-bar { width: 28rpx; min-height: 8rpx; border-radius: 8rpx 8rpx 0 0; background: var(--kotoba-green); }
+.activity-count, .activity-label { font-size: 22rpx; color: var(--kotoba-muted); }
+.activity-count { color: var(--kotoba-green); font-weight: 600; }
 .activity-label { white-space: nowrap; }
 .stats-grid {
   display: flex;
@@ -235,33 +236,33 @@ onShow(() => {
   display: block;
   font-size: 40rpx;
   font-weight: 700;
-  color: #1F2937;
+  color: var(--kotoba-ink);
   margin-bottom: 4rpx;
 }
 .stat-label {
   font-size: 24rpx;
-  color: #9CA3AF;
+  color: var(--kotoba-muted);
 }
 .book-card {
-  border: 1rpx solid #E5E7EB;
+  border: 1rpx solid var(--kotoba-line);
 }
 .book-tag {
   display: inline-block;
   font-size: 22rpx;
-  color: #D9532F;
+  color: var(--kotoba-green);
   margin-bottom: 8rpx;
 }
 .book-title {
   display: block;
   font-size: 32rpx;
   font-weight: 700;
-  color: #111827;
+  color: var(--kotoba-ink);
   margin-bottom: 8rpx;
   overflow-wrap: anywhere;
 }
 .book-meta {
   font-size: 24rpx;
-  color: #6B7280;
+  color: var(--kotoba-muted);
   overflow-wrap: anywhere;
 }
 </style>
