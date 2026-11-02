@@ -1,8 +1,28 @@
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { resolve as pathResolve, dirname } from 'node:path';
+import { renderLandingContent } from './landing-page.mjs';
+import { renderDownloadContent, downloadStyles } from './download-page.mjs';
+import { prepareExtensionDownload } from './platform-downloads.mjs';
+import { recentWebReleaseNotes, currentWindowsReleaseNotes } from './release-notes.mjs';
 
 const INDEXNOW_KEY = '4b68e91c784e4b5bb8972cae6c7104f2';
 const DOMAIN = 'https://kotobud.com';
+const RELEASE_VERSION = JSON.parse(readFileSync(pathResolve(import.meta.dirname, '../package.json'), 'utf8')).version;
+const WINDOWS_DOWNLOAD_VERSION = '0.9.3';
+const WINDOWS_SETUP_FILE = `KotoBud-${WINDOWS_DOWNLOAD_VERSION}-Windows-x64-Setup.exe`;
+const WINDOWS_PORTABLE_FILE = `KotoBud-${WINDOWS_DOWNLOAD_VERSION}-Windows-x64-Portable.exe`;
+const WINDOWS_CHECKSUM_FILE = `SHA256SUMS-${WINDOWS_DOWNLOAD_VERSION}.txt`;
+const brandStyles = readFileSync(pathResolve(import.meta.dirname, '../apps/web/src/brand.css'), 'utf8');
+
+function renderBrandIdentity({ tagline = true, compact = false } = {}) {
+  return `<span class="brand-identity${compact ? ' brand-identity--compact' : ''}">
+    <img class="brand-identity-mark" src="/brand/kotobud-mark.svg" alt="" width="40" height="40" aria-hidden="true">
+    <span class="brand-identity-copy">
+      <img class="brand-identity-wordmark" src="/brand/kotobud-wordmark.svg" alt="Kotobud" width="1009" height="195">
+      ${tagline ? '<small class="brand-identity-tagline">每天，认识一点日语。</small>' : ''}
+    </span>
+  </span>`;
+}
 
 function getSharedStyles() {
   return `
@@ -341,6 +361,17 @@ function getSharedStyles() {
       font-family: monospace;
       color: var(--text-main);
     }
+    .platform-log-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; }
+    .platform-log-nav a { display: inline-block; padding: 9px 16px; border: 1px solid var(--border-accent); border-radius: 24px; font-size: 14px; color: var(--green); }
+    .platform-log-nav a:hover { background: var(--green-light); }
+    .platform-log-nav a:focus-visible, .platform-testing summary:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; }
+    .article-body [id] { scroll-margin-top: 100px; }
+    .platform-steps { padding-left: 24px; margin: 16px 0; }
+    .platform-steps li { padding-left: 4px; margin: 12px 0; }
+    .platform-steps code { overflow-wrap: anywhere; }
+    .platform-testing { margin-top: 20px; padding: 16px 20px; border: 1px solid var(--border); border-radius: 10px; }
+    .platform-testing summary { cursor: pointer; font-weight: 600; }
+    .platform-testing p { margin-top: 14px; }
     .version-item {
       padding: 24px 0;
       border-bottom: 1px solid var(--border);
@@ -433,12 +464,16 @@ function getSharedStyles() {
       h1.hero-title { font-size: 28px; }
       p.hero-desc { font-size: 15px; }
       nav.site-nav { display: none; }
+      .header-actions .btn { font-size: 12px; padding: 8px 10px; white-space: nowrap; }
+      .header-actions .btn > span:last-child { display: none; }
       .grid-3, .grid-2 { grid-template-columns: 1fr; }
       .article-body { padding: 28px 20px; }
       .footer-grid { grid-template-columns: 1fr; gap: 24px; }
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
       .feature-strip { gap: 16px; font-size: 12px; }
     }
+    @media (max-width: 380px) { .brand-logo small { display: none; } }
+    ${brandStyles}
   `;
 }
 
@@ -446,14 +481,10 @@ function renderHeader(activePath = '/') {
   return `
     <header class="site-header">
       <div class="container nav-inner">
-        <a href="/" class="brand-logo" title="Kotobud 日语背词与复习工具">
-          <span class="brand-mark" aria-label="Kotobud">言</span>
-          <div>
-            <span>Kotobud</span>
-            <small>每天，认识一点日语。</small>
-          </div>
+        <a href="/" class="brand-logo" title="Kotobud 日语背词与复习工具" aria-label="Kotobud 首页">
+          ${renderBrandIdentity()}
         </a>
-        <nav class="site-nav">
+        <nav class="site-nav" id="public-navigation" aria-label="产品导航">
           <a href="/features" class="${activePath === '/features' ? 'active' : ''}">功能特性</a>
           <a href="/download" class="${activePath === '/download' ? 'active' : ''}">客户端下载</a>
           <a href="/guide" class="${activePath === '/guide' ? 'active' : ''}">学习指南</a>
@@ -461,6 +492,7 @@ function renderHeader(activePath = '/') {
           <a href="/changelog" class="${activePath === '/changelog' ? 'active' : ''}">更新日志</a>
         </nav>
         <div class="header-actions">
+          ${activePath === '/' ? '<button type="button" class="landing-menu" aria-label="展开产品导航" aria-controls="public-navigation" aria-expanded="false">☰</button>' : ''}
           <a href="/app/" class="btn btn-primary" id="topbar-app-btn">
             <span>进入在线学习</span>
             <span style="font-size: 11px; opacity: 0.85;">Web App</span>
@@ -478,8 +510,7 @@ function renderFooter() {
         <div class="footer-grid">
           <div class="footer-col">
             <div class="brand-logo" style="margin-bottom: 12px;">
-              <span class="brand-mark" style="width: 32px; height: 35px; font-size: 20px;" aria-label="Kotobud">言</span>
-              <span>Kotobud</span>
+              ${renderBrandIdentity({ tagline: false, compact: true })}
             </div>
             <p style="font-size: 13px; line-height: 1.7; max-width: 320px; margin-bottom: 14px;">
               每天，认识一点日语。Kotobud 是一款专注高效的日语背词与复习工具（Japanese vocabulary learning and review app），内置新版标准日本语全六册词书与现代 FSRS 科学间隔重复算法。
@@ -494,8 +525,10 @@ function renderFooter() {
               <li><a href="/app/">Web 在线背词版</a></li>
               <li><a href="/download">Windows 桌面端安装包</a></li>
               <li><a href="/download#portable">Windows 绿色便携版</a></li>
+              <li><a href="/download#extension">浏览器扩展测试版</a></li>
+              <li><a href="/guide#miniprogram">微信小程序使用指引</a></li>
               <li><a href="/features">标日词书与 FSRS 算法特性</a></li>
-              <li><a href="/changelog">版本更新日志 (v0.6.0)</a></li>
+              <li><a href="/changelog">版本更新日志 (v${RELEASE_VERSION})</a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -534,7 +567,8 @@ function renderHtmlDocument({
   activePath,
   jsonLd,
   bodyContent,
-  headExtra = ''
+  headExtra = '',
+  bodyClass = ''
 }) {
   return `<!doctype html>
 <html lang="zh-CN">
@@ -546,7 +580,9 @@ function renderHtmlDocument({
   <meta name="description" content="${description}">
   <meta name="keywords" content="Kotobud, 日语背词, 日语背词软件, 日语学习, 标日词汇, 标准日本语, FSRS, 日语单词, 日语复习, JLPT背词, Japanese vocabulary learning">
   <link rel="canonical" href="${canonicalUrl}">
-  <link rel="icon" type="image/png" href="/icon.png">
+  <link rel="icon" type="image/svg+xml" href="/brand/kotobud-mark.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/brand/kotobud-icon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="msvalidate.01" content="B54034535F2BC5D891C5E32773794D82">
 
@@ -557,14 +593,14 @@ function renderHtmlDocument({
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:url" content="${canonicalUrl}">
-  <meta property="og:image" content="${DOMAIN}/icon.png">
+  <meta property="og:image" content="${DOMAIN}/brand/kotobud-icon-512.png">
   <meta property="og:image:alt" content="Kotobud 日语背词与复习工具">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
-  <meta name="twitter:image" content="${DOMAIN}/icon.png">
+  <meta name="twitter:image" content="${DOMAIN}/brand/kotobud-icon-512.png">
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -576,9 +612,10 @@ ${getSharedStyles()}
   </style>
   ${headExtra}
 </head>
-<body>
+<body class="${bodyClass}">
+  ${bodyClass === 'landing-page' ? '<a href="#main-content" class="skip-link">跳到产品介绍</a>' : ''}
   ${renderHeader(activePath)}
-  <main>
+  <main id="main-content">
     ${bodyContent}
   </main>
   ${renderFooter()}
@@ -589,7 +626,11 @@ ${getSharedStyles()}
         window.location.replace('/app.html');
         return;
       }
-      if (window.location.hash && window.location.hash.length > 1) {
+      var isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+      var legacyPath = window.location.hash.slice(1).split(/[?#]/)[0];
+      var legacyRoutes = ['/', '/books', '/import', '/study', '/difficult', '/ignored', '/stats', '/settings'];
+      var isLegacyRoute = legacyRoutes.includes(legacyPath) || /^[/]books[/][^/]+$/.test(legacyPath);
+      if (isHomePage && isLegacyRoute) {
         window.location.replace('/app/' + window.location.hash);
         return;
       }
@@ -615,7 +656,7 @@ ${getSharedStyles()}
 }
 
 // 1. Homepage
-function generateHomePage() {
+function generateHomePage(landingHead = '') {
   const title = 'Kotobud – 日语背词与复习工具 | Web & Windows';
   const description = 'Kotobud 是一款专注高效的日语背词与复习工具（Japanese vocabulary learning and review app）。内置《新版中日交流标准日本语》初级、中级、高级全六册官方词书与现代 FSRS 智能间隔重复算法，支持假名、汉字、听音自适应测验、生词本管理与多端云同步。支持浏览器在线使用与 Windows 桌面客户端。';
   const canonicalUrl = `${DOMAIN}/`;
@@ -632,10 +673,10 @@ function generateHomePage() {
         "applicationCategory": "EducationalApplication",
         "applicationSubCategory": "Language Learning Application",
         "operatingSystem": "Windows 10, Windows 11, Web Browser",
-        "softwareVersion": "0.6.0",
+        "softwareVersion": `Web ${RELEASE_VERSION}; Windows ${WINDOWS_DOWNLOAD_VERSION}`,
         "description": description,
         "downloadUrl": `${DOMAIN}/download`,
-        "image": `${DOMAIN}/icon.png`,
+        "image": `${DOMAIN}/brand/kotobud-icon-512.png`,
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "featureList": [
           "新版中日交流标准日本语初中高全六册词书",
@@ -657,7 +698,7 @@ function generateHomePage() {
         "@id": `${DOMAIN}/#organization`,
         "name": "Kotobud",
         "url": DOMAIN,
-        "logo": `${DOMAIN}/icon.png`,
+        "logo": `${DOMAIN}/brand/kotobud-icon-512.png`,
         "description": "Kotobud 官方开发团队，致力于打造专注自律、干净纯粹的现代化日语背词与科学复习工具。",
         "sameAs": [
           "https://github.com/lil-Detoxify/kotoba"
@@ -681,197 +722,7 @@ function generateHomePage() {
     ]
   };
 
-  const bodyContent = `
-    <section class="hero-section">
-      <div class="container">
-        <div class="badge-pill">
-          <span>🌿</span> 纯粹自律的日语背词与复习手帖 · 现已支持 Web 在线与 Windows 桌面版
-        </div>
-        <h1 class="hero-title">Kotobud：日语背词与复习工具</h1>
-        <p class="hero-desc">
-          Kotobud 是一款专注高效的日语单词学习与复习软件（Japanese vocabulary learning and review app）。完整收录《新版中日交流标准日本语》初级、中级、高级全六册官方词书，深度融合前沿 FSRS 科学间隔重复算法，提供假名、汉字与听音多维度自适应测验，帮助学习者攻克“背了就忘、假名汉字脱节”的记忆难题。
-        </p>
-        <div class="cta-group">
-          <a href="/app/" class="btn btn-primary btn-lg" id="hero-primary-btn">
-            <span>开始在线背词</span>
-            <span style="font-size: 12px; opacity: 0.85;">Web 版免安装，即开即学</span>
-          </a>
-          <a href="/download" class="btn btn-lg">
-            <span>💻 下载 Windows 客户端</span>
-            <span style="font-size: 12px; color: var(--text-muted);">v0.6.0 64位</span>
-          </a>
-        </div>
-        <div class="feature-strip">
-          <span>✔ 标日全六册 10,000+ 词条</span>
-          <span>✔ 新一代 FSRS 间隔重复算法</span>
-          <span>✔ 假名 · 汉字 · 听音 多模式测验</span>
-          <span>✔ 多端云同步 & 纯净无广告</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section" style="padding-top: 0;">
-      <div class="container">
-        <div class="grid-2" style="margin-top: 10px;">
-          <div class="card">
-            <div class="card-icon">🎯</div>
-            <h3>Kotobud 是什么？</h3>
-            <p>
-              Kotobud 是一款现代化、纯粹克制的日语背词与间隔重复复习工具。摒弃繁琐花哨的社交裂变与开屏广告，回归“看词、识字、听音、记忆”的自律学习手帖本质。
-            </p>
-          </div>
-          <div class="card">
-            <div class="card-icon">👥</div>
-            <h3>Kotobud 面向谁？</h3>
-            <p>
-              专为《新标日》自学读者、日语五十音进阶者、JLPT（N5/N4/N3/N2/N1）备考考生，以及希望通过科学记忆模型告别死记硬背的日语学习者量身设计。
-            </p>
-          </div>
-          <div class="card">
-            <div class="card-icon">💡</div>
-            <h3>解决什么学习痛点？</h3>
-            <p>
-              彻底解决传统背词工具广告繁多、打卡干扰、机械式生硬重复已熟词汇，以及“认得汉字却读不出假名、会读假名却听不出真音”的形音义割裂痛点。
-            </p>
-          </div>
-          <div class="card">
-            <div class="card-icon">⚡</div>
-            <h3>提供哪些核心能力？</h3>
-            <p>
-              标日全六册课次词库、FSRS 自适应遗忘曲线算法、假名/汉字/听音自测流、个人生词本攻坚，并支持 Local-First 离线背词与多端云同步。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Kotobud 核心功能与科学背词体系</h2>
-          <p>从五十音到 N1 级别，为每一个课次定制高效的复习与检测路径</p>
-        </div>
-        <div class="grid-3">
-          <div class="card">
-            <div class="card-icon">📚</div>
-            <h3>新标日全六册官方词书</h3>
-            <p>
-              完整收录《新版中日交流标准日本语》初级上/下册、中级上/下册、高级上/下册。词条按课次、单元科学归类，词性、音调、读音一应俱全。
-            </p>
-            <ul>
-              <li>初级上下册：打牢 N5/N4 日常基础词汇</li>
-              <li>中级上下册：攻克 N3/N2 进阶语法与阅读词</li>
-              <li>高级上下册：冲刺 N1 商务、新闻与学术词汇</li>
-            </ul>
-            <div style="margin-top: 14px;">
-              <a href="/features" style="font-size: 13px; color: var(--green); font-weight: 600;">深入了解标日全六册划分 →</a>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon">🧠</div>
-            <h3>FSRS 智能间隔重复算法</h3>
-            <p>
-              告别死记硬背。内置最新一代 FSRS (Free Spaced Repetition Scheduler) 记忆调度算法，针对个人记忆遗忘曲线自适应预测下一次复习时机。
-            </p>
-            <ul>
-              <li>精准度远超传统艾宾浩斯与 Anki SM-2</li>
-              <li>Again (重来) / Hard (困难) / Good (良好) 三档评分</li>
-              <li>大幅减少重复学习已掌握单词的疲劳感</li>
-            </ul>
-            <div style="margin-top: 14px;">
-              <a href="/guide#fsrs" style="font-size: 13px; color: var(--green); font-weight: 600;">了解 FSRS 三档打分评分标准 →</a>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon">🎧</div>
-            <h3>多模式自适应测验</h3>
-            <p>
-              单词不仅要会认，更要能听懂、知读音。Kotobud 提供全方位的测验训练模式，彻底攻克“看得懂但听不出、会读但选不对”的学习痛点。
-            </p>
-            <ul>
-              <li>汉字识别：看汉字写假名与词义</li>
-              <li>听音辨析：真人发音听力抓词</li>
-              <li>反向测试：看中文释义回忆日文拼写</li>
-            </ul>
-            <div style="margin-top: 14px;">
-              <a href="/features" style="font-size: 13px; color: var(--green); font-weight: 600;">查看自适应测验功能详情 →</a>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon">⭐</div>
-            <h3>生词本与薄弱项强化</h3>
-            <p>
-              随时将易混淆、难记的单词加入生词本。支持按难词标记、忽略熟悉词、错题重练等灵活筛选，让精力聚焦在提分刀刃上。
-            </p>
-            <div style="margin-top: 14px;">
-              <a href="/guide#habits" style="font-size: 13px; color: var(--green); font-weight: 600;">查阅高效背词习惯指南 →</a>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon">☁️</div>
-            <h3>多端云同步与本地优先</h3>
-            <p>
-              采用 Local-First 本地优先架构，断网也能在离线状态下顺畅背词。联网后自动增量合并多设备学习进度，Web 端与桌面端无缝协同。
-            </p>
-            <div style="margin-top: 14px;">
-              <a href="/download" style="font-size: 13px; color: var(--green); font-weight: 600;">下载 Windows 桌面端或体验 Web 版 →</a>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-icon">📖</div>
-            <h3>权威词典扩展与品牌初心</h3>
-            <p>
-              内置详尽的词典释义扩展、词性剖析与日汉对照例句，词汇放在真实语境中理解；遵循 JMdict / EDICT 开源协议，纯净无私。
-            </p>
-            <div style="margin-top: 14px;">
-              <a href="/about" style="font-size: 13px; color: var(--green); font-weight: 600;">了解 Kotobud 品牌故事与开源协议 →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section" style="background: #edf2e8; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <div class="section-header">
-          <h2>为什么选择 Kotobud 学习日语单词？</h2>
-          <p>一份安静、克制、纯粹的日语学习手帖，尊重你的时间和注意力</p>
-        </div>
-        <div class="grid-3">
-          <div class="card" style="background: var(--bg);">
-            <h3>🚫 零广告，无弹窗骚扰</h3>
-            <p>没有开屏推销、没有虚拟币充值、没有社交打卡分享捆绑。打开网页或应用，立刻进入沉浸式日语背词状态。</p>
-          </div>
-          <div class="card" style="background: var(--bg);">
-            <h3>⚡ 极速轻巧，本地离线可用</h3>
-            <p>依托现代轻量技术构建，无论是 Windows 桌面客户端还是网页端，启动迅速、内存占用极低，随时随地开启背词。</p>
-          </div>
-          <div class="card" style="background: var(--bg);">
-            <h3>🎯 专注标准日本语教材</h3>
-            <p>专为标日读者设计课次同步学习模式，课前预习生词、课后巩固测试，完美契合自学与各类日语培训班进度。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section">
-      <div class="container">
-        <div class="highlight-box">
-          <div>
-            <h3>准备好使用 Kotobud 开始今日份的日语背词了吗？</h3>
-            <p>无论你是刚刚掌握五十音图的新手，还是正在备战 JLPT N2/N1 的进阶者，Kotobud 都将成为你最长情的单词伙伴。</p>
-            <div style="margin-top: 8px;">
-              <a href="/guide" style="font-size: 13px; color: var(--green); text-decoration: underline;">新手先读：标日背词与复习实用指南 →</a>
-            </div>
-          </div>
-          <div style="display: flex; gap: 12px; flex-shrink: 0;">
-            <a href="/app/" class="btn btn-primary btn-lg">进入在线背词 (Web 版)</a>
-            <a href="/download" class="btn btn-lg">下载 Windows 客户端</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  `;
+  const bodyContent = renderLandingContent(RELEASE_VERSION, WINDOWS_DOWNLOAD_VERSION);
 
   return renderHtmlDocument({
     title,
@@ -879,7 +730,9 @@ function generateHomePage() {
     canonicalUrl,
     activePath: '/',
     jsonLd,
-    bodyContent
+    bodyContent,
+    headExtra: landingHead,
+    bodyClass: 'landing-page'
   });
 }
 
@@ -989,7 +842,7 @@ function generateFeaturesPage() {
 
       <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <a href="/app/" class="btn btn-primary btn-lg">进入 Kotobud 在线学习</a>
-        <a href="/download" class="btn btn-lg">下载 Windows 客户端</a>
+        <a href="/download" class="btn btn-lg">下载 Windows v${WINDOWS_DOWNLOAD_VERSION} 客户端</a>
         <a href="/guide" class="btn btn-lg">查看使用指南</a>
       </div>
     </div>
@@ -1006,9 +859,10 @@ function generateFeaturesPage() {
 }
 
 // 3. Download Page
-function generateDownloadPage() {
-  const title = '下载 Kotobud – Windows 日语背词软件客户端 | 安装版与便携版';
-  const description = '下载 Kotobud Windows 桌面端客户端（支持 Windows 10/11 64 位），提供安装版（Setup）与免安装绿色便携版（Portable）。内置标日全套词书与 FSRS 记忆算法，支持离线背词与多端云同步。亦可直接使用 Web 在线学习版。';
+function generateDownloadPage(extensionDownload) {
+  const downloadsReady = process.env.VITE_WINDOWS_DOWNLOADS_READY === 'true';
+  const title = '下载 Kotobud – Windows 客户端与浏览器扩展 | 小程序指引';
+  const description = `下载 Kotobud Windows v${WINDOWS_DOWNLOAD_VERSION} 安装版、便携版与浏览器扩展手动安装测试包；使用 Web v${RELEASE_VERSION} 在线版，或查看微信小程序准备状态与使用指引。`;
   const canonicalUrl = `${DOMAIN}/download`;
 
   const jsonLd = {
@@ -1022,9 +876,9 @@ function generateDownloadPage() {
         "applicationCategory": "EducationalApplication",
         "applicationSubCategory": "Language Learning Application",
         "operatingSystem": "Windows 10, Windows 11 (64-bit)",
-        "softwareVersion": "0.6.0",
+        "softwareVersion": WINDOWS_DOWNLOAD_VERSION,
         "description": description,
-        "downloadUrl": `${DOMAIN}/downloads/Kotoba-0.6.0-Windows-x64-Setup.exe`,
+        "downloadUrl": downloadsReady ? `${DOMAIN}/downloads/${WINDOWS_SETUP_FILE}` : `${DOMAIN}/download`,
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -1039,105 +893,28 @@ function generateDownloadPage() {
             "@type": "ListItem",
             "position": 1,
             "name": "首页",
-            "item": `${DOMAIN}/`
+            "item": DOMAIN
           },
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "客户端下载",
-            "item": canonicalUrl
+            "name": "客户端下载与平台指引",
+            "item": `${DOMAIN}/download`
           }
         ]
       }
     ]
   };
 
-  const bodyContent = `
-    <div class="container" style="padding-top: 48px;">
-      <div class="section-header">
-        <div class="badge-pill">官方下载通道</div>
-        <h1 class="hero-title" style="margin-bottom: 12px;">下载 Kotobud 客户端：Windows 桌面版与 Web 在线学习</h1>
-        <p>无论在桌面端大屏专注背词，还是在浏览器随时随地学习，Kotobud 都能完美胜任</p>
-      </div>
-
-      <div class="grid-2" style="margin-bottom: 48px;">
-        <div class="download-card">
-          <div>
-            <div class="card-icon" style="margin: 0 auto 18px;">💾</div>
-            <h3>Windows 桌面端 (安装版)</h3>
-            <p>推荐大多数 Windows 用户使用。自动创建桌面快捷方式，支持常规应用管理与升级。</p>
-            <div style="background: var(--bg); padding: 14px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; color: var(--text-muted); text-align: left;">
-              <div><strong>版本号：</strong>v0.6.0 (x64)</div>
-              <div><strong>系统要求：</strong>Windows 10 (1809+) / Windows 11</div>
-              <div><strong>文件大小：</strong>约 70MB (离线辞书与资源按需云端缓存)</div>
-              <div><strong>发布文件名：</strong>Kotoba-0.6.0-Windows-x64-Setup.exe</div>
-            </div>
-          </div>
-          <a href="/downloads/Kotoba-0.6.0-Windows-x64-Setup.exe" class="btn btn-primary btn-lg" style="width: 100%;">
-            ⬇️ 下载 Windows 安装版 (Setup.exe)
-          </a>
-        </div>
-
-        <div class="download-card" id="portable">
-          <div>
-            <div class="card-icon" style="margin: 0 auto 18px;">💼</div>
-            <h3>Windows 绿色便携版 (Portable)</h3>
-            <p>免安装版。解压即可直接运行，适合存放在 U 盘随身携带，或无管理员权限的办公电脑。</p>
-            <div style="background: var(--bg); padding: 14px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; color: var(--text-muted); text-align: left;">
-              <div><strong>版本号：</strong>v0.6.0 (x64 Portable)</div>
-              <div><strong>特性：</strong>单文件直接运行，数据目录自包含</div>
-              <div><strong>文件大小：</strong>约 68MB</div>
-              <div><strong>发布文件名：</strong>Kotoba-0.6.0-Windows-x64-Portable.exe</div>
-            </div>
-          </div>
-          <a href="/downloads/Kotoba-0.6.0-Windows-x64-Portable.exe" class="btn btn-lg" style="width: 100%;">
-            ⬇️ 下载 Windows 便携版 (Portable.exe)
-          </a>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom: 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
-        <div>
-          <h3 style="margin-bottom: 6px;">🌐 Web 在线学习版（免安装）</h3>
-          <p style="margin-bottom: 0;">不想下载软件？使用 Chrome、Edge、Safari 等任何现代浏览器直接开启学习，支持添加到手机主屏幕使用。</p>
-        </div>
-        <a href="/app/" class="btn btn-primary btn-lg">立即打开 Web 版</a>
-      </div>
-
-      <div class="article-body">
-        <h2>安全校验与常见问题 (FAQ)</h2>
-        <h3>1. 官方 SHA-256 校验和文件</h3>
-        <p>
-          为确保你下载的安装包未被篡改，可核对发布包的 SHA-256 哈希值：
-          <a href="/downloads/SHA256SUMS-0.6.0.txt" target="_blank" style="color: var(--green); text-decoration: underline;">查看 SHA256SUMS-0.6.0.txt</a>
-        </p>
-
-        <h3>2. Windows SmartScreen 提示“Windows 已保护你的电脑”？</h3>
-        <p>
-          由于独立开发者个人签名成本极高，全新版本发布时可能会被微软 Windows Defender SmartScreen 弹出未知发布者提示。
-        </p>
-        <p>
-          <strong>解决方法：</strong>在提示窗口中点击 <code>“更多信息” (More Info)</code>，然后点击 <code>“仍要运行” (Run anyway)</code> 即可正常安装与运行。Kotobud 绝不包含任何恶意代码或广告插件。
-        </p>
-
-        <h3>3. 桌面端如何与手机/网页端同步学习记录？</h3>
-        <p>
-          在 Windows 客户端右上角点击“登录并开启云同步”，使用你的邮箱接收验证码完成登录。随后在手机或电脑浏览器中登录同一个账号，两端的数据便会自动保持一致。详细步骤请参考 <a href="/guide#sync" style="color: var(--green); text-decoration: underline; font-weight: 600;">多端数据同步与备份指南 →</a>。
-        </p>
-
-        <h3>4. 关于发布包文件名命名说明</h3>
-        <p>
-          安装包与便携版文件名保留为 <code>Kotoba-0.6.0-Windows-x64-...</code>，继承自产品技术立项早期的代码代号，为 Kotobud v0.6.0 官方团队唯一的正版二进制分发文件。更多演进历史请阅读 <a href="/about#brand" style="color: var(--green); text-decoration: underline;">Kotobud 品牌命名由来 →</a>，技术特性请见 <a href="/changelog" style="color: var(--green); text-decoration: underline;">版本更新日志 →</a>。
-        </p>
-      </div>
-
-      <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-        <a href="/app/" class="btn btn-primary btn-lg">打开在线背词</a>
-        <a href="/features" class="btn btn-lg">查看功能特性</a>
-        <a href="/guide" class="btn btn-lg">查看学习指南</a>
-      </div>
-    </div>
-  `;
+  const bodyContent = renderDownloadContent({
+    webVersion: RELEASE_VERSION,
+    windowsVersion: WINDOWS_DOWNLOAD_VERSION,
+    setupFile: WINDOWS_SETUP_FILE,
+    portableFile: WINDOWS_PORTABLE_FILE,
+    checksumFile: WINDOWS_CHECKSUM_FILE,
+    downloadsReady,
+    extensionDownload
+  });
 
   return renderHtmlDocument({
     title,
@@ -1145,7 +922,9 @@ function generateDownloadPage() {
     canonicalUrl,
     activePath: '/download',
     jsonLd,
-    bodyContent
+    bodyContent,
+    bodyClass: 'download-page',
+    headExtra: `<style>${downloadStyles}</style>`
   });
 }
 
@@ -1272,8 +1051,8 @@ function generateAboutPage() {
 
 // 5. Guide Page
 function generateGuidePage() {
-  const title = 'Kotobud 使用指南 – 标日词汇背诵与 FSRS 间隔复习方法';
-  const description = 'Kotobud 官方日语背词与复习实用指南：新标日教材六册学习规划（N5到N1）、FSRS 算法三档评分（Again/Hard/Good）如何科学选择、如何利用碎片时间对抗遗忘曲线与建立长期记忆。';
+  const title = 'Kotobud 使用指南 – 背词复习、浏览器扩展安装与小程序指引';
+  const description = 'Kotobud 日语背词指南：教材规划与 FSRS 复习方法、浏览器扩展手动安装与保留进度升级，以及微信小程序准备状态和使用步骤。';
   const canonicalUrl = `${DOMAIN}/guide`;
 
   const jsonLd = {
@@ -1378,12 +1157,35 @@ function generateGuidePage() {
         <p>
           在公司或自习室，打开 <a href="/download" style="color: var(--green); text-decoration: underline;">Windows 桌面客户端</a> 专心复习；在通勤途中或床上，用手机 Safari/Chrome 登录同个账号。只要网络畅通，学习事件会在后台静默完成同步。
         </p>
+
+        <h2 id="extension">五、浏览器扩展：安装与升级</h2>
+        <p><strong>当前为 v0.2.3 手动安装测试版，尚未上架 Chrome / Edge 扩展商店。</strong>Edge 已完成隔离环境测试；Chrome、原用户配置升级及真实账号跨端使用仍需进一步验收。请从 <a href="/download#extension" style="color: var(--green); text-decoration: underline;">官网下载页</a> 获取 ZIP 和 SHA-256 校验码，包内附有安装说明与词库来源资料。</p>
+        <ol class="platform-steps">
+          <li>将 ZIP 解压到一个长期保留的文件夹，确认其中直接包含 <code>manifest.json</code>。不要从压缩包里直接运行。</li>
+          <li>在桌面版 Edge 地址栏输入 <code>edge://extensions</code>，或在 Chrome 输入 <code>chrome://extensions</code>，打开扩展管理页。</li>
+          <li>开启“开发者模式”，选择“加载解压缩的扩展”（Chrome 为“加载已解压的扩展程序”），选择包含 <code>manifest.json</code> 的文件夹。</li>
+          <li>点击 KotoBud 扩展图标打开侧边栏，在“今日 / 词书 / 生词本 / 统计”间切换；查词可在侧栏输入词头、读音或中文。普通网页选词后也可尝试右键“用 KotoBud 查词”；受保护页面使用侧栏输入。</li>
+        </ol>
+        <p><strong>更新现有扩展：</strong>先按需导出备份，再把新包内容覆盖到原安装文件夹，在扩展管理页对原扩展点击“重新加载”。保留原目录与扩展 ID，不卸载、不清除扩展存储，也不要另建安装实例，以保留旧词书、收藏与学习记录。</p>
+        <p>学习记录默认存于本机；需要跨端时，在设置里使用现有邮箱账号开启同步。下载包不包含大批音频文件，发音联网按需加载。JLPT 等级词表来自社区整理，属于备考参考；来源与许可说明见包内 <code>DATA-SOURCES.txt</code>。</p>
+
+        <h2 id="miniprogram">六、微信小程序：当前状态与使用指引</h2>
+        <p><strong>v0.7.4 为本地候选，尚未上传、提审或正式发布。</strong>目前没有面向公众的体验二维码或可确认的微信搜索入口。开放体验后，本页与下载页会补充入口；现在可以在手机浏览器使用 <a href="/app/" style="color: var(--green); text-decoration: underline;">Web 在线版</a>。</p>
+        <h3>开放体验后，怎样开始学习？</h3>
+        <ol class="platform-steps">
+          <li>收到项目方提供的有效体验入口后，在微信中打开；先阅读隐私说明并选择是否同意，确认后进入首页。</li>
+          <li>在“教材”页选择新版标准日本语或 JLPT N5–N1 词书，再选择课次或词汇组开始学习；每天从首页或复习入口处理到期词。</li>
+          <li>在学习页使用翻卡或测验模式，听发音后评分；“上一个”用于查看本轮已学词，不额外写入评分。发音声线和慢速播放可按个人需要设置。</li>
+          <li>在学习统计里查看近 7 / 30 天的趋势、评价次数与词书占比；记忆阶段跟随当前词书，其余词书按需展开。</li>
+          <li>需要账号同步时使用邮箱登录同一个 KotoBud 账号，等待同步成功后核对学习记录。微信快捷登录仍未开放；勿通过清缓存或重新安装来解决同步等待。</li>
+        </ol>
+        <details class="platform-testing"><summary>已受邀参与内部测试？</summary><p>当前需由项目方提供构建或体验入口，并完成微信开发者工具与真机验收；本地构建成功不代表微信审核通过。测试时核对网络与首次发音、选书 / 选课、评分后重开进度、账号切换及同步。公众无需安装开发者工具，等体验入口开放即可。</p></details>
       </div>
 
       <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
         <a href="/app/" class="btn btn-primary btn-lg">现在开始今日复习</a>
         <a href="/features" class="btn btn-lg">深入了解功能特性</a>
-        <a href="/download" class="btn btn-lg">下载 Windows 客户端</a>
+        <a href="/download" class="btn btn-lg">下载 Windows v${WINDOWS_DOWNLOAD_VERSION} 客户端</a>
       </div>
     </div>
   `;
@@ -1401,7 +1203,7 @@ function generateGuidePage() {
 // 6. Changelog Page
 function generateChangelogPage() {
   const title = 'Kotobud 更新日志 – 版本演进与新特性记录';
-  const description = '查看 Kotobud 的历史版本与更新记录：了解 v0.6.0、v0.5.0 等版本的新功能发布、FSRS 间隔重复算法迭代、标日初中高全六册词库支持与 Windows 客户端深度优化详情。';
+  const description = `分别查看 Kotobud Web v${RELEASE_VERSION}、Windows v${WINDOWS_DOWNLOAD_VERSION}、小程序候选和浏览器扩展测试版的更新记录、发布状态与使用入口。`;
   const canonicalUrl = `${DOMAIN}/changelog`;
 
   const jsonLd = {
@@ -1441,17 +1243,168 @@ function generateChangelogPage() {
       <div class="section-header">
         <div class="badge-pill">版本演进历程</div>
         <h1 class="hero-title" style="margin-bottom: 12px;">Kotobud 版本更新日志与迭代历程</h1>
-        <p>每一次迭代，都为更纯粹、更科学的日语背词体验而努力</p>
+        <p>各端独立记录版本与状态，正式发布、手动安装测试版和开发候选分别标注。</p>
+        <nav class="platform-log-nav" aria-label="按平台查看更新"><a href="#web">Web</a><a href="#windows">Windows</a><a href="#miniprogram">微信小程序</a><a href="#extension">浏览器扩展</a><a href="#history">历史版本</a></nav>
       </div>
 
       <div class="article-body">
+        <section class="version-item" aria-labelledby="web">
+          <h2 id="web">Web 在线版</h2>
+          ${recentWebReleaseNotes}
+          <div class="version-header"><span class="version-tag">v0.9.0</span><span class="version-date">2026 年 10 月 13 日 · 已发布</span></div>
+          <p><strong>从不同释义里看清一个词</strong></p>
+          <ul>
+            <li>词卡和查词结果加入词典对照，分别查看 Tomoshi 中文译释、JMdict 英文原义及日语版维基词典的日文解释与用例。</li>
+            <li>各来源独立载入、折叠和重试，标明词形、读音或原形匹配，读音未核对时清楚说明。</li>
+            <li>可在设置或对照侧栏选择首选来源、隐藏来源和调整顺序，偏好保存在本机。</li>
+            <li>桌面用侧栏、手机用整屏查看，关闭后继续原来的学习。查询按需加载，不改变复习进度。</li>
+            <li>常用用法对照扩展至30组，加入24个常用动词的四形练习、96条例句，以及六个场景的连续回应任务。</li>
+            <li>设置提供个人词库手动账号备份，同账号另一设备可先预览再合并；学习记录沿用原有账户同步。</li>
+          </ul>
+          <div class="version-header"><span class="version-tag">v0.9.0-beta.2</span><span class="version-date">2026 年 10 月 12 日 · 测试记录，已并入0.9.0</span></div>
+          <p><strong>让词语变成更自然的表达</strong></p>
+          <ul>
+            <li>常用搭配与易混用法扩展到 30 组对照，补充初级常用动词、数量表达、频率和语气说明。</li>
+            <li>新增动词活用：24 个常用动词，练习ます形、て形、た形和ない形，支持假名或汉字假名输入，核对后展示规则、例句并可重练错题。</li>
+            <li>六个生活场景各加入四步连续回应任务，选择后确认、查看原因，再接下一句；完成后可以重练错步。</li>
+            <li>词书页和相关词卡提供活用入口。新练习沿用提示音设置，单独练习用法，不改变词书复习进度。</li>
+          </ul>
+          <div class="version-header"><span class="version-tag">v0.9.0-beta.1</span><span class="version-date">2026 年 10 月 12 日 · 测试记录，已并入0.9.0</span></div>
+          <p><strong>把自己的词库带到另一台设备</strong></p>
+          <ul>
+            <li>设置中新增个人词库账号备份，手动保存自建词书、例句、笔记和收藏原句。</li>
+            <li>另一台设备登录同一账号后，可先预览备份再合并。默认保留本机已有内容，也可选择使用账号备份。</li>
+            <li>保存前查看备份摘要；账号备份发生变化时需重新查看。个人词库由手动备份管理，学习记录继续使用原有账户同步。</li>
+          </ul>
+          <div class="version-header"><span class="version-tag">v0.8.0</span><span class="version-date">2026 年 10 月 12 日 · 已发布</span></div>
+          <p><strong>从记住单词，到在生活里用起来</strong></p>
+          <ul>
+            <li>新增假名键入和听写，支持平假名、片假名及全半角输入，先对照答案再保存本次答题。</li>
+            <li>查词扩展到通用词典，可查词库之外的日语词，展开更多义项并收藏为个人词条。</li>
+            <li>生活场景扩展为购物、点餐、问路、住宿、约见与天气六个专题，配有48个场景词、短对话和12条表达小贴士。词书页提供明确的场景学习入口。</li>
+            <li>补齐标日六册9,117个词位置的例句填空，优化中文释义展示；新增搭配与易混用法对照，累计12组。</li>
+            <li>答题加入木芽、风铃、林木、溪石四种轻声提示，可选择音色、调整音量、关闭提示音，并分别试听答对与答错的声音。</li>
+            <li>每本词书可按半课或一课安排每日进度，首页可选择显示今日待学、待复习或词书进度，选课入口更清晰。</li>
+            <li>个人词书支持逐词编辑、表格粘贴和文件导入，收藏原句与笔记可随个人词库文件手动迁移。</li>
+            <li>统计按题型展示答题表现，可集中重练待巩固的词；完成页整理本轮新学与温习收获。统一“言 × 芽”品牌与页面细节。</li>
+          </ul>
+          <p><strong>2026 年 10 月 7 日 · Web v0.7.4</strong></p>
+          <div class="version-header"><span class="version-tag">v0.7.4</span><span class="version-date">2026 年 10 月 7 日 · 已发布</span></div>
+          <p><strong>首页准确续学与统一封面</strong></p>
+          <ul>
+            <li>首页“继续学习”直接接续本机上次未完成的词、学习范围、模式和练习方式，刷新后仍可继续；下方“继续你的词书”保留手动选课入口。</li>
+            <li>首页词书卡与词书列表使用相同的个性化封面，优化小尺寸文字与插画排版；首页进度限定当前词书。</li>
+            <li>保留旧词条、评分与学习记录。旧版首次续学按最近课次的可学词开始；新会话保存本机词级位置，完整会话位置不跨设备同步。</li>
+          </ul>
+          <p><strong>2026 年 10 月 6 日 · 词书、发音与学习统计更新</strong></p>
+          <ul>
+            <li>新增 JLPT N5–N1 五本社区等级词书，共 7,809 词；与原六册教材一起按“教材 / JLPT / 我的词书”分类，保留原词书及独立学习进度。</li>
+            <li>补齐新增词的女声 / 男声发音，支持慢速与失败回退，并标明实际播放来源。</li>
+            <li>教材使用完整书名，词书封面按标题与内容主题区分；鼠标悬浮与键盘聚焦提供反馈，支持减少动态效果。</li>
+            <li>学习页增加只读“上一个”回看；新增按词头、读音与中文查词并加入生词本。</li>
+            <li>统计显示 7 / 30 日折线图、评价次数条形图及各词书学习占比环形饼图。记忆阶段跟随当前词书，当前书课次默认展开，其余收进抽屉。</li>
+          </ul>
+        </section>
+        <section class="version-item" aria-labelledby="windows">
+          <h2 id="windows">Windows 桌面版</h2>
+          ${currentWindowsReleaseNotes}
+          <div class="version-header"><span class="version-tag">v0.9.0-beta.2</span><span class="version-date">2026 年 10 月 21 日 · 历史官网下载版本</span></div>
+          <ul><li>安装版与便携版同步 Web 0.9.0 的每日学习计划、场景学习、动词活用、个人词库、提示音与学习统计。</li><li>支持假名键入、听写及多词典对照；教材词典与日文维基词典随安装包提供，可在本地查阅。</li><li>保留原有用户数据目录与账号同步方式，提供 Windows x64 安装版、免安装便携版和 SHA-256 校验清单。</li></ul>
+          <p><a href="/download">下载 Windows 客户端 ↗</a></p>
+          <p><strong>历史版本 · v0.7.3（2026 年 9 月 30 日）</strong></p>
+          <p>官网、页面切换、学习卡片和设置反馈优化，支持系统减少动态效果。</p>
+        </section>
+        <section class="version-item" aria-labelledby="miniprogram">
+          <h2 id="miniprogram">微信小程序</h2>
+          <div class="version-header"><span class="version-tag">v0.7.4 候选</span><span class="version-date">2026 年 10 月 6 日 · 本地开发完成，待验收</span></div>
+          <ul><li>接入六册教材与 JLPT 五册，共 11 本词书、16,926 词，采用完整书名、个性化封面及分类。</li><li>准备双声发音、慢速、只读上一词回看，以及 7 / 30 日折线、条形、环形饼图；当前词书进度与抽屉展示规则和 Web 接近。</li><li>保留原词条 ID、账号分区与学习记录，未迁移原数据。构建和自动化检查已完成，微信工具与真机仍待验收。</li><li>尚未上传、提审或发布，没有公众体验二维码；微信快捷登录仍未开放。</li></ul>
+          <p><a href="/guide#miniprogram">查看小程序状态与使用指引 ↗</a></p>
+        </section>
+        <section class="version-item" aria-labelledby="extension">
+          <h2 id="extension">浏览器扩展</h2>
+          <div class="version-header"><span class="version-tag">v0.2.3 测试版</span><span class="version-date">2026 年 10 月 7 日 · 官网手动安装包</span></div>
+          <p><strong>10 月 6 日候选功能，10 月 7 日开放官网下载</strong></p>
+          <ul><li>底部统一为“今日 / 词书 / 生词本 / 统计”，使用完整书名和个性化封面；当前词书与续学更突出，窄侧栏布局接近 Web / 小程序。</li><li>加入 JLPT N5–N1 五册，与原六册合计 11 本词书、16,926 词；按需播放女声 / 男声发音，显示实际来源与失败回退。</li><li>学习页增加只读上一词回看；统计加入 7 / 30 日三类图表、当前书记忆阶段与其他词书抽屉，保留组合学习与导入。</li><li>修复新增词评分、后台消息及账号切换快照的兼容问题，保留原数据库、扩展存储与学习记录。</li><li>已在隔离 Edge 中验收；Chrome、原用户配置升级及真实账号跨端仍待检查。尚未上架扩展商店。</li></ul>
+          <p><a href="/download#extension">下载测试版与安装说明 ↗</a></p>
+        </section>
+        <h2 id="history">历史版本</h2>
+        <div class="version-item">
+          <div class="version-header">
+            <span class="version-tag">v0.7.3</span>
+            <span class="badge-pill" style="margin: 0; padding: 2px 10px; font-size: 11px;">Web 与 Windows</span>
+            <span class="version-date">2026 年 9 月 30 日</span>
+          </div>
+          <p><strong>Web v0.7.3 官网与下载体验更新：</strong></p>
+          <ul>
+            <li>官网介绍页保留绿色纸感与产品信息，加入随滚动展开的词卡、词书与学习方式演示；支持减少动态效果。</li>
+            <li>日语词带改为无缝循环，补齐超宽屏内容，滚动时轻微加速，离屏与后台暂停。</li>
+            <li>客户端下载页重做主次排版、单行按钮与常见问题展开，并纠正文件大小标注。</li>
+            <li>设置页采用两列独立堆叠，让 Windows 下载卡片紧接宠物设置。</li>
+            <li>Windows v0.7.3 安装版与便携版同步本轮页面、学习卡片和设置反馈优化，并提供 SHA-256 校验清单。</li>
+          </ul>
+        </div>
+
+        <div class="version-item">
+          <div class="version-header">
+            <span class="version-tag">v0.7.2</span>
+            <span class="badge-pill" style="margin: 0; padding: 2px 10px; font-size: 11px;">Web 在线版</span>
+            <span class="version-date">2026 年 9 月 29 日</span>
+          </div>
+          <p><strong>Web v0.7.2 界面与交互反馈更新：</strong></p>
+          <ul>
+            <li>设置页更新分区布局；切换发音、宠物形象和陪伴方式时显示即时反馈。</li>
+            <li>页面切换、按钮按压与学习答题结果增加更清晰的过渡；系统要求减少动态效果时尊重该设置。</li>
+            <li>改善手机宽度下的设置页和导航布局。当次 Windows 安装包仍为 v0.7.1。</li>
+          </ul>
+        </div>
+
+        <div class="version-item">
+          <div class="version-header">
+            <span class="version-tag">v0.7.1</span>
+            <span class="version-date">2026 年 9 月 24 日</span>
+          </div>
+          <p><strong>Web 与 Windows v0.7.1 吉祥物显示修复：</strong></p>
+          <ul>
+            <li>修复 Web 端叶团猫动作切换时的游离像素，经典与像素形象改用完整的独立动作帧。</li>
+            <li>修正 Web 设置页的宠物预览图；Windows v0.7.1 同步包含这些修复。</li>
+          </ul>
+        </div>
+
+        <div class="version-item">
+          <div class="version-header">
+            <span class="version-tag">v0.7.0</span>
+            <span class="version-date">2026 年 9 月</span>
+          </div>
+          <p><strong>学习陪伴与跨端体验更新：</strong></p>
+          <ul>
+            <li><strong>新增叶团猫宠物</strong>：提供经典与像素形象、低频动画、减少动态模式和本地偏好设置，可选择在学习时陪伴或自动隐藏。</li>
+            <li><strong>学习过程轻互动</strong>：宠物根据答题、连续正确与完成状态作出轻微回应；学习页面可将宠物放在单词卡片右侧持续陪伴。</li>
+            <li><strong>Windows 便携版体验更新</strong>：支持从应用内创建桌面快捷方式，统一 KotoBud 品牌标识。</li>
+            <li><strong>设置与同步体验改进</strong>：集中管理发音、宠物与账户同步偏好，并加强页面错误恢复与跨端数据合并稳定性。</li>
+          </ul>
+        </div>
+
+        <div class="version-item">
+          <div class="version-header">
+            <span class="version-tag">v0.6.1</span>
+            <span class="version-date">2026 年 9 月</span>
+          </div>
+          <p><strong>Windows 桌面端专项优化、冷启动性能跃升与数据稳定性加固：</strong></p>
+          <ul>
+            <li><strong>便携版冷启动极致加速</strong>：重构应用启动与状态挂载流程，实现「本地优先立即挂载（Local-Hydrate First）+ 后台静默云对齐」。未登录游客模式零网络请求瞬间秒开，弱网或离线环境下启动耗时由数分钟直降至 ~1.3 秒。</li>
+            <li><strong>便携版快捷方式支持</strong>：为 Windows 绿色便携版新增用户主动创建桌面快捷方式能力。通过安全系统 IPC 随时一键生成指向当前 Portable exe 的官方绿色「言」字图标快捷方式，保持免安装纯粹性的同时极大提升日常使用便利性。</li>
+            <li><strong>安装版品牌深度收敛</strong>：修复二进制编译修补与 Windows AppUserModelID 标识，彻底清除旧版本 Kotoba 与 Electron 默认图标残留。桌面快捷方式、开始菜单、系统任务栏与安装/卸载程序全面统一定格为正式 KotoBud 品牌与绿色「言」字图标。</li>
+            <li><strong>登录/同步后主页空白 Bug 根治</strong>：排查并修复切换已认证用户时词书加载缺失的分支时序（补全 <code>ensureBookLoaded</code>），增加并发切换互斥锁，并在 Vue 根节点与组件树增加全局容错与降级保护卡片，杜绝因极端异常导致的页面白屏。</li>
+            <li><strong>跨端记录合并报错修复</strong>：规范网络层 AbortController 超时中断机制，将大载荷数据同步超时阈值由 10 秒放宽至 30 秒，彻底消除“signal is aborted without reason”报错并提供友好提示，多端学习记录安全合并零丢失。</li>
+          </ul>
+        </div>
+
         <div class="version-item">
           <div class="version-header">
             <span class="version-tag">v0.6.0</span>
-            <span class="badge-pill" style="margin: 0; padding: 2px 10px; font-size: 11px;">当前最新生产版本</span>
             <span class="version-date">2026 年 9 月</span>
           </div>
-          <p><strong>核心架构升级与 Windows 客户端深度优化：</strong></p>
+          <p><strong>核心架构升级与多端云同步系统：</strong></p>
           <ul>
             <li><strong>全面升级 FSRS 记忆算法</strong>：引入最新一代 FSRS (Free Spaced Repetition Scheduler)，替代早期简易调度逻辑，复习周期更精准。</li>
             <li><strong>标日初中高全六册词库完整支持</strong>：支持初级上下、中级上下、高级上下全 104 课自由选课。</li>
@@ -1502,7 +1455,7 @@ function generateChangelogPage() {
       </div>
 
       <div style="text-align: center; margin-bottom: 60px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-        <a href="/download" class="btn btn-primary btn-lg">下载最新 v0.6.0 客户端</a>
+        <a href="/download" class="btn btn-primary btn-lg">下载当前 Windows v${WINDOWS_DOWNLOAD_VERSION} 客户端</a>
         <a href="/features" class="btn btn-lg">查看功能与算法特性</a>
         <a href="/about#brand" class="btn btn-lg">了解品牌演进</a>
         <a href="/app/" class="btn btn-lg">打开在线版</a>
@@ -1535,7 +1488,7 @@ function generate404Page() {
 
   const bodyContent = `
     <div class="container" style="padding: 100px 24px; text-align: center;">
-      <div class="brand-mark" style="width: 64px; height: 70px; font-size: 38px; margin: 0 auto 24px;">言</div>
+      <img src="/brand/kotobud-mark.svg" alt="Kotobud" width="64" height="64" style="display: block; margin: 0 auto 24px;">
       <h1 style="font-size: 36px; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">404 - 页面未找到</h1>
       <p style="color: var(--text-muted); font-size: 16px; max-width: 520px; margin: 0 auto 36px;">
         抱歉，您访问的网址不存在、已被删除或发生了变动。您可以返回首页，或者直接进入在线背词手帖。
@@ -1558,14 +1511,28 @@ function generate404Page() {
 }
 
 // Main execution function
+function getLandingHead(targetDir) {
+  const manifestPath = pathResolve(targetDir, '.vite/manifest.json');
+  if (existsSync(manifestPath)) {
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    const landing = manifest['landing.html'];
+    if (!landing?.file) throw new Error('The landing motion entry is missing from the Vite manifest.');
+    return `${(landing.css ?? []).map(file => `<link rel="stylesheet" href="/${file}">`).join('\n')}\n<script type="module" src="/${landing.file}"></script>`;
+  }
+  // Standalone SEO generation still produces a styled, readable page without JS.
+  const styles = readFileSync(pathResolve(import.meta.dirname, '../apps/web/src/landing.css'), 'utf8');
+  return `<style>${styles}</style>`;
+}
+
 export function generateAllSeoPages(targetDir) {
   console.log(`Generating SEO static pages in: ${targetDir}`);
   mkdirSync(targetDir, { recursive: true });
+  const extensionDownload = prepareExtensionDownload(targetDir);
 
   const pages = [
-    { files: ['index.html'], content: generateHomePage() },
+    { files: ['index.html'], content: generateHomePage(getLandingHead(targetDir)) },
     { files: ['features.html', 'features/index.html'], content: generateFeaturesPage() },
-    { files: ['download.html', 'download/index.html'], content: generateDownloadPage() },
+    { files: ['download.html', 'download/index.html'], content: generateDownloadPage(extensionDownload) },
     { files: ['about.html', 'about/index.html'], content: generateAboutPage() },
     { files: ['guide.html', 'guide/index.html'], content: generateGuidePage() },
     { files: ['changelog.html', 'changelog/index.html'], content: generateChangelogPage() },

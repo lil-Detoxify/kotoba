@@ -6,6 +6,7 @@ import type { MiniProgramAuthService } from "./auth-service";
 import type { PrivacyConsentGate } from "./privacy-consent";
 import { eventPayload, progressPayload, settingsFromData } from "./sync-outbox";
 import { reconcileMiniProgramData, validateSyncPull } from "./sync-reconciliation";
+import { isMissingSnapshotError } from "../adapters/file-storage";
 
 export type SyncPhase = "idle" | "local_hydrating" | "auth_restoring" | "pulling" | "reconciling" | "ready" | "signed_out" | "error";
 
@@ -77,7 +78,17 @@ export class MiniSyncCoordinator {
         this.state.phase = "signed_out";
         return;
       }
-      const guest = await this.repository.read();
+      let guest: Data | null = null;
+      let guestMissing = false;
+      try {
+        guest = await this.repository.read();
+      } catch (error) {
+        if (!isMissingSnapshotError(error)) throw error;
+        // A dangling guest pointer must not block a valid account restore.
+        // Keep its pointer, inline copy, claim, and outbox untouched; only the
+        // account partition participates in this pull-first reconciliation.
+        guestMissing = true;
+      }
       this.assertCurrent(ticket);
       this.state.phase = "auth_restoring";
       const session = provided ?? await this.auth.restore();
@@ -88,11 +99,11 @@ export class MiniSyncCoordinator {
         return;
       }
       this.session = session;
-      const candidateGuestQueue = await this.repository.getQueue("data_guest");
-      const guestHasLearning = guest.states.length > 0 || guest.logs.length > 0 || !!guest.userSettings ||
-        guest.currentBookIdSource === "user" || candidateGuestQueue.length > 0;
-      if (!guestHasLearning && this.repository.releaseGuestLearning) await this.repository.releaseGuestLearning(session.userId);
-      const guestClaimed = guestHasLearning && this.repository.claimGuestLearning
+      const candidateGuestQueue = guestMissing ? [] : await this.repository.getQueue("data_guest");
+      const guestHasLearning = !guestMissing && !!guest && (guest.states.length > 0 || guest.logs.length > 0 || !!guest.userSettings ||
+        guest.currentBookIdSource === "user" || candidateGuestQueue.length > 0);
+      if (!guestMissing && !guestHasLearning && this.repository.releaseGuestLearning) await this.repository.releaseGuestLearning(session.userId);
+      const guestClaimed = !guestMissing && guestHasLearning && this.repository.claimGuestLearning
         ? await this.repository.claimGuestLearning(session.userId)
         : guestHasLearning;
       this.assertCurrent(ticket, session.userId);
@@ -103,7 +114,7 @@ export class MiniSyncCoordinator {
       this.state.email = session.email;
       this.state.provider = session.provider;
       const accountLocal = await this.repository.read(activeKey);
-      const local = guestClaimed ? mergeLocalPartitions(accountLocal, guest) : accountLocal;
+      const local = guestClaimed && guest ? mergeLocalPartitions(accountLocal, guest) : accountLocal;
       const queued = await this.repository.getQueue(activeKey);
       const guestQueue = guestClaimed ? candidateGuestQueue : [];
       this.assertCurrent(ticket, session.userId, activeKey);

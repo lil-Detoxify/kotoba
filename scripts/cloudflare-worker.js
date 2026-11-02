@@ -13,10 +13,9 @@ const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 </urlset>`;
 
 const CLOUDBASE_DEFAULT_ENV = 'kotobud-staging-d4femojn7def1c91';
-const JWT_FALLBACK_SECRET = 'kotobud-prod-jwt-secret-d4femojn7def1c91';
-
 function getJwtSecret(env) {
-  return env.JWT_SECRET || env.CLOUDBASE_ENV_ID || JWT_FALLBACK_SECRET;
+  if (!env.JWT_SECRET) throw new Error('JWT_SECRET is not configured');
+  return env.JWT_SECRET;
 }
 
 function base64UrlEncode(str) {
@@ -218,7 +217,7 @@ async function createSession(db, env, user, request) {
 
 async function sendCloudBaseOtp(env, email) {
   const cleanEmail = email.trim().toLowerCase();
-  if (cleanEmail.endsWith('@example.com') || cleanEmail.startsWith('test') || cleanEmail.startsWith('mock') || env.MOCK_AUTH === 'true') {
+  if (env.MOCK_AUTH === 'true') {
     return { success: true, verificationId: 'mock_vid_' + Date.now(), expiresIn: 600 };
   }
   const cloudbaseEnv = env.CLOUDBASE_ENV_ID || CLOUDBASE_DEFAULT_ENV;
@@ -242,7 +241,7 @@ async function sendCloudBaseOtp(env, email) {
 async function verifyCloudBaseOtp(env, email, code, verificationId) {
   const cleanEmail = email.trim().toLowerCase();
   const cleanCode = String(code).trim();
-  if ((cleanCode === '123456' || cleanCode === '000000') && (cleanEmail.endsWith('@example.com') || cleanEmail.startsWith('test') || cleanEmail.startsWith('mock') || env.MOCK_AUTH === 'true')) {
+  if ((cleanCode === '123456' || cleanCode === '000000') && env.MOCK_AUTH === 'true') {
     const mockUid = 'cb_' + cleanEmail.replace(/[^a-z0-9]/g, '_');
     return {
       success: true,
@@ -340,18 +339,6 @@ async function verifyCloudBaseOtp(env, email, code, verificationId) {
   };
 }
 
-function decodeJwtPayload(token) {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-    const jsonStr = atob(base64);
-    return JSON.parse(jsonStr);
-  } catch {
-    return null;
-  }
-}
-
 async function verifyAuthToken(request, env) {
   const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
@@ -359,7 +346,7 @@ async function verifyAuthToken(request, env) {
   if (!token) return null;
 
   // 1. Development / Automated Test Token
-  if (token.startsWith('mock_') || token.startsWith('test_')) {
+  if (env.MOCK_AUTH === 'true' && (token.startsWith('mock_') || token.startsWith('test_'))) {
     const parts = token.split(':');
     const uid = parts[1] || 'mock_user_1';
     const email = parts[2] || `${uid}@example.com`;
@@ -367,8 +354,7 @@ async function verifyAuthToken(request, env) {
   }
 
   // 2. KotoBud JWT Access Token
-  const secret = getJwtSecret(env);
-  const jwtPayload = await verifyJwt(token, secret);
+  const jwtPayload = env.JWT_SECRET ? await verifyJwt(token, env.JWT_SECRET) : null;
   if (jwtPayload && jwtPayload.sub) {
     return {
       provider: 'kotobud',
@@ -402,19 +388,6 @@ async function verifyAuthToken(request, env) {
     }
   } catch (err) {
     console.error('Failed to verify CloudBase token via user/me:', err);
-  }
-
-  // 4. Fallback: parse CloudBase JWT payload directly
-  const jwt = decodeJwtPayload(token);
-  if (jwt && jwt.sub) {
-    if (jwt.exp && jwt.exp * 1000 < Date.now()) {
-      return null; // Expired token
-    }
-    return {
-      provider: 'cloudbase',
-      providerUid: String(jwt.sub),
-      email: jwt.email || undefined
-    };
   }
 
   return null;
@@ -463,6 +436,136 @@ async function getOrCreateUser(db, authIdentity) {
     .bind(newId, authIdentity.provider, authIdentity.providerUid, authIdentity.email || null, cleanEmail, now, now)
     .run();
   return { id: newId, email: authIdentity.email, created_at: now, updated_at: now };
+}
+
+function validWechatCode(code) {
+  return typeof code === 'string' && code.length >= 8 && code.length <= 512 && /^[A-Za-z0-9_-]+$/.test(code);
+}
+
+async function exchangeMiniProgramCode(env, code) {
+  if (!env.WECHAT_MINIPROGRAM_APP_ID || !env.WECHAT_MINIPROGRAM_APP_SECRET) return { error: 'wechat_not_configured' };
+  const url = new URL('https://api.weixin.qq.com/sns/jscode2session');
+  url.searchParams.set('appid', env.WECHAT_MINIPROGRAM_APP_ID);
+  url.searchParams.set('secret', env.WECHAT_MINIPROGRAM_APP_SECRET);
+  url.searchParams.set('js_code', code);
+  url.searchParams.set('grant_type', 'authorization_code');
+  const response = await fetch(url, { method: 'GET' });
+  if (!response.ok) return { error: 'wechat_unavailable' };
+  const result = await response.json();
+  if (result.errcode || typeof result.openid !== 'string' || !result.openid) return { error: 'wechat_code_invalid' };
+  return { provider: 'wechat_miniprogram', openid: result.openid, unionid: result.unionid || null };
+}
+
+async function exchangeWebsiteCode(env, code) {
+  const url = new URL('https://api.weixin.qq.com/sns/oauth2/access_token');
+  url.searchParams.set('appid', env.WECHAT_WEB_APP_ID);
+  url.searchParams.set('secret', env.WECHAT_WEB_APP_SECRET);
+  url.searchParams.set('code', code);
+  url.searchParams.set('grant_type', 'authorization_code');
+  const response = await fetch(url, { method: 'GET' });
+  if (!response.ok) return { error: 'wechat_unavailable' };
+  const result = await response.json();
+  if (result.errcode || typeof result.openid !== 'string' || !result.openid) return { error: 'wechat_code_invalid' };
+  return { provider: 'wechat_web', openid: result.openid, unionid: result.unionid || null };
+}
+
+async function findWechatUser(db, identity) {
+  const byOpenid = await db.prepare('SELECT user_id FROM auth_identities WHERE provider = ? AND provider_uid = ?')
+    .bind(identity.provider, identity.openid).first();
+  const byUnionid = identity.unionid
+    ? await db.prepare('SELECT user_id FROM auth_identities WHERE provider = ? AND provider_uid = ?')
+      .bind('wechat_unionid', identity.unionid).first()
+    : null;
+  if (byOpenid && byUnionid && byOpenid.user_id !== byUnionid.user_id) throw new Error('wechat_identity_conflict');
+  return byOpenid?.user_id || byUnionid?.user_id || null;
+}
+
+async function attachWechatIdentity(db, identity, userId) {
+  const matchedUser = await findWechatUser(db, identity);
+  if (matchedUser && matchedUser !== userId) throw new Error('wechat_identity_conflict');
+  const now = new Date().toISOString();
+  const entries = [[identity.provider, identity.openid]];
+  if (identity.unionid) entries.push(['wechat_unionid', identity.unionid]);
+  const statements = [];
+  for (const [provider, uid] of entries) {
+    const existing = await db.prepare('SELECT user_id FROM auth_identities WHERE provider = ? AND provider_uid = ?')
+      .bind(provider, uid).first();
+    if (existing?.user_id && existing.user_id !== userId) throw new Error('wechat_identity_conflict');
+    if (!existing) statements.push(db.prepare(
+      'INSERT INTO auth_identities (provider, provider_uid, user_id, created_at) VALUES (?, ?, ?, ?)'
+    ).bind(provider, uid, userId, now));
+  }
+  if (statements.length) await db.batch(statements);
+  if (await findWechatUser(db, identity) !== userId) throw new Error('wechat_identity_conflict');
+}
+
+async function resolveWechatUser(db, identity) {
+  const userId = await findWechatUser(db, identity);
+  if (userId) {
+    await attachWechatIdentity(db, identity, userId);
+    return db.prepare('SELECT id, email FROM users WHERE id = ?').bind(userId).first();
+  }
+  const id = 'kb_' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
+  const now = new Date().toISOString();
+  try {
+    const statements = [db.prepare(
+      'INSERT INTO users (id, auth_provider, provider_uid, email, email_normalized, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).bind(id, identity.provider, identity.openid, null, null, now, now)];
+    statements.push(db.prepare(
+      'INSERT INTO auth_identities (provider, provider_uid, user_id, created_at) VALUES (?, ?, ?, ?)'
+    ).bind(identity.provider, identity.openid, id, now));
+    if (identity.unionid) statements.push(db.prepare(
+      'INSERT INTO auth_identities (provider, provider_uid, user_id, created_at) VALUES (?, ?, ?, ?)'
+    ).bind('wechat_unionid', identity.unionid, id, now));
+    await db.batch(statements);
+    return { id, email: null };
+  } catch (error) {
+    // A concurrent login may have inserted the unique identity first.
+    const racedUserId = await findWechatUser(db, identity);
+    if (!racedUserId) throw error;
+    return db.prepare('SELECT id, email FROM users WHERE id = ?').bind(racedUserId).first();
+  }
+}
+
+async function verifyManagedSession(request, env) {
+  const bearer = request.headers.get('authorization') || '';
+  if (!bearer.startsWith('Bearer ')) return null;
+  const token = bearer.slice(7).trim();
+  const claims = await verifyJwt(token, getJwtSecret(env));
+  if (claims?.sub && claims?.sid) {
+    const session = await env.DB.prepare('SELECT user_id FROM sessions WHERE id = ? AND revoked_at IS NULL AND expires_at > ?')
+      .bind(claims.sid, new Date().toISOString()).first();
+    return session?.user_id === claims.sub ? claims.sub : null;
+  }
+  // Legacy email OTP sessions are accepted only after live CloudBase introspection.
+  const cloudbaseEnv = env.CLOUDBASE_ENV_ID || CLOUDBASE_DEFAULT_ENV;
+  try {
+    const response = await fetch(`https://${cloudbaseEnv}.api.tcloudbasegateway.com/auth/v1/user/me?client_id=${cloudbaseEnv}`, {
+      headers: { authorization: `Bearer ${token}`, 'X-SDK-Version': '@cloudbase/js-sdk/3.9.4' }
+    });
+    if (!response.ok) return null;
+    const body = await response.json();
+    const user = body.user || body;
+    const uid = user.id || user.uid || user.sub;
+    if (!uid) return null;
+    const internal = await getOrCreateUser(env.DB, { provider: 'cloudbase', providerUid: String(uid), email: user.email });
+    return internal.id;
+  } catch { return null; }
+}
+
+function websiteRedirectUri(env) {
+  if (!env.WECHAT_WEB_APP_ID || !env.WECHAT_WEB_APP_SECRET || !env.WECHAT_WEB_REDIRECT_URI) return null;
+  try {
+    const uri = new URL(env.WECHAT_WEB_REDIRECT_URI);
+    if (uri.protocol !== 'https:' || !['kotobud.com', 'staging.kotobud.com'].includes(uri.hostname) ||
+        uri.pathname !== '/api/v1/auth/wechat/callback' || uri.username || uri.password || uri.search || uri.hash) return null;
+    return uri.toString();
+  } catch { return null; }
+}
+
+function wechatCallbackPage(ok) {
+  return new Response(`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KotoBud 微信登录</title><body style="font-family:system-ui,sans-serif;max-width:32rem;margin:5rem auto;padding:1rem"><h1>${ok ? '微信验证完成' : '微信验证未完成'}</h1><p>${ok ? '请返回 KotoBud 完成登录或绑定。' : '请返回 KotoBud 重试。'}</p></body></html>`,
+    { status: ok ? 200 : 400, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'none'; style-src 'unsafe-inline'" } });
 }
 
 function getCorsHeaders(request) {
@@ -519,6 +622,19 @@ export default {
     const url = new URL(request.url);
     const hostname = url.hostname.toLowerCase();
     const path = decodeURIComponent(url.pathname);
+
+    // Archived development plan: no WeChat auth route is active in any environment.
+    // An explicit product decision, code change, and fresh security review are required.
+    if (path.startsWith('/api/v1/auth/wechat/')) return json({ error: 'feature_archived' }, 404);
+
+    // Baidu file verification must return 200 at its exact URL on both production hosts.
+    if ((hostname === 'kotobud.com' || hostname === 'www.kotobud.com') &&
+        path === '/baidu_verify_codeva-ufOXOjmUq3.html' &&
+        (request.method === 'GET' || request.method === 'HEAD')) {
+      return new Response(request.method === 'HEAD' ? null : "42e628d70d3c188a7b409070fd9a9ede", {
+        headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' }
+      });
+    }
 
     // 1. WWW 301 Permanent Redirect: https://www.kotobud.com/* -> https://kotobud.com/*
     if (hostname === 'www.kotobud.com') {
@@ -595,9 +711,9 @@ export default {
     }
 
     // 8. Download and Release handling (0.6.0 & backwards-compatible)
-    const downloadMatch = path.match(/^\/downloads\/(Kotoba-(\d+\.\d+\.\d+)-Windows-x64-(Setup|Portable)\.exe)$/);
-    const releaseMatch = path.match(/^\/releases\/(\d+\.\d+\.\d+)\/([a-zA-Z0-9._-]+)$/);
-    const checksumMatch = path.match(/^\/downloads\/(SHA256SUMS-(\d+\.\d+\.\d+)\.txt)$/);
+    const downloadMatch = path.match(/^\/downloads\/((?:Kotoba|KotoBud)-(\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?)-Windows-x64-(Setup|Portable)\.exe)$/);
+    const releaseMatch = path.match(/^\/releases\/(\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?)\/([a-zA-Z0-9._-]+)$/);
+    const checksumMatch = path.match(/^\/downloads\/(SHA256SUMS-(\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?)\.txt)$/);
 
     if (downloadMatch || releaseMatch || checksumMatch) {
       if (!['GET', 'HEAD'].includes(request.method)) return new Response('Method not allowed', {status:405, headers:{allow:'GET, HEAD'}});
@@ -671,6 +787,154 @@ export default {
       } catch (err) {
         return json({error: 'server_error', message: String(err)}, 500);
       }
+    }
+
+    if (path === '/api/v1/auth/wechat/mini-login' || path === '/api/v1/auth/wechat/mini-link') {
+      if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
+      if (!env.DB) return json({ error: 'db_unavailable' }, 503);
+      if (!env.JWT_SECRET) return json({ error: 'auth_not_configured' }, 503);
+      const linking = path.endsWith('/mini-link');
+      const targetUserId = linking ? await verifyManagedSession(request, env) : null;
+      if (linking && !targetUserId) return json({ error: 'unauthorized' }, 401);
+      let body;
+      try { body = await request.json(); } catch { return json({ error: 'invalid_request' }, 400); }
+      if (!validWechatCode(body?.code)) return json({ error: 'invalid_code' }, 400);
+      try {
+        const identity = await exchangeMiniProgramCode(env, body.code);
+        if (identity.error) return json({ error: identity.error }, identity.error === 'wechat_not_configured' ? 503 : identity.error === 'wechat_unavailable' ? 502 : 401);
+        if (linking) {
+          await attachWechatIdentity(env.DB, identity, targetUserId);
+          return json({ success: true, userId: targetUserId }, 200);
+        }
+        const user = await resolveWechatUser(env.DB, identity);
+        const session = await createSession(env.DB, env, user, request);
+        return new Response(JSON.stringify({ success: true, token: session.accessToken, refreshToken: session.refreshToken,
+          user: { id: user.id, ...(user.email ? { email: user.email } : {}), provider: 'wechat' } }), {
+          status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'set-cookie': session.cookieHeader }
+        });
+      } catch (error) {
+        if (error?.message === 'wechat_identity_conflict') return json({ error: 'wechat_already_bound', message: '此微信已绑定其他 KotoBud 账号' }, 409);
+        return json({ error: 'wechat_login_failed' }, 503);
+      }
+    }
+
+    if (path === '/api/v1/auth/wechat/attempt') {
+      if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
+      if (!env.DB) return json({ error: 'db_unavailable' }, 503);
+      if (!env.JWT_SECRET) return json({ error: 'auth_not_configured' }, 503);
+      const redirectUri = websiteRedirectUri(env);
+      if (!redirectUri) return json({ error: 'wechat_not_configured' }, 503);
+      if (new URL(redirectUri).origin !== url.origin) return json({ error: 'wechat_redirect_mismatch' }, 503);
+      let body;
+      try { body = await request.json(); } catch { return json({ error: 'invalid_request' }, 400); }
+      const purpose = body?.purpose;
+      if (purpose !== 'login' && purpose !== 'link') return json({ error: 'invalid_purpose' }, 400);
+      const targetUserId = purpose === 'link' ? await verifyManagedSession(request, env) : null;
+      if (purpose === 'link' && !targetUserId) return json({ error: 'unauthorized' }, 401);
+      const id = 'wa_' + crypto.randomUUID().replace(/-/g, '');
+      const verifier = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
+      const verifierHash = await hashRefreshToken(verifier);
+      const now = new Date().toISOString();
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+      try {
+        await env.DB.prepare('INSERT INTO wechat_auth_attempts (id, verifier_hash, purpose, target_user_id, expires_at, created_at) VALUES (?, ?, ?, ?, ?, ?)')
+          .bind(id, verifierHash, purpose, targetUserId, expiresAt, now).run();
+      } catch { return json({ error: 'db_unavailable' }, 503); }
+      const authorize = new URL('https://open.weixin.qq.com/connect/qrconnect');
+      authorize.searchParams.set('appid', env.WECHAT_WEB_APP_ID);
+      authorize.searchParams.set('redirect_uri', redirectUri);
+      authorize.searchParams.set('response_type', 'code');
+      authorize.searchParams.set('scope', 'snsapi_login');
+      authorize.searchParams.set('state', id);
+      authorize.hash = 'wechat_redirect';
+      return json({ attemptId: id, verifier, authorizeUrl: authorize.toString(), expiresAt }, 200);
+    }
+
+    if (path === '/api/v1/auth/wechat/callback') {
+      if (request.method !== 'GET') return new Response('Method not allowed', { status: 405 });
+      if (!env.DB || !env.JWT_SECRET || !websiteRedirectUri(env) || new URL(websiteRedirectUri(env)).origin !== url.origin) return wechatCallbackPage(false);
+      const id = url.searchParams.get('state');
+      const code = url.searchParams.get('code');
+      if (!id || !/^wa_[a-f0-9]{32}$/.test(id) || !validWechatCode(code)) return wechatCallbackPage(false);
+      const attempt = await env.DB.prepare('SELECT purpose, target_user_id, expires_at, consumed_at, user_id, wechat_openid FROM wechat_auth_attempts WHERE id = ?')
+        .bind(id).first();
+      if (!attempt || attempt.expires_at <= new Date().toISOString() || attempt.consumed_at || attempt.user_id || attempt.wechat_openid) return wechatCallbackPage(false);
+      const claimed = await env.DB.prepare("UPDATE wechat_auth_attempts SET error_code = 'processing' WHERE id = ? AND error_code IS NULL AND user_id IS NULL AND wechat_openid IS NULL AND consumed_at IS NULL")
+        .bind(id).run();
+      if ((claimed.meta?.changes || 0) !== 1) return wechatCallbackPage(false);
+      try {
+        const identity = await exchangeWebsiteCode(env, code);
+        if (identity.error) throw new Error(identity.error);
+        if (attempt.purpose === 'link') {
+          // The OAuth callback has no initiating account session. Binding waits
+          // until redeem verifies the current Bearer session and private verifier.
+          const result = await env.DB.prepare("UPDATE wechat_auth_attempts SET wechat_provider = ?, wechat_openid = ?, wechat_unionid = ?, error_code = NULL WHERE id = ? AND error_code = 'processing' AND wechat_openid IS NULL AND consumed_at IS NULL")
+            .bind(identity.provider, identity.openid, identity.unionid, id).run();
+          return wechatCallbackPage((result.meta?.changes || 0) === 1);
+        }
+        const userId = (await resolveWechatUser(env.DB, identity)).id;
+        const result = await env.DB.prepare("UPDATE wechat_auth_attempts SET user_id = ?, error_code = NULL WHERE id = ? AND error_code = 'processing' AND user_id IS NULL AND consumed_at IS NULL")
+          .bind(userId, id).run();
+        return wechatCallbackPage((result.meta?.changes || 0) === 1);
+      } catch (error) {
+        const errorCode = error?.message === 'wechat_identity_conflict' ? 'wechat_already_bound' : 'wechat_login_failed';
+        await env.DB.prepare("UPDATE wechat_auth_attempts SET error_code = ? WHERE id = ? AND error_code = 'processing' AND user_id IS NULL AND wechat_openid IS NULL")
+          .bind(errorCode, id).run();
+        return wechatCallbackPage(false);
+      }
+    }
+
+    if (path === '/api/v1/auth/wechat/redeem') {
+      if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
+      if (!env.DB) return json({ error: 'db_unavailable' }, 503);
+      if (!env.JWT_SECRET) return json({ error: 'auth_not_configured' }, 503);
+      let body;
+      try { body = await request.json(); } catch { return json({ error: 'invalid_request' }, 400); }
+      if (!/^wa_[a-f0-9]{32}$/.test(body?.attemptId || '') || !/^[a-f0-9]{64}$/.test(body?.verifier || '')) return json({ error: 'invalid_request' }, 400);
+      const verifierHash = await hashRefreshToken(body.verifier);
+      const attempt = await env.DB.prepare('SELECT purpose, target_user_id, user_id, wechat_provider, wechat_openid, wechat_unionid, error_code, expires_at, consumed_at FROM wechat_auth_attempts WHERE id = ? AND verifier_hash = ?')
+        .bind(body.attemptId, verifierHash).first();
+      if (!attempt) return json({ error: 'invalid_attempt' }, 404);
+      if (attempt.consumed_at || attempt.expires_at <= new Date().toISOString()) return json({ error: 'attempt_expired' }, 410);
+      let currentUserId = null;
+      if (attempt.purpose === 'link') {
+        currentUserId = await verifyManagedSession(request, env);
+        if (!currentUserId) return json({ error: 'unauthorized' }, 401);
+        if (currentUserId !== attempt.target_user_id) return json({ error: 'wechat_account_mismatch' }, 403);
+      }
+      if (attempt.error_code && attempt.error_code !== 'processing' && attempt.error_code !== 'redeeming') return json({ error: attempt.error_code }, 409);
+      if (attempt.purpose === 'link') {
+        if (attempt.user_id || (attempt.wechat_openid && attempt.wechat_provider !== 'wechat_web')) return json({ error: 'invalid_attempt' }, 404);
+        if (!attempt.wechat_openid || attempt.error_code) return json({ status: 'pending' }, 202);
+        const claimed = await env.DB.prepare("UPDATE wechat_auth_attempts SET error_code = 'redeeming' WHERE id = ? AND verifier_hash = ? AND purpose = 'link' AND target_user_id = ? AND error_code IS NULL AND consumed_at IS NULL AND expires_at > ? AND wechat_provider = 'wechat_web' AND wechat_openid IS NOT NULL")
+          .bind(body.attemptId, verifierHash, currentUserId, new Date().toISOString()).run();
+        if ((claimed.meta?.changes || 0) !== 1) return json({ status: 'pending' }, 202);
+        try {
+          await attachWechatIdentity(env.DB, {
+            provider: attempt.wechat_provider, openid: attempt.wechat_openid, unionid: attempt.wechat_unionid
+          }, currentUserId);
+          const consumed = await env.DB.prepare("UPDATE wechat_auth_attempts SET consumed_at = ?, error_code = NULL, wechat_provider = NULL, wechat_openid = NULL, wechat_unionid = NULL WHERE id = ? AND error_code = 'redeeming' AND consumed_at IS NULL")
+            .bind(new Date().toISOString(), body.attemptId).run();
+          if ((consumed.meta?.changes || 0) !== 1) return json({ error: 'attempt_expired' }, 410);
+          return json({ success: true, linked: true, userId: currentUserId }, 200);
+        } catch (error) {
+          const conflict = error?.message === 'wechat_identity_conflict';
+          await env.DB.prepare("UPDATE wechat_auth_attempts SET error_code = ? WHERE id = ? AND error_code = 'redeeming' AND consumed_at IS NULL")
+            .bind(conflict ? 'wechat_already_bound' : null, body.attemptId).run();
+          return json({ error: conflict ? 'wechat_already_bound' : 'wechat_login_failed' }, conflict ? 409 : 503);
+        }
+      }
+      if (!attempt.user_id) return json({ status: 'pending' }, 202);
+      const consumed = await env.DB.prepare('UPDATE wechat_auth_attempts SET consumed_at = ? WHERE id = ? AND consumed_at IS NULL')
+        .bind(new Date().toISOString(), body.attemptId).run();
+      if ((consumed.meta?.changes || 0) !== 1) return json({ error: 'attempt_expired' }, 410);
+      const user = await env.DB.prepare('SELECT id, email FROM users WHERE id = ?').bind(attempt.user_id).first();
+      if (!user) return json({ error: 'account_not_found' }, 404);
+      const session = await createSession(env.DB, env, user, request);
+      return new Response(JSON.stringify({ success: true, token: session.accessToken, refreshToken: session.refreshToken,
+        user: { id: user.id, ...(user.email ? { email: user.email } : {}), provider: 'wechat' } }), {
+        status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'set-cookie': session.cookieHeader }
+      });
     }
 
     if (path === '/api/v1/auth/send-code') {

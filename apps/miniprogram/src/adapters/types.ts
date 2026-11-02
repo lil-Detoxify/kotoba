@@ -5,10 +5,17 @@ export interface StorageAdapter {
   setItem(key: string, value: string): Promise<void>;
   removeItem(key: string): Promise<void>;
   clear?(): Promise<void>;
+  recoverMissingSnapshot?(
+    key: string,
+    expectedPointer: string,
+    inlineValue: string,
+    beforeCommit?: () => void,
+  ): Promise<void>;
 }
 
 export interface AudioPlayOptions {
   slow?: boolean;
+  volume?: number;
   onEnded?: () => void;
   onError?: (err: any) => void;
   onInterrupted?: () => void;
@@ -48,6 +55,7 @@ export interface AuthAdapter {
 export interface MiniProgramRepositoryContract {
   read(key?: string): Promise<Data>;
   transact(change: (data: Data) => void, key?: string): Promise<Data>;
+  recoverMissingSnapshot?(expectedPointer: string, key?: string): Promise<Data>;
   switchUser(userId: string | null): void;
   getActiveKey(): string;
   getQueue(owner?: string): Promise<SyncQueueItem[]>;

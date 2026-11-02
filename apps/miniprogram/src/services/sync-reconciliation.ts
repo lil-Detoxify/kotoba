@@ -102,9 +102,16 @@ function normalizeQuiz(value: unknown, path: string): ReviewEvent["quiz"] {
   if (value === undefined || value === null) return undefined;
   const raw = object(value, path);
   const type = string(raw.type, `${path}.type`);
-  if (!["kana-meaning", "kanji-reading", "audio-meaning"].includes(type)) throw new SyncPayloadError(`${path}.type 无效`);
-  const prompt = string(normalizeLegacyAudioPrompt(type, raw.prompt), `${path}.prompt`);
-  if (!Array.isArray(raw.options) || raw.options.length === 0 || !raw.options.every((item) => typeof item === "string" && item.length > 0)) {
+  const choiceType = ["kana-meaning", "kanji-reading", "audio-meaning"].includes(type);
+  const inputType = type === "kana-input" || type === "dictation";
+  if (!choiceType && !inputType) throw new SyncPayloadError(`${path}.type 无效`);
+  const normalizedPrompt = normalizeLegacyAudioPrompt(type, raw.prompt);
+  const prompt = type === "dictation" && normalizedPrompt === ""
+    ? ""
+    : string(normalizedPrompt, `${path}.prompt`);
+  if (!Array.isArray(raw.options) ||
+      (inputType ? raw.options.length !== 0 : raw.options.length === 0) ||
+      !raw.options.every((item) => typeof item === "string" && (inputType || item.length > 0))) {
     throw new SyncPayloadError(`${path}.options 无效`);
   }
   const selected = raw.selected === null ? null : string(raw.selected, `${path}.selected`);

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, ref, watch, nextTick, onMounted, onUnmounted, onErrorCaptured } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { gsap } from 'gsap';
 import { useApp } from './store';
 import {
   Home,
   Library,
   Bookmark,
   ChartNoAxesColumn,
+  Settings2,
   Leaf,
   Cloud,
   CloudOff,
@@ -16,15 +18,79 @@ import {
   User,
   LogOut,
   ChevronDown,
-  ExternalLink
+  ExternalLink,
+  Search
 } from 'lucide-vue-next';
 import LoginModal from './components/LoginModal.vue';
 import SyncConflictModal from './components/SyncConflictModal.vue';
+import PetDock from './components/PetDock.vue';
+import BrandLogo from './components/BrandLogo.vue';
 
 const app = useApp();
 const route = useRoute();
+const router = useRouter();
+const globalSearchQuery = ref('');
+const globalSearchNotice = ref('');
 let timer: ReturnType<typeof setInterval>;
 const userMenuOpen = ref(false);
+const capturedError = ref<string | null>(null);
+const viewStage = ref<HTMLElement | null>(null);
+let viewMotion: gsap.Context | undefined;
+let motionVersion = 0;
+const isWindowsDesktop = computed(() => typeof window !== 'undefined' && !!(window as any).kotobudDesktop);
+
+const isDesktopPortable = ref(false);
+const shortcutCreated = ref(false);
+const shortcutError = ref('');
+
+watch(() => route.query.q, value => {
+  globalSearchQuery.value = typeof value === 'string' ? value : Array.isArray(value) ? String(value[0] ?? '') : '';
+  globalSearchNotice.value = '';
+}, { immediate: true });
+
+function submitGlobalSearch() {
+  const query = globalSearchQuery.value.trim();
+  if (query.length > 80) {
+    globalSearchNotice.value = '搜索词最多 80 个字符。';
+    return;
+  }
+  globalSearchNotice.value = '';
+  void router.push(query ? { path: '/search', query: { q: query } } : { path: '/search' });
+}
+
+function clearGlobalSearch() {
+  globalSearchQuery.value = '';
+  globalSearchNotice.value = '';
+  if (route.path === '/search') void router.push({ path: '/search' });
+}
+
+onErrorCaptured((err, instance, info) => {
+  console.error('[App captured error in child view]:', err, info);
+  capturedError.value = String((err as any)?.message || err);
+  return false;
+});
+
+function handleRetryView() {
+  capturedError.value = null;
+  app.refresh();
+}
+
+async function handleCreateDesktopShortcut() {
+  if (typeof window !== 'undefined' && (window as any).kotobudDesktop?.createDesktopShortcut) {
+    shortcutError.value = '';
+    try {
+      const res = await (window as any).kotobudDesktop.createDesktopShortcut();
+      if (res?.success) {
+        shortcutCreated.value = true;
+        setTimeout(() => { shortcutCreated.value = false; }, 4000);
+      } else {
+        shortcutError.value = res?.error || '创建快捷方式失败';
+      }
+    } catch (e: any) {
+      shortcutError.value = e?.message || '创建快捷方式异常';
+    }
+  }
+}
 
 function maskEmail(email: string) {
   if (!email) return '';
@@ -53,7 +119,31 @@ function handleFocus() {
   app.refresh();
 }
 
-onMounted(() => {
+function focusMainContent() {
+  document.getElementById('main-content')?.focus();
+}
+
+watch(() => [route.fullPath, app.ready], async () => {
+  const version = ++motionVersion;
+  viewMotion?.revert();
+  viewMotion = undefined;
+  await nextTick();
+  if (version !== motionVersion || !app.ready || !viewStage.value || ['/study', '/settings'].includes(route.path) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const sections = Array.from(viewStage.value.children).slice(0, 2);
+  if (!sections.length) return;
+  viewMotion = gsap.context(() => {
+    gsap.from(sections, {
+      autoAlpha: 0,
+      y: 8,
+      duration: 0.24,
+      stagger: 0.04,
+      ease: 'power2.out',
+      clearProps: 'all',
+    });
+  }, viewStage.value);
+}, { flush: 'post' });
+
+onMounted(async () => {
   app.init();
   timer = setInterval(() => {
     app.now = new Date();
@@ -61,9 +151,16 @@ onMounted(() => {
   window.addEventListener('focus', handleFocus);
   document.addEventListener('visibilitychange', handleVisibilityChange);
   document.addEventListener('click', handleGlobalClick);
+
+  if (typeof window !== 'undefined' && (window as any).kotobudDesktop?.isPortable) {
+    try {
+      isDesktopPortable.value = await (window as any).kotobudDesktop.isPortable();
+    } catch {}
+  }
 });
 
 onUnmounted(() => {
+  viewMotion?.revert();
   clearInterval(timer);
   window.removeEventListener('focus', handleFocus);
   document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -74,21 +171,22 @@ const nav = [
   { to: '/', name: '今日', icon: Home },
   { to: '/books', name: '词书', icon: Library },
   { to: '/difficult', name: '生词本', icon: Bookmark },
-  { to: '/stats', name: '学习统计', icon: ChartNoAxesColumn }
+  { to: '/stats', name: '学习统计', icon: ChartNoAxesColumn },
+  { to: '/settings', name: '设置', icon: Settings2 }
 ];
 </script>
 
 <template>
-  <div class="shell" :class="{ 'study-mode': route.path === '/study' }">
+  <div class="shell" :class="{ 'study-mode': route.path === '/study', 'home-mode': route.path === '/' }">
+    <a class="skip-link" href="#main-content" @click.prevent="focusMainContent">跳转到主要内容</a>
     <aside class="sidebar">
-      <RouterLink to="/" class="brand">
-        <span class="brand-mark">言</span>
-        <span>Kotobud<small>每天，认识一点日语。</small></span>
+      <RouterLink to="/" class="brand" aria-label="Kotobud 首页">
+        <BrandLogo />
       </RouterLink>
       <div class="nav-label">我的学习</div>
-      <nav>
+      <nav aria-label="主要导航">
         <RouterLink v-for="item in nav" :key="item.to" :to="item.to">
-          <component :is="item.icon" :size="19" />
+          <component :is="item.icon" :size="19" aria-hidden="true" />
           <span>{{ item.name }}</span>
         </RouterLink>
       </nav>
@@ -100,6 +198,16 @@ const nav = [
         <p v-else>
           一词一句，慢慢积累。<small>你的学习记录保存在此浏览器</small>
         </p>
+        <button
+          v-if="isDesktopPortable"
+          type="button"
+          class="portable-shortcut-btn"
+          @click="handleCreateDesktopShortcut"
+          :title="shortcutCreated ? '已创建桌面快捷方式' : '在桌面创建指向此便携版的快捷方式'"
+        >
+          <Bookmark :size="13" />
+          <span>{{ shortcutCreated ? '已生成桌面快捷方式' : '创建桌面快捷方式' }}</span>
+        </button>
         <a
           href="/features"
           target="_blank"
@@ -113,9 +221,26 @@ const nav = [
       </div>
     </aside>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <div class="topbar">
-        <span>日本語のある毎日</span>
+        <span class="topbar-kicker">日本語のある毎日</span>
+
+        <form class="global-vocab-search" role="search" aria-label="搜索日语词汇" @submit.prevent="submitGlobalSearch">
+          <Search :size="16" aria-hidden="true" />
+          <input
+            v-model="globalSearchQuery"
+            type="search"
+            maxlength="80"
+            autocomplete="off"
+            aria-label="日语词形、读音或中文释义"
+            :aria-describedby="globalSearchNotice ? 'global-search-note' : undefined"
+            placeholder="搜索词形、读音或中文…"
+            @input="globalSearchNotice = ''"
+          />
+          <button v-if="globalSearchQuery" type="button" class="global-search-clear" aria-label="清空搜索词" @click="clearGlobalSearch">清空</button>
+          <button type="submit" class="global-search-submit">搜索</button>
+          <small v-if="globalSearchNotice" id="global-search-note" class="global-search-note" role="alert">{{ globalSearchNotice }}</small>
+        </form>
 
         <div class="topbar-right">
           <!-- Unauthenticated: Login & Enable Sync button -->
@@ -155,13 +280,17 @@ const nav = [
                 :aria-expanded="userMenuOpen"
               >
                 <User :size="14" />
-                <span class="user-email">{{ maskEmail(app.currentUser?.email || '') }}</span>
+                <span class="user-email">{{ app.currentUser?.email ? maskEmail(app.currentUser.email) : '微信用户' }}</span>
                 <ChevronDown :size="12" class="arrow" :class="{ open: userMenuOpen }" />
               </button>
 
               <!-- Dropdown Menu -->
               <div v-if="userMenuOpen" class="user-menu" @click="userMenuOpen = false">
-                <div class="menu-email">{{ app.currentUser?.email }}</div>
+                <div class="menu-email">{{ app.currentUser?.email || '微信用户' }}</div>
+                <button v-if="isDesktopPortable" type="button" class="menu-item" @click="handleCreateDesktopShortcut">
+                  <Bookmark :size="14" />
+                  <span>{{ shortcutCreated ? '已生成桌面快捷方式' : '创建桌面快捷方式' }}</span>
+                </button>
                 <button type="button" class="menu-item" @click="app.flushSyncQueue()">
                   <RefreshCw :size="14" />
                   <span>立即同步</span>
@@ -174,7 +303,7 @@ const nav = [
             </div>
           </div>
 
-          <span class="web-badge">WEB · 01</span>
+          <span class="web-badge">{{ isWindowsDesktop ? 'WINDOWS' : 'WEB' }}</span>
         </div>
       </div>
 
@@ -182,7 +311,18 @@ const nav = [
         {{ app.error }} <button @click="app.refresh">重试读取</button>
       </div>
 
-      <RouterView v-if="app.ready" />
+      <div v-if="capturedError" class="view-fallback-card" role="alert">
+        <AlertCircle :size="24" class="fallback-icon" />
+        <div class="fallback-content">
+          <h3>页面加载遇到一点问题</h3>
+          <p class="muted">{{ capturedError }}</p>
+          <button type="button" class="button primary retry-btn" @click="handleRetryView">
+            <RefreshCw :size="15" />
+            <span>重新加载视图</span>
+          </button>
+        </div>
+      </div>
+      <div v-else-if="app.ready" ref="viewStage" class="view-stage"><RouterView /></div>
       <p v-else role="status">正在整理你的词书…</p>
 
       <footer>
@@ -190,12 +330,12 @@ const nav = [
         <div class="footer-links">
           <a href="/features" target="_blank" rel="noopener">特性与更新</a>
           <span class="footer-sep">·</span>
-          <a href="/download" target="_blank" rel="noopener">客户端下载</a>
-          <span class="footer-sep">·</span>
           <span>Kotobud · 日语学习手帖</span>
         </div>
       </footer>
     </main>
+
+    <PetDock />
 
     <!-- Modals -->
     <LoginModal v-if="app.showLoginModal" @close="app.showLoginModal = false" />
@@ -425,5 +565,58 @@ const nav = [
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
+
+.view-fallback-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #fdfbf7;
+  border: 1px solid #e2ddd3;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+}
+.view-fallback-card .fallback-icon {
+  color: #b35900;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.view-fallback-card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: #24292e;
+}
+.view-fallback-card .muted {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #6a737d;
+}
+.view-fallback-card .retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.portable-shortcut-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #2b543d;
+  background: #edf5f0;
+  border: 1px solid #cce3d4;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.portable-shortcut-btn:hover {
+  background: #e0eee4;
+  border-color: #aed1b9;
 }
 </style>

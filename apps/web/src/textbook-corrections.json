@@ -1,0 +1,809 @@
+{
+  "version": "20261027-content-corrections-v3",
+  "entries": [
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 41,
+      "sourceIndex": 1788,
+      "wordId": "biaori-beginner-lower-w-41-1788",
+      "previous": {
+        "term": "交通事情",
+        "reading": "こうつじじょう"
+      },
+      "corrected": {
+        "term": "交通事情",
+        "reading": "こうつうじじょう",
+        "meaning": "交通状况",
+        "partOfSpeech": "[名]"
+      }
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 13,
+      "sourceIndex": 635,
+      "wordId": "biaori-beginner-upper-w-13-635",
+      "previous": {
+        "term": "ボーリング",
+        "reading": "ボーリング"
+      },
+      "corrected": {
+        "term": "ボウリング",
+        "reading": "ボウリング",
+        "meaning": "保龄球",
+        "partOfSpeech": "[名]"
+      }
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 22,
+      "sourceIndex": 1022,
+      "wordId": "biaori-beginner-upper-w-22-1022",
+      "previous": {
+        "term": "モーツアルト",
+        "reading": "モーツアルト"
+      },
+      "corrected": {
+        "term": "モーツァルト",
+        "reading": "モーツァルト",
+        "meaning": "莫扎特",
+        "partOfSpeech": "[专]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-lower",
+      "lessonOrder": 24,
+      "sourceIndex": 4958,
+      "wordId": "biaori-intermediate-lower-w-24-4958",
+      "previous": {
+        "term": "損失",
+        "reading": "そうしつ"
+      },
+      "corrected": {
+        "term": "損失",
+        "reading": "そんしつ",
+        "meaning": "损失",
+        "partOfSpeech": "[名]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-lower",
+      "lessonOrder": 20,
+      "sourceIndex": 4359,
+      "wordId": "biaori-intermediate-lower-w-20-4359",
+      "previous": {
+        "term": "中国体育委员会",
+        "reading": "ちゅうごくたいいくいいんかい”"
+      },
+      "corrected": {
+        "term": "中国体育委員会",
+        "reading": "ちゅうごくたいいくいいんかい",
+        "meaning": "国家体育委员会",
+        "partOfSpeech": "[专]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-lower",
+      "lessonOrder": 25,
+      "sourceIndex": 5060,
+      "wordId": "biaori-intermediate-lower-w-25-5060",
+      "previous": {
+        "term": "棒球",
+        "reading": "ピッチャー"
+      },
+      "corrected": {
+        "term": "ピッチャー",
+        "reading": "ピッチャー",
+        "meaning": "投手",
+        "partOfSpeech": "[名]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-lower",
+      "lessonOrder": 25,
+      "sourceIndex": 5057,
+      "wordId": "biaori-intermediate-lower-w-25-5057",
+      "previous": {
+        "term": "～前",
+        "reading": "～前"
+      },
+      "corrected": {
+        "term": "～前",
+        "reading": "まえ",
+        "meaning": "……之前",
+        "partOfSpeech": "[接尾]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 4,
+      "sourceIndex": 2585,
+      "wordId": "biaori-intermediate-upper-w-4-2585",
+      "previous": {
+        "term": "かって",
+        "reading": "かって"
+      },
+      "corrected": {
+        "term": "かつて",
+        "reading": "かつて",
+        "meaning": "过去，以前，曾经",
+        "partOfSpeech": "[副]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 7,
+      "sourceIndex": 2925,
+      "wordId": "biaori-intermediate-upper-w-7-2925",
+      "previous": {
+        "term": "販売促進会",
+        "reading": "はんばいそくしん"
+      },
+      "corrected": {
+        "term": "販売促進",
+        "reading": "はんばいそくしん",
+        "meaning": "促销，销售促进",
+        "partOfSpeech": "[名]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 12,
+      "sourceIndex": 3467,
+      "wordId": "biaori-intermediate-upper-w-12-3467",
+      "previous": {
+        "term": "べん",
+        "reading": "～弁"
+      },
+      "corrected": {
+        "term": "～弁",
+        "reading": "べん",
+        "meaning": "……方言",
+        "partOfSpeech": "[接尾]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 13,
+      "sourceIndex": 3565,
+      "wordId": "biaori-intermediate-upper-w-13-3565",
+      "previous": {
+        "term": "後方づけ",
+        "reading": "あとかたづけ"
+      },
+      "corrected": {
+        "term": "後片付け",
+        "reading": "あとかたづけ",
+        "meaning": "善后，整理，收拾",
+        "partOfSpeech": "[名]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 14,
+      "sourceIndex": 3642,
+      "wordId": "biaori-intermediate-upper-w-14-3642",
+      "previous": {
+        "term": "まあ，まあ",
+        "reading": "まあ，まあ"
+      },
+      "corrected": {
+        "term": "まあまあ",
+        "reading": "まあまあ",
+        "meaning": "好了好了",
+        "partOfSpeech": "[感]"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 9,
+      "sourceIndex": 3122,
+      "wordId": "biaori-intermediate-upper-w-9-3122",
+      "previous": {
+        "term": "ことはない",
+        "reading": "そんな"
+      },
+      "corrected": {
+        "term": "そんなことはない",
+        "reading": "そんなことはない",
+        "meaning": "不会，不可能",
+        "partOfSpeech": "/"
+      }
+    },
+    {
+      "bookId": "biaori-intermediate-upper",
+      "lessonOrder": 11,
+      "sourceIndex": 3414,
+      "wordId": "biaori-intermediate-upper-w-11-3414",
+      "previous": {
+        "term": "関連",
+        "reading": "かんれんする"
+      },
+      "corrected": {
+        "term": "関連する",
+        "reading": "かんれんする",
+        "meaning": "相关，有关",
+        "partOfSpeech": "[动3]"
+      }
+    },
+    {
+      "bookId": "jlpt-n1",
+      "lessonOrder": 13,
+      "sourceIndex": 48,
+      "wordId": "jlpt-n1-w-e05bb17edd",
+      "previous": {
+        "term": "気品",
+        "reading": "きひん"
+      },
+      "corrected": {
+        "term": "気品",
+        "reading": "きひん",
+        "meaning": "高雅的气质、品格",
+        "partOfSpeech": "名词"
+      }
+    },
+    {
+      "bookId": "jlpt-n1",
+      "lessonOrder": 30,
+      "sourceIndex": 27,
+      "wordId": "jlpt-n1-w-ef159e6567",
+      "previous": {
+        "term": "ストロー",
+        "reading": "ストロー"
+      },
+      "corrected": {
+        "term": "ストロー",
+        "reading": "ストロー",
+        "meaning": "吸管、麦秆",
+        "partOfSpeech": "名词"
+      }
+    },
+    {
+      "bookId": "jlpt-n1",
+      "lessonOrder": 30,
+      "sourceIndex": 47,
+      "wordId": "jlpt-n1-w-1bd79302aa",
+      "previous": {
+        "term": "すんなり",
+        "reading": "すんなり"
+      },
+      "corrected": {
+        "term": "すんなり",
+        "reading": "すんなり",
+        "meaning": "顺利地、纤细柔美",
+        "partOfSpeech": "副词；サ变动词"
+      }
+    },
+    {
+      "bookId": "biaori-advanced-lower",
+      "lessonOrder": 13,
+      "sourceIndex": 7708,
+      "wordId": "biaori-advanced-lower-w-13-7708",
+      "previous": {
+        "term": "腹が立つ",
+        "reading": "はらがたつ",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "腹が立つ",
+        "reading": "はらがたつ",
+        "meaning": "生气，发怒",
+        "partOfSpeech": "/"
+      },
+      "reason": "「腹が立つ」是固定惯用表达，表示感到生气或发怒。",
+      "sourceRefs": [
+        "kotobank-haratatsu"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 26,
+      "sourceIndex": 1158,
+      "wordId": "biaori-beginner-lower-w-26-1158",
+      "previous": {
+        "term": "～社",
+        "reading": "～社",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～社",
+        "reading": "～社",
+        "meaning": "～公司、～社（接在名称后表示公司或报社等组织）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「新聞社」显示该后缀用于表示公司、报社等组织名称。"
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 27,
+      "sourceIndex": 1211,
+      "wordId": "biaori-beginner-lower-w-27-1211",
+      "previous": {
+        "term": "～行き〳～便",
+        "reading": "～行き〳～便",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～行き〳～便",
+        "reading": "～行き〳～便",
+        "meaning": "～行き表示开往～，～便表示开往某地或某线路的交通班次、航班",
+        "partOfSpeech": "/"
+      },
+      "reason": "本词书条目用「〳」并列两个接续，保留为一个词条分别说明「～行き」和「～便」，不拆分条目。",
+      "sourceRefs": [
+        "kotobank-yuki",
+        "kotobank-bin"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 28,
+      "sourceIndex": 1246,
+      "wordId": "biaori-beginner-lower-w-28-1246",
+      "previous": {
+        "term": "～先",
+        "reading": "～先",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～先",
+        "reading": "～先",
+        "meaning": "～的去向、收件地址或办事对象",
+        "partOfSpeech": "/"
+      },
+      "reason": "「送り先」表示物品寄送的去向或收件地址，后缀也可指联系、办事的对象。",
+      "sourceRefs": [
+        "kotobank-saki"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 34,
+      "sourceIndex": 1515,
+      "wordId": "biaori-beginner-lower-w-34-1515",
+      "previous": {
+        "term": "～ 部",
+        "reading": "～ 部",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～ 部",
+        "reading": "～ 部",
+        "meaning": "～部（公司或机构内的部门）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「営業部」表示公司内部的营业部门。"
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 35,
+      "sourceIndex": 1559,
+      "wordId": "biaori-beginner-lower-w-35-1559",
+      "previous": {
+        "term": "あと～",
+        "reading": "あと～",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "あと～",
+        "reading": "あと～",
+        "meaning": "还剩～，再过～（时间或数量）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「あと三日で休みになる」表示距离假期还剩三天，适用于表示剩余时间或数量。"
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 36,
+      "sourceIndex": 1614,
+      "wordId": "biaori-beginner-lower-w-36-1614",
+      "previous": {
+        "term": "～斤",
+        "reading": "～斤",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～斤",
+        "reading": "～斤",
+        "meaning": "斤（重量单位）",
+        "partOfSpeech": "/"
+      },
+      "reason": "「斤」是重量单位，辞典同时记载不同计量制度或商品包装习惯的差异，因此不在此固定换算数值。",
+      "sourceRefs": [
+        "kotobank-jin"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 37,
+      "sourceIndex": 1651,
+      "wordId": "biaori-beginner-lower-w-37-1651",
+      "previous": {
+        "term": "～ちょっと",
+        "reading": "～ちょっと",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～ちょっと",
+        "reading": "～ちょっと",
+        "meaning": "稍微～，再～一点",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「もうちょっと待って」中的「ちょっと」表示稍微延长等待时间，词义可用于数量、程度或时间。"
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 39,
+      "sourceIndex": 1734,
+      "wordId": "biaori-beginner-lower-w-39-1734",
+      "previous": {
+        "term": "～リットル",
+        "reading": "～リットル",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～リットル",
+        "reading": "～リットル",
+        "meaning": "～升（容量单位）",
+        "partOfSpeech": "/"
+      },
+      "reason": "「リットル」是容量单位，例句中的「二リットル」表示两升。"
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 43,
+      "sourceIndex": 1931,
+      "wordId": "biaori-beginner-lower-w-43-1931",
+      "previous": {
+        "term": "～なんか",
+        "reading": "～なんか",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～なんか",
+        "reading": "～なんか",
+        "meaning": "～之类，像～这样的（可用于举例，也可带轻视或自谦语气）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「私なんかより」用「なんか」降低说话人自身的评价，该助词也可用于举例，或带轻视语气。",
+      "sourceRefs": [
+        "kotobank-nanka"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 44,
+      "sourceIndex": 1996,
+      "wordId": "biaori-beginner-lower-w-44-1996",
+      "previous": {
+        "term": "～キロ",
+        "reading": "～キロ",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～キロ",
+        "reading": "～キロ",
+        "meaning": "～公里、～公斤等（计量单位简称，依语境判断）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「あと三キロ」按距离单位解作三公里，「キロ」也可简称公里、公斤等单位，须由语境判断。",
+      "sourceRefs": [
+        "kotobank-kilo"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-lower",
+      "lessonOrder": 45,
+      "sourceIndex": 2043,
+      "wordId": "biaori-beginner-lower-w-45-2043",
+      "previous": {
+        "term": "～上",
+        "reading": "～上",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～上",
+        "reading": "～上",
+        "meaning": "在～方面，在～上（表示某个领域或范围）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「歴史上」表示在历史这个领域或范围内，不表示空间位置的上方。",
+      "sourceRefs": [
+        "kotobank-ue"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 1,
+      "sourceIndex": 56,
+      "wordId": "biaori-beginner-upper-w-1-56",
+      "previous": {
+        "term": "～さん",
+        "reading": "～さん",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～さん",
+        "reading": "～さん",
+        "meaning": "～（接在人名后的通用敬称，相当于先生、女士等）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「佐藤さん」显示「さん」用于人名后的日常礼貌称呼，不限定性别。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 2,
+      "sourceIndex": 111,
+      "wordId": "biaori-beginner-upper-w-2-111",
+      "previous": {
+        "term": "何～",
+        "reading": "何～",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "何～",
+        "reading": "何～",
+        "meaning": "几～、多少～（接量词询问数量）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「何分」用「何～」接量词询问数量或所需数目。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 3,
+      "sourceIndex": 155,
+      "wordId": "biaori-beginner-upper-w-3-155",
+      "previous": {
+        "term": "お～",
+        "reading": "お～",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "お～",
+        "reading": "お～",
+        "meaning": "お～（接在部分词语前，表示礼貌或敬意）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「お名前」以「お～」构成礼貌表达。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 4,
+      "sourceIndex": 205,
+      "wordId": "biaori-beginner-upper-w-4-205",
+      "previous": {
+        "term": "ご～",
+        "reading": "ご～",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "ご～",
+        "reading": "ご～",
+        "meaning": "ご～（接在部分词语前，表示礼貌或敬意）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「ご住所」以「ご～」构成礼貌表达。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 5,
+      "sourceIndex": 257,
+      "wordId": "biaori-beginner-upper-w-5-257",
+      "previous": {
+        "term": "～時",
+        "reading": "～時",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～時",
+        "reading": "～時",
+        "meaning": "～时，～的时候（表示某事发生的时间）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「帰宅した時」表示回家这一时点或时间。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 8,
+      "sourceIndex": 408,
+      "wordId": "biaori-beginner-upper-w-8-408",
+      "previous": {
+        "term": "～様",
+        "reading": "～様",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～様",
+        "reading": "～様",
+        "meaning": "～先生、～女士（接在人名后，比「さん」更郑重的敬称）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「山田様」显示「様」用于姓名后郑重称呼对方。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 9,
+      "sourceIndex": 479,
+      "wordId": "biaori-beginner-upper-w-9-479",
+      "previous": {
+        "term": "～用",
+        "reading": "～用",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～用",
+        "reading": "～用",
+        "meaning": "供～使用，～专用",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「子ども用の椅子」表示供儿童使用的椅子。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 10,
+      "sourceIndex": 532,
+      "wordId": "biaori-beginner-upper-w-10-532",
+      "previous": {
+        "term": "～中",
+        "reading": "～中",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～中",
+        "reading": "～中",
+        "meaning": "～期间，～当中（表示某活动正在进行）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「授業中」表示上课期间、课程正在进行时。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 12,
+      "sourceIndex": 620,
+      "wordId": "biaori-beginner-upper-w-12-620",
+      "previous": {
+        "term": "～年間",
+        "reading": "～年間",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～年間",
+        "reading": "～年間",
+        "meaning": "～年间（表示持续的年数）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「三年間住んで」表示连续居住了三年。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 13,
+      "sourceIndex": 649,
+      "wordId": "biaori-beginner-upper-w-13-649",
+      "previous": {
+        "term": "～冊",
+        "reading": "～冊",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～冊",
+        "reading": "～冊",
+        "meaning": "～册（计数书籍、杂志等成册物）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「本を三冊」使用「冊」计数书籍。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 16,
+      "sourceIndex": 817,
+      "wordId": "biaori-beginner-upper-w-16-817",
+      "previous": {
+        "term": "～製",
+        "reading": "～製",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～製",
+        "reading": "～製",
+        "meaning": "～制造的，～产（表示产地、材料或制造方）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「日本製」表示产品在日本制造，「製」也可接材料名表示以该材料制成。",
+      "sourceRefs": [
+        "kotobank-sei"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 17,
+      "sourceIndex": 849,
+      "wordId": "biaori-beginner-upper-w-17-849",
+      "previous": {
+        "term": "～中に",
+        "reading": "～中に",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～中に",
+        "reading": "～中に",
+        "meaning": "在～期间，在～过程中（表示某段时间或活动尚未结束时）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「会議中に」表示会议进行期间发生了某事。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 21,
+      "sourceIndex": 995,
+      "wordId": "biaori-beginner-upper-w-21-995",
+      "previous": {
+        "term": "～過ぎ",
+        "reading": "～過ぎ",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～過ぎ",
+        "reading": "～過ぎ",
+        "meaning": "过度～，太～（接动词连用形），过了～（接时间或年龄）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「食べ過ぎて」表示吃得过量，「過ぎ」也可接时间或年龄，表示已过该时点或年龄。",
+      "sourceRefs": [
+        "kotobank-sugi"
+      ]
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 22,
+      "sourceIndex": 1024,
+      "wordId": "biaori-beginner-upper-w-22-1024",
+      "previous": {
+        "term": "～以外",
+        "reading": "～以外",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～以外",
+        "reading": "～以外",
+        "meaning": "除～之外",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「日曜日以外」表示排除星期日，其余日期都包括在内。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 23,
+      "sourceIndex": 1045,
+      "wordId": "biaori-beginner-upper-w-23-1045",
+      "previous": {
+        "term": "～によって",
+        "reading": "～によって",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～によって",
+        "reading": "～によって",
+        "meaning": "因～而异，也可表示根据～",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「国によって…違う」表示各国情况不同，即因国家而异。"
+    },
+    {
+      "bookId": "biaori-beginner-upper",
+      "lessonOrder": 24,
+      "sourceIndex": 1076,
+      "wordId": "biaori-beginner-upper-w-24-1076",
+      "previous": {
+        "term": "～中",
+        "reading": "～中",
+        "meaning": "/"
+      },
+      "corrected": {
+        "term": "～中",
+        "reading": "～中",
+        "meaning": "～期间，～当中（表示某活动正在进行）",
+        "partOfSpeech": "/"
+      },
+      "reason": "例句「授業中は」表示课程进行期间，与本词书中另一处「～中」用例相同义项。"
+    }
+  ]
+}

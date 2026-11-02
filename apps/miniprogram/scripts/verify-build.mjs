@@ -8,6 +8,16 @@ const outputRoot = join(packageRoot, "dist", "build", "mp-weixin");
 const release = process.argv.includes("--release");
 const maxMainPackageBytes = 2 * 1024 * 1024;
 const audioExtensions = new Set([".mp3", ".m4a", ".wav", ".aac", ".ogg"]);
+const allowedBundledAudio = new Set([
+  "static/answer-sounds/chime-correct.wav",
+  "static/answer-sounds/chime-incorrect.wav",
+  "static/answer-sounds/stone-correct.wav",
+  "static/answer-sounds/stone-incorrect.wav",
+  "static/answer-sounds/timber-correct.wav",
+  "static/answer-sounds/timber-incorrect.wav",
+  "static/answer-sounds/wood-correct.wav",
+  "static/answer-sounds/wood-incorrect.wav",
+]);
 const codeExtensions = new Set([".ts", ".vue"]);
 const forbidden = [
   ["window", /\bwindow\b/],
@@ -26,8 +36,9 @@ if (!existsSync(outputRoot)) fail("Build output is missing. Run the mini-program
 const outputFiles = walk(outputRoot);
 const totalBytes = outputFiles.reduce((sum, path) => sum + statSync(path).size, 0);
 const bundledAudio = outputFiles.filter((path) => audioExtensions.has(extname(path).toLowerCase()));
+const forbiddenAudio = bundledAudio.filter((path) => !allowedBundledAudio.has(relative(outputRoot, path).replaceAll("\\", "/")));
 if (totalBytes >= maxMainPackageBytes) fail(`Main package is ${totalBytes} bytes; limit is ${maxMainPackageBytes}.`);
-if (bundledAudio.length) fail(`Bundled audio is forbidden: ${bundledAudio.map((path) => relative(outputRoot, path)).join(", ")}`);
+if (forbiddenAudio.length) fail(`Bundled audio is forbidden: ${forbiddenAudio.map((path) => relative(outputRoot, path)).join(", ")}`);
 
 const sourceHits = [];
 for (const path of walk(sourceRoot).filter((candidate) => codeExtensions.has(extname(candidate).toLowerCase()))) {

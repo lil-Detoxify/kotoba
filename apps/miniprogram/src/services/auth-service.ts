@@ -2,7 +2,7 @@ import type { AuthAdapter, AuthSession } from "../adapters/types";
 import type { MiniProgramAuthResponse, MiniProgramWorkerClient } from "../adapters/worker-client";
 import type { PrivacyConsentGate } from "./privacy-consent";
 
-type AuthClient = Pick<MiniProgramWorkerClient, "getSession" | "refresh" | "loginPassword" | "sendCode" | "verifyCode" | "logout">;
+type AuthClient = Pick<MiniProgramWorkerClient, "getSession" | "refresh" | "loginPassword" | "sendCode" | "verifyCode" | "logout" | "loginWechat" | "linkWechat">;
 
 function sessionFromResponse(response: MiniProgramAuthResponse): AuthSession {
   return {
@@ -84,6 +84,25 @@ export class MiniProgramAuthService {
     const session = sessionFromResponse(response);
     await this.storage.setSession(session);
     return session;
+  }
+
+  async loginWithWechat(): Promise<AuthSession> {
+    await this.assertPrivacyConsent();
+    const result = await uni.login({ provider: 'weixin' });
+    if (!result.code) throw new Error('微信登录未返回有效验证码，请重试。');
+    const session = sessionFromResponse(await this.client.loginWechat(result.code));
+    await this.storage.setSession(session);
+    return session;
+  }
+
+  async linkWechat(): Promise<void> {
+    await this.assertPrivacyConsent();
+    const saved = await this.storage.getSession();
+    if (!saved) throw new Error('请先登录邮箱账号。');
+    const result = await uni.login({ provider: 'weixin' });
+    if (!result.code) throw new Error('微信登录未返回有效验证码，请重试。');
+    const linked = await this.client.linkWechat(result.code, saved.token);
+    if (linked.userId !== saved.userId) throw new Error('绑定账号与当前账号不一致。');
   }
 
   async sendCode(email: string): Promise<{ success: true; verificationId: string; expiresIn: number }> {

@@ -1,0 +1,2 @@
+82fee2534a345468bc598707e01bc354634aae5e71a61dab1600fc7fa831ab12  pack/KotoBud-0.9.3-Windows-x64-Setup.exe
+e89aa81a8f2f461f60c9b5d504ff520e1bca6d78a1d131fc23dbf8aaec4b11a5  pack/KotoBud-0.9.3-Windows-x64-Portable.exe

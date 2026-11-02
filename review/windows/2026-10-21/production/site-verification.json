@@ -1,0 +1,62 @@
+{
+  "status": "prepared",
+  "version": "0.9.0-beta.2",
+  "fileCount": 412,
+  "changedFiles": [
+    {
+      "file": "changelog.html",
+      "beforeSha256": "85e838d72d330ad8eeac27043a4854b2ca5fb0fbabea871373ac2056f020a91b",
+      "afterSha256": "c50acf8c18b492d01a00ecad60470f418d4969e26d88d80c12f04483f193acf2"
+    },
+    {
+      "file": "download.html",
+      "beforeSha256": "7770b94df07c3410ba55d306994f5abf67ec2cd96bd90554396ce45b99bbfd41",
+      "afterSha256": "871c5f2513fec008cfaf8598dc4724fe32fe6e0a6e6c740be2c3a9ad47de33c4"
+    },
+    {
+      "file": "features.html",
+      "beforeSha256": "8d02f0d2d8c40b4678af065e933b8d3b7c853b3fe1780d888c22db58ec9a9ded",
+      "afterSha256": "edc26560b55bc252c52a1a88781310fc866f660cc05d47612f5f569b782169d7"
+    },
+    {
+      "file": "guide.html",
+      "beforeSha256": "fcab5c2fbf394fe9aa0223fbf8581fdbbffc0e501b8aa4171ef554f5f00d2643",
+      "afterSha256": "176c8580cf38b025e05f66b3fefc3a0107fb69b9179c5402bab8129e8d0e8de4"
+    },
+    {
+      "file": "index.html",
+      "beforeSha256": "31f74612da06737f3fe4553357a443540f7ca55ad6bd954f2c53bf40c234e57d",
+      "afterSha256": "666b21dfdf013439cf36c30f4cf5785a5500c81be53304b0b7b367ebc86d204d"
+    },
+    {
+      "file": "_worker.js",
+      "beforeSha256": "888964553e473fe77d4b64cbd626fec403de8e6a5c14196c33bbe8491d2cbc1b",
+      "afterSha256": "e12624afe1473e1c5c89cd27f4ba57887e57b4d95b73151d12af6a05a4a31097"
+    },
+    {
+      "file": "changelog/index.html",
+      "beforeSha256": "85e838d72d330ad8eeac27043a4854b2ca5fb0fbabea871373ac2056f020a91b",
+      "afterSha256": "c50acf8c18b492d01a00ecad60470f418d4969e26d88d80c12f04483f193acf2"
+    },
+    {
+      "file": "download/index.html",
+      "beforeSha256": "7770b94df07c3410ba55d306994f5abf67ec2cd96bd90554396ce45b99bbfd41",
+      "afterSha256": "871c5f2513fec008cfaf8598dc4724fe32fe6e0a6e6c740be2c3a9ad47de33c4"
+    },
+    {
+      "file": "features/index.html",
+      "beforeSha256": "8d02f0d2d8c40b4678af065e933b8d3b7c853b3fe1780d888c22db58ec9a9ded",
+      "afterSha256": "edc26560b55bc252c52a1a88781310fc866f660cc05d47612f5f569b782169d7"
+    },
+    {
+      "file": "guide/index.html",
+      "beforeSha256": "fcab5c2fbf394fe9aa0223fbf8581fdbbffc0e501b8aa4171ef554f5f00d2643",
+      "afterSha256": "176c8580cf38b025e05f66b3fefc3a0107fb69b9179c5402bab8129e8d0e8de4"
+    }
+  ],
+  "mainBundleSha256": "b175c060f3e0bda7c6b74ad46cd2a1bc5cae148c045056d700849b7df7906295",
+  "workerSha256": "e12624afe1473e1c5c89cd27f4ba57887e57b4d95b73151d12af6a05a4a31097",
+  "extensionSha256": "c947a667fa1d5bd3fc5d2dfe7ffa1f3d1ebd5f2785712c3d9dca18f89c4ef1c8",
+  "existingWebSettingsVersion": "0.7.3",
+  "existingVersionedDownloadsPreserved": true
+}

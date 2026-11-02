@@ -1,0 +1,1596 @@
+{
+  "dataset": "wiktionary-ja-2026-10-12",
+  "downloadedAt": "2026-10-12T15:16:20.962Z",
+  "builtAt": "2026-10-12T15:19:55.843Z",
+  "sourceSha256": "92b85a0c09e2013e9bad4258de9e0226d23e0a20011cb66c3ba7fed33d39ee90",
+  "sourceBytes": 64974760,
+  "recordCount": 133931,
+  "wordCount": 125732,
+  "readingCount": 84977,
+  "uniqueTermReadingPairCount": 82663,
+  "bytes": 49416226,
+  "bytesKind": "sum of ordinary JSON shard file sizes; excludes manifest and notice",
+  "shardCount": 256,
+  "populatedShardCount": 256,
+  "compression": "none in files; static hosting may apply transport compression",
+  "shardPathPattern": "{id}.json",
+  "shardHash": "NFKC codepoint rolling hash: hash = (hash * 31 + codepoint) >>> 0; bucket = hash % 256",
+  "sourceUrls": {
+    "rawSnapshot": "https://kaikki.org/dictionary/downloads/ja/ja-extract.jsonl.gz",
+    "entryTemplate": "https://ja.wiktionary.org/wiki/{encodeURIComponent(sourceTitle)}",
+    "extractorSchema": "https://raw.githubusercontent.com/tatuylonen/wiktextract/master/src/wiktextract/extractor/ja/models.py"
+  },
+  "textSource": {
+    "community": "Japanese Wiktionary contributors",
+    "license": "CC BY-SA 4.0, as linked from Japanese Wiktionary page footer",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "extraction": "Kaikki / Wiktextract JSONL extraction from Japanese Wiktionary",
+    "changes": "Filtered to lang_code=ja entries with source glosses; removed empty and duplicate text within each source sense; serialized as ordinary JSON shards for static hosting."
+  },
+  "filtering": {
+    "langCode": "ja",
+    "includedOnlyEntriesWithSourceGlosses": true,
+    "redirectOnlyExcluded": true,
+    "readings": "Only pure kana forms tagged transliteration, hiragana, or katakana; no roman or IPA field and no reading inferred from a gloss or kanji.",
+    "definitionsAndExamples": "Source text preserved as plain text; no generated translation or gloss."
+  },
+  "sourceStats": {
+    "rawLines": 671439,
+    "malformedJson": 0,
+    "otherLanguage": 520934,
+    "japaneseEntries": 150505,
+    "invalidJapaneseEntries": 0,
+    "redirectOnly": 0,
+    "noGlosses": 16574,
+    "invalidFormsContainer": 0,
+    "invalidForm": 0,
+    "invalidFormText": 0,
+    "invalidFormTags": 0,
+    "invalidSensesContainer": 0,
+    "invalidSense": 0,
+    "invalidGlossesContainer": 0,
+    "invalidExamplesContainer": 0,
+    "invalidExample": 0,
+    "invalidExampleText": 0,
+    "invalidSenseTags": 0,
+    "invalidSenseRawTags": 0
+  },
+  "shards": [
+    {
+      "id": "0",
+      "file": "0.json",
+      "recordCount": 600,
+      "bytes": 211902
+    },
+    {
+      "id": "1",
+      "file": "1.json",
+      "recordCount": 504,
+      "bytes": 188294
+    },
+    {
+      "id": "2",
+      "file": "2.json",
+      "recordCount": 540,
+      "bytes": 199907
+    },
+    {
+      "id": "3",
+      "file": "3.json",
+      "recordCount": 517,
+      "bytes": 190691
+    },
+    {
+      "id": "4",
+      "file": "4.json",
+      "recordCount": 523,
+      "bytes": 196131
+    },
+    {
+      "id": "5",
+      "file": "5.json",
+      "recordCount": 485,
+      "bytes": 183205
+    },
+    {
+      "id": "6",
+      "file": "6.json",
+      "recordCount": 520,
+      "bytes": 193057
+    },
+    {
+      "id": "7",
+      "file": "7.json",
+      "recordCount": 530,
+      "bytes": 191985
+    },
+    {
+      "id": "8",
+      "file": "8.json",
+      "recordCount": 561,
+      "bytes": 202842
+    },
+    {
+      "id": "9",
+      "file": "9.json",
+      "recordCount": 436,
+      "bytes": 157618
+    },
+    {
+      "id": "10",
+      "file": "10.json",
+      "recordCount": 528,
+      "bytes": 197392
+    },
+    {
+      "id": "11",
+      "file": "11.json",
+      "recordCount": 505,
+      "bytes": 183988
+    },
+    {
+      "id": "12",
+      "file": "12.json",
+      "recordCount": 511,
+      "bytes": 182145
+    },
+    {
+      "id": "13",
+      "file": "13.json",
+      "recordCount": 532,
+      "bytes": 192491
+    },
+    {
+      "id": "14",
+      "file": "14.json",
+      "recordCount": 554,
+      "bytes": 196921
+    },
+    {
+      "id": "15",
+      "file": "15.json",
+      "recordCount": 531,
+      "bytes": 197855
+    },
+    {
+      "id": "16",
+      "file": "16.json",
+      "recordCount": 464,
+      "bytes": 164286
+    },
+    {
+      "id": "17",
+      "file": "17.json",
+      "recordCount": 519,
+      "bytes": 189557
+    },
+    {
+      "id": "18",
+      "file": "18.json",
+      "recordCount": 472,
+      "bytes": 167972
+    },
+    {
+      "id": "19",
+      "file": "19.json",
+      "recordCount": 513,
+      "bytes": 189194
+    },
+    {
+      "id": "20",
+      "file": "20.json",
+      "recordCount": 568,
+      "bytes": 212866
+    },
+    {
+      "id": "21",
+      "file": "21.json",
+      "recordCount": 516,
+      "bytes": 184682
+    },
+    {
+      "id": "22",
+      "file": "22.json",
+      "recordCount": 496,
+      "bytes": 180973
+    },
+    {
+      "id": "23",
+      "file": "23.json",
+      "recordCount": 505,
+      "bytes": 182669
+    },
+    {
+      "id": "24",
+      "file": "24.json",
+      "recordCount": 484,
+      "bytes": 171049
+    },
+    {
+      "id": "25",
+      "file": "25.json",
+      "recordCount": 520,
+      "bytes": 187447
+    },
+    {
+      "id": "26",
+      "file": "26.json",
+      "recordCount": 570,
+      "bytes": 209029
+    },
+    {
+      "id": "27",
+      "file": "27.json",
+      "recordCount": 514,
+      "bytes": 181708
+    },
+    {
+      "id": "28",
+      "file": "28.json",
+      "recordCount": 501,
+      "bytes": 189700
+    },
+    {
+      "id": "29",
+      "file": "29.json",
+      "recordCount": 537,
+      "bytes": 196965
+    },
+    {
+      "id": "30",
+      "file": "30.json",
+      "recordCount": 546,
+      "bytes": 202560
+    },
+    {
+      "id": "31",
+      "file": "31.json",
+      "recordCount": 471,
+      "bytes": 174963
+    },
+    {
+      "id": "32",
+      "file": "32.json",
+      "recordCount": 642,
+      "bytes": 237620
+    },
+    {
+      "id": "33",
+      "file": "33.json",
+      "recordCount": 567,
+      "bytes": 207291
+    },
+    {
+      "id": "34",
+      "file": "34.json",
+      "recordCount": 516,
+      "bytes": 182847
+    },
+    {
+      "id": "35",
+      "file": "35.json",
+      "recordCount": 550,
+      "bytes": 207114
+    },
+    {
+      "id": "36",
+      "file": "36.json",
+      "recordCount": 540,
+      "bytes": 205196
+    },
+    {
+      "id": "37",
+      "file": "37.json",
+      "recordCount": 504,
+      "bytes": 190196
+    },
+    {
+      "id": "38",
+      "file": "38.json",
+      "recordCount": 538,
+      "bytes": 194545
+    },
+    {
+      "id": "39",
+      "file": "39.json",
+      "recordCount": 522,
+      "bytes": 194202
+    },
+    {
+      "id": "40",
+      "file": "40.json",
+      "recordCount": 476,
+      "bytes": 176997
+    },
+    {
+      "id": "41",
+      "file": "41.json",
+      "recordCount": 495,
+      "bytes": 187827
+    },
+    {
+      "id": "42",
+      "file": "42.json",
+      "recordCount": 519,
+      "bytes": 185563
+    },
+    {
+      "id": "43",
+      "file": "43.json",
+      "recordCount": 516,
+      "bytes": 199944
+    },
+    {
+      "id": "44",
+      "file": "44.json",
+      "recordCount": 532,
+      "bytes": 202887
+    },
+    {
+      "id": "45",
+      "file": "45.json",
+      "recordCount": 576,
+      "bytes": 214502
+    },
+    {
+      "id": "46",
+      "file": "46.json",
+      "recordCount": 494,
+      "bytes": 180715
+    },
+    {
+      "id": "47",
+      "file": "47.json",
+      "recordCount": 519,
+      "bytes": 189428
+    },
+    {
+      "id": "48",
+      "file": "48.json",
+      "recordCount": 511,
+      "bytes": 187264
+    },
+    {
+      "id": "49",
+      "file": "49.json",
+      "recordCount": 494,
+      "bytes": 179256
+    },
+    {
+      "id": "50",
+      "file": "50.json",
+      "recordCount": 519,
+      "bytes": 185982
+    },
+    {
+      "id": "51",
+      "file": "51.json",
+      "recordCount": 487,
+      "bytes": 174709
+    },
+    {
+      "id": "52",
+      "file": "52.json",
+      "recordCount": 523,
+      "bytes": 194693
+    },
+    {
+      "id": "53",
+      "file": "53.json",
+      "recordCount": 518,
+      "bytes": 189647
+    },
+    {
+      "id": "54",
+      "file": "54.json",
+      "recordCount": 519,
+      "bytes": 192632
+    },
+    {
+      "id": "55",
+      "file": "55.json",
+      "recordCount": 482,
+      "bytes": 173924
+    },
+    {
+      "id": "56",
+      "file": "56.json",
+      "recordCount": 488,
+      "bytes": 178371
+    },
+    {
+      "id": "57",
+      "file": "57.json",
+      "recordCount": 502,
+      "bytes": 184336
+    },
+    {
+      "id": "58",
+      "file": "58.json",
+      "recordCount": 508,
+      "bytes": 186630
+    },
+    {
+      "id": "59",
+      "file": "59.json",
+      "recordCount": 506,
+      "bytes": 189171
+    },
+    {
+      "id": "60",
+      "file": "60.json",
+      "recordCount": 518,
+      "bytes": 195151
+    },
+    {
+      "id": "61",
+      "file": "61.json",
+      "recordCount": 495,
+      "bytes": 177950
+    },
+    {
+      "id": "62",
+      "file": "62.json",
+      "recordCount": 507,
+      "bytes": 198100
+    },
+    {
+      "id": "63",
+      "file": "63.json",
+      "recordCount": 496,
+      "bytes": 180222
+    },
+    {
+      "id": "64",
+      "file": "64.json",
+      "recordCount": 600,
+      "bytes": 220936
+    },
+    {
+      "id": "65",
+      "file": "65.json",
+      "recordCount": 520,
+      "bytes": 202081
+    },
+    {
+      "id": "66",
+      "file": "66.json",
+      "recordCount": 576,
+      "bytes": 213166
+    },
+    {
+      "id": "67",
+      "file": "67.json",
+      "recordCount": 552,
+      "bytes": 213317
+    },
+    {
+      "id": "68",
+      "file": "68.json",
+      "recordCount": 529,
+      "bytes": 197732
+    },
+    {
+      "id": "69",
+      "file": "69.json",
+      "recordCount": 524,
+      "bytes": 197837
+    },
+    {
+      "id": "70",
+      "file": "70.json",
+      "recordCount": 512,
+      "bytes": 186957
+    },
+    {
+      "id": "71",
+      "file": "71.json",
+      "recordCount": 525,
+      "bytes": 192780
+    },
+    {
+      "id": "72",
+      "file": "72.json",
+      "recordCount": 496,
+      "bytes": 179693
+    },
+    {
+      "id": "73",
+      "file": "73.json",
+      "recordCount": 536,
+      "bytes": 201050
+    },
+    {
+      "id": "74",
+      "file": "74.json",
+      "recordCount": 517,
+      "bytes": 202366
+    },
+    {
+      "id": "75",
+      "file": "75.json",
+      "recordCount": 489,
+      "bytes": 193331
+    },
+    {
+      "id": "76",
+      "file": "76.json",
+      "recordCount": 515,
+      "bytes": 212204
+    },
+    {
+      "id": "77",
+      "file": "77.json",
+      "recordCount": 504,
+      "bytes": 185142
+    },
+    {
+      "id": "78",
+      "file": "78.json",
+      "recordCount": 522,
+      "bytes": 191493
+    },
+    {
+      "id": "79",
+      "file": "79.json",
+      "recordCount": 509,
+      "bytes": 188760
+    },
+    {
+      "id": "80",
+      "file": "80.json",
+      "recordCount": 513,
+      "bytes": 190271
+    },
+    {
+      "id": "81",
+      "file": "81.json",
+      "recordCount": 555,
+      "bytes": 208235
+    },
+    {
+      "id": "82",
+      "file": "82.json",
+      "recordCount": 579,
+      "bytes": 213333
+    },
+    {
+      "id": "83",
+      "file": "83.json",
+      "recordCount": 551,
+      "bytes": 204299
+    },
+    {
+      "id": "84",
+      "file": "84.json",
+      "recordCount": 556,
+      "bytes": 201725
+    },
+    {
+      "id": "85",
+      "file": "85.json",
+      "recordCount": 542,
+      "bytes": 198142
+    },
+    {
+      "id": "86",
+      "file": "86.json",
+      "recordCount": 506,
+      "bytes": 186353
+    },
+    {
+      "id": "87",
+      "file": "87.json",
+      "recordCount": 488,
+      "bytes": 176936
+    },
+    {
+      "id": "88",
+      "file": "88.json",
+      "recordCount": 552,
+      "bytes": 203178
+    },
+    {
+      "id": "89",
+      "file": "89.json",
+      "recordCount": 538,
+      "bytes": 207375
+    },
+    {
+      "id": "90",
+      "file": "90.json",
+      "recordCount": 519,
+      "bytes": 188323
+    },
+    {
+      "id": "91",
+      "file": "91.json",
+      "recordCount": 544,
+      "bytes": 200377
+    },
+    {
+      "id": "92",
+      "file": "92.json",
+      "recordCount": 509,
+      "bytes": 186000
+    },
+    {
+      "id": "93",
+      "file": "93.json",
+      "recordCount": 540,
+      "bytes": 198202
+    },
+    {
+      "id": "94",
+      "file": "94.json",
+      "recordCount": 523,
+      "bytes": 195309
+    },
+    {
+      "id": "95",
+      "file": "95.json",
+      "recordCount": 533,
+      "bytes": 209106
+    },
+    {
+      "id": "96",
+      "file": "96.json",
+      "recordCount": 638,
+      "bytes": 236060
+    },
+    {
+      "id": "97",
+      "file": "97.json",
+      "recordCount": 522,
+      "bytes": 193158
+    },
+    {
+      "id": "98",
+      "file": "98.json",
+      "recordCount": 489,
+      "bytes": 183879
+    },
+    {
+      "id": "99",
+      "file": "99.json",
+      "recordCount": 512,
+      "bytes": 197224
+    },
+    {
+      "id": "100",
+      "file": "100.json",
+      "recordCount": 530,
+      "bytes": 188963
+    },
+    {
+      "id": "101",
+      "file": "101.json",
+      "recordCount": 480,
+      "bytes": 173867
+    },
+    {
+      "id": "102",
+      "file": "102.json",
+      "recordCount": 568,
+      "bytes": 221733
+    },
+    {
+      "id": "103",
+      "file": "103.json",
+      "recordCount": 535,
+      "bytes": 196227
+    },
+    {
+      "id": "104",
+      "file": "104.json",
+      "recordCount": 523,
+      "bytes": 189373
+    },
+    {
+      "id": "105",
+      "file": "105.json",
+      "recordCount": 527,
+      "bytes": 191374
+    },
+    {
+      "id": "106",
+      "file": "106.json",
+      "recordCount": 534,
+      "bytes": 202810
+    },
+    {
+      "id": "107",
+      "file": "107.json",
+      "recordCount": 516,
+      "bytes": 185031
+    },
+    {
+      "id": "108",
+      "file": "108.json",
+      "recordCount": 547,
+      "bytes": 209079
+    },
+    {
+      "id": "109",
+      "file": "109.json",
+      "recordCount": 487,
+      "bytes": 180244
+    },
+    {
+      "id": "110",
+      "file": "110.json",
+      "recordCount": 500,
+      "bytes": 190037
+    },
+    {
+      "id": "111",
+      "file": "111.json",
+      "recordCount": 504,
+      "bytes": 188642
+    },
+    {
+      "id": "112",
+      "file": "112.json",
+      "recordCount": 517,
+      "bytes": 196127
+    },
+    {
+      "id": "113",
+      "file": "113.json",
+      "recordCount": 552,
+      "bytes": 199310
+    },
+    {
+      "id": "114",
+      "file": "114.json",
+      "recordCount": 492,
+      "bytes": 176346
+    },
+    {
+      "id": "115",
+      "file": "115.json",
+      "recordCount": 493,
+      "bytes": 180082
+    },
+    {
+      "id": "116",
+      "file": "116.json",
+      "recordCount": 501,
+      "bytes": 188046
+    },
+    {
+      "id": "117",
+      "file": "117.json",
+      "recordCount": 492,
+      "bytes": 187359
+    },
+    {
+      "id": "118",
+      "file": "118.json",
+      "recordCount": 501,
+      "bytes": 183924
+    },
+    {
+      "id": "119",
+      "file": "119.json",
+      "recordCount": 500,
+      "bytes": 186913
+    },
+    {
+      "id": "120",
+      "file": "120.json",
+      "recordCount": 543,
+      "bytes": 195201
+    },
+    {
+      "id": "121",
+      "file": "121.json",
+      "recordCount": 505,
+      "bytes": 187502
+    },
+    {
+      "id": "122",
+      "file": "122.json",
+      "recordCount": 556,
+      "bytes": 201637
+    },
+    {
+      "id": "123",
+      "file": "123.json",
+      "recordCount": 528,
+      "bytes": 195603
+    },
+    {
+      "id": "124",
+      "file": "124.json",
+      "recordCount": 503,
+      "bytes": 186215
+    },
+    {
+      "id": "125",
+      "file": "125.json",
+      "recordCount": 532,
+      "bytes": 191322
+    },
+    {
+      "id": "126",
+      "file": "126.json",
+      "recordCount": 543,
+      "bytes": 199973
+    },
+    {
+      "id": "127",
+      "file": "127.json",
+      "recordCount": 580,
+      "bytes": 207117
+    },
+    {
+      "id": "128",
+      "file": "128.json",
+      "recordCount": 626,
+      "bytes": 239729
+    },
+    {
+      "id": "129",
+      "file": "129.json",
+      "recordCount": 501,
+      "bytes": 182658
+    },
+    {
+      "id": "130",
+      "file": "130.json",
+      "recordCount": 496,
+      "bytes": 186519
+    },
+    {
+      "id": "131",
+      "file": "131.json",
+      "recordCount": 545,
+      "bytes": 202956
+    },
+    {
+      "id": "132",
+      "file": "132.json",
+      "recordCount": 527,
+      "bytes": 197563
+    },
+    {
+      "id": "133",
+      "file": "133.json",
+      "recordCount": 491,
+      "bytes": 186973
+    },
+    {
+      "id": "134",
+      "file": "134.json",
+      "recordCount": 557,
+      "bytes": 206199
+    },
+    {
+      "id": "135",
+      "file": "135.json",
+      "recordCount": 549,
+      "bytes": 205673
+    },
+    {
+      "id": "136",
+      "file": "136.json",
+      "recordCount": 497,
+      "bytes": 183315
+    },
+    {
+      "id": "137",
+      "file": "137.json",
+      "recordCount": 490,
+      "bytes": 191288
+    },
+    {
+      "id": "138",
+      "file": "138.json",
+      "recordCount": 530,
+      "bytes": 201416
+    },
+    {
+      "id": "139",
+      "file": "139.json",
+      "recordCount": 554,
+      "bytes": 201057
+    },
+    {
+      "id": "140",
+      "file": "140.json",
+      "recordCount": 536,
+      "bytes": 201818
+    },
+    {
+      "id": "141",
+      "file": "141.json",
+      "recordCount": 554,
+      "bytes": 207347
+    },
+    {
+      "id": "142",
+      "file": "142.json",
+      "recordCount": 506,
+      "bytes": 187702
+    },
+    {
+      "id": "143",
+      "file": "143.json",
+      "recordCount": 487,
+      "bytes": 177447
+    },
+    {
+      "id": "144",
+      "file": "144.json",
+      "recordCount": 498,
+      "bytes": 176620
+    },
+    {
+      "id": "145",
+      "file": "145.json",
+      "recordCount": 501,
+      "bytes": 178340
+    },
+    {
+      "id": "146",
+      "file": "146.json",
+      "recordCount": 498,
+      "bytes": 189534
+    },
+    {
+      "id": "147",
+      "file": "147.json",
+      "recordCount": 540,
+      "bytes": 199679
+    },
+    {
+      "id": "148",
+      "file": "148.json",
+      "recordCount": 522,
+      "bytes": 193998
+    },
+    {
+      "id": "149",
+      "file": "149.json",
+      "recordCount": 535,
+      "bytes": 193779
+    },
+    {
+      "id": "150",
+      "file": "150.json",
+      "recordCount": 520,
+      "bytes": 189609
+    },
+    {
+      "id": "151",
+      "file": "151.json",
+      "recordCount": 574,
+      "bytes": 212944
+    },
+    {
+      "id": "152",
+      "file": "152.json",
+      "recordCount": 546,
+      "bytes": 197557
+    },
+    {
+      "id": "153",
+      "file": "153.json",
+      "recordCount": 553,
+      "bytes": 199432
+    },
+    {
+      "id": "154",
+      "file": "154.json",
+      "recordCount": 527,
+      "bytes": 192430
+    },
+    {
+      "id": "155",
+      "file": "155.json",
+      "recordCount": 523,
+      "bytes": 199110
+    },
+    {
+      "id": "156",
+      "file": "156.json",
+      "recordCount": 510,
+      "bytes": 192233
+    },
+    {
+      "id": "157",
+      "file": "157.json",
+      "recordCount": 528,
+      "bytes": 192588
+    },
+    {
+      "id": "158",
+      "file": "158.json",
+      "recordCount": 522,
+      "bytes": 196159
+    },
+    {
+      "id": "159",
+      "file": "159.json",
+      "recordCount": 539,
+      "bytes": 197688
+    },
+    {
+      "id": "160",
+      "file": "160.json",
+      "recordCount": 592,
+      "bytes": 208330
+    },
+    {
+      "id": "161",
+      "file": "161.json",
+      "recordCount": 533,
+      "bytes": 195954
+    },
+    {
+      "id": "162",
+      "file": "162.json",
+      "recordCount": 494,
+      "bytes": 195859
+    },
+    {
+      "id": "163",
+      "file": "163.json",
+      "recordCount": 520,
+      "bytes": 187828
+    },
+    {
+      "id": "164",
+      "file": "164.json",
+      "recordCount": 503,
+      "bytes": 187860
+    },
+    {
+      "id": "165",
+      "file": "165.json",
+      "recordCount": 542,
+      "bytes": 195345
+    },
+    {
+      "id": "166",
+      "file": "166.json",
+      "recordCount": 549,
+      "bytes": 206580
+    },
+    {
+      "id": "167",
+      "file": "167.json",
+      "recordCount": 534,
+      "bytes": 200150
+    },
+    {
+      "id": "168",
+      "file": "168.json",
+      "recordCount": 537,
+      "bytes": 203725
+    },
+    {
+      "id": "169",
+      "file": "169.json",
+      "recordCount": 488,
+      "bytes": 179510
+    },
+    {
+      "id": "170",
+      "file": "170.json",
+      "recordCount": 540,
+      "bytes": 196295
+    },
+    {
+      "id": "171",
+      "file": "171.json",
+      "recordCount": 547,
+      "bytes": 201831
+    },
+    {
+      "id": "172",
+      "file": "172.json",
+      "recordCount": 563,
+      "bytes": 210031
+    },
+    {
+      "id": "173",
+      "file": "173.json",
+      "recordCount": 499,
+      "bytes": 178335
+    },
+    {
+      "id": "174",
+      "file": "174.json",
+      "recordCount": 484,
+      "bytes": 176305
+    },
+    {
+      "id": "175",
+      "file": "175.json",
+      "recordCount": 525,
+      "bytes": 185093
+    },
+    {
+      "id": "176",
+      "file": "176.json",
+      "recordCount": 478,
+      "bytes": 181699
+    },
+    {
+      "id": "177",
+      "file": "177.json",
+      "recordCount": 531,
+      "bytes": 197583
+    },
+    {
+      "id": "178",
+      "file": "178.json",
+      "recordCount": 524,
+      "bytes": 188145
+    },
+    {
+      "id": "179",
+      "file": "179.json",
+      "recordCount": 485,
+      "bytes": 182589
+    },
+    {
+      "id": "180",
+      "file": "180.json",
+      "recordCount": 544,
+      "bytes": 194493
+    },
+    {
+      "id": "181",
+      "file": "181.json",
+      "recordCount": 513,
+      "bytes": 189214
+    },
+    {
+      "id": "182",
+      "file": "182.json",
+      "recordCount": 515,
+      "bytes": 189072
+    },
+    {
+      "id": "183",
+      "file": "183.json",
+      "recordCount": 513,
+      "bytes": 198319
+    },
+    {
+      "id": "184",
+      "file": "184.json",
+      "recordCount": 526,
+      "bytes": 189458
+    },
+    {
+      "id": "185",
+      "file": "185.json",
+      "recordCount": 515,
+      "bytes": 188783
+    },
+    {
+      "id": "186",
+      "file": "186.json",
+      "recordCount": 464,
+      "bytes": 171470
+    },
+    {
+      "id": "187",
+      "file": "187.json",
+      "recordCount": 482,
+      "bytes": 176672
+    },
+    {
+      "id": "188",
+      "file": "188.json",
+      "recordCount": 522,
+      "bytes": 190577
+    },
+    {
+      "id": "189",
+      "file": "189.json",
+      "recordCount": 530,
+      "bytes": 191190
+    },
+    {
+      "id": "190",
+      "file": "190.json",
+      "recordCount": 569,
+      "bytes": 213273
+    },
+    {
+      "id": "191",
+      "file": "191.json",
+      "recordCount": 586,
+      "bytes": 215274
+    },
+    {
+      "id": "192",
+      "file": "192.json",
+      "recordCount": 605,
+      "bytes": 217776
+    },
+    {
+      "id": "193",
+      "file": "193.json",
+      "recordCount": 528,
+      "bytes": 191509
+    },
+    {
+      "id": "194",
+      "file": "194.json",
+      "recordCount": 485,
+      "bytes": 178764
+    },
+    {
+      "id": "195",
+      "file": "195.json",
+      "recordCount": 505,
+      "bytes": 186260
+    },
+    {
+      "id": "196",
+      "file": "196.json",
+      "recordCount": 521,
+      "bytes": 187586
+    },
+    {
+      "id": "197",
+      "file": "197.json",
+      "recordCount": 534,
+      "bytes": 204365
+    },
+    {
+      "id": "198",
+      "file": "198.json",
+      "recordCount": 505,
+      "bytes": 184865
+    },
+    {
+      "id": "199",
+      "file": "199.json",
+      "recordCount": 539,
+      "bytes": 194249
+    },
+    {
+      "id": "200",
+      "file": "200.json",
+      "recordCount": 533,
+      "bytes": 196634
+    },
+    {
+      "id": "201",
+      "file": "201.json",
+      "recordCount": 532,
+      "bytes": 187332
+    },
+    {
+      "id": "202",
+      "file": "202.json",
+      "recordCount": 541,
+      "bytes": 199020
+    },
+    {
+      "id": "203",
+      "file": "203.json",
+      "recordCount": 538,
+      "bytes": 198953
+    },
+    {
+      "id": "204",
+      "file": "204.json",
+      "recordCount": 549,
+      "bytes": 197913
+    },
+    {
+      "id": "205",
+      "file": "205.json",
+      "recordCount": 519,
+      "bytes": 199187
+    },
+    {
+      "id": "206",
+      "file": "206.json",
+      "recordCount": 527,
+      "bytes": 203870
+    },
+    {
+      "id": "207",
+      "file": "207.json",
+      "recordCount": 515,
+      "bytes": 197813
+    },
+    {
+      "id": "208",
+      "file": "208.json",
+      "recordCount": 490,
+      "bytes": 181597
+    },
+    {
+      "id": "209",
+      "file": "209.json",
+      "recordCount": 586,
+      "bytes": 213249
+    },
+    {
+      "id": "210",
+      "file": "210.json",
+      "recordCount": 526,
+      "bytes": 203141
+    },
+    {
+      "id": "211",
+      "file": "211.json",
+      "recordCount": 513,
+      "bytes": 194530
+    },
+    {
+      "id": "212",
+      "file": "212.json",
+      "recordCount": 486,
+      "bytes": 177885
+    },
+    {
+      "id": "213",
+      "file": "213.json",
+      "recordCount": 513,
+      "bytes": 182316
+    },
+    {
+      "id": "214",
+      "file": "214.json",
+      "recordCount": 520,
+      "bytes": 196515
+    },
+    {
+      "id": "215",
+      "file": "215.json",
+      "recordCount": 514,
+      "bytes": 201512
+    },
+    {
+      "id": "216",
+      "file": "216.json",
+      "recordCount": 480,
+      "bytes": 179136
+    },
+    {
+      "id": "217",
+      "file": "217.json",
+      "recordCount": 502,
+      "bytes": 181693
+    },
+    {
+      "id": "218",
+      "file": "218.json",
+      "recordCount": 539,
+      "bytes": 198470
+    },
+    {
+      "id": "219",
+      "file": "219.json",
+      "recordCount": 521,
+      "bytes": 196309
+    },
+    {
+      "id": "220",
+      "file": "220.json",
+      "recordCount": 509,
+      "bytes": 189736
+    },
+    {
+      "id": "221",
+      "file": "221.json",
+      "recordCount": 492,
+      "bytes": 185133
+    },
+    {
+      "id": "222",
+      "file": "222.json",
+      "recordCount": 562,
+      "bytes": 218385
+    },
+    {
+      "id": "223",
+      "file": "223.json",
+      "recordCount": 520,
+      "bytes": 190540
+    },
+    {
+      "id": "224",
+      "file": "224.json",
+      "recordCount": 580,
+      "bytes": 211018
+    },
+    {
+      "id": "225",
+      "file": "225.json",
+      "recordCount": 575,
+      "bytes": 207183
+    },
+    {
+      "id": "226",
+      "file": "226.json",
+      "recordCount": 523,
+      "bytes": 188794
+    },
+    {
+      "id": "227",
+      "file": "227.json",
+      "recordCount": 523,
+      "bytes": 188966
+    },
+    {
+      "id": "228",
+      "file": "228.json",
+      "recordCount": 513,
+      "bytes": 188256
+    },
+    {
+      "id": "229",
+      "file": "229.json",
+      "recordCount": 519,
+      "bytes": 195995
+    },
+    {
+      "id": "230",
+      "file": "230.json",
+      "recordCount": 537,
+      "bytes": 196856
+    },
+    {
+      "id": "231",
+      "file": "231.json",
+      "recordCount": 500,
+      "bytes": 190805
+    },
+    {
+      "id": "232",
+      "file": "232.json",
+      "recordCount": 521,
+      "bytes": 193823
+    },
+    {
+      "id": "233",
+      "file": "233.json",
+      "recordCount": 505,
+      "bytes": 181216
+    },
+    {
+      "id": "234",
+      "file": "234.json",
+      "recordCount": 513,
+      "bytes": 193091
+    },
+    {
+      "id": "235",
+      "file": "235.json",
+      "recordCount": 495,
+      "bytes": 186334
+    },
+    {
+      "id": "236",
+      "file": "236.json",
+      "recordCount": 523,
+      "bytes": 190575
+    },
+    {
+      "id": "237",
+      "file": "237.json",
+      "recordCount": 532,
+      "bytes": 185209
+    },
+    {
+      "id": "238",
+      "file": "238.json",
+      "recordCount": 514,
+      "bytes": 191524
+    },
+    {
+      "id": "239",
+      "file": "239.json",
+      "recordCount": 503,
+      "bytes": 177024
+    },
+    {
+      "id": "240",
+      "file": "240.json",
+      "recordCount": 520,
+      "bytes": 185140
+    },
+    {
+      "id": "241",
+      "file": "241.json",
+      "recordCount": 521,
+      "bytes": 188467
+    },
+    {
+      "id": "242",
+      "file": "242.json",
+      "recordCount": 532,
+      "bytes": 196207
+    },
+    {
+      "id": "243",
+      "file": "243.json",
+      "recordCount": 525,
+      "bytes": 181855
+    },
+    {
+      "id": "244",
+      "file": "244.json",
+      "recordCount": 554,
+      "bytes": 196405
+    },
+    {
+      "id": "245",
+      "file": "245.json",
+      "recordCount": 470,
+      "bytes": 168005
+    },
+    {
+      "id": "246",
+      "file": "246.json",
+      "recordCount": 489,
+      "bytes": 170610
+    },
+    {
+      "id": "247",
+      "file": "247.json",
+      "recordCount": 513,
+      "bytes": 180278
+    },
+    {
+      "id": "248",
+      "file": "248.json",
+      "recordCount": 504,
+      "bytes": 186814
+    },
+    {
+      "id": "249",
+      "file": "249.json",
+      "recordCount": 561,
+      "bytes": 206264
+    },
+    {
+      "id": "250",
+      "file": "250.json",
+      "recordCount": 519,
+      "bytes": 183874
+    },
+    {
+      "id": "251",
+      "file": "251.json",
+      "recordCount": 522,
+      "bytes": 186458
+    },
+    {
+      "id": "252",
+      "file": "252.json",
+      "recordCount": 476,
+      "bytes": 176877
+    },
+    {
+      "id": "253",
+      "file": "253.json",
+      "recordCount": 590,
+      "bytes": 216776
+    },
+    {
+      "id": "254",
+      "file": "254.json",
+      "recordCount": 498,
+      "bytes": 181007
+    },
+    {
+      "id": "255",
+      "file": "255.json",
+      "recordCount": 507,
+      "bytes": 186732
+    }
+  ]
+}

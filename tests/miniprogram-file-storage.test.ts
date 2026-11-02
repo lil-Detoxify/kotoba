@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { UniStorageAdapter } from "../apps/miniprogram/src/adapters/storage";
+import { MiniProgramRepository, UniStorageAdapter } from "../apps/miniprogram/src/adapters/storage";
 import { UniFileStorage, type FileStorageDriver, type FileStoragePointerStore } from "../apps/miniprogram/src/adapters/file-storage";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -70,6 +70,110 @@ describe("mini-program file-backed storage", () => {
     await expect(storage.getItem("data_guest")).rejects.toThrow("file missing");
   });
 
+  it("classifies a dangling WeChat snapshot pointer without writing or removing anything", async () => {
+    const { driver, files, inline, pointers, storage } = setup();
+    const key = "data_guest";
+    const pointer = "kotobud-data_guest-1790664281754-0-0.json";
+    pointers.set("__kotobud_file_pointer__data_guest", pointer);
+    driver.readFile = vi.fn(async (path) => {
+      throw { errMsg: `readFile:fail ${path} not found` };
+    });
+    const repository = new MiniProgramRepository(storage);
+
+    await expect(repository.transact(data => { data.seeded = true; })).rejects.toMatchObject({
+      code: "SNAPSHOT_MISSING",
+      key,
+      pointer,
+    });
+
+    expect(pointers.get("__kotobud_file_pointer__data_guest")).toBe(pointer);
+    expect(inline.has(key)).toBe(false);
+    expect(files.size).toBe(0);
+    expect(driver.writeFile).not.toHaveBeenCalled();
+  });
+
+  it("archives and restores only a valid inline guest copy after explicit repository recovery", async () => {
+    const { driver, files, inline, pointers, storage } = setup();
+    const key = "data_guest";
+    const pointer = "kotobud-data_guest-1790664281754-0-0.json";
+    const pointerKey = "__kotobud_file_pointer__data_guest";
+    const raw = JSON.stringify({ books: [], lessons: [], words: [], states: [], logs: [], seeded: true });
+    inline.set(key, raw);
+    pointers.set(pointerKey, pointer);
+    driver.readFile = vi.fn(async (path) => {
+      const value = files.get(path);
+      if (value !== undefined) return value;
+      throw { errMsg: `readFile:fail ${path} not found` };
+    });
+    const repository = new MiniProgramRepository(storage);
+
+    await expect(repository.read(key)).rejects.toMatchObject({ code: "SNAPSHOT_MISSING", pointer });
+    const restored = await repository.recoverMissingSnapshot(pointer, key);
+
+    expect(restored.seeded).toBe(true);
+    const replacementPointer = pointers.get(pointerKey)!;
+    expect(replacementPointer).not.toBe(pointer);
+    expect(files.get(`/user-data/${replacementPointer}`)).toBe(raw);
+    const recoveryKey = [...pointers.keys()].find((candidate) => candidate.startsWith("__kotobud_file_recovery__data_guest:"));
+    expect(recoveryKey).toBeTruthy();
+    const archiveFile = pointers.get(recoveryKey!)!;
+    expect(JSON.parse(files.get(`/user-data/${archiveFile}`)!)).toMatchObject({ key, pointer, inlineValue: raw });
+    expect(driver.unlink).not.toHaveBeenCalled();
+    expect(pointers.get(pointerKey)).toBe(replacementPointer);
+  });
+
+  it("does not restore JSON-only inline content that fails repository Data validation", async () => {
+    const { driver, inline, pointers, storage } = setup();
+    const key = "data_guest";
+    const pointer = "kotobud-data_guest-missing.json";
+    const pointerKey = "__kotobud_file_pointer__data_guest";
+    inline.set(key, "{}");
+    pointers.set(pointerKey, pointer);
+    driver.readFile = vi.fn(async (path) => { throw { errMsg: `readFile:fail ${path} not found` }; });
+    const repository = new MiniProgramRepository(storage);
+
+    await expect(repository.recoverMissingSnapshot(pointer, key)).rejects.toThrow("Invalid learning data");
+    expect(pointers.get(pointerKey)).toBe(pointer);
+    expect([...pointers.keys()].some((candidate) => candidate.startsWith("__kotobud_file_recovery__"))).toBe(false);
+    expect(driver.writeFile).not.toHaveBeenCalled();
+  });
+
+  it("keeps a recoverable pointer unchanged if the active partition changes before commit", async () => {
+    const setupResult = setup();
+    const key = "data_guest";
+    const pointer = "kotobud-data_guest-missing.json";
+    const pointerKey = "__kotobud_file_pointer__data_guest";
+    const raw = JSON.stringify({ books: [], lessons: [], words: [], states: [], logs: [] });
+    setupResult.inline.set(key, raw);
+    setupResult.pointers.set(pointerKey, pointer);
+    setupResult.driver.readFile = vi.fn(async (path) => {
+      const value = setupResult.files.get(path);
+      if (value !== undefined) return value;
+      throw { errMsg: `readFile:fail ${path} not found` };
+    });
+    const repository = new MiniProgramRepository(setupResult.storage);
+    const originalWrite = setupResult.driver.writeFile;
+    setupResult.driver.writeFile = vi.fn(async (path, value) => {
+      await originalWrite(path, value);
+      if (path.includes("-recovery-")) repository.switchUser("alice");
+    });
+
+    await expect(repository.recoverMissingSnapshot(pointer, key)).rejects.toThrow("Active learning partition changed during recovery");
+    expect(setupResult.pointers.get(pointerKey)).toBe(pointer);
+    expect([...setupResult.pointers.keys()].some((candidate) => candidate.startsWith("__kotobud_file_recovery__"))).toBe(true);
+  });
+
+  it("does not classify file permission failures as missing snapshots", async () => {
+    const { driver, pointers, storage } = setup();
+    const pointer = "kotobud-data_guest-1.json";
+    pointers.set("__kotobud_file_pointer__data_guest", pointer);
+    driver.readFile = vi.fn(async () => { throw { errMsg: "readFile:fail permission denied" }; });
+
+    await expect(storage.getItem("data_guest")).rejects.toMatchObject({ errMsg: "readFile:fail permission denied" });
+    expect(pointers.get("__kotobud_file_pointer__data_guest")).toBe(pointer);
+    expect(driver.writeFile).not.toHaveBeenCalled();
+  });
+
   it("preserves the previous revision when pointer commit fails", async () => {
     const setupResult = setup();
     await setupResult.storage.setItem("data_guest", "revision one");
@@ -122,6 +226,50 @@ describe("mini-program file-backed storage", () => {
     await expect(setupResult.storage.getItem("data_guest")).resolves.toBe("revision two");
     expect(reads).toBe(2);
     expect(secondPointer).not.toBe(firstPointer);
+  });
+
+  it("reports the pointer used by a failed retry as a missing snapshot", async () => {
+    const setupResult = setup();
+    const firstPointer = "kotobud-data_guest-old.json";
+    const secondPointer = "kotobud-data_guest-current.json";
+    setupResult.pointers.set("__kotobud_file_pointer__data_guest", firstPointer);
+    setupResult.driver.readFile = vi.fn(async (path) => {
+      if (path.endsWith(firstPointer)) {
+        setupResult.pointers.set("__kotobud_file_pointer__data_guest", secondPointer);
+      }
+      throw { errMsg: `readFile:fail ${path} not found` };
+    });
+
+    await expect(setupResult.storage.getItem("data_guest")).rejects.toMatchObject({
+      code: "SNAPSHOT_MISSING",
+      key: "data_guest",
+      pointer: secondPointer,
+    });
+  });
+
+  it("leaves the missing pointer in place when the replacement pointer commit fails", async () => {
+    const setupResult = setup();
+    const key = "data_guest";
+    const pointer = "kotobud-data_guest-missing.json";
+    const pointerKey = "__kotobud_file_pointer__data_guest";
+    const raw = JSON.stringify({ books: [], lessons: [], words: [], states: [], logs: [] });
+    setupResult.inline.set(key, raw);
+    setupResult.pointers.set(pointerKey, pointer);
+    setupResult.driver.readFile = vi.fn(async (path) => {
+      const value = setupResult.files.get(path);
+      if (value !== undefined) return value;
+      throw { errMsg: `readFile:fail ${path} not found` };
+    });
+    const originalSet = setupResult.pointers.set;
+    setupResult.pointers.set = (storageKey, value) => {
+      if (storageKey === pointerKey && value !== pointer) throw new Error("pointer unavailable");
+      return originalSet.call(setupResult.pointers, storageKey, value);
+    };
+    const repository = new MiniProgramRepository(setupResult.storage);
+
+    await expect(repository.recoverMissingSnapshot(pointer, key)).rejects.toThrow("pointer unavailable");
+    expect(setupResult.pointers.get(pointerKey)).toBe(pointer);
+    expect([...setupResult.pointers.keys()].some((candidate) => candidate.startsWith("__kotobud_file_recovery__"))).toBe(true);
   });
 
   it("handles snapshots above the uni Storage key limit", async () => {

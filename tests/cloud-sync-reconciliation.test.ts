@@ -196,7 +196,7 @@ describe('Cloud Sync Reconciliation & Data Loss Prevention Suite', () => {
       created_at: '2026-09-18T00:00:00Z',
       updated_at: '2026-09-18T00:00:00Z'
     });
-    return { mockD1, env: { DB: mockD1 } };
+    return { mockD1, env: { DB: mockD1, MOCK_AUTH: 'true' } };
   }
 
   // -------------------------------------------------------------------------

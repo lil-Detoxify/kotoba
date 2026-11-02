@@ -1,0 +1,25 @@
+{
+  "result": "failed",
+  "windowsPackageVersion": "0.9.1-beta.1",
+  "webUiVersion": "0.9.1",
+  "stagedMainAsset": "assets/main-Bo62HrWV.js",
+  "stagedMainAssetSha256": "a3029460d50cec5249f3a0a70544cd7548c27adcb418bd4a287906eb11c7d575",
+  "error": "AssertionError [ERR_ASSERTION]: The Settings route did not render the Web version label.\n    at main (file:///C:/Users/75481/Documents/ChatGPT/New%20project/jp-vocab/review/windows/2026-10-27/electron-acceptance.mjs:143:5)",
+  "gpuFailure": false,
+  "rendererCrashed": false,
+  "apiWriteRequests": [],
+  "currentPageUrl": "kotoba://app/#/settings",
+  "pageDiagnostics": {
+    "href": "kotoba://app/#/settings",
+    "readyState": "complete",
+    "title": "Kotobud - 日语背词在线学习",
+    "hasBody": true,
+    "bodyText": "跳转到主要内容 每天，认识一点日语。 我的学习 今日 词书 生词本 学习统计 设置 一词一句，慢慢积累。 你的学习记录保存在此浏览器 了解特性与日志 日本語のある毎日 搜索 登录并开启云同步 WINDOWS YOUR SPACE · 自在学习 设置与关于✳ 声音、陪伴与学习节奏，随时调成你喜欢的样子。 ことば 01 / LISTEN 发音与学习 选择听起来更顺耳的日语发音。 发音声音 单词与例句朗读使用同一个选择 女声 · A 男声 · C 首页开屏 突出现在需要复习的词数与入口。（仅在这台设备生效） 今日待学 待复习 词书进度 默认学习方式 新词使用卡片，复习使用混合题型。 新一轮使用所选方式，继续学习保留原题型。（仅本机） 跟随学习任务 经典卡片 混合复习 假名选中文 汉字选假名 听音选中文 假名键入 听写 例句填空 自动发音 学习和复习时，进入新词自动朗读一次。 键入、选读音和填空题在揭晓后朗读。手动点击发音仍可使用。 答题提示音 用轻声反馈回应记住与待巩固的答案 提示音音色 圆润的木质轻敲 木芽 风铃 林木 溪石 提示音音量 轻一点，也能听见反馈 45% 答对试听 答错试听 使用当前音量，关闭答题提示音也可试听。 日语发音沿用账户偏好；答题提示音的选择仅在这台设备生效。 02 / ACCOUNT 账户与同步 学习数据仍由原有账户同步流程管理。 未登录时，学习记录保存在本机。 登录并开启云同步 DICTIONARY 词典与查阅 按自己的习惯选择释义来源与查看顺序。 词典阅读偏好 选择常看的来源和阅读顺序，保存在这台设备。 默认展开 To",
+    "html": "<html lang=\"zh-CN\"><head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <meta name=\"theme-color\" content=\"#f7f8f4\">\n  <title>Kotobud - 日语背词在线学习</title>\n  <meta name=\"robots\" content=\"noindex, follow\">\n  <link rel=\"icon\" type=\"image/svg+xml\" href=\"/brand/kotobud-mark.svg\"><link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/brand/kotobud-icon-32.png\"><link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/brand/apple-touch-icon.png\">\n  <link rel=\"manifest\" href=\"/manifest.json\">\n  <meta name=\"msvalidate.01\" content=\"B54034535F2BC5D891C5E32773794D82\">\n  <script type=\"module\" crossorigin=\"\" src=\"/assets/main-Bo62HrWV.js\"></script>\n  <link rel=\"stylesheet\" crossorigin=\"\" href=\"/assets/main-DrjQ_CJB.css\">\n<link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/Settings-CUrcTgnf.js\"><link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/pronunciationPreference-jY7p7ig-.js\"><link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/answer-sound-BgN6nAob.js\"><link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/word-autoplay-preference-B1uEUnpE.js\"><link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/DictionaryPreferences-BbcEK6VK.js\"><link rel=\"stylesheet\" crossorigin=\"\" href=\"/assets/DictionaryPreferences-OLhFJkQD.css\"><link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/upload-CAVrs4PT.js\"><link rel=\"modulepreload\" as=\"script\" crossorigin=\"\" href=\"/assets/rotate-ccw-BnxOkNrf.js\"><link rel=\"stylesheet\" crossorigin=\"\" href=\"/assets/Settings-qqmv3hcW.css\"></head>\n<body>\n  <div id=\"app\" data-v-app=\"\"><div data-v-ff039556=\"\" class=\"shell\"><a data-v-ff039556=\"\" class=\"skip-link\" href=\"#main-content\">跳转到主要内容</a><aside data-v-ff039556=\"\" class=\"sidebar\"><a data-v-ff039556=\"\" href=\"#/\" class=\"brand\" aria-label=\"Kotobud 首页\"><span data-v-ff039556=\"\" class=\"brand-identity\"><img class=\"brand-identity-mark\" src=\"data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%20width='512'%20height='512'%3e%3ctitle%3eKotobud%3c/title%3e%3crect%20width='512'%20height='512'%20rx='100'%20fill='%23365d49'/%3e%3cpath%20fill='%23fffdf7'%20fill-rule='evenodd'%20d='M292.15,54.17L295.10,54.91L295.10,66.04Q295.10,77.17%20292.89,86.82L292.89,86.82Q290.67,96.46%20284.77,107.59L284.77,107.59Q278.87,118.72%20272.97,124.66L272.97,124.66Q267.07,1"
+  },
+  "pageConsoleErrors": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "checkedAt": "2026-10-27T12:57:19.774Z",
+  "profileDirectoryRemoved": true
+}

@@ -17,7 +17,29 @@ type UniRuntime = {
 };
 
 export const POINTER_PREFIX = "__kotobud_file_pointer__";
+export const RECOVERY_PREFIX = "__kotobud_file_recovery__";
 let revisionNonce = 0;
+
+export class MissingSnapshotError extends Error {
+  readonly code = "SNAPSHOT_MISSING";
+
+  constructor(
+    readonly key: string,
+    readonly pointer: string,
+    readonly inlineValue: string | null,
+    cause?: unknown,
+  ) {
+    super(`Learning snapshot file is missing for ${key}; the existing pointer was preserved`);
+    this.name = "MissingSnapshotError";
+    if (cause !== undefined) (this as Error & { cause?: unknown }).cause = cause;
+  }
+}
+
+export function isMissingSnapshotError(error: unknown): error is MissingSnapshotError {
+  return error instanceof MissingSnapshotError || Boolean(
+    error && typeof error === "object" && (error as { code?: unknown }).code === "SNAPSHOT_MISSING",
+  );
+}
 
 export function filePointerKey(key: string): string {
   return `${POINTER_PREFIX}${key}`;
@@ -52,10 +74,62 @@ export class UniFileStorage {
       const retryPointer = this.pointerStore.get(filePointerKey(key));
       if (retryPointer && retryPointer !== pointer) {
         if (!this.isSafeRevision(key, retryPointer)) throw new Error("Invalid storage file pointer");
-        return this.driver.readFile(this.path(retryPointer));
+        try {
+          return await this.driver.readFile(this.path(retryPointer));
+        } catch (retryError) {
+          if (isExactMissingFileError(retryError, this.path(retryPointer))) {
+            throw new MissingSnapshotError(key, retryPointer, inlineValue, retryError);
+          }
+          throw retryError;
+        }
+      }
+      if (isExactMissingFileError(error, this.path(pointer))) {
+        throw new MissingSnapshotError(key, pointer, inlineValue, error);
       }
       throw error;
     }
+  }
+
+  async recoverMissingSnapshot(
+    key: string,
+    expectedPointer: string,
+    inlineValue: string | null,
+    replacement: string,
+    beforeCommit?: () => void,
+  ): Promise<void> {
+    const pointerKey = filePointerKey(key);
+    const currentPointer = this.pointerStore.get(pointerKey);
+    if (currentPointer !== expectedPointer || !this.isSafeRevision(key, expectedPointer)) {
+      throw new Error("Snapshot changed while recovery was awaiting confirmation; reload the page and try again");
+    }
+    let confirmedMissing = false;
+    try {
+      await this.driver.readFile(this.path(expectedPointer));
+    } catch (error) {
+      if (!isExactMissingFileError(error, this.path(expectedPointer))) throw error;
+      confirmedMissing = true;
+    }
+    if (!confirmedMissing) throw new Error("Snapshot file is readable again; reload before recovering");
+
+    const archiveId = `${Date.now()}-${revisionNonce++}`;
+    const archiveKey = `${RECOVERY_PREFIX}${encodeURIComponent(key)}:${archiveId}`;
+    const archiveFile = `${safeFileName(key)}-recovery-${archiveId}.json`;
+    const archiveTemp = `${archiveFile}.tmp`;
+    const archive = JSON.stringify({ key, pointer: expectedPointer, inlineValue, archivedAt: new Date().toISOString() });
+    await this.driver.writeFile(this.path(archiveTemp), archive);
+    await this.driver.rename(this.path(archiveTemp), this.path(archiveFile));
+    this.pointerStore.set(archiveKey, archiveFile);
+
+    const revision = `${safeFileName(key)}-${Date.now()}-${revisionNonce++}-${this.sequence++}.json`;
+    const temp = `${revision}.tmp`;
+    await this.driver.writeFile(this.path(temp), replacement);
+    await this.driver.rename(this.path(temp), this.path(revision));
+    // Recheck after asynchronous disk work. No old snapshot or archive is deleted.
+    if (this.pointerStore.get(pointerKey) !== expectedPointer) {
+      throw new Error("Snapshot changed during recovery; the archived copy was preserved");
+    }
+    beforeCommit?.();
+    this.pointerStore.set(pointerKey, revision);
   }
 
   async setItem(key: string, value: string): Promise<void> {
@@ -111,6 +185,12 @@ export function isFileStorageKey(key: string): boolean {
 
 function safeFileName(key: string): string {
   return `kotobud-${encodeURIComponent(key)}`;
+}
+
+function isExactMissingFileError(error: unknown, path: string): boolean {
+  if (!error || typeof error !== "object") return false;
+  const details = error as { code?: unknown; errMsg?: unknown };
+  return details.code === "ENOENT" || details.errMsg === `readFile:fail ${path} not found`;
 }
 
 function createUniPointerStore(): FileStoragePointerStore {

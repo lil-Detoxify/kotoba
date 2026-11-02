@@ -1,0 +1,69 @@
+/* Shared with every native page; motion changes transforms/opacity only. */
+.mini-page { min-height: 100vh; min-height: calc(100vh - var(--window-top, 0px) - var(--window-bottom, 0px)); background: var(--kotoba-bg); padding: 32rpx 32rpx calc(42rpx + env(safe-area-inset-bottom)); }
+.mini-heading { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 24rpx; margin: 6rpx 0 28rpx; padding: 28rpx 30rpx; border: 1rpx solid #dfe8d8; border-radius: 30rpx; background: #edf2e5; overflow: hidden; }
+.mini-heading-copy { flex: 1; min-width: 0; }
+.mini-kicker { display: block; color: var(--kotoba-green); font-size: 22rpx; font-weight: 600; letter-spacing: 2rpx; margin-bottom: 12rpx; }
+.mini-heading-title { display: block; color: #254d36; font-size: 46rpx; line-height: 1.3; font-weight: 700; letter-spacing: -1rpx; }
+.mini-title-row { display: flex; align-items: center; gap: 12rpx; }
+.mini-heading-spark { flex: none; align-self: flex-start; margin-top: 7rpx; color: #b39b49; font-size: 31rpx; font-weight: 400; }
+.mini-heading-description { display: block; margin-top: 14rpx; font-size: 26rpx; line-height: 1.7; color: var(--kotoba-muted); }
+.mini-brand-mark { position: relative; flex: none; display: flex; width: 100rpx; height: 112rpx; align-items: center; justify-content: center; color: #6e8e68; }
+.mini-seal-ring { position: absolute; inset: 5rpx; border: 1rpx solid #cbdac2; border-radius: 50%; }
+.mini-seal-inner { inset: 17rpx; border-style: dashed; opacity: .7; }
+.mini-seal-character { font: 52rpx/1.2 "Songti SC", "Noto Serif CJK SC", serif; font-weight: 400; }
+.mini-seal-caption { position: absolute; bottom: -1rpx; font: 16rpx/1.3 serif; letter-spacing: 3rpx; }
+.mini-heading-featured { min-height: 286rpx; padding: 38rpx 34rpx; border: 0; background: linear-gradient(110deg,#e1ebd5,#e8ecd8); }
+.mini-heading-featured .mini-heading-copy { padding-right: 96rpx; }
+.mini-heading-featured .mini-heading-title { font-size: 56rpx; }
+.mini-heading-featured .mini-kicker { font-size: 20rpx; letter-spacing: 2rpx; }
+.mini-heading-featured .mini-heading-description { font-size: 25rpx; max-width: 440rpx; }
+.mini-heading-featured .mini-brand-mark { position: absolute; right: -16rpx; top: 44rpx; width: 182rpx; height: 190rpx; opacity: .6; }
+.mini-heading-featured .mini-seal-character { font-size: 90rpx; }
+.mini-heading-featured .mini-seal-caption { font-size: 19rpx; bottom: 2rpx; }
+.mini-heading-featured .mini-seal-inner { inset: 25rpx; }
+.mini-heading-featured .mini-heading-spark { font-size: 34rpx; margin-top: 10rpx; }
+.mini-panel { position: relative; padding: 32rpx; border-radius: 28rpx; border-color: #dbe5d4; box-shadow: 0 12rpx 32rpx rgba(35,72,47,.045); }
+.mini-panel-accent { border-left: 5rpx solid #96b388; }
+.mini-panel .panel-heading { align-items: flex-start; gap: 22rpx; padding-bottom: 24rpx; margin-bottom: 8rpx; border-bottom: 1rpx solid #e6ecdf; }
+.mini-panel-heading-copy { flex: 1; min-width: 0; }
+.mini-panel .panel-topline { color: #6a895e; font-size: 20rpx; margin-bottom: 5rpx; }
+.mini-panel .panel-title { font-size: 34rpx; color: #294e36; letter-spacing: -.5rpx; }
+.mini-panel .panel-caption { font-size: 23rpx; }
+.mini-panel-icon { display: flex; flex: none; align-items: center; justify-content: center; width: 74rpx; height: 76rpx; border-radius: 24rpx 7rpx 24rpx 7rpx; background: #e3efd9; transform: rotate(-5deg); }
+.mini-panel-icon image { width: 38rpx; height: 38rpx; transform: rotate(5deg); }
+.panel-topline { display: block; margin-bottom: 10rpx; font-size: 21rpx; color: var(--kotoba-green); font-weight: 600; letter-spacing: 2rpx; }
+.panel-heading { display: flex; align-items: center; gap: 20rpx; margin-bottom: 26rpx; }
+.panel-index { display: flex; flex: none; width: 66rpx; height: 70rpx; align-items: center; justify-content: center; border-radius: 20rpx 5rpx 20rpx 5rpx; background: var(--kotoba-sage); color: var(--kotoba-green); font-size: 24rpx; font-weight: 600; }
+.panel-title { display: block; color: var(--kotoba-ink); font-size: 32rpx; font-weight: 700; line-height: 1.4; }
+.panel-caption { display: block; color: var(--kotoba-muted); font-size: 23rpx; margin-top: 4rpx; line-height: 1.6; }
+.mini-notice { display: flex; align-items: flex-start; gap: 14rpx; margin: 18rpx 0; padding: 20rpx; border: 1rpx solid #cbdac5; border-radius: 18rpx; background: #eff5e9; color: var(--kotoba-green); }
+.notice-symbol { display: flex; flex: none; align-items: center; justify-content: center; width: 34rpx; height: 34rpx; border-radius: 50%; background: #dcead2; font-size: 25rpx; font-weight: 700; }
+.notice-copy { flex: 1; min-width: 0; font-size: 25rpx; line-height: 1.6; overflow-wrap: anywhere; }
+.notice-error { background: #fbefea; color: var(--kotoba-error); border-color: #e5c9be; }
+.notice-error .notice-symbol { background: #eed6cb; }
+.mini-skeleton { min-height: 240rpx; }
+.skeleton-line { height: 24rpx; width: 88%; margin-bottom: 22rpx; border-radius: 8rpx; background: #e4ebdf; }
+.skeleton-short { width: 32%; height: 18rpx; }
+.skeleton-title { width: 62%; height: 42rpx; }
+.skeleton-label { display: block; color: var(--kotoba-muted); font-size: 25rpx; margin-top: 24rpx; }
+.motion-standard .motion-enter { animation: mini-enter 460ms cubic-bezier(.16,1,.3,1) both; }
+.motion-standard .mini-notice { animation: mini-feedback 240ms cubic-bezier(.2,.8,.2,1); }
+.motion-standard .skeleton-line { animation: mini-loading 1.4s ease-in-out infinite; }
+.motion-standard .word-details, .motion-standard .quiz-feedback, .motion-standard .quiz-action-dock { animation: mini-feedback 280ms cubic-bezier(.2,.8,.2,1); }
+.motion-standard .term-stage { animation: mini-word 300ms cubic-bezier(.2,.8,.2,1); }
+.motion-standard .option-correct { animation: mini-correct 320ms ease-out; }
+.motion-standard .option-wrong { animation: mini-wrong 280ms ease-out; }
+.motion-paused view, .motion-paused text { animation-play-state: paused !important; }
+.motion-reduced view, .motion-reduced text, .motion-reduced button { animation: none !important; transition: none !important; }
+.motion-reduced .button-hover, .motion-reduced .surface-pressed { transform: none !important; opacity: .8; }
+@keyframes mini-enter { from { opacity: .5; transform: translateY(14rpx); } to { opacity: 1; transform: none; } }
+@keyframes mini-feedback { from { opacity: .35; transform: translateY(8rpx); } to { opacity: 1; transform: none; } }
+@keyframes mini-word { from { opacity: .5; transform: translateY(8rpx) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes mini-correct { 45% { transform: scale(1.015); } }
+@keyframes mini-wrong { 25% { transform: translateX(-4rpx); } 60% { transform: translateX(4rpx); } }
+@keyframes mini-loading { 50% { opacity: .5; } }
+@media (prefers-reduced-motion: reduce) { .mini-page view, .mini-page text, .mini-page button { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+  .mini-heading, .mini-heading-copy > view, .mini-heading-description, .mini-panel { opacity: 1 !important; transform: none !important; }
+  .mini-brand-mark { transform: rotate(12deg) !important; }
+}

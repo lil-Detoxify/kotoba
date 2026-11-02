@@ -7,6 +7,18 @@
       }
     },
     {
+      "path": "pages/statistics/statistics",
+      "style": {
+        "navigationBarTitleText": "学习统计"
+      }
+    },
+    {
+      "path": "pages/search/search",
+      "style": {
+        "navigationBarTitleText": "查词"
+      }
+    },
+    {
       "path": "pages/books/books",
       "style": {
         "navigationBarTitleText": "我的词书"
@@ -19,10 +31,22 @@
       }
     },
     {
+      "path": "pages/personal/personal",
+      "style": { "navigationBarTitleText": "我的词书与词库" }
+    },
+    {
       "path": "pages/study/study",
       "style": {
         "navigationBarTitleText": "今日学习"
       }
+    },
+    {
+      "path": "pages/scenes/scenes",
+      "style": { "navigationBarTitleText": "生活场景" }
+    },
+    {
+      "path": "pages/conjugation/conjugation",
+      "style": { "navigationBarTitleText": "动词活用" }
     },
     {
       "path": "pages/review/review",
@@ -47,30 +71,38 @@
     "pageOrientation": "portrait",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "KotoBud",
-    "navigationBarBackgroundColor": "#F9F8F6",
-    "backgroundColor": "#F9F8F6"
+    "navigationBarBackgroundColor": "#F8F9F5",
+    "backgroundColor": "#F8F9F5"
   },
   "tabBar": {
-    "color": "#71717A",
-    "selectedColor": "#365D49",
-    "backgroundColor": "#FFFFFF",
+    "color": "#6B796D",
+    "selectedColor": "#315944",
+    "backgroundColor": "#FFFEFA",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "今日",
+        "iconPath": "static/nav/home.png",
+        "selectedIconPath": "static/nav/home-selected.png"
       },
       {
         "pagePath": "pages/books/books",
-        "text": "词书"
+        "text": "词书",
+        "iconPath": "static/nav/books.png",
+        "selectedIconPath": "static/nav/books-selected.png"
       },
       {
         "pagePath": "pages/review/review",
-        "text": "复习"
+        "text": "复习",
+        "iconPath": "static/nav/review.png",
+        "selectedIconPath": "static/nav/review-selected.png"
       },
       {
         "pagePath": "pages/settings/settings",
-        "text": "设置"
+        "text": "设置",
+        "iconPath": "static/nav/settings.png",
+        "selectedIconPath": "static/nav/settings-selected.png"
       }
     ]
   }

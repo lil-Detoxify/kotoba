@@ -29,10 +29,12 @@ function data(states: WordState[] = [], logs: ReviewLog[] = []): Data {
 }
 
 describe("mini-program learning statistics", () => {
-  it("returns six catalog books and zeroes for empty data", () => {
+  it("returns eleven catalog books and zeroes while retaining the six-book baseline", () => {
     const stats = calculateLearningStatistics(data(), new Date(2026, 8, 22, 12));
-    expect(stats.books).toHaveLength(6);
-    expect(stats.total).toBe(9117);
+    expect(stats.books).toHaveLength(11);
+    expect(stats.total).toBe(16926);
+    expect(stats.books.filter((book) => book.bookId.startsWith("biaori-"))).toHaveLength(6);
+    expect(stats.books.filter((book) => book.bookId.startsWith("biaori-")).reduce((sum, book) => sum + book.total, 0)).toBe(9117);
     expect(stats.learned).toBe(0);
     expect(stats.todayNew).toBe(0);
     expect(stats.todayReview).toBe(0);

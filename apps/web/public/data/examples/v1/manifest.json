@@ -1,0 +1,98 @@
+{
+  "version": "v1",
+  "generatedAt": "2026-10-27T12:24:18.299Z",
+  "source": "Existing KotoBud learning examples; the same source priority as the Web learning page.",
+  "books": [
+    {
+      "id": "biaori-beginner-upper",
+      "matchedWords": 1077,
+      "entries": 1076,
+      "clozeEntries": 1076,
+      "bytes": 298072,
+      "sha256": "52b53095b92068ed3ae3ec4584def19049d14f7156d6d64d93af63d4ba16e61f"
+    },
+    {
+      "id": "biaori-beginner-lower",
+      "matchedWords": 1073,
+      "entries": 1071,
+      "clozeEntries": 1071,
+      "bytes": 311330,
+      "sha256": "7f31b6cbb41a246c16274064a14f86ae3f1c8e9030bce55d9465b03e84a9ba43"
+    },
+    {
+      "id": "biaori-intermediate-upper",
+      "matchedWords": 1748,
+      "entries": 1741,
+      "clozeEntries": 1741,
+      "bytes": 497464,
+      "sha256": "2e9920fd1edd9c640cfb5b6aac8122c600536129ffb36060d9bbfc241fab826a"
+    },
+    {
+      "id": "biaori-intermediate-lower",
+      "matchedWords": 1907,
+      "entries": 1905,
+      "clozeEntries": 1905,
+      "bytes": 555042,
+      "sha256": "0f14831d788b0d6e1041b10f98fd9b6b54b0225ddccbf450ddb4ad6fe1310cc0"
+    },
+    {
+      "id": "biaori-advanced-upper",
+      "matchedWords": 1806,
+      "entries": 1803,
+      "clozeEntries": 1803,
+      "bytes": 588818,
+      "sha256": "7de1f8044159bfea7d376f3623cdc36512f5204cfcdf8807ad8aa7662959562a"
+    },
+    {
+      "id": "biaori-advanced-lower",
+      "matchedWords": 1506,
+      "entries": 1505,
+      "clozeEntries": 1505,
+      "bytes": 516753,
+      "sha256": "84e1287791a8c876b37b2cfd94682861f433157000b79c95a37f0a2e396f3b7e"
+    },
+    {
+      "id": "jlpt-n5",
+      "matchedWords": 674,
+      "entries": 674,
+      "clozeEntries": 674,
+      "bytes": 186181,
+      "sha256": "8baaa98621b5e16b2fe1add1f26344d908625dad0e86f868a279874c310dbcf6"
+    },
+    {
+      "id": "jlpt-n4",
+      "matchedWords": 630,
+      "entries": 630,
+      "clozeEntries": 630,
+      "bytes": 181295,
+      "sha256": "7096cbab572f3ee67aa589d4eb347bfd44c193b5d290855e569bbbd51383cfb5"
+    },
+    {
+      "id": "jlpt-n3",
+      "matchedWords": 1659,
+      "entries": 1659,
+      "clozeEntries": 1659,
+      "bytes": 495536,
+      "sha256": "f2a6d10a0dc6b720a88fc77b0828240b64a9da82a7bdf5d01a8214900b330cc0"
+    },
+    {
+      "id": "jlpt-n2",
+      "matchedWords": 1778,
+      "entries": 1778,
+      "clozeEntries": 1778,
+      "bytes": 568144,
+      "sha256": "5062587b1fd7aab71d969170bfed475e4a86c00e8d50975361d1d959724513aa"
+    },
+    {
+      "id": "jlpt-n1",
+      "matchedWords": 3068,
+      "entries": 3068,
+      "clozeEntries": 3068,
+      "bytes": 996119,
+      "sha256": "0602481144f4d1ca86668547eab2db7713cffe32f440ad8a916a190362ae2fde"
+    }
+  ],
+  "bytes": 5194754,
+  "newSentencesGenerated": 0,
+  "audioIncluded": false
+}

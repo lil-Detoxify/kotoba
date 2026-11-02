@@ -18,6 +18,8 @@
 
 </div>
 
+2026-11-02 进度：Web **0.9.4** 已上线；Windows 正式版为 **0.9.3**，**0.9.4** 安装版与便携版已生成本地验收包。小程序源码候选为 **0.9.1 / 99**，扩展源码候选为 **0.3.1-beta.1**。当前更新涵盖学习与续学、假名键入与听写、场景与动词活用、多词典对照、个人原句、例句语音和用法深化。版本与验收边界见[当前交接](docs/HANDOFF_OVERVIEW.md)及[更新日志](CHANGELOG.md)。
+
 ---
 
 ## 🌟 为什么选择 Kotobud？
@@ -38,7 +40,7 @@
 - 🎯 **多模态交互自检模式**：提供假名选意、汉字选音、听音辨意、多题型混合复习以及经典翻转闪卡模式，全键盘快捷键无缝盲操。
 - 📖 **海量日中双语权威词典扩展**：深度集成 JMdict / Tomoshi 217,000+ 条词条，提供权威释义、详细词性分类、日日解释与经典学习例句。
 - 🛡️ **本地优先（Local-First）与安全云同步**：数据默认存放在本地 IndexedDB，即使完全离线也能顺畅学习；支持多设备安全增量云同步。
-- 💻 **多平台覆盖**：Web 在线版即开即用，Windows 桌面客户端（安装版与免安装绿色版）离线免环境部署，微信小程序正在开发中。
+- 💻 **多平台覆盖**：Web 在线版、Windows 安装版与便携版、微信小程序及 Chrome / Edge 浏览器扩展。各端版本与发布状态见[当前交接](docs/HANDOFF_OVERVIEW.md)，小程序详见[小程序交接](docs/HANDOFF_MINIPROGRAM.md)。
 
 ---
 
@@ -161,7 +163,7 @@ kotoba/
 - **Rich Textbooks**: Full structured support for *New Standard Japanese (新版中日交流标准日本语)* from beginner to advanced, as well as JLPT N5–N1 vocabularies.
 - **Multiple Review Modes**: Flashcard, Kana-to-Meaning, Kanji-to-Reading, and Audio Listening tests with full keyboard accessibility.
 - **Integrated Dictionary**: Over 217,000 JMdict entries with detailed parts of speech, pitch accents, and bilingual definitions.
-- **Cross-Platform**: Accessible via [kotobud.com](https://kotobud.com/), standalone Windows desktop application, and upcoming WeChat Mini Program.
+- **Cross-Platform**: Web 0.9.4 is live. Windows 0.9.3 is published, with a local 0.9.4 candidate ready for review. The Mini Program source candidate is 0.9.1 / 99, and the browser extension source candidate is 0.3.1-beta.1. See the [current handoff](docs/HANDOFF_OVERVIEW.md) and [changelog](CHANGELOG.md) for release and acceptance details.
 
 ---
 

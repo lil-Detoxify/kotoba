@@ -235,4 +235,53 @@ describe('Cloudflare Worker Domain & Environment Routing', () => {
     expect(requestedKey).toBe('releases/0.6.0/Kotoba-0.6.0-Windows-x64-Portable.exe');
     expect(res.headers.get('content-length')).toBe('299000000');
   });
+
+  it('routes /downloads/KotoBud-0.6.0-Windows-x64-Setup.exe and Portable to R2', async () => {
+    let requestedKey = '';
+    const env = makeEnv({
+      KOTOBA_R2: {
+        get: async (key: string) => {
+          requestedKey = key;
+          return {
+            size: 305000000,
+            httpEtag: '"test-etag-kotobud"',
+            body: new ReadableStream()
+          };
+        }
+      }
+    });
+    const req = new Request('https://kotobud.com/downloads/KotoBud-0.6.0-Windows-x64-Setup.exe', { method: 'GET' });
+    const res = await worker.fetch(req, env);
+    expect(res.status).toBe(200);
+    expect(requestedKey).toBe('releases/0.6.0/KotoBud-0.6.0-Windows-x64-Setup.exe');
+    expect(res.headers.get('content-disposition')).toContain('KotoBud-0.6.0-Windows-x64-Setup.exe');
+  });
+
+  it('routes /downloads/KotoBud-0.6.1-Windows-x64-Setup.exe, Portable and SHA256SUMS-0.6.1.txt to R2 releases/0.6.1/', async () => {
+    let requestedKey = '';
+    const env = makeEnv({
+      KOTOBA_R2: {
+        get: async (key: string) => {
+          requestedKey = key;
+          return {
+            size: key.endsWith('.txt') ? 142 : 297452495,
+            httpEtag: '"test-etag-0.6.1"',
+            body: new ReadableStream()
+          };
+        }
+      }
+    });
+
+    const req1 = new Request('https://kotobud.com/downloads/KotoBud-0.6.1-Windows-x64-Setup.exe', { method: 'GET' });
+    const res1 = await worker.fetch(req1, env);
+    expect(res1.status).toBe(200);
+    expect(requestedKey).toBe('releases/0.6.1/KotoBud-0.6.1-Windows-x64-Setup.exe');
+    expect(res1.headers.get('content-disposition')).toContain('KotoBud-0.6.1-Windows-x64-Setup.exe');
+
+    const req2 = new Request('https://kotobud.com/downloads/SHA256SUMS-0.6.1.txt', { method: 'GET' });
+    const res2 = await worker.fetch(req2, env);
+    expect(res2.status).toBe(200);
+    expect(requestedKey).toBe('releases/0.6.1/SHA256SUMS-0.6.1.txt');
+    expect(res2.headers.get('content-type')).toContain('text/plain');
+  });
 });

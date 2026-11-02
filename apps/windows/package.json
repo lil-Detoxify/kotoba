@@ -1,6 +1,7 @@
 {
-  "name": "kotoba-desktop",
-  "version": "0.6.0",
+  "name": "kotobud-desktop",
+  "productName": "KotoBud",
+  "version": "0.9.4",
   "private": true,
   "description": "KotoBud Japanese vocabulary learning",
   "author": "KotoBud",

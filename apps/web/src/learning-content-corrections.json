@@ -1,0 +1,667 @@
+[
+  {
+    "id": "sense-ukagau-observe",
+    "forms": [
+      {
+        "term": "うかがう",
+        "reading": "うかがう"
+      }
+    ],
+    "meaningKeywords": [
+      "窥见",
+      "看出"
+    ],
+    "example": {
+      "ja": "表情から彼の不安がうかがえます。",
+      "reading": "ひょうじょうからかれのふあんがうかがえます。",
+      "zh": "从表情可以看出他的不安。",
+      "cloze": {
+        "answer": "うかがえます",
+        "reading": "うかがえます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "表情からうかがえる",
+        "reading": "ひょうじょうからうかがえる",
+        "zh": "从表情中可以看出"
+      },
+      "tip": "这一义项是「窺う」，表示观察或从线索中看出。不要与拜访、请教的谦让表达「伺う」混在一起。"
+    },
+    "sourceMeanings": [
+      "窥见，看出"
+    ]
+  },
+  {
+    "id": "sense-ochiru-fail",
+    "forms": [
+      {
+        "term": "落ちる",
+        "reading": "おちる"
+      }
+    ],
+    "meaningKeywords": [
+      "落选",
+      "不及格"
+    ],
+    "example": {
+      "ja": "試験に落ちても、もう一度挑戦します。",
+      "reading": "しけんにおちても、もういちどちょうせんします。",
+      "zh": "即使考试没通过，也会再挑战一次。",
+      "cloze": {
+        "answer": "落ちて",
+        "reading": "おちて"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "試験に落ちる",
+        "reading": "しけんにおちる",
+        "zh": "考试没通过"
+      },
+      "tip": "表示考试不及格或选拔落选时，考试、面试等常用「に」标出。这里的「落ちる」不指物体从高处掉下。"
+    },
+    "sourceMeanings": [
+      "落选，不及格"
+    ]
+  },
+  {
+    "id": "sense-atsumeru-attract",
+    "forms": [
+      {
+        "term": "集める",
+        "reading": "あつめる"
+      }
+    ],
+    "meaningKeywords": [
+      "招徕",
+      "吸引"
+    ],
+    "example": {
+      "ja": "その広告は、多くの人の関心を集めました。",
+      "reading": "そのこうこくは、おおくのひとのかんしんをあつめました。",
+      "zh": "那则广告吸引了许多人的关注。",
+      "cloze": {
+        "answer": "集めました",
+        "reading": "あつめました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "注目を集める",
+        "reading": "ちゅうもくをあつめる",
+        "zh": "吸引关注"
+      },
+      "tip": "表示吸引注意、兴趣或顾客时，常用「注目を集める」「関心を集める」「客を集める」。与收集物品的用法分开记。"
+    },
+    "sourceMeanings": [
+      "招徕，吸引"
+    ]
+  },
+  {
+    "id": "sense-kakaeru-burden",
+    "forms": [
+      {
+        "term": "抱える",
+        "reading": "かかえる"
+      }
+    ],
+    "meaningKeywords": [
+      "担负",
+      "承担"
+    ],
+    "example": {
+      "ja": "一人で多くの仕事を抱えています。",
+      "reading": "ひとりでおおくのしごとをかかえています。",
+      "zh": "一个人承担着许多工作。",
+      "cloze": {
+        "answer": "抱えています",
+        "reading": "かかえています"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "仕事を抱える",
+        "reading": "しごとをかかえる",
+        "zh": "承担工作"
+      },
+      "tip": "工作、问题或负担用「を」标出，常暗示这些事情需要自己负责处理。这里不是用双臂抱住物品的动作。"
+    },
+    "sourceMeanings": [
+      "担负，承担"
+    ]
+  },
+  {
+    "id": "sense-katamaru-solidify",
+    "forms": [
+      {
+        "term": "固まる",
+        "reading": "かたまる"
+      }
+    ],
+    "meaningKeywords": [
+      "凝固",
+      "成形"
+    ],
+    "example": {
+      "ja": "冷蔵庫に入れると、ゼリーが固まりました。",
+      "reading": "れいぞうこにいれると、ぜりーがかたまりました。",
+      "zh": "放进冰箱后，果冻凝固了。",
+      "cloze": {
+        "answer": "固まりました",
+        "reading": "かたまりました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "液体が固まる",
+        "reading": "えきたいがかたまる",
+        "zh": "液体凝固"
+      },
+      "tip": "「固まる」说明物体自身变硬、凝固，物体常用「が」标出。人为把物体弄硬、固定时通常用「固める」。"
+    },
+    "sourceMeanings": [
+      "成形，凝固【聴解】"
+    ]
+  },
+  {
+    "id": "sense-hokoru-pride",
+    "forms": [
+      {
+        "term": "誇る",
+        "reading": "ほこる"
+      }
+    ],
+    "meaningKeywords": [
+      "夸耀",
+      "自豪",
+      "骄傲"
+    ],
+    "example": {
+      "ja": "彼は自分の成績を誇っています。",
+      "reading": "かれはじぶんのせいせきをほこっています。",
+      "zh": "他以自己的成绩为荣。",
+      "cloze": {
+        "answer": "誇っています",
+        "reading": "ほこっています"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "成績を誇る",
+        "reading": "せいせきをほこる",
+        "zh": "以成绩为荣"
+      },
+      "tip": "「誇る」可以表示以某事物自豪，不一定含贬义。引以为豪或向别人夸耀的对象常用「を」标出，「誇り」则是表示自豪感的名词。"
+    },
+    "sourceMeanings": [
+      "夸耀"
+    ]
+  },
+  {
+    "id": "sense-arawasu-appear",
+    "forms": [
+      {
+        "term": "現す",
+        "reading": "あらわす"
+      }
+    ],
+    "meaningKeywords": [
+      "出现"
+    ],
+    "example": {
+      "ja": "しばらくすると、猫が庭に姿を現しました。",
+      "reading": "しばらくすると、ねこがにわにすがたをあらわしました。",
+      "zh": "过了一会儿，猫在院子里出现了。",
+      "cloze": {
+        "answer": "現しました",
+        "reading": "あらわしました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "姿を現す",
+        "reading": "すがたをあらわす",
+        "zh": "现身"
+      },
+      "tip": "「姿を現す」表示现身、出现。「現す」本身是他动词，搭配中的「姿」用「を」标出，不要直接按自动词「現れる」套句式。"
+    },
+    "sourceMeanings": [
+      "出现"
+    ]
+  },
+  {
+    "id": "sense-youki-cheerful",
+    "forms": [
+      {
+        "term": "陽気",
+        "reading": "ようき"
+      }
+    ],
+    "meaningKeywords": [
+      "开朗",
+      "爽朗",
+      "欢乐"
+    ],
+    "example": {
+      "ja": "彼は陽気な人で、いつもみんなを笑わせます。",
+      "reading": "かれはようきなひとで、いつもみんなをわらわせます。",
+      "zh": "他是个开朗的人，总能逗大家笑。",
+      "cloze": {
+        "answer": "陽気",
+        "reading": "ようき"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "陽気な人",
+        "reading": "ようきなひと",
+        "zh": "开朗的人"
+      },
+      "tip": "形容人开朗、气氛欢乐时用「陽気な〜」。表示天气、时令时是名词用法，如「春の陽気」，要按义项区分。"
+    },
+    "sourceMeanings": [
+      "开朗，爽朗；欢乐"
+    ]
+  },
+  {
+    "id": "sense-okashii-funny",
+    "forms": [
+      {
+        "term": "おかしい",
+        "reading": "おかしい"
+      }
+    ],
+    "meaningKeywords": [
+      "滑稽",
+      "可笑",
+      "好笑"
+    ],
+    "example": {
+      "ja": "その話がおかしくて、思わず笑ってしまいました。",
+      "reading": "そのはなしがおかしくて、おもわずわらってしまいました。",
+      "zh": "那个故事太好笑了，我不由得笑了出来。",
+      "cloze": {
+        "answer": "おかしくて",
+        "reading": "おかしくて"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "おかしくて笑う",
+        "reading": "おかしくてわらう",
+        "zh": "觉得好笑而笑出来"
+      },
+      "tip": "这里表示好笑、滑稽，不是机器出了异常。い形容词的连接形式是「おかしくて」，不使用「おかしいで」。"
+    },
+    "sourceMeanings": [
+      "可笑，滑稽",
+      "奇怪，可笑，不正常"
+    ]
+  },
+  {
+    "id": "sense-assari-light",
+    "forms": [
+      {
+        "term": "あっさり",
+        "reading": "あっさり"
+      }
+    ],
+    "meaningKeywords": [
+      "清淡",
+      "朴素",
+      "淡泊"
+    ],
+    "example": {
+      "ja": "このスープはあっさりしていて、飲みやすいです。",
+      "reading": "このすーぷはあっさりしていて、のみやすいです。",
+      "zh": "这汤味道清淡，很容易入口。",
+      "cloze": {
+        "answer": "あっさり",
+        "reading": "あっさり"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "あっさりした味",
+        "reading": "あっさりしたあじ",
+        "zh": "清淡的口味"
+      },
+      "tip": "描述口味清淡、不过分浓重时常用「あっさりした味」。干脆地拒绝、轻易完成等属于其他义项，不能把中文解释直接混在一起。"
+    },
+    "sourceMeanings": [
+      "清淡；朴素；淡泊"
+    ]
+  },
+  {
+    "id": "sense-zutto-continuous",
+    "forms": [
+      {
+        "term": "ずっと",
+        "reading": "ずっと"
+      }
+    ],
+    "meaningKeywords": [
+      "一直",
+      "始终"
+    ],
+    "example": {
+      "ja": "子どものころから、ずっとこの町に住んでいます。",
+      "reading": "こどものころから、ずっとこのまちにすんでいます。",
+      "zh": "从小时候起，我一直住在这座城里。",
+      "cloze": {
+        "answer": "ずっと",
+        "reading": "ずっと"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "ずっと住んでいる",
+        "reading": "ずっとすんでいる",
+        "zh": "一直住着"
+      },
+      "tip": "这一义项表示状态或动作持续较长时间。比较句里的「ずっと〜より」或「〜よりずっと」表示程度“得多”，要分开记。"
+    },
+    "sourceMeanings": [
+      "一直，始终"
+    ]
+  },
+  {
+    "id": "sense-maamaa-interjection",
+    "forms": [
+      {
+        "term": "まあまあ",
+        "reading": "まあまあ"
+      }
+    ],
+    "meaningKeywords": [
+      "好了",
+      "好啦"
+    ],
+    "example": {
+      "ja": "まあまあ、落ち着いて話してください。",
+      "reading": "まあまあ、おちついてはなしてください。",
+      "zh": "好了好了，请冷静下来再说。",
+      "cloze": {
+        "answer": "まあまあ",
+        "reading": "まあまあ"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "まあまあ、落ち着いてください",
+        "reading": "まあまあ、おちついてください",
+        "zh": "好了好了，请冷静一点"
+      },
+      "tip": "这里用作安抚、劝解的感叹表达，不表示对成绩或表现“还算可以”的评价。"
+    },
+    "sourceMeanings": [
+      "好了好了"
+    ]
+  },
+  {
+    "id": "sense-gomenkudasai-leave",
+    "forms": [
+      {
+        "term": "ごめんください",
+        "reading": "ごめんください"
+      }
+    ],
+    "meaningKeywords": [
+      "告辞"
+    ],
+    "example": {
+      "ja": "それでは、今日はこれでごめんください。",
+      "reading": "それでは、きょうはこれでごめんください。",
+      "zh": "那么，今天我就先告辞了。",
+      "cloze": {
+        "answer": "ごめんください",
+        "reading": "ごめんください"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "これでごめんください",
+        "reading": "これでごめんください",
+        "zh": "我就先告辞了"
+      },
+      "tip": "辞去时可以用来礼貌告别，这一用法偏老式。到别人家门前呼唤“有人吗”属于同一表达的另一种场景，日常告别也常用「失礼します」。"
+    },
+    "sourceMeanings": [
+      "告辞"
+    ]
+  },
+  {
+    "id": "sense-ato-time-remaining",
+    "forms": [
+      {
+        "term": "あと",
+        "reading": "あと"
+      }
+    ],
+    "meaningKeywords": [
+      "还(差)",
+      "另外",
+      "然后"
+    ],
+    "example": {
+      "ja": "あと五分で会議が始まります。",
+      "reading": "あとごふんでかいぎがはじまります。",
+      "zh": "还有五分钟会议就开始了。",
+      "cloze": {
+        "answer": "あと",
+        "reading": "あと"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "あと五分で始まる",
+        "reading": "あとごふんではじまる",
+        "zh": "还有五分钟就开始"
+      },
+      "tip": "表示还剩一段时间时常用「あと＋时间＋で＋开始或发生」。本条对应词书中的“还差、再”义，不套用“痕迹、踪迹”等别的同音词义。"
+    },
+    "sourceMeanings": [
+      "另外，然后；还(差)……，再……"
+    ]
+  },
+  {
+    "id": "sense-tada-however",
+    "forms": [
+      {
+        "term": "ただ",
+        "reading": "ただ"
+      }
+    ],
+    "meaningKeywords": [
+      "但是",
+      "可是"
+    ],
+    "example": {
+      "ja": "この店は安いです。ただ、駅から少し遠いです。",
+      "reading": "このみせはやすいです。ただ、えきからすこしとおいです。",
+      "zh": "这家店很便宜，不过离车站有点远。",
+      "cloze": {
+        "answer": "ただ",
+        "reading": "ただ"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "ただ、駅から少し遠い",
+        "reading": "ただ、えきからすこしとおい",
+        "zh": "不过，离车站有点远"
+      },
+      "tip": "作连词时放在前句之后，引出限制或相反情况，常用句点或逗号与前后句隔开。本条是“不过”，不是副词“仅仅”。"
+    },
+    "sourceMeanings": [
+      "但是，可是"
+    ]
+  },
+  {
+    "id": "sense-tou-ranking",
+    "forms": [
+      {
+        "term": "～等",
+        "reading": "～等"
+      }
+    ],
+    "meaningKeywords": [
+      "第～名"
+    ],
+    "example": {
+      "ja": "運動会で一等を取りました。",
+      "reading": "うんどうかいでいっとうをとりました。",
+      "zh": "我在运动会上得了第一名。",
+      "cloze": {
+        "answer": "一等",
+        "reading": "いっとう"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "一等を取る",
+        "reading": "いっとうをとる",
+        "zh": "获得第一名"
+      },
+      "tip": "接在数词后构成名次，如「一等」「二等」。这条只对应“第几名”的义项，不对应列举时的“等等”。"
+    },
+    "sourceMeanings": [
+      "第～名"
+    ]
+  },
+  {
+    "id": "sense-over-exceed",
+    "forms": [
+      {
+        "term": "オーバー",
+        "reading": "オーバー"
+      }
+    ],
+    "meaningKeywords": [
+      "超过"
+    ],
+    "example": {
+      "ja": "今月は予算をオーバーしました。",
+      "reading": "こんげつはよさんをおーばーしました。",
+      "zh": "这个月超出了预算。",
+      "cloze": {
+        "answer": "オーバーしました",
+        "reading": "おーばーしました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "予算をオーバーする",
+        "reading": "よさんをおーばーする",
+        "zh": "超出预算"
+      },
+      "tip": "表示超过预算、数量或限度时常用「～をオーバーする」。本条只对应“超过”义，不套用大衣、外套义。"
+    },
+    "sourceMeanings": [
+      "超过"
+    ]
+  },
+  {
+    "id": "sense-tsugou-total",
+    "forms": [
+      {
+        "term": "都合",
+        "reading": "つごう"
+      }
+    ],
+    "meaningKeywords": [
+      "总共",
+      "总计"
+    ],
+    "example": {
+      "ja": "参加者は都合二十人でした。",
+      "reading": "さんかしゃはつごうにじゅうにんでした。",
+      "zh": "参加者总共二十人。",
+      "cloze": {
+        "answer": "都合",
+        "reading": "つごう"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "都合二十人",
+        "reading": "つごうにじゅうにん",
+        "zh": "总共二十人"
+      },
+      "tip": "作副词时放在数量前，表示合计数，如「都合二十人」。这条对应“总共、总计”义，与表示方便或情况的名词义分开。"
+    },
+    "sourceMeanings": [
+      "总共，总计"
+    ]
+  },
+  {
+    "id": "sense-guchi-entrance",
+    "forms": [
+      {
+        "term": "～口",
+        "reading": "～口"
+      }
+    ],
+    "meaningKeywords": [
+      "～口儿",
+      "～门"
+    ],
+    "example": {
+      "ja": "駅の北口で待ち合わせましょう。",
+      "reading": "えきのきたぐちでまちあわせましょう。",
+      "zh": "我们在车站北口碰面吧。",
+      "cloze": {
+        "answer": "北口",
+        "reading": "きたぐち"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "駅の北口",
+        "reading": "えきのきたぐち",
+        "zh": "车站北口"
+      },
+      "tip": "接在方位词后可构成「北口」「東口」等入口名称，也可见于「入口」。本条对应出入口义，不对应“口味”义。"
+    },
+    "sourceMeanings": [
+      "～口儿，～门"
+    ]
+  },
+  {
+    "id": "sense-dasu-mail-letter",
+    "forms": [
+      {
+        "term": "出す",
+        "reading": "だす"
+      },
+      {
+        "term": "出します",
+        "reading": "だします"
+      }
+    ],
+    "meaningKeywords": [
+      "寄"
+    ],
+    "example": {
+      "ja": "友人に手紙を出します。",
+      "reading": "ゆうじんにてがみをだします。",
+      "zh": "给朋友寄信。",
+      "cloze": {
+        "answer": "出します",
+        "reading": "だします"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "手紙を出す",
+        "reading": "てがみをだす",
+        "zh": "寄信"
+      },
+      "tip": "寄送信件时可说「人に手紙を出す」。本条对应词书“寄信”义，不套用拿出物品或放出的义项。"
+    },
+    "sourceMeanings": [
+      "寄(信)"
+    ]
+  }
+]

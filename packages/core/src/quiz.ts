@@ -1,5 +1,5 @@
-import type {Word,QuizType,QuizAttempt} from '@jp/models';
-export interface Question {type:QuizType;wordId:string;prompt:string;options:string[];correct:string}
+import type {Word,QuizType,ChoiceQuizType,QuizAttempt} from '@jp/models';
+export interface Question {type:ChoiceQuizType;wordId:string;prompt:string;options:string[];correct:string}
 export const toHiragana=(value:string)=>value.normalize('NFKC').replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));
 const normalize=(s:string)=>s.normalize('NFKC').replace(/\s/g,'').toLowerCase();
 const meanings=(w:Word)=>w.meaning.split(/[;；、,，]/).map(normalize).filter(Boolean);
@@ -7,6 +7,7 @@ const overlaps=(a:Word,b:Word)=>meanings(a).some(m=>meanings(b).includes(m));
 function shuffle<T>(items:T[],random:()=>number){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[result[i],result[j]]=[result[j],result[i]]}return result}
 /** Only distractors outside the prompt's equivalence class are safe to score. */
 export function createQuestion(word:Word,pool:Word[],type:QuizType,random:()=>number=Math.random):Question|null{
+ if(type==='kana-input'||type==='dictation')return null;
  if(type==='kanji-reading'&&!/\p{Script=Han}/u.test(word.term))return null;
  const value=(w:Word)=>type==='kanji-reading'?toHiragana(w.reading):w.meaning.trim();
  const correct=value(word);if(!correct||!word.reading.trim())return null;

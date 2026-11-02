@@ -4,6 +4,7 @@ import { resolve as pathResolve } from 'node:path';
 import { generateAllSeoPages } from './generate-seo-pages.mjs';
 
 const root = pathResolve(import.meta.dirname, '..');
+execFileSync(process.platform === 'win32' ? 'node.exe' : 'node', [pathResolve(root, 'scripts', 'build-jlpt-textbooks.mjs')], { cwd: root, stdio: 'inherit' });
 execFileSync(process.platform === 'win32' ? 'node.exe' : 'node', [pathResolve(root, 'scripts', 'split-textbooks.mjs')], { cwd: root, stdio: 'inherit' });
 execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'check:cloudflare'], { cwd: root, stdio: 'inherit', shell: process.platform === 'win32' });
 const dataVersion = process.env.KOTOBA_DATA_VERSION ?? 'v1';

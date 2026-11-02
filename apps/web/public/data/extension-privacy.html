@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="KotoBud 浏览器扩展的账号、学习记录、查词、发音与云同步数据处理说明。">
+<title>KotoBud 浏览器扩展隐私说明</title>
+<style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f5f7f1;color:#25332a;font:16px/1.85 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}main{max-width:850px;margin:0 auto;padding:64px 32px 80px}header{border-bottom:1px solid #d8e1d3;padding-bottom:28px;margin-bottom:30px}.brand{font-weight:700;letter-spacing:.04em;font-size:18px}h1{font-size:clamp(27px,4vw,38px);line-height:1.4;margin:28px 0 12px;letter-spacing:-.025em}h2{font-size:21px;line-height:1.5;margin:34px 0 12px;color:#36513c}p{margin:0 0 17px}a{color:#3b6547;text-underline-offset:4px;overflow-wrap:anywhere}.meta{color:#637263;font-size:14px}footer{margin-top:44px;border-top:1px solid #d8e1d3;padding-top:24px;font-size:14px;color:#637263}@media(max-width:600px){main{padding:32px 22px 50px}body{font-size:15px}}
+</style></head><body><main><header><a class="brand" href="https://kotobud.com/">KotoBud</a><h1>浏览器扩展隐私说明</h1><p class="meta">版本 0.2.3 · 更新日期 2026-10-07</p></header>
+<p>整理日期：2026-10-07。适用对象：KotoBud 0.2.3 Microsoft Edge / Chrome 浏览器扩展。</p>
+<h2>1. 运营主体与联系渠道</h2>
+<p>运营者：Kotobud。公开支持及隐私联系邮箱：<a href="mailto:a754812119@gmail.com">a754812119@gmail.com</a>。有关个人数据的访问、更正、导出或删除请求，也可通过此邮箱联系。</p>
+<h2>2. 本机查词与学习</h2>
+<p>扩展包含本地词库。你输入的检索词用于本地查词。通过右键菜单查词时，扩展接收你主动选中的文字（最多 80 字符），以及网页来源域名，用于在侧边栏显示查词结果。请求临时保存在扩展 session storage；收藏时，来源域名可随词条保存在本机。</p>
+<p>扩展不读取网页全文，不记录完整网页地址、查询参数或完整浏览历史。收藏的来源域名不包含在当前云同步内容中。</p>
+<p>个人词条、导入的自定义词书、学习进度、复习记录和本机偏好保存在扩展的 IndexedDB。游客和各登录账号使用不同分区。游客记录不会在登录时自动合并；只有明确选择合并后才加入账号数据。</p>
+<h2>3. 邮箱账号与云同步</h2>
+<p>基础本机学习无需登录。使用邮箱账号时，扩展向 <a href="https://kotobud.com/">https://kotobud.com</a> 的 KotoBud 认证服务提交邮箱及当前操作需要的密码、验证码和验证请求标识。明文密码与验证码不持久保存在扩展数据库中。</p>
+<p>登录成功后的账号标识、邮箱、访问令牌和刷新令牌保存在独立本地会话数据库，供恢复登录和授权同步使用。</p>
+<p>账号服务还保存登录会话的 IP 地址、浏览器 User-Agent、会话创建时间、到期时间及刷新令牌的哈希，用于账号会话的识别与认证。请求 IP 属于网络连接信息，不代表扩展主动请求设备精确定位。</p>
+<p>登录、恢复已保存的账号会话，以及你手动执行同步时，扩展会先拉取并校验账号数据，再上传当前支持的内置词条学习进度、复习事件和部分学习设置。KotoBud 的同步服务使用 Cloudflare Worker 与 D1。自定义词书正文、自定义词条学习记录及收藏来源域名不包含在当前同步范围中。离线记录在本机排队，失败时保留以便重试。</p>
+<h2>4. 发音</h2>
+<p>播放内置词条发音时，扩展可能从 kotobud.com 请求相应音频。音频服务器能够收到请求的资源路径及网络连接所必需的信息。部分词条使用设备日语朗读；可用语音由浏览器与操作系统决定，具体设备语音服务的数据处理规则请参阅其提供方说明。</p>
+<h2>5. 用途与服务方</h2>
+<p>上述数据用于提供查词、收藏、离线学习、复习安排、发音、邮箱认证与用户选择的跨端同步。</p>
+<p>扩展没有内置广告或第三方分析脚本。云端账号与学习数据由 KotoBud 的 Cloudflare Worker / D1 服务处理。发送和验证邮箱验证码时，KotoBud 服务向腾讯云 CloudBase 的认证接口提交邮箱以及验证码验证所必需的信息。基础设施提供方可能为交付服务和安全运行处理请求信息；其处理规则请参阅对应服务方的隐私说明。</p>
+<p>数据仅用于上述功能和账号服务，不用于出售、广告定位或与本扩展用途无关的用户画像。</p>
+<h2>6. 你的选择与数据管理</h2>
+<p>你可以不登录而使用本机学习功能。退出账号后，不再使用该账号进行同步；退出不等于删除本机账号分区或云端数据。导出的 JSON 备份由你保存到本机，不会因为导出而自动上传。</p>
+<p>清理扩展数据或卸载扩展可能移除本机学习记录。请先导出需要保留的数据。如需访问、更正、导出或删除云端账号数据，请通过第 1 节的邮箱联系，并提供用于识别该账号的邮箱。运营者在必要的身份核验后回复请求的处理方式与结果；不要在邮件中发送密码或验证码。</p>
+<h2>7. 保留、安全与更新</h2>
+<p>本机数据在对应扩展存储中保留，直至通过实际支持的数据管理操作、浏览器清理或卸载等方式移除。认证与同步使用 HTTPS。KotoBud 密码账号在服务端保存加盐密码哈希，而非明文密码。</p>
+<p>云端账号和学习记录为持续提供账号与跨端恢复服务而保留，可通过上述邮箱提出删除请求。当前会话默认有效期为 30 天，但会话失效不等同于其数据库记录或账号学习数据已自动删除。基础设施日志、邮件验证数据及备份的保存与删除遵循对应服务配置和服务方规则；有关你的账号的具体保留情况可通过上述邮箱询问。</p>
+<p>本说明更新后将展示在同一公开页面并调整更新日期。涉及数据处理方式的实质变更时，运营者应同步更新商店披露和说明。</p>
+<footer>运营者 Kotobud · <a href="mailto:a754812119@gmail.com">a754812119@gmail.com</a></footer>
+</main></body></html>

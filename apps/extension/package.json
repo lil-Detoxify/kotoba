@@ -1,0 +1,25 @@
+{
+  "name": "@jp/extension",
+  "private": true,
+  "version": "0.3.1-beta.1",
+  "type": "module",
+  "scripts": {
+    "prepare:data": "node scripts/prepare.mjs",
+    "dev": "npm run prepare:data && vite --config vite.config.ts --configLoader native --host 127.0.0.1",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json",
+    "build": "npm run prepare:data && npm run type-check && vite build --config vite.config.ts --configLoader native && npm run verify",
+    "verify": "node scripts/verify.mjs && node scripts/verify-service-worker.mjs"
+  },
+  "dependencies": {
+    "@jp/core": "*",
+    "@jp/dictionary": "*",
+    "@jp/models": "*",
+    "@jp/importers": "*",
+    "@jp/shared": "*",
+    "@jp/sync": "*",
+    "gsap": "^3.15.0",
+    "idb": "^8.0.0",
+    "vue": "^3.5.0",
+    "lucide-vue-next": "^0.468.0"
+  }
+}

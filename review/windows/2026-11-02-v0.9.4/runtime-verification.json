@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-02",
+  "windowsVersion": "0.9.4",
+  "source": "pack/win-unpacked/KotoBud.exe",
+  "isolatedProfile": ".runtime/profile",
+  "processWasResponding": true,
+  "didFinishLoadMilliseconds": 418,
+  "stderrEmpty": true,
+  "visibleWindowInspectionCompleted": false,
+  "installerRun": false,
+  "portableWrapperRun": false,
+  "published": false,
+  "limitations": [
+    "Only isolated startup logs were checked. No native visual or full feature acceptance was performed."
+  ],
+  "stdout": ".runtime/stdout.log",
+  "stderr": ".runtime/stderr.log",
+  "processStopped": true
+}

@@ -9,8 +9,8 @@ export interface Repository {
   hasPreLoginSnapshot(): Promise<boolean>;
   restorePreLoginSnapshot(): Promise<boolean>;
   getQueue(): Promise<SyncQueueItem[]>;
-  enqueue(items: SyncQueueItem[]): Promise<void>;
-  dequeue(itemIds: string[]): Promise<void>;
+  enqueue(items: SyncQueueItem[], expectedActiveKey?: string): Promise<void>;
+  dequeue(itemIds: string[], expectedActiveKey?: string): Promise<void>;
   getActiveKey(): string;
   hasLegacyData(): Promise<boolean>;
   getLegacyData(): Promise<Data | null>;
@@ -251,17 +251,21 @@ export class IndexedDbRepository implements Repository {
     });
   }
 
-  async enqueue(items: SyncQueueItem[]): Promise<void> {
+  async enqueue(items: SyncQueueItem[], expectedActiveKey?: string): Promise<void> {
     if (!items.length) return;
+    this.assertActiveKey(expectedActiveKey);
     return this.withConnection(async db => {
+      this.assertActiveKey(expectedActiveKey);
       const tx = db.transaction('app', 'readwrite');
       try {
         const existing: SyncQueueItem[] = (await tx.store.get('sync_queue')) ?? [];
+        this.assertActiveKey(expectedActiveKey);
         const itemMap = new Map<string, SyncQueueItem>(existing.map(it => [it.id, it]));
         for (const item of items) {
           itemMap.set(item.id, item);
         }
         await tx.store.put(Array.from(itemMap.values()), 'sync_queue');
+        this.assertActiveKey(expectedActiveKey);
         await tx.done;
       } catch (err) {
         try { tx.abort(); } catch {}
@@ -271,15 +275,19 @@ export class IndexedDbRepository implements Repository {
     });
   }
 
-  async dequeue(itemIds: string[]): Promise<void> {
+  async dequeue(itemIds: string[], expectedActiveKey?: string): Promise<void> {
     if (!itemIds.length) return;
+    this.assertActiveKey(expectedActiveKey);
     return this.withConnection(async db => {
+      this.assertActiveKey(expectedActiveKey);
       const tx = db.transaction('app', 'readwrite');
       try {
         const idSet = new Set(itemIds);
         const existing: SyncQueueItem[] = (await tx.store.get('sync_queue')) ?? [];
+        this.assertActiveKey(expectedActiveKey);
         const filtered = existing.filter(it => !idSet.has(it.id));
         await tx.store.put(filtered, 'sync_queue');
+        this.assertActiveKey(expectedActiveKey);
         await tx.done;
       } catch (err) {
         try { tx.abort(); } catch {}
@@ -287,6 +295,12 @@ export class IndexedDbRepository implements Repository {
         throw err;
       }
     });
+  }
+
+  private assertActiveKey(expectedActiveKey?: string): void {
+    if (expectedActiveKey !== undefined && this.activeKey !== expectedActiveKey) {
+      throw new Error('账号已切换，同步队列没有更新。');
+    }
   }
 }
 

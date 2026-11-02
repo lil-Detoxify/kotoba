@@ -1,8 +1,10 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  readonly VITE_API_BASE_URL?: string;
   readonly VITE_MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL?: string;
   readonly VITE_MINIPROGRAM_AUDIO_ASSET_BASE_URL?: string;
+  readonly VITE_MINIPROGRAM_DICTIONARY_ASSET_BASE_URL?: string;
 }
 
 declare module '*.vue' {

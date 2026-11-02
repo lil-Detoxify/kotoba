@@ -1,20 +1,31 @@
 import { spawn } from 'node:child_process';
-import { statSync, existsSync } from 'node:fs';
+import { statSync, existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const root = path.resolve('.');
 const xdg = path.resolve('.xdg-config');
 
+const pkg = JSON.parse(readFileSync(path.resolve(root, 'package.json'), 'utf8'));
+const version = process.argv[2] || pkg.version;
+
 const files = [
   {
-    local: 'release/Kotoba-0.6.0-Windows-x64-Setup.exe',
-    remoteKey: 'kotoba-assets/releases/0.6.0/Kotoba-0.6.0-Windows-x64-Setup.exe',
-    name: 'Kotoba-0.6.0-Windows-x64-Setup.exe'
+    local: `release/KotoBud-${version}-Windows-x64-Setup.exe`,
+    remoteKey: `kotoba-assets/releases/${version}/KotoBud-${version}-Windows-x64-Setup.exe`,
+    name: `KotoBud-${version}-Windows-x64-Setup.exe`,
+    contentType: 'application/octet-stream'
   },
   {
-    local: 'release/Kotoba-0.6.0-Windows-x64-Portable.exe',
-    remoteKey: 'kotoba-assets/releases/0.6.0/Kotoba-0.6.0-Windows-x64-Portable.exe',
-    name: 'Kotoba-0.6.0-Windows-x64-Portable.exe'
+    local: `release/KotoBud-${version}-Windows-x64-Portable.exe`,
+    remoteKey: `kotoba-assets/releases/${version}/KotoBud-${version}-Windows-x64-Portable.exe`,
+    name: `KotoBud-${version}-Windows-x64-Portable.exe`,
+    contentType: 'application/octet-stream'
+  },
+  {
+    local: `release/SHA256SUMS-${version}.txt`,
+    remoteKey: `kotoba-assets/releases/${version}/SHA256SUMS-${version}.txt`,
+    name: `SHA256SUMS-${version}.txt`,
+    contentType: 'text/plain'
   }
 ];
 
@@ -35,7 +46,7 @@ async function uploadFile(file) {
     '--file',
     file.local,
     '--content-type',
-    'application/octet-stream',
+    file.contentType || 'application/octet-stream',
     '--remote'
   ];
 
@@ -68,4 +79,4 @@ for (const file of files) {
   await uploadFile(file);
 }
 
-console.log('[Upload] All Windows 0.6.0 releases uploaded successfully to Cloudflare R2!');
+console.log(`[Upload] All Windows ${version} releases uploaded successfully to Cloudflare R2!`);

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="KotoBud JLPT N5–N1 社区备考词表的来源、许可、统计与 JSON 下载。">
+  <title>JLPT 词书来源与下载 · KotoBud</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #263b2e;
+      --green: #315944;
+      --muted: #617064;
+      --line: #d9e2d5;
+      --paper: #fffefa;
+      --wash: #f5f7f1;
+      --soft: #edf3e7;
+      --gold: #a77830;
+      font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+      background: var(--wash);
+      color: var(--ink);
+    }
+    * { box-sizing: border-box; }
+    .source-card { min-width: 0; overflow-wrap: anywhere; }
+    body { min-width: 320px; margin: 0; background: var(--wash); line-height: 1.65; }
+    a { color: #315944; text-underline-offset: 3px; }
+    a:hover { color: #1d3d2a; }
+    a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+    .page { width: min(760px, calc(100% - 36px)); margin: 0 auto; padding: 24px 0 56px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; }
+    .seal { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #cbd9c8; border-radius: 50%; color: var(--green); background: var(--paper); font-family: "Noto Serif CJK SC", "Songti SC", serif; font-size: 19px; }
+    .brand small { display: block; color: var(--muted); font-size: 10px; letter-spacing: .16em; }
+    .brand strong { font-size: 13px; letter-spacing: .03em; }
+    .back { flex: 0 0 auto; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--green); background: var(--paper); font-size: 12px; text-decoration: none; }
+    .hero { position: relative; overflow: hidden; padding: clamp(24px, 6vw, 42px); border: 1px solid #d7e3d2; border-radius: 22px; background: linear-gradient(130deg, #edf4e7, #e8efdf 58%, #f5f5e9); box-shadow: 0 16px 38px rgba(42, 73, 44, .055); }
+    .hero::after { position: absolute; right: -73px; bottom: -120px; width: 260px; height: 260px; border: 1px solid rgba(80, 111, 71, .13); border-radius: 50%; content: ""; pointer-events: none; }
+    .hero > * { position: relative; z-index: 1; }
+    .eyebrow { margin: 0 0 10px; color: #658066; font-size: 10px; font-weight: 750; letter-spacing: .18em; text-transform: uppercase; }
+    h1, h2, p { margin-top: 0; }
+    h1 { max-width: 15ch; margin-bottom: 12px; color: #263d2e; font-family: "Noto Serif CJK SC", "Songti SC", Georgia, serif; font-size: clamp(30px, 6vw, 43px); font-weight: 650; letter-spacing: -.045em; line-height: 1.2; }
+    .hero-copy { max-width: 58ch; margin-bottom: 20px; color: #536456; font-size: 14px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { padding: 5px 10px; border: 1px solid rgba(92, 122, 85, .18); border-radius: 999px; color: #48674b; background: rgba(255, 254, 250, .68); font-size: 11px; font-weight: 650; }
+    .notice { display: flex; gap: 12px; margin: 18px 0 34px; padding: 16px 18px; border: 1px solid #e7dcc1; border-radius: 13px; color: #6f5c38; background: #fbf7e9; font-size: 13px; }
+    .notice strong { display: block; margin-bottom: 2px; color: #594929; }
+    .notice-mark { flex: 0 0 25px; display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid #e6d5ad; border-radius: 50%; font-weight: 800; }
+    .section { margin-top: 32px; }
+    .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+    .section-number { color: #a77830; font-size: 11px; font-weight: 750; letter-spacing: .12em; }
+    h2 { margin-bottom: 0; color: #2a4333; font-family: "Noto Serif CJK SC", "Songti SC", Georgia, serif; font-size: 21px; letter-spacing: -.02em; }
+    .section-intro { margin: 0 0 15px; color: var(--muted); font-size: 13px; }
+    .level-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .level-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; padding: 15px 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+    .level-name { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .level-badge { display: grid; place-items: center; flex: 0 0 43px; height: 43px; border: 1px solid #d5e1d0; border-radius: 12px; color: var(--green); background: var(--soft); font-weight: 800; }
+    .level-name strong { display: block; font-size: 13px; }
+    .level-name small { display: block; color: var(--muted); font-size: 11px; }
+    .download { flex: 0 0 auto; padding: 7px 10px; border: 1px solid #cbdac9; border-radius: 9px; color: #315944; background: #f5f8f1; font-size: 11px; font-weight: 700; text-decoration: none; }
+    .download:hover { border-color: #a7bca9; background: #edf3e7; }
+    .count-note { margin: 12px 2px 0; color: var(--muted); font-size: 11px; }
+    .source-list { display: grid; gap: 10px; }
+    .source-card { padding: 16px 18px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+    .source-card h3 { margin: 0 0 5px; color: #304b39; font-size: 14px; }
+    .source-card p { margin: 0; color: #58695c; font-size: 12px; }
+    .source-card p + p { margin-top: 8px; }
+    .license { margin-top: 17px; padding: 17px 18px; border-left: 3px solid #648064; border-radius: 0 12px 12px 0; background: #edf3e8; color: #4f6252; font-size: 12px; }
+    .license strong { color: #2e4e38; }
+    .license-links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 9px; }
+    .scope { margin: 28px 0 0; padding-top: 17px; border-top: 1px solid var(--line); color: #68766b; font-size: 11px; }
+    @media (max-width: 760px) {
+      .page { width: min(100% - 28px, 560px); padding-top: 15px; }
+      .topbar { margin-bottom: 16px; }
+      .hero { border-radius: 18px; }
+      .level-grid { grid-template-columns: 1fr; }
+      .section { margin-top: 27px; }
+    }
+    @media (max-width: 390px) {
+      .page { width: calc(100% - 22px); }
+      .back { padding: 7px 9px; font-size: 11px; }
+      .level-card { padding: 12px; }
+      .download { padding: 7px 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="topbar" aria-label="页面导航">
+      <a class="brand" href="/app/" aria-label="Kotobud Web 学习首页">
+        <span class="seal" aria-hidden="true"><img src="/brand/kotobud-mark.svg" alt="" width="40" height="40"></span>
+        <span><small><img src="/brand/kotobud-wordmark.svg" alt="Kotobud" width="93" height="18" style="vertical-align: middle;"> · WEB</small><strong>词书来源说明</strong></span>
+      </a>
+      <a class="back" href="/app/">返回 Web 学习</a>
+    </nav>
+
+    <header class="hero">
+      <p class="eyebrow">JLPT VOCABULARY · N5—N1</p>
+      <h1>备考词表，来源清楚</h1>
+      <p class="hero-copy">这里提供 N5 到 N1 的社区备考参考词表、各级条数和来源说明。等级用于学习整理，不代表官方考纲，也不保证某个词会出现在考试中。</p>
+      <div class="hero-meta" aria-label="词表概况">
+        <span class="pill">5 个等级</span>
+        <span class="pill">合计 7,809 条</span>
+        <span class="pill">数据许可：CC BY-SA 4.0</span>
+      </div>
+    </header>
+
+    <aside class="notice" aria-label="等级说明">
+      <span class="notice-mark" aria-hidden="true">i</span>
+      <span><strong>JLPT 没有发布现行 N5—N1 官方词汇清单</strong>等级参考 Jonathan Waller 的公开备考资料，并由 OpenJLPT 整理。词表适合辅助复习；不同参考等级之间可能出现同一词条。</span>
+    </aside>
+
+    <section class="section" aria-labelledby="downloads-title">
+      <div class="section-head"><span class="section-number">01</span><h2 id="downloads-title">按等级查看与下载</h2></div>
+      <p class="section-intro">每个链接提供对应等级的 JSON 词书。</p>
+      <div class="level-grid">
+        <article class="level-card">
+          <div class="level-name"><span class="level-badge">N5</span><span><strong>入门</strong><small>674 条</small></span></div>
+          <a class="download" href="/data/books/jlpt-n5.json" download>下载 JSON</a>
+        </article>
+        <article class="level-card">
+          <div class="level-name"><span class="level-badge">N4</span><span><strong>基础</strong><small>630 条</small></span></div>
+          <a class="download" href="/data/books/jlpt-n4.json" download>下载 JSON</a>
+        </article>
+        <article class="level-card">
+          <div class="level-name"><span class="level-badge">N3</span><span><strong>进阶</strong><small>1,659 条</small></span></div>
+          <a class="download" href="/data/books/jlpt-n3.json" download>下载 JSON</a>
+        </article>
+        <article class="level-card">
+          <div class="level-name"><span class="level-badge">N2</span><span><strong>中高级</strong><small>1,778 条</small></span></div>
+          <a class="download" href="/data/books/jlpt-n2.json" download>下载 JSON</a>
+        </article>
+        <article class="level-card">
+          <div class="level-name"><span class="level-badge">N1</span><span><strong>高级</strong><small>3,068 条</small></span></div>
+          <a class="download" href="/data/books/jlpt-n1.json" download>下载 JSON</a>
+        </article>
+      </div>
+      <p class="count-note">各级按词书分别计数，合计 7,809 条；来源数据中的 2 条 N1 词形与读音冲突记录已隔离审校。分级参考可能重叠，因此条数是按册统计。</p>
+    </section>
+
+    <section class="section" aria-labelledby="sources-title">
+      <div class="section-head"><span class="section-number">02</span><h2 id="sources-title">词条与释义来源</h2></div>
+      <div class="source-list">
+        <article class="source-card">
+          <h3>OpenJLPT v0.3.0 · 版本固定到提交</h3>
+          <p>本词书以 OpenJLPT 社区数据为备考整理基础，来源快照固定在提交 <code>0d1d3410bec90bd4098a7c72de820543cb4f707c</code>。OpenJLPT 将词汇等级和英文短释义关联到 Jonathan Waller 的 JLPT Resources；相关数据采用 CC BY-SA 4.0。</p>
+          <p><a href="https://github.com/evanclan/OpenJLPT/blob/0d1d3410bec90bd4098a7c72de820543cb4f707c/NOTICE.md" target="_blank" rel="noopener noreferrer">查看该提交的 OpenJLPT NOTICE</a> · <a href="https://www.tanos.co.uk/jlpt/sharing/" target="_blank" rel="noopener noreferrer">Jonathan Waller 的数据使用说明（CC BY）</a></p>
+        </article>
+        <article class="source-card">
+          <h3>日语词条、读音与词性 · JMdict / EDRDG</h3>
+          <p>日语词条与词性参考 JMdict（Electronic Dictionary Research and Development Group，EDRDG），按 CC BY-SA 4.0 使用；内容经过整理以适配分级词书。</p>
+          <p><a href="https://www.edrdg.org/edrdg/licence.html" target="_blank" rel="noopener noreferrer">查看 EDRDG 许可说明</a></p>
+        </article>
+        <article class="source-card">
+          <h3>中文释义 · Tomoshi-dict-data</h3>
+          <p>中文释义取自 Tomoshi-dict-data <code>v2026-09-02</code> 发布版的中文词义。它们是 JMdict 衍生、经 LLM 辅助翻译的内容，作者 Y1Z 按 CC BY-SA 4.0 发布。少量短语及易混淆词义经过补充校订，并保留来源记录。</p>
+          <p>本词书未打包 Tatoeba 例句。</p>
+          <p><a href="https://github.com/tomoshi-app/tomoshi-dict-data/releases/tag/v2026-09-02" target="_blank" rel="noopener noreferrer">Tomoshi-dict-data v2026-09-02 发布页</a></p>
+        </article>
+      </div>
+      <div class="license">
+        <strong>词表数据按 CC BY-SA 4.0 提供，软件代码许可另行适用。</strong>
+        <div>再利用或分发这些词表时，请保留来源说明、指出修改，并按相同许可分享衍生数据。</div>
+        <div class="license-links">
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0 许可正文</a>
+          <a href="/dictionary/LICENSE.md">本地词典数据许可汇总</a>
+          <a href="/dictionary/NOTICE.md">本地词典数据来源与 NOTICE</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "result": "failed",
+  "windowsPackageVersion": "0.9.1-beta.1",
+  "webUiVersion": "0.9.1",
+  "stagedMainAsset": "assets/main-Bo62HrWV.js",
+  "stagedMainAssetSha256": "a3029460d50cec5249f3a0a70544cd7548c27adcb418bd4a287906eb11c7d575",
+  "error": "locator.innerText: Timeout 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('body')\u001b[22m\n\n    at main (C:\\Users\\75481\\Documents\\ChatGPT\\New project\\jp-vocab\\review\\windows\\2026-10-27\\electron-acceptance.mjs:124:74)",
+  "gpuFailure": true,
+  "rendererCrashed": false,
+  "apiWriteRequests": [],
+  "pageErrors": [],
+  "checkedAt": "2026-10-27T12:31:42.499Z",
+  "profileDirectoryRemoved": false,
+  "profileCleanupError": "EBUSY: resource busy or locked, unlink 'C:\\Users\\75481\\Documents\\ChatGPT\\New project\\jp-vocab\\review\\windows\\2026-10-27\\.runtime\\windows-profile-JFIV6K\\declarative_performance_observer.db'"
+}

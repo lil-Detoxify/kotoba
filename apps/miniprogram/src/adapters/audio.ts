@@ -6,6 +6,7 @@ export interface AudioDiagnosticNotice { playId: number; type: AudioDiagnosticEv
 type AudioContextLike = {
   src?: string;
   playbackRate?: number;
+  volume?: number;
   play: () => void;
   stop: () => void;
   destroy?: () => void;
@@ -63,32 +64,55 @@ export class UniAudioPlayer implements AudioAdapter {
 
   private initContext(): void {
     // @ts-ignore uni global supplied by uni-app at runtime
-    if (typeof uni === "undefined" || typeof uni.createInnerAudioContext !== "function") return;
+    if (typeof uni === "undefined" || typeof uni.createInnerAudioContext !== "function") {
+      throw new Error("uni.createInnerAudioContext is unavailable");
+    }
     // @ts-ignore uni global supplied by uni-app at runtime
-    this.innerAudioContext = uni.createInnerAudioContext() as AudioContextLike;
+    const context = uni.createInnerAudioContext() as AudioContextLike | null;
+    if (!context) throw new Error("uni.createInnerAudioContext returned no context");
+    this.innerAudioContext = context;
     // @ts-ignore uni global supplied by uni-app at runtime
     if (typeof uni.setInnerAudioOption === "function") {
-      // @ts-ignore uni global supplied by uni-app at runtime
-      uni.setInnerAudioOption({ obeyMuteSwitch: false });
+      try {
+        // @ts-ignore uni global supplied by uni-app at runtime
+        void Promise.resolve(uni.setInnerAudioOption({ obeyMuteSwitch: false })).catch(() => undefined);
+      } catch {
+        // A failed global option must not prevent otherwise valid playback.
+      }
     }
+  }
+
+  private reportError(options: AudioPlayOptions, error: unknown): void {
+    try { options.onError?.(error); } catch { /* Consumer callbacks must not break playback cleanup. */ }
   }
 
   async play(url: string, options: AudioPlayOptions = {}): Promise<boolean> {
     this.stop();
-    if (this.destroyed || !url) return false;
     const id = ++this.nextPlayId;
+    if (this.destroyed || !url) {
+      const error = new Error(this.destroyed ? "Audio player has been destroyed" : "Audio source is empty");
+      this.diagnose(id, "error");
+      this.reportError(options, error);
+      return false;
+    }
     try {
       if (!this.innerAudioContext) {
         this.diagnose(id, "contextCreateStart");
         this.initContext();
         if (this.innerAudioContext) this.diagnose(id, "contextCreateReady");
       }
-    } catch {
+    } catch (error) {
       this.diagnose(id, "error");
+      this.reportError(options, error);
       return false;
     }
     const context = this.innerAudioContext;
-    if (!context) { this.diagnose(id, "error"); return false; }
+    if (!context) {
+      const error = new Error("Audio context is unavailable");
+      this.diagnose(id, "error");
+      this.reportError(options, error);
+      return false;
+    }
 
     return new Promise<boolean>((resolve) => {
       const finish = (result: boolean, error?: unknown): void => {
@@ -101,13 +125,13 @@ export class UniAudioPlayer implements AudioAdapter {
         this.speaking = false;
         releaseAudioFocus(this);
         resolve(result);
-        // A failed load/play can leave the native context active even after
-        // its error callback. Stop it after invalidating the request so a
-        // synchronous native callback cannot re-enter this play.
-        if (!result) this.stopNative(context);
+        // Failed native contexts can remain unusable after an error (including
+        // platform-specific -99 failures). Release them so the next play gets
+        // a clean context, after invalidating callbacks above.
+        if (!result) this.releaseNativeContext(context);
         try {
           if (result) options.onEnded?.();
-          else if (error !== undefined) options.onError?.(error);
+          else if (error !== undefined) this.reportError(options, error);
         } catch {
           // Consumer callbacks must not turn a settled play into a rejected
           // native event or leave callers waiting for the Promise.
@@ -140,6 +164,9 @@ export class UniAudioPlayer implements AudioAdapter {
         context.src = url;
         this.diagnose(id, "srcAssigned");
         context.playbackRate = options.slow ? 0.75 : 1;
+        context.volume = typeof options.volume === "number" && Number.isFinite(options.volume)
+          ? Math.min(1, Math.max(0, options.volume))
+          : 1;
         this.diagnose(id, "playCalled");
         context.play();
       } catch (error) {
@@ -200,6 +227,16 @@ export class UniAudioPlayer implements AudioAdapter {
       context.stop();
     } catch {
       // The native context may already have been released.
+    }
+  }
+
+  private releaseNativeContext(context: AudioContextLike): void {
+    if (this.innerAudioContext === context) this.innerAudioContext = null;
+    this.stopNative(context);
+    try {
+      context.destroy?.();
+    } catch {
+      // Ignore a context that has already been released by the native runtime.
     }
   }
 }

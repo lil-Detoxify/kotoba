@@ -1,0 +1,36 @@
+{
+  "result": "failed",
+  "windowsPackageVersion": "0.9.1-beta.1",
+  "expectedWebPackageVersion": "0.9.1",
+  "settingsUiVersion": null,
+  "stagedMainAsset": "assets/main-Bo62HrWV.js",
+  "stagedMainAssetSha256": "a3029460d50cec5249f3a0a70544cd7548c27adcb418bd4a287906eb11c7d575",
+  "firstRun": {
+    "result": "failed",
+    "failurePoint": "Settings route body locator timed out after 45000ms",
+    "gpuFailureLogged": true,
+    "rendererCrashed": false,
+    "apiWriteRequestsObserved": [],
+    "pageErrors": [],
+    "profileRemovedByHarness": false,
+    "profileCleanupError": "EBUSY while unlinking declarative_performance_observer.db; profile was removed manually after the candidate process exited",
+    "profileRemovedAfterward": true,
+    "checkedAt": "2026-10-27T12:31:42.499Z"
+  },
+  "diagnosticFollowUp": {
+    "result": "incomplete",
+    "candidateVersionAssertionPassed": true,
+    "mockAuthInitializationWaitPassed": true,
+    "settingsRouteEvaluation": "Playwright call did not return; diagnostic process was interrupted after about 40 seconds",
+    "urlOrDomSnapshotCaptured": false,
+    "apiWriteRequestsObserved": null,
+    "rendererCrashStatus": "not captured",
+    "profileRemovedAfterward": true,
+    "candidateProcessesRemaining": 0,
+    "checkedAt": "2026-10-27T12:39:53.198Z"
+  },
+  "dictionaryQueryAndComparison": "not verified",
+  "screenshotCaptured": false,
+  "publishedOrInstalled": false,
+  "checkedAt": "2026-10-27T12:39:53.198Z"
+}

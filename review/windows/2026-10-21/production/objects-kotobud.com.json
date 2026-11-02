@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-21T02:25:03.417Z",
+  "version": "0.9.0-beta.2",
+  "origin": "https://kotobud.com",
+  "mode": "objects",
+  "objects": [
+    {
+      "key": "releases/0.9.0-beta.2/KotoBud-0.9.0-beta.2-Windows-x64-Portable.exe",
+      "size": 183502935,
+      "etag": "db27586d72ab41c6ff98897628906bac"
+    },
+    {
+      "key": "releases/0.9.0-beta.2/KotoBud-0.9.0-beta.2-Windows-x64-Setup.exe",
+      "size": 183734913,
+      "etag": "5735943a2e95f7daa10baa9fb7dff26f"
+    },
+    {
+      "key": "releases/0.9.0-beta.2/SHA256SUMS-0.9.0-beta.2.txt",
+      "size": 221,
+      "etag": "efa28d2420e2ec2412f4f3f7669fc58b"
+    }
+  ]
+}

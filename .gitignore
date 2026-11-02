@@ -8,6 +8,18 @@ dist/
 dist-cloudflare/
 release/
 
+# Local release builds and review runtime data
+/review/**/stage/
+/review/**/pack/
+/review/**/.runtime/
+/review/**/site-release/
+/review/**/runtime-process.json
+/review/**/packages/
+/review/**/web/
+/kotobud-review/
+/drafts/
+/scripts/.jlpt-public-get-rechecks-luna.mjs
+
 # Caches
 .cache/
 .npm-cache/

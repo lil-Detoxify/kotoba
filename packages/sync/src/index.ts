@@ -220,6 +220,7 @@ export interface AuthClient {
   getAccessToken(): Promise<string | null>;
   getCurrentUser(): AuthUser | null;
   onAuthStateChange(callback: (user: AuthUser | null) => void): () => void;
+  acceptSession(response: AuthResponse): void;
 }
 
 export interface SyncPullResult {
@@ -256,7 +257,7 @@ export interface SyncClient {
 export class WorkerSyncClient implements SyncClient {
   private authClient?: AuthClient;
 
-  constructor(private baseUrl = '', private defaultTimeoutMs = 10_000, authClient?: AuthClient) {
+  constructor(private baseUrl = '', private defaultTimeoutMs = 30_000, authClient?: AuthClient, private includeInputQuizzes = false) {
     this.authClient = authClient;
   }
 
@@ -264,11 +265,12 @@ export class WorkerSyncClient implements SyncClient {
     this.authClient = client;
   }
 
-  private async request<T>(endpoint: string, token: string, options: RequestInit = {}, retries = 2): Promise<T> {
+  private async request<T>(endpoint: string, token: string, options: RequestInit = {}, retries = 2, customTimeoutMs?: number): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
     let currentToken = token;
     let attempt = 0;
     let lastError: any;
+    const timeout = customTimeoutMs || this.defaultTimeoutMs;
 
     while (attempt <= retries) {
       const headers: Record<string, string> = {
@@ -278,7 +280,10 @@ export class WorkerSyncClient implements SyncClient {
       };
 
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), this.defaultTimeoutMs);
+      const timer = setTimeout(() => {
+        controller.abort(new DOMException(`Request timed out after ${timeout}ms`, 'TimeoutError'));
+      }, timeout);
+
       try {
         const res = await fetch(url, {
           ...options,
@@ -313,9 +318,14 @@ export class WorkerSyncClient implements SyncClient {
         return (await res.json()) as T;
       } catch (err: any) {
         clearTimeout(timer);
-        lastError = err;
+        let normalizedErr = err;
+        if (err?.name === 'AbortError' || err?.name === 'TimeoutError' || (controller.signal.aborted && controller.signal.reason)) {
+          const reasonMsg = controller.signal.reason?.message || err?.message || 'Request timed out';
+          normalizedErr = new Error(`网络同步请求超时 (${timeout}ms)：${reasonMsg}`);
+        }
+        lastError = normalizedErr;
         if (err?.message?.includes('status 4') || err?.message?.includes('unauthorized')) {
-          throw err;
+          throw normalizedErr;
         }
         if (attempt < retries) {
           attempt++;
@@ -338,7 +348,7 @@ export class WorkerSyncClient implements SyncClient {
   async pull(token: string, since?: string): Promise<SyncPullResult> {
     return this.request<SyncPullResult>('/api/v1/sync/pull', token, {
       method: 'POST',
-      body: JSON.stringify({ since })
+      body: JSON.stringify({ since, ...(this.includeInputQuizzes ? { includeInputQuizzes: true } : {}) })
     });
   }
 
@@ -382,20 +392,24 @@ export class CloudBaseAuthClient implements AuthClient {
           await this.refreshToken();
           return;
         }
+        // Guest mode / no saved credentials: do NOT perform blocking network refresh
+        return;
       }
-      // Attempt silent refresh via long-term HttpOnly cookie / refresh endpoint
-      await this.refreshToken();
     } catch (e) {
       console.warn('Auth client init warning:', e);
     }
   }
 
   private async resolveInternalUser(token: string): Promise<AuthUser | null> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(new DOMException('Session request timed out', 'TimeoutError')), 4000);
     try {
       const res = await fetch(`${this.workerApiBase}/api/v1/session`, {
         headers: { 'Authorization': `Bearer ${token}` },
-        credentials: 'include'
+        credentials: 'include',
+        signal: controller.signal
       });
+      clearTimeout(timer);
       if (res.ok) {
         const data = await res.json() as any;
         if (data.authenticated && data.user) {
@@ -412,6 +426,7 @@ export class CloudBaseAuthClient implements AuthClient {
         }
       }
     } catch (e) {
+      clearTimeout(timer);
       console.warn('Failed to resolve internal user from session:', e);
     }
     // Token invalid or expired
@@ -443,6 +458,11 @@ export class CloudBaseAuthClient implements AuthClient {
       try { sessionStorage.removeItem('kotobud_verification_id'); } catch {}
     }
     this.notifyListeners();
+  }
+
+  acceptSession(response: AuthResponse): void {
+    if (!response.success || !response.user || !response.token) throw new Error('Invalid auth session');
+    this.persistSession(response.user, response.token, response.refreshToken);
   }
 
   async checkAccount(email: string): Promise<CheckAccountResult> {
@@ -587,14 +607,18 @@ export class CloudBaseAuthClient implements AuthClient {
   }
 
   async refreshToken(): Promise<AuthResponse> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(new DOMException('Token refresh timed out', 'TimeoutError')), 5000);
     try {
       const savedRefresh = typeof window !== 'undefined' ? localStorage.getItem('jp-vocab.auth-refresh-token') : null;
       const res = await fetch(`${this.workerApiBase}/api/v1/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(savedRefresh ? { refreshToken: savedRefresh } : {}),
-        credentials: 'include'
+        credentials: 'include',
+        signal: controller.signal
       });
+      clearTimeout(timer);
       const data = await res.json() as any;
       if (!res.ok || !data.success || !data.token || !data.user) {
         return { success: false, error: data.message || data.error || '刷新令牌失败' };
@@ -602,6 +626,7 @@ export class CloudBaseAuthClient implements AuthClient {
       this.persistSession(data.user, data.token, data.refreshToken);
       return { success: true, token: data.token, refreshToken: data.refreshToken, user: data.user };
     } catch (err: any) {
+      clearTimeout(timer);
       return { success: false, error: err.message || '刷新异常' };
     }
   }
@@ -701,6 +726,14 @@ export class MockAuthClient implements AuthClient {
   private currentUser: AuthUser | null = null;
   private token: string | null = null;
   private listeners: Set<(user: AuthUser | null) => void> = new Set();
+  acceptSession(response: AuthResponse): void {
+    if (!response.success || !response.user || !response.token) throw new Error('Invalid auth session');
+    this.currentUser = response.user;
+    this.token = response.token;
+    setMockStorage('kotobud_mock_user', JSON.stringify(response.user));
+    setMockStorage('kotobud_mock_token', response.token);
+    this.notifyListeners();
+  }
   public sentCodes: Map<string, string> = new Map();
   public mockUsers: Map<string, { user: AuthUser; password?: string }> = new Map();
 

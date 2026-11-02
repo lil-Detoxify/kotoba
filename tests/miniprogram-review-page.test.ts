@@ -46,7 +46,7 @@ function loadReviewPage(textbooks: any): { harness: Harness; lifecycle: { show?:
 
   const lifecycle: { show?: () => void } = {};
   const navigateTo = vi.fn();
-  const runner = new Function("ref", "computed", "onShow", "getDifficultWords", "getDueWords", "defaultTextbooks", "uni", code);
+  const runner = new Function("ref", "computed", "onShow", "getDifficultWords", "getDueWords", "defaultTextbooks", "uni", "useMiniPageActivity", code);
   const harness = runner(
     vueRef,
     vueComputed,
@@ -55,6 +55,7 @@ function loadReviewPage(textbooks: any): { harness: Harness; lifecycle: { show?:
     getDueWords,
     textbooks,
     { navigateTo },
+    () => vueRef(true),
   ) as Harness;
   return { harness, lifecycle, navigateTo };
 }

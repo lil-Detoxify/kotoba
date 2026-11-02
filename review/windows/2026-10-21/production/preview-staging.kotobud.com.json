@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-21T02:20:45.990Z",
+  "version": "0.9.0-beta.2",
+  "origin": "https://staging.kotobud.com",
+  "mode": "preview",
+  "download": {
+    "status": 200,
+    "latestWindowsLink": true,
+    "latestExtensionLink": true
+  },
+  "main": {
+    "status": 200,
+    "sha256": "b175c060f3e0bda7c6b74ad46cd2a1bc5cae148c045056d700849b7df7906295"
+  },
+  "checksum": {
+    "status": 200,
+    "matches": true
+  },
+  "files": [
+    {
+      "name": "KotoBud-0.9.0-beta.2-Windows-x64-Setup.exe",
+      "headStatus": 200,
+      "contentLength": "183734913",
+      "contentType": "application/octet-stream",
+      "disposition": "attachment; filename=\"KotoBud-0.9.0-beta.2-Windows-x64-Setup.exe\""
+    },
+    {
+      "name": "KotoBud-0.9.0-beta.2-Windows-x64-Portable.exe",
+      "headStatus": 200,
+      "contentLength": "183502935",
+      "contentType": "application/octet-stream",
+      "disposition": "attachment; filename=\"KotoBud-0.9.0-beta.2-Windows-x64-Portable.exe\""
+    }
+  ],
+  "changelog": {
+    "status": 200,
+    "currentVersionPresent": true
+  }
+}

@@ -1,10 +1,14 @@
 {
   "name": "jp-vocab-miniprogram",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.9.1",
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
     "build:mp-weixin": "uni build -p mp-weixin",
+    "dev:preview": "uni -p h5 --host 127.0.0.1 --port 5191",
+    "build:preview": "uni build -p h5",
+    "prebuild:mp-weixin": "node scripts/build-textbook-correction-runtime.mjs",
+    "prebuild:preview": "node scripts/build-textbook-correction-runtime.mjs",
     "verify:build": "node scripts/verify-build.mjs",
     "verify:release": "node scripts/verify-build.mjs --release",
     "type-check": "vue-tsc --noEmit",
@@ -16,12 +20,16 @@
     "@dcloudio/uni-app": "3.0.0-5020420260813003",
     "@dcloudio/uni-mp-weixin": "3.0.0-5020420260813003",
     "@jp/core": "*",
+    "@jp/dictionary": "*",
+    "@jp/importers": "*",
     "@jp/models": "*",
     "@jp/shared": "*",
+    "gsap": "^3.15.0",
     "ts-fsrs": "^5.2.0",
     "vue": "^3.4.21"
   },
   "devDependencies": {
+    "@dcloudio/uni-h5": "3.0.0-5020420260813003",
     "@dcloudio/types": "^3.4.8",
     "@dcloudio/uni-cli-shared": "3.0.0-5020420260813003",
     "@dcloudio/vite-plugin-uni": "3.0.0-5020420260813003",

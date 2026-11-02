@@ -1,4 +1,5 @@
 const TEXTBOOK_COS_ORIGIN = "https://kotobud-assets-1490543304.cos.ap-beijing.myqcloud.com";
+const KOTOBUD_ASSET_ORIGIN = "https://kotobud.com";
 export const MINIPROGRAM_COS_ORIGIN = TEXTBOOK_COS_ORIGIN;
 
 function normalizeHttpsOrigin(value: string | undefined, fallback: string): string {
@@ -12,18 +13,18 @@ function normalizeHttpsOrigin(value: string | undefined, fallback: string): stri
 
 /**
  * Textbook payloads can move independently from the Cloudflare API.
- * The verified COS origin is the default; builds may override it with an
- * explicit HTTPS origin when rolling back a release.
+ * The KotoBud origin serves the deployed static textbook files by default;
+ * builds may override it with another explicit HTTPS origin such as COS.
  */
 export const MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL = normalizeHttpsOrigin(
   import.meta.env.VITE_MINIPROGRAM_TEXTBOOK_ASSET_BASE_URL,
-  TEXTBOOK_COS_ORIGIN,
+  KOTOBUD_ASSET_ORIGIN,
 );
 
-/** Verified audio objects use COS; playback falls back to Cloudflare on error. */
+/** Audio uses the deployed KotoBud routes by default; builds may override the origin. */
 export const MINIPROGRAM_AUDIO_ASSET_BASE_URL = normalizeHttpsOrigin(
   import.meta.env.VITE_MINIPROGRAM_AUDIO_ASSET_BASE_URL,
-  MINIPROGRAM_COS_ORIGIN,
+  KOTOBUD_ASSET_ORIGIN,
 );
 
 export function assetUrl(path: string, baseUrl: string): string {

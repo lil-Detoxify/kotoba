@@ -5,6 +5,11 @@ import { normalizeLegacyQuizAttempt } from "../../services/quiz-compat";
 
 export type StudyExercise = ExerciseType;
 
+export function hasStudyContent(value?: string | null): boolean {
+  const text = value?.trim();
+  return !!text && text !== "/" && text !== "／";
+}
+
 export function createStudyQuestion(
   word: Word,
   pool: Word[],
@@ -17,11 +22,14 @@ export function createStudyQuestion(
     ? (["kana-meaning", "kanji-reading", "audio-meaning"] as QuizType[]).sort(() => random() - 0.5)
     : [exercise];
   for (const type of types) {
+    const answerFor = (candidate: Word) => type === "kanji-reading" ? candidate.reading : candidate.meaning;
+    if (!hasStudyContent(word.reading) || !hasStudyContent(answerFor(word))) continue;
     // Listening questions require a playable URL. The caller supplies the URL
     // gate because the URL may depend on the selected voice and runtime.
-    if (type === "audio-meaning" && (!word.reading || !canPlayAudio())) continue;
-    const question = createQuestion(word, pool, type, random);
-    if (question) return question;
+    if (type === "audio-meaning" && !canPlayAudio()) continue;
+    const usablePool = pool.filter((candidate) => hasStudyContent(candidate.reading) && hasStudyContent(answerFor(candidate)));
+    const question = createQuestion(word, usablePool, type, random);
+    if (question && question.options.every(hasStudyContent)) return question;
   }
   return null;
 }

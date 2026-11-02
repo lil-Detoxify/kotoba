@@ -1,9 +1,23 @@
+<script lang="ts">
+import { createFriendShare, createTimelineShare } from "../../services/share";
+export default {
+  onShareAppMessage: createFriendShare,
+  onShareTimeline: createTimelineShare,
+};
+</script>
+
 <script setup lang="ts">
+import { useMiniPageActivity } from "../../services/page-motion";
 import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
+import MiniPage from "../../components/MiniPage.vue";
+import MiniHeader from "../../components/MiniHeader.vue";
+import MiniSkeleton from "../../components/MiniSkeleton.vue";
+import MiniMeaningText from "../../components/MiniMeaningText.vue";
 import { getDifficultWords, getDueWords } from "@jp/core";
 import type { Word } from "@jp/models";
 import { defaultTextbooks } from "../../services/textbooks";
+useMiniPageActivity();
 
 const dueWords = ref<Word[]>([]);
 const difficultWords = ref<Word[]>([]);
@@ -62,22 +76,15 @@ onShow(() => {
 </script>
 
 <template>
-  <view class="container review-page">
-    <view class="section-header">
-      <text class="section-title">复习</text>
-      <text class="section-desc">把到期词和需要多见几次的词分开处理</text>
-    </view>
-
-    <view v-if="loading" class="card status-card">
-      <text class="status-title">正在准备复习队列…</text>
-      <text class="status-hint">正在读取词书内容，请稍候。</text>
-    </view>
+  <MiniPage class="review-page">
+    <MiniHeader kicker="REVIEW / 再见一次" title="让记忆，慢慢扎根" description="按 FSRS 计划重温到期词，也给困难词多一点耐心。" />
+    <MiniSkeleton v-if="loading" label="正在读取词书，准备复习队列…" />
 
     <template v-else>
-      <view class="card queue-card">
+      <view class="card queue-card due-queue motion-enter">
         <view class="queue-heading">
           <view class="queue-title-group">
-            <text class="queue-kicker">今日计划</text>
+            <text class="queue-kicker">01 / 今日计划</text>
             <text class="queue-title">到期复习</text>
           </view>
           <text v-if="!dueError" class="queue-count">{{ dueWords.length }}</text>
@@ -95,6 +102,7 @@ onShow(() => {
             @tap="startReview"
           >开始到期复习</button>
           <view v-else class="empty-state">
+            <text class="empty-mark" aria-hidden="true">✓</text>
             <text class="empty-title">暂时没有到期词</text>
             <text class="empty-hint">新学几课后，记得回来看看。</text>
           </view>
@@ -103,17 +111,17 @@ onShow(() => {
             <view v-for="word in dueWords.slice(0, 8)" :key="word.id" class="word-row">
               <text class="word-term">{{ word.term }}</text>
               <text class="word-reading">{{ word.reading }}</text>
-              <text class="word-meaning">{{ word.meaning }}</text>
+              <MiniMeaningText class="word-meaning" :word="word" />
             </view>
             <text v-if="dueWords.length > 8" class="more-tip">还有 {{ dueWords.length - 8 }} 个到期词</text>
           </view>
         </template>
       </view>
 
-      <view class="card queue-card">
+      <view class="card queue-card difficult-queue motion-enter">
         <view class="queue-heading">
           <view class="queue-title-group">
-            <text class="queue-kicker">重点巩固</text>
+            <text class="queue-kicker">02 / 重点巩固</text>
             <text class="queue-title">困难词</text>
           </view>
           <text v-if="!difficultError" class="queue-count difficult-count">{{ difficultWords.length }}</text>
@@ -139,21 +147,21 @@ onShow(() => {
             <view v-for="word in difficultWords.slice(0, 8)" :key="word.id" class="word-row">
               <text class="word-term">{{ word.term }}</text>
               <text class="word-reading">{{ word.reading }}</text>
-              <text class="word-meaning">{{ word.meaning }}</text>
+              <MiniMeaningText class="word-meaning" :word="word" />
             </view>
             <text v-if="difficultWords.length > 8" class="more-tip">还有 {{ difficultWords.length - 8 }} 个困难词</text>
           </view>
         </template>
       </view>
     </template>
-  </view>
+  </MiniPage>
 </template>
 
 <style scoped>
 .review-page {
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
 }
-.review-page .card { background: var(--kotoba-paper); border: 1rpx solid var(--kotoba-line); border-radius: 20rpx; box-shadow: none; }
+.review-page .card { background: var(--kotoba-paper); border: 1rpx solid var(--kotoba-line); border-radius: 24rpx; box-shadow: 0 10rpx 28rpx rgba(35,57,46,.035); }
 
 .section-header {
   margin-bottom: 24rpx;
@@ -332,6 +340,19 @@ onShow(() => {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+.queue-card { padding: 32rpx; border-radius: 28rpx !important; }
+.due-queue { background: #edf3e6 !important; border-color: #d0dfc6 !important; }
+.difficult-queue { animation-delay: 65ms; }
+.queue-kicker { font-size: 22rpx; letter-spacing: 2rpx; margin-bottom: 8rpx; }
+.queue-title { font-size: 38rpx; }
+.queue-count { font-size: 80rpx; font-weight: 600; letter-spacing: -3rpx; font-variant-numeric: tabular-nums; }
+.difficult-count { color: var(--kotoba-green); }
+.queue-description { margin: 20rpx 0; line-height: 1.7; }
+.empty-state { position: relative; min-height: 136rpx; background: #f8faf4; border: 1rpx dashed #cbdac3; padding: 24rpx; }
+.empty-mark { display: flex; width: 48rpx; height: 48rpx; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 14rpx; color: var(--kotoba-green); background: #e4eedb; font-size: 28rpx; }
+.word-row { padding: 20rpx 0; gap: 8rpx; }
+.word-term { font-size: 34rpx; }
+.word-reading { font-size: 25rpx; }
 
 .word-term {
   color: var(--kotoba-ink);

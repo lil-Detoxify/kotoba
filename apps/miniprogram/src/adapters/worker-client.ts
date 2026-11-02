@@ -327,6 +327,19 @@ export class MiniProgramWorkerClient {
     }, parseAuthResponse);
   }
 
+  async loginWechat(code: string): Promise<MiniProgramAuthResponse> {
+    return this.request('/api/v1/auth/wechat/mini-login', { method: 'POST', data: { code } }, parseAuthResponse);
+  }
+
+  async linkWechat(code: string, token: string): Promise<{ success: true; userId: string }> {
+    return this.request('/api/v1/auth/wechat/mini-link', {
+      method: 'POST', headers: MiniProgramWorkerClient.bearer(token), data: { code }
+    }, value => {
+      if (!isRecord(value) || value.success !== true) invalid('wechat link');
+      return { success: true, userId: requiredString(value, 'userId', 'wechat link') };
+    });
+  }
+
   async loginWithPassword(email: string, password: string): Promise<MiniProgramAuthResponse> {
     return this.loginPassword(email, password);
   }
@@ -357,7 +370,7 @@ export class MiniProgramWorkerClient {
     return this.request("/api/v1/sync/pull", {
       method: "POST",
       headers: MiniProgramWorkerClient.bearer(token),
-      data: since === undefined ? {} : { since }
+      data: since === undefined ? { includeInputQuizzes: true } : { since, includeInputQuizzes: true }
     }, parsePull);
   }
 

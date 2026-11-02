@@ -162,7 +162,7 @@ describe('KotoBud Cloud Sync & Account System (17 Scenarios)', () => {
   // Scenario 2
   it('2. 首次登录（Case A：本地有数据，云端为空）将本地记录作为初始云端记录完整上传', async () => {
     const mockD1 = new MockD1();
-    const env = { DB: mockD1 };
+    const env = { DB: mockD1, MOCK_AUTH: 'true' };
 
     // Worker sync push
     const token = 'mock_user_case_a:user_a:case_a@kotobud.com';
@@ -207,7 +207,7 @@ describe('KotoBud Cloud Sync & Account System (17 Scenarios)', () => {
   // Scenario 3
   it('3. 新设备登录（Case B：本地为空，云端有记录）完整拉取云端记录到本地', async () => {
     const mockD1 = new MockD1();
-    const env = { DB: mockD1 };
+    const env = { DB: mockD1, MOCK_AUTH: 'true' };
     const token = 'mock_user_case_b:user_b:case_b@kotobud.com';
 
     // Seed cloud data
@@ -592,7 +592,7 @@ describe('KotoBud Cloud Sync & Account System (17 Scenarios)', () => {
   // Scenario 15
   it('15. 未携带合法 Authorization 头的 Worker 请求严格返回 401', async () => {
     const mockD1 = new MockD1();
-    const env = { DB: mockD1 };
+    const env = { DB: mockD1, MOCK_AUTH: 'true' };
 
     // No Authorization header
     const resNoAuth = await worker.fetch(new Request('https://staging.kotobud.com/api/v1/sync/pull', {
@@ -613,7 +613,7 @@ describe('KotoBud Cloud Sync & Account System (17 Scenarios)', () => {
   // Scenario 16
   it('16. 恶意伪造或修改 request body 中的 userId 无法越权访问其他用户数据（Worker 强制基于 token 解析 user_id）', async () => {
     const mockD1 = new MockD1();
-    const env = { DB: mockD1 };
+    const env = { DB: mockD1, MOCK_AUTH: 'true' };
     const attackerToken = 'mock_attacker:attacker_uid:attacker@example.com';
 
     // Attacker tries to push data into victim's record by forging userId
@@ -641,7 +641,7 @@ describe('KotoBud Cloud Sync & Account System (17 Scenarios)', () => {
   // Scenario 17
   it('17. D1 数据库中 review_events 满足不可变追加，同一 user_id 历史全量事件可溯源', async () => {
     const mockD1 = new MockD1();
-    const env = { DB: mockD1 };
+    const env = { DB: mockD1, MOCK_AUTH: 'true' };
     const token = 'mock_history:history_uid:history@example.com';
 
     // Push first event

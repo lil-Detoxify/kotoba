@@ -10,7 +10,7 @@ function harness(saved: AuthSession | null) {
     clearSession: vi.fn(async () => { current = null; }),
   };
   const client = {
-    getSession: vi.fn(), refresh: vi.fn(), loginPassword: vi.fn(), verifyCode: vi.fn(), logout: vi.fn(),
+    getSession: vi.fn(), refresh: vi.fn(), loginPassword: vi.fn(), verifyCode: vi.fn(), logout: vi.fn(), loginWechat: vi.fn(), linkWechat: vi.fn(),
   };
   return { storage, client, service: new MiniProgramAuthService(storage, client as any), current: () => current };
 }
@@ -50,5 +50,18 @@ describe("mini-program auth service", () => {
     h.client.logout.mockRejectedValue(new Error("offline"));
     await expect(h.service.logout()).rejects.toThrow("offline");
     expect(h.current()).toBeNull();
+  });
+
+  it('uses a fresh wx.login code and preserves the account when binding', async () => {
+    const h = harness(null);
+    vi.stubGlobal('uni', { login: vi.fn(async () => ({ code: 'fresh-code' })) });
+    h.client.loginWechat.mockResolvedValue({ success: true, token: 'at', refreshToken: 'rt', user: { id: 'kb_wechat', provider: 'wechat' } });
+    await expect(h.service.loginWithWechat()).resolves.toMatchObject({ userId: 'kb_wechat', token: 'at' });
+    expect(h.client.loginWechat).toHaveBeenCalledWith('fresh-code');
+    h.client.linkWechat.mockResolvedValue({ success: true, userId: 'kb_wechat' });
+    await h.service.linkWechat();
+    expect(h.client.linkWechat).toHaveBeenCalledWith('fresh-code', 'at');
+    expect(h.current()?.userId).toBe('kb_wechat');
+    vi.unstubAllGlobals();
   });
 });

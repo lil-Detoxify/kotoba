@@ -1,0 +1,8606 @@
+[
+  {
+    "id": "deep-n5-aru-exist",
+    "forms": [
+      {
+        "term": "ある",
+        "reading": "ある"
+      }
+    ],
+    "meaningKeywords": [
+      "存在"
+    ],
+    "collocation": {
+      "ja": "机の上に本がある",
+      "reading": "つくえのうえにほんがある",
+      "zh": "桌上有书"
+    },
+    "tip": "无生命物品的位置用「に」，物品本身用「が」标出，表示人或动物存在时用「いる」。",
+    "contrast": {
+      "term": "いる",
+      "reading": "いる",
+      "collocation": {
+        "ja": "教室に学生がいる",
+        "reading": "きょうしつにがくせいがいる",
+        "zh": "教室里有学生"
+      },
+      "note": "ある用于物品或抽象事物的存在，いる用于人和动物。"
+    }
+  },
+  {
+    "id": "deep-n5-iru-exist",
+    "forms": [
+      {
+        "term": "いる",
+        "reading": "いる"
+      }
+    ],
+    "meaningKeywords": [
+      "生存"
+    ],
+    "collocation": {
+      "ja": "庭に猫がいる",
+      "reading": "にわにねこがいる",
+      "zh": "院子里有猫"
+    },
+    "tip": "说人或动物在哪里，用「地点に＋人／动物がいる」，物品存在用「ある」。",
+    "contrast": {
+      "term": "ある",
+      "reading": "ある",
+      "collocation": {
+        "ja": "机の上に本がある",
+        "reading": "つくえのうえにほんがある",
+        "zh": "桌上有书"
+      },
+      "note": "いる对应有生命的主体，ある对应物品或抽象事物。"
+    }
+  },
+  {
+    "id": "deep-n5-kuru-direction",
+    "forms": [
+      {
+        "term": "来る",
+        "reading": "くる"
+      }
+    ],
+    "meaningKeywords": [
+      "来（在空间或时间上）"
+    ],
+    "collocation": {
+      "ja": "友達が家に来る",
+      "reading": "ともだちがいえにくる",
+      "zh": "朋友来家里"
+    },
+    "tip": "来る表示朝说话者所在处靠近，去别处用「行く」。",
+    "contrast": {
+      "term": "行く",
+      "reading": "いく",
+      "collocation": {
+        "ja": "友達が学校へ行く",
+        "reading": "ともだちががっこうへいく",
+        "zh": "朋友去学校"
+      },
+      "note": "以说话者所在处为参照，朝这边移动用来る，离开这里去别处用行く。"
+    }
+  },
+  {
+    "id": "deep-n5-sumu-location",
+    "forms": [
+      {
+        "term": "住む",
+        "reading": "すむ"
+      }
+    ],
+    "meaningKeywords": [
+      "居住",
+      "定居"
+    ],
+    "collocation": {
+      "ja": "東京に住む",
+      "reading": "とうきょうにすむ",
+      "zh": "住在东京"
+    },
+    "tip": "居住的地点用「に」，「で」标记的是动作发生的场所。"
+  },
+  {
+    "id": "deep-n5-tsukuru-object",
+    "forms": [
+      {
+        "term": "作る",
+        "reading": "つくる"
+      }
+    ],
+    "meaningKeywords": [
+      "制作",
+      "制造"
+    ],
+    "collocation": {
+      "ja": "夕食を作る",
+      "reading": "ゆうしょくをつくる",
+      "zh": "做晚饭"
+    },
+    "tip": "制作的成品用「を」标出，表示建造房屋或设施时也常用「建てる」。",
+    "contrast": {
+      "term": "建てる",
+      "reading": "たてる",
+      "collocation": {
+        "ja": "家を建てる",
+        "reading": "いえをたてる",
+        "zh": "盖房子"
+      },
+      "note": "作る可用于制作食物、物品或计划，建てる专指建造建筑物。"
+    }
+  },
+  {
+    "id": "deep-n5-tsukeru-light",
+    "forms": [
+      {
+        "term": "つける",
+        "reading": "つける"
+      }
+    ],
+    "meaningKeywords": [
+      "点亮"
+    ],
+    "collocation": {
+      "ja": "電気をつける",
+      "reading": "でんきをつける",
+      "zh": "开灯"
+    },
+    "tip": "主动打开灯或电器用「をつける」，灯自己亮起则用「がつく」。"
+  },
+  {
+    "id": "deep-n5-toru-photo",
+    "forms": [
+      {
+        "term": "撮る",
+        "reading": "とる"
+      }
+    ],
+    "meaningKeywords": [
+      "拍摄",
+      "拍照"
+    ],
+    "collocation": {
+      "ja": "写真を撮る",
+      "reading": "しゃしんをとる",
+      "zh": "拍照片"
+    },
+    "tip": "「写真を撮る」写作「撮る」，同音的「取る」用于拿取、领取等意思。",
+    "contrast": {
+      "term": "取る",
+      "reading": "とる",
+      "collocation": {
+        "ja": "切符を取る",
+        "reading": "きっぷをとる",
+        "zh": "取票"
+      },
+      "note": "撮る用于拍摄影像，取る用于拿取或取得物品。"
+    }
+  },
+  {
+    "id": "deep-n5-toru-take",
+    "forms": [
+      {
+        "term": "取る",
+        "reading": "とる"
+      }
+    ],
+    "meaningKeywords": [
+      "拿",
+      "拿起",
+      "抓住"
+    ],
+    "collocation": {
+      "ja": "切符を取る",
+      "reading": "きっぷをとる",
+      "zh": "取票"
+    },
+    "tip": "拿取、取得物品写作「取る」，拍照片则写作同音的「撮る」。",
+    "contrast": {
+      "term": "撮る",
+      "reading": "とる",
+      "collocation": {
+        "ja": "写真を撮る",
+        "reading": "しゃしんをとる",
+        "zh": "拍照片"
+      },
+      "note": "两词读音相同，取得物品用取る，拍照用撮る。"
+    }
+  },
+  {
+    "id": "deep-n5-noboru-path",
+    "forms": [
+      {
+        "term": "登る",
+        "reading": "のぼる"
+      }
+    ],
+    "meaningKeywords": [
+      "攀登",
+      "登上"
+    ],
+    "collocation": {
+      "ja": "山に登る",
+      "reading": "やまにのぼる",
+      "zh": "登山"
+    },
+    "tip": "登上某个目标常用「に」，强调沿着山路攀登的路径时也可说「山を登る」。"
+  },
+  {
+    "id": "deep-n5-motu-possession",
+    "forms": [
+      {
+        "term": "持つ",
+        "reading": "もつ"
+      }
+    ],
+    "meaningKeywords": [
+      "携带",
+      "拿",
+      "握"
+    ],
+    "collocation": {
+      "ja": "傘を持って行く",
+      "reading": "かさをもっていく",
+      "zh": "带伞去"
+    },
+    "tip": "「物を持つ」可表示拿着或携带，表示拥有、保持某种状态时常用「持っている」。"
+  },
+  {
+    "id": "deep-n5-watasu-recipient",
+    "forms": [
+      {
+        "term": "渡す",
+        "reading": "わたす"
+      }
+    ],
+    "meaningKeywords": [
+      "交付",
+      "递交",
+      "传递"
+    ],
+    "collocation": {
+      "ja": "友達に鍵を渡す",
+      "reading": "ともだちにかぎをわたす",
+      "zh": "把钥匙交给朋友"
+    },
+    "tip": "接收人用「に」，递交的物品用「を」，「渡る」则表示人或物跨越、穿过。",
+    "contrast": {
+      "term": "渡る",
+      "reading": "わたる",
+      "collocation": {
+        "ja": "橋を渡る",
+        "reading": "はしをわたる",
+        "zh": "过桥"
+      },
+      "note": "渡す是把东西交给别人，渡る是跨越一处空间。"
+    }
+  },
+  {
+    "id": "deep-n5-wataru-path",
+    "forms": [
+      {
+        "term": "渡る",
+        "reading": "わたる"
+      }
+    ],
+    "meaningKeywords": [
+      "渡过",
+      "穿过"
+    ],
+    "collocation": {
+      "ja": "橋を渡る",
+      "reading": "はしをわたる",
+      "zh": "过桥"
+    },
+    "tip": "桥、道路等作为跨越的路径时用「を」，把物品交给别人则用同音的「渡す」。",
+    "contrast": {
+      "term": "渡す",
+      "reading": "わたす",
+      "collocation": {
+        "ja": "友達に鍵を渡す",
+        "reading": "ともだちにかぎをわたす",
+        "zh": "把钥匙交给朋友"
+      },
+      "note": "渡る表示自己跨越空间，渡す表示把东西传递给对方。"
+    }
+  },
+  {
+    "id": "deep-n4-ageru-humble",
+    "forms": [
+      {
+        "term": "差し上げる",
+        "reading": "さしあげる"
+      }
+    ],
+    "meaningKeywords": [
+      "赠送",
+      "呈上"
+    ],
+    "collocation": {
+      "ja": "先生に手紙を差し上げる",
+      "reading": "せんせいにてがみをさしあげる",
+      "zh": "呈信给老师"
+    },
+    "tip": "把物品送给对方时，对方用「に」、物品用「を」，差し上げる是「あげる」的谦让说法。",
+    "contrast": {
+      "term": "くださる",
+      "reading": "くださる",
+      "collocation": {
+        "ja": "先生が本をくださる",
+        "reading": "せんせいがほんをくださる",
+        "zh": "老师赠书给我方"
+      },
+      "note": "差し上げる谦让赠与者，くださる尊敬给予者，视角相反。"
+    }
+  },
+  {
+    "id": "deep-n4-itadaku-humble",
+    "forms": [
+      {
+        "term": "いただく",
+        "reading": "いただく"
+      }
+    ],
+    "meaningKeywords": [
+      "接受",
+      "获得",
+      "领取"
+    ],
+    "collocation": {
+      "ja": "先生から資料をいただく",
+      "reading": "せんせいからしりょうをいただく",
+      "zh": "从老师那里领到资料"
+    },
+    "tip": "接受物品用「を」，来源可用「から」，いただく是「もらう」的谦让说法。",
+    "contrast": {
+      "term": "くださる",
+      "reading": "くださる",
+      "collocation": {
+        "ja": "先生が資料をくださる",
+        "reading": "せんせいがしりょうをくださる",
+        "zh": "老师给我方资料"
+      },
+      "note": "いただく从接受者一方谦让地说，くださる从给予者一方尊敬地说。"
+    }
+  },
+  {
+    "id": "deep-n4-kudasaru-honorific",
+    "forms": [
+      {
+        "term": "くださる",
+        "reading": "くださる"
+      }
+    ],
+    "meaningKeywords": [
+      "给予",
+      "赐予"
+    ],
+    "collocation": {
+      "ja": "先生が本をくださる",
+      "reading": "せんせいがほんをくださる",
+      "zh": "老师赠书给我方"
+    },
+    "tip": "尊敬给予者时用「くださる」，若从自己接受礼物的角度谦让表达，用「いただく」。",
+    "contrast": {
+      "term": "いただく",
+      "reading": "いただく",
+      "collocation": {
+        "ja": "先生から本をいただく",
+        "reading": "せんせいからほんをいただく",
+        "zh": "从老师那里收到书"
+      },
+      "note": "くださる尊敬给予者，いただく谦让接受者。"
+    }
+  },
+  {
+    "id": "deep-n4-irassharu-honorific",
+    "forms": [
+      {
+        "term": "いらっしゃる",
+        "reading": "いらっしゃる"
+      }
+    ],
+    "meaningKeywords": [
+      "来",
+      "去",
+      "在（某处）"
+    ],
+    "collocation": {
+      "ja": "先生はいらっしゃいますか",
+      "reading": "せんせいはいらっしゃいますか",
+      "zh": "老师在吗／来了吗"
+    },
+    "tip": "いらっしゃる是「来る、行く、いる」的尊敬语，具体意思由地点和上下文判断。"
+  },
+  {
+    "id": "deep-n4-ukagau-humble",
+    "forms": [
+      {
+        "term": "うかがう",
+        "reading": "うかがう"
+      }
+    ],
+    "meaningKeywords": [
+      "拜访",
+      "到访"
+    ],
+    "collocation": {
+      "ja": "午後にお宅へ伺う",
+      "reading": "ごごにおたくへうかがう",
+      "zh": "下午登门拜访"
+    },
+    "tip": "表示拜访身份较高者时用「伺う」，这是「行く」的谦让语。"
+  },
+  {
+    "id": "deep-n4-ossharu-honorific",
+    "forms": [
+      {
+        "term": "おっしゃる",
+        "reading": "おっしゃる"
+      }
+    ],
+    "meaningKeywords": [
+      "说",
+      "讲",
+      "告诉"
+    ],
+    "collocation": {
+      "ja": "先生がおっしゃる",
+      "reading": "せんせいがおっしゃる",
+      "zh": "老师说"
+    },
+    "tip": "尊敬对方的发言时用「おっしゃる」，说话者用「が」，这是「言う」的尊敬语。"
+  },
+  {
+    "id": "deep-n4-go-ran-honorific",
+    "forms": [
+      {
+        "term": "ごらんになる",
+        "reading": "ごらんになる"
+      }
+    ],
+    "meaningKeywords": [
+      "看",
+      "观看"
+    ],
+    "collocation": {
+      "ja": "資料をご覧になりますか",
+      "reading": "しりょうをごらんになりますか",
+      "zh": "您要看资料吗"
+    },
+    "tip": "ご覧になる是「見る」的尊敬语，尊敬对象作主语，不说「ご覧する」。"
+  },
+  {
+    "id": "deep-n4-itashimasu-humble",
+    "forms": [
+      {
+        "term": "致す",
+        "reading": "いたす"
+      }
+    ],
+    "meaningKeywords": [
+      "做",
+      "进行（谦）"
+    ],
+    "collocation": {
+      "ja": "私が説明いたします",
+      "reading": "わたしがせつめいいたします",
+      "zh": "由我来说明"
+    },
+    "tip": "致す是「する」的谦让语，用于降低自己的动作来表达礼貌。"
+  },
+  {
+    "id": "deep-n4-kureru-direction",
+    "forms": [
+      {
+        "term": "くれる",
+        "reading": "くれる"
+      }
+    ],
+    "meaningKeywords": [
+      "给予",
+      "给"
+    ],
+    "collocation": {
+      "ja": "友達が本をくれる",
+      "reading": "ともだちがほんをくれる",
+      "zh": "朋友把书给我方"
+    },
+    "tip": "给予者用「が」，接受者通常是说话者或说话者一方的人，从接受者角度说「もらう」。",
+    "contrast": {
+      "term": "もらう",
+      "reading": "もらう",
+      "collocation": {
+        "ja": "友達から本をもらう",
+        "reading": "ともだちからほんをもらう",
+        "zh": "从朋友那里收到书"
+      },
+      "note": "くれる突出别人把东西给我方，もらう突出我方收到东西。"
+    }
+  },
+  {
+    "id": "deep-n4-oru-break",
+    "forms": [
+      {
+        "term": "折る",
+        "reading": "おる"
+      }
+    ],
+    "meaningKeywords": [
+      "折断",
+      "折裂"
+    ],
+    "collocation": {
+      "ja": "枝を折る",
+      "reading": "えだをおる",
+      "zh": "折断树枝"
+    },
+    "tip": "把某物折断用他动词「折る」并以「を」标出对象，东西自己断了用「折れる」。",
+    "contrast": {
+      "term": "折れる",
+      "reading": "おれる",
+      "collocation": {
+        "ja": "枝が折れる",
+        "reading": "えだがおれる",
+        "zh": "树枝折断了"
+      },
+      "note": "折る表示有人折断对象，折れる表示对象发生断裂。"
+    }
+  },
+  {
+    "id": "deep-n4-oreru-break",
+    "forms": [
+      {
+        "term": "折れる",
+        "reading": "おれる"
+      }
+    ],
+    "meaningKeywords": [
+      "折断",
+      "断裂"
+    ],
+    "collocation": {
+      "ja": "枝が折れる",
+      "reading": "えだがおれる",
+      "zh": "树枝折断了"
+    },
+    "tip": "折れる用「が」标出断裂的主体，人为折断某物用「折る」。",
+    "contrast": {
+      "term": "折る",
+      "reading": "おる",
+      "collocation": {
+        "ja": "枝を折る",
+        "reading": "えだをおる",
+        "zh": "折断树枝"
+      },
+      "note": "折れる是自动词，折る是他动词。"
+    }
+  },
+  {
+    "id": "deep-n4-okoru-happen",
+    "forms": [
+      {
+        "term": "起こる",
+        "reading": "おこる"
+      }
+    ],
+    "meaningKeywords": [
+      "发生",
+      "出现"
+    ],
+    "collocation": {
+      "ja": "事故が起こる",
+      "reading": "じこがおこる",
+      "zh": "发生事故"
+    },
+    "tip": "发生的事件用「が」标出，引发某件事或叫醒某人则用「起こす」。",
+    "contrast": {
+      "term": "起す",
+      "reading": "おこす",
+      "collocation": {
+        "ja": "子どもを起こす",
+        "reading": "こどもをおこす",
+        "zh": "叫醒孩子"
+      },
+      "note": "起こる表示事情发生，起す表示人为引发或唤醒对象。"
+    }
+  },
+  {
+    "id": "deep-n4-katsu-ni",
+    "forms": [
+      {
+        "term": "勝つ",
+        "reading": "かつ"
+      }
+    ],
+    "meaningKeywords": [
+      "获胜",
+      "胜利"
+    ],
+    "collocation": {
+      "ja": "試合に勝つ",
+      "reading": "しあいにかつ",
+      "zh": "赢得比赛"
+    },
+    "tip": "表示胜过某个对手或比赛时常用「に勝つ」，对方不是「を」的直接宾语。"
+  },
+  {
+    "id": "deep-n4-kayou-regular",
+    "forms": [
+      {
+        "term": "通う",
+        "reading": "かよう"
+      }
+    ],
+    "meaningKeywords": [
+      "定期前往",
+      "出入"
+    ],
+    "collocation": {
+      "ja": "大学に通う",
+      "reading": "だいがくにかよう",
+      "zh": "定期去大学上课"
+    },
+    "tip": "定期往返的目的地常用「に」，通う强调持续、重复前往，不只是一次去某处。"
+  },
+  {
+    "id": "deep-n4-suku-uncrowd",
+    "forms": [
+      {
+        "term": "すく",
+        "reading": "すく"
+      }
+    ],
+    "meaningKeywords": [
+      "变得不拥挤",
+      "稀疏"
+    ],
+    "collocation": {
+      "ja": "電車がすく",
+      "reading": "でんしゃがすく",
+      "zh": "电车变得不拥挤"
+    },
+    "tip": "表示人少、拥挤缓解时读「すく」，同写作「空く」的「あく」表示门店开着或空出位置。"
+  },
+  {
+    "id": "deep-n4-sugiru-time",
+    "forms": [
+      {
+        "term": "過ぎる",
+        "reading": "すぎる"
+      }
+    ],
+    "meaningKeywords": [
+      "超过",
+      "超出"
+    ],
+    "collocation": {
+      "ja": "十二時を過ぎる",
+      "reading": "じゅうにじをすぎる",
+      "zh": "超过十二点"
+    },
+    "tip": "超过的时间或地点常用「を」标记，接在动词ます形词干后「すぎる」则表示做得过度。"
+  },
+  {
+    "id": "deep-n4-sotsugyo-school",
+    "forms": [
+      {
+        "term": "卒業",
+        "reading": "そつぎょう"
+      }
+    ],
+    "meaningKeywords": [
+      "毕业"
+    ],
+    "collocation": {
+      "ja": "大学を卒業する",
+      "reading": "だいがくをそつぎょうする",
+      "zh": "从大学毕业"
+    },
+    "tip": "毕业的学校常用「を」标记，虽然表示离开学校阶段，固定搭配通常是「学校を卒業する」。"
+  },
+  {
+    "id": "deep-n4-shitsumon-target",
+    "forms": [
+      {
+        "term": "質問",
+        "reading": "しつもん"
+      }
+    ],
+    "meaningKeywords": [
+      "提问",
+      "询问"
+    ],
+    "collocation": {
+      "ja": "先生に質問する",
+      "reading": "せんせいにしつもんする",
+      "zh": "向老师提问"
+    },
+    "tip": "向谁提问常用「人に質問する」，问题内容可用「について」引出。"
+  },
+  {
+    "id": "deep-n4-sodan-target",
+    "forms": [
+      {
+        "term": "相談",
+        "reading": "そうだん"
+      }
+    ],
+    "meaningKeywords": [
+      "商议",
+      "协商",
+      "咨询"
+    ],
+    "collocation": {
+      "ja": "先生に進路を相談する",
+      "reading": "せんせいにしんろをそうだんする",
+      "zh": "向老师商量升学方向"
+    },
+    "tip": "商量对象或咨询对象用「に」，商议的事情用「を」。"
+  },
+  {
+    "id": "deep-n4-shiraberu-object",
+    "forms": [
+      {
+        "term": "調べる",
+        "reading": "しらべる"
+      }
+    ],
+    "meaningKeywords": [
+      "查阅",
+      "核查",
+      "研究"
+    ],
+    "collocation": {
+      "ja": "電話番号を調べる",
+      "reading": "でんわばんごうをしらべる",
+      "zh": "查询电话号码"
+    },
+    "tip": "调查或查询的内容用「を」标出，若说明调查的来源，可用「で」。"
+  },
+  {
+    "id": "deep-n4-tazuneru-ask",
+    "forms": [
+      {
+        "term": "尋ねる",
+        "reading": "たずねる"
+      }
+    ],
+    "meaningKeywords": [
+      "询问",
+      "打听"
+    ],
+    "collocation": {
+      "ja": "人に道を尋ねる",
+      "reading": "ひとにみちをたずねる",
+      "zh": "向人问路"
+    },
+    "tip": "问谁用「人に」，询问的内容用「を」，同音的「訪ねる」表示拜访。",
+    "contrast": {
+      "term": "訪ねる",
+      "reading": "たずねる",
+      "collocation": {
+        "ja": "先生の家を訪ねる",
+        "reading": "せんせいのいえをたずねる",
+        "zh": "拜访老师家"
+      },
+      "note": "尋ねる是发问，訪ねる是前往某处拜访，两者读音相同。"
+    }
+  },
+  {
+    "id": "deep-n4-tazuneru-visit",
+    "forms": [
+      {
+        "term": "訪ねる",
+        "reading": "たずねる"
+      }
+    ],
+    "meaningKeywords": [
+      "拜访",
+      "造访",
+      "登门"
+    ],
+    "collocation": {
+      "ja": "先生の家を訪ねる",
+      "reading": "せんせいのいえをたずねる",
+      "zh": "拜访老师家"
+    },
+    "tip": "拜访地点常用「を訪ねる」，向人提问是同音的「尋ねる」。",
+    "contrast": {
+      "term": "尋ねる",
+      "reading": "たずねる",
+      "collocation": {
+        "ja": "人に道を尋ねる",
+        "reading": "ひとにみちをたずねる",
+        "zh": "向人问路"
+      },
+      "note": "訪ねる表示前往某处，尋ねる表示询问问题，两者读音相同。"
+    }
+  },
+  {
+    "id": "deep-n4-sanka-target",
+    "forms": [
+      {
+        "term": "参加",
+        "reading": "さんか"
+      }
+    ],
+    "meaningKeywords": [
+      "参与",
+      "参加"
+    ],
+    "collocation": {
+      "ja": "会議に参加する",
+      "reading": "かいぎにさんかする",
+      "zh": "参加会议"
+    },
+    "tip": "参加的活动常用「に」标出，不说「会議を参加する」。"
+  },
+  {
+    "id": "deep-n4-shusseki-target",
+    "forms": [
+      {
+        "term": "出席",
+        "reading": "しゅっせき"
+      }
+    ],
+    "meaningKeywords": [
+      "出席",
+      "到场"
+    ],
+    "collocation": {
+      "ja": "会議に出席する",
+      "reading": "かいぎにしゅっせきする",
+      "zh": "出席会议"
+    },
+    "tip": "出席的会议或课程常用「に」标记，会議に出席する是固定搭配。"
+  },
+  {
+    "id": "deep-n4-shootai-target",
+    "forms": [
+      {
+        "term": "招待",
+        "reading": "しょうたい"
+      }
+    ],
+    "meaningKeywords": [
+      "邀请",
+      "招待"
+    ],
+    "collocation": {
+      "ja": "友達を誕生日会に招待する",
+      "reading": "ともだちをたんじょうびかいにしょうたいする",
+      "zh": "邀请朋友参加生日会"
+    },
+    "tip": "被邀请的人用「を」，邀请参加的活动或地点用「に」。"
+  },
+  {
+    "id": "deep-n4-shiraseru-arguments",
+    "forms": [
+      {
+        "term": "知らせる",
+        "reading": "しらせる"
+      }
+    ],
+    "meaningKeywords": [
+      "通知",
+      "告知"
+    ],
+    "collocation": {
+      "ja": "友達に結果を知らせる",
+      "reading": "ともだちにけっかをしらせる",
+      "zh": "把结果通知朋友"
+    },
+    "tip": "被通知的人用「に」，通知的内容用「を」，表示事情被知晓时可用「知られる」。"
+  },
+  {
+    "id": "deep-n4-sodateru-object",
+    "forms": [
+      {
+        "term": "育てる",
+        "reading": "そだてる"
+      }
+    ],
+    "meaningKeywords": [
+      "养育",
+      "培养"
+    ],
+    "collocation": {
+      "ja": "庭で花を育てる",
+      "reading": "にわではなをそだてる",
+      "zh": "在院子里养花"
+    },
+    "tip": "被养育或培养的对象用「を」标出，主动成长则用自动词「育つ」。"
+  },
+  {
+    "id": "deep-n4-kowareru-pair",
+    "forms": [
+      {
+        "term": "壊れる",
+        "reading": "こわれる"
+      }
+    ],
+    "meaningKeywords": [
+      "破损"
+    ],
+    "collocation": {
+      "ja": "時計が壊れる",
+      "reading": "とけいがこわれる",
+      "zh": "钟坏了"
+    },
+    "tip": "壊れる描述物品损坏，用「が」标出受损物，人为弄坏用「壊す」。",
+    "contrast": {
+      "term": "壊す",
+      "reading": "こわす",
+      "collocation": {
+        "ja": "時計を壊す",
+        "reading": "とけいをこわす",
+        "zh": "把钟弄坏"
+      },
+      "note": "壊れる表示物品自己坏了，壊す表示有人把物品弄坏。"
+    }
+  },
+  {
+    "id": "deep-n4-kowasu-pair",
+    "forms": [
+      {
+        "term": "壊す",
+        "reading": "こわす"
+      }
+    ],
+    "meaningKeywords": [
+      "破坏",
+      "摧毁"
+    ],
+    "collocation": {
+      "ja": "時計を壊す",
+      "reading": "とけいをこわす",
+      "zh": "把钟弄坏"
+    },
+    "tip": "被弄坏的物品用「を」标出，物品自己损坏时用「壊れる」。",
+    "contrast": {
+      "term": "壊れる",
+      "reading": "こわれる",
+      "collocation": {
+        "ja": "時計が壊れる",
+        "reading": "とけいがこわれる",
+        "zh": "钟坏了"
+      },
+      "note": "壊す是他动词，壊れる是自动词。"
+    }
+  },
+  {
+    "id": "deep-n4-sawaru-ni",
+    "forms": [
+      {
+        "term": "触る",
+        "reading": "さわる"
+      }
+    ],
+    "meaningKeywords": [
+      "触摸",
+      "摸"
+    ],
+    "collocation": {
+      "ja": "展示品に触る",
+      "reading": "てんじひんにさわる",
+      "zh": "触摸展品"
+    },
+    "tip": "触摸的对象常用「に触る」，「を触る」在一般学习用语中不如「に」自然。"
+  },
+  {
+    "id": "deep-n3-aisatsu-signal",
+    "forms": [
+      {
+        "term": "合図",
+        "reading": "あいず"
+      }
+    ],
+    "meaningKeywords": [
+      "信号",
+      "提示"
+    ],
+    "collocation": {
+      "ja": "合図を送る",
+      "reading": "あいずをおくる",
+      "zh": "发出信号"
+    },
+    "tip": "作名词时常说「合図を送る」，作动词时可说「合図する」，表示以信号示意。"
+  },
+  {
+    "id": "deep-n3-aisu-object",
+    "forms": [
+      {
+        "term": "愛する",
+        "reading": "あいする"
+      }
+    ],
+    "meaningKeywords": [
+      "爱",
+      "热爱"
+    ],
+    "collocation": {
+      "ja": "家族を愛する",
+      "reading": "かぞくをあいする",
+      "zh": "爱家人"
+    },
+    "tip": "感情指向的对象用「を」，愛する语气比日常表示喜欢的「好きだ」更强、更郑重。"
+  },
+  {
+    "id": "deep-n3-akenai-morning",
+    "forms": [
+      {
+        "term": "明ける",
+        "reading": "あける"
+      }
+    ],
+    "meaningKeywords": [
+      "破晓",
+      "天亮"
+    ],
+    "collocation": {
+      "ja": "夜が明ける",
+      "reading": "よるがあける",
+      "zh": "天亮"
+    },
+    "tip": "夜、年、季节等一段时间结束时可用「が明ける」，天亮不是人为把什么东西打开。"
+  },
+  {
+    "id": "deep-n3-azukeru-deposit",
+    "forms": [
+      {
+        "term": "預ける",
+        "reading": "あずける"
+      }
+    ],
+    "meaningKeywords": [
+      "寄存",
+      "委托",
+      "存放"
+    ],
+    "collocation": {
+      "ja": "荷物を受付に預ける",
+      "reading": "にもつをうけつけにあずける",
+      "zh": "把行李寄存在接待处"
+    },
+    "tip": "寄存物用「を」，受托保管的人或地点用「に」，自己代人保管则是「預かる」。",
+    "contrast": {
+      "term": "預かる",
+      "reading": "あずかる",
+      "collocation": {
+        "ja": "荷物を預かる",
+        "reading": "にもつをあずかる",
+        "zh": "代为保管行李"
+      },
+      "note": "預ける从交出物品一方说，預かる从接收并保管一方说。"
+    }
+  },
+  {
+    "id": "deep-n3-ataeru-object",
+    "forms": [
+      {
+        "term": "与える",
+        "reading": "あたえる"
+      }
+    ],
+    "meaningKeywords": [
+      "给予",
+      "授予"
+    ],
+    "collocation": {
+      "ja": "学生に機会を与える",
+      "reading": "がくせいにきかいをあたえる",
+      "zh": "给学生机会"
+    },
+    "tip": "接受者用「に」，给予的东西用「を」，与える比「あげる」更正式，也常用于影响或机会。"
+  },
+  {
+    "id": "deep-n3-ataru-hit",
+    "forms": [
+      {
+        "term": "当たる",
+        "reading": "あたる"
+      }
+    ],
+    "meaningKeywords": [
+      "被击中",
+      "被打到"
+    ],
+    "collocation": {
+      "ja": "ボールが壁に当たる",
+      "reading": "ぼーるがかべにあたる",
+      "zh": "球撞到墙上"
+    },
+    "tip": "撞中的主体用「が」，碰撞目标用「に」，这个「当たる」是自动词。"
+  },
+  {
+    "id": "deep-n3-atsukau-handle",
+    "forms": [
+      {
+        "term": "扱う",
+        "reading": "あつかう"
+      }
+    ],
+    "meaningKeywords": [
+      "处理",
+      "操作",
+      "使用"
+    ],
+    "collocation": {
+      "ja": "機械を扱う",
+      "reading": "きかいをあつかう",
+      "zh": "操作机器"
+    },
+    "tip": "被操作、处理或论述的对象用「を」，表示怎样对待某人时也用「人を扱う」。"
+  },
+  {
+    "id": "deep-n3-arawasu-express",
+    "forms": [
+      {
+        "term": "表す",
+        "reading": "あらわす"
+      }
+    ],
+    "meaningKeywords": [
+      "表达",
+      "阐述"
+    ],
+    "collocation": {
+      "ja": "感謝の気持ちを表す",
+      "reading": "かんしゃのきもちをあらわす",
+      "zh": "表达感谢之情"
+    },
+    "tip": "把意思、感情或符号表达出来多写作「表す」，人或物显露出来常写作「現す」。",
+    "contrast": {
+      "term": "現す",
+      "reading": "あらわす",
+      "collocation": {
+        "ja": "姿を現す",
+        "reading": "すがたをあらわす",
+        "zh": "现出身影"
+      },
+      "note": "表す侧重表达内容，現す侧重使隐藏或未见的事物显现。"
+    }
+  },
+  {
+    "id": "deep-n3-arawasu-appear",
+    "forms": [
+      {
+        "term": "現す",
+        "reading": "あらわす"
+      }
+    ],
+    "meaningKeywords": [
+      "显露",
+      "展示"
+    ],
+    "collocation": {
+      "ja": "姿を現す",
+      "reading": "すがたをあらわす",
+      "zh": "现出身影"
+    },
+    "tip": "使身影、姿态等显露出来写作「現す」，表达想法、感情或含义常写作「表す」。",
+    "contrast": {
+      "term": "表す",
+      "reading": "あらわす",
+      "collocation": {
+        "ja": "感謝の気持ちを表す",
+        "reading": "かんしゃのきもちをあらわす",
+        "zh": "表达感谢之情"
+      },
+      "note": "現す使某物显现，表す把意思或感情表达出来。"
+    }
+  },
+  {
+    "id": "deep-n3-arawareru-appear",
+    "forms": [
+      {
+        "term": "現れる",
+        "reading": "あらわれる"
+      }
+    ],
+    "meaningKeywords": [
+      "出现",
+      "显现"
+    ],
+    "collocation": {
+      "ja": "画面に人物が現れる",
+      "reading": "がめんにじんぶつがあらわれる",
+      "zh": "人物出现在画面上"
+    },
+    "tip": "新出现的主体用「が」，出现的位置用「に」，使某物显现出来则用他动词「現す」。",
+    "contrast": {
+      "term": "現す",
+      "reading": "あらわす",
+      "collocation": {
+        "ja": "姿を現す",
+        "reading": "すがたをあらわす",
+        "zh": "现出身影"
+      },
+      "note": "現れる表示主体出现，現す表示有人让其显露。"
+    }
+  },
+  {
+    "id": "deep-n3-awaseru-adjust",
+    "forms": [
+      {
+        "term": "合わせる",
+        "reading": "あわせる"
+      }
+    ],
+    "meaningKeywords": [
+      "合计",
+      "合并",
+      "结合"
+    ],
+    "collocation": {
+      "ja": "予定を合わせる",
+      "reading": "よていをあわせる",
+      "zh": "协调日程"
+    },
+    "tip": "把多个事物调到一致时用「を合わせる」，状态自然相符用自动词「合う」。",
+    "contrast": {
+      "term": "合う",
+      "reading": "あう",
+      "collocation": {
+        "ja": "予定が合う",
+        "reading": "よていがあう",
+        "zh": "日程合得上"
+      },
+      "note": "合わせる表示人为调整使之相合，合う表示本身相符。"
+    }
+  },
+  {
+    "id": "deep-n3-idaku-feeling",
+    "forms": [
+      {
+        "term": "抱く",
+        "reading": "いだく"
+      }
+    ],
+    "meaningKeywords": [
+      "怀有",
+      "心怀",
+      "想法"
+    ],
+    "collocation": {
+      "ja": "将来に希望を抱く",
+      "reading": "しょうらいにきぼうをいだく",
+      "zh": "对未来怀抱希望"
+    },
+    "tip": "「抱く」读作「いだく」时常表示心中怀有情感或想法，读作「だく」时多指用手臂抱住。"
+  },
+  {
+    "id": "deep-n3-itaru-result",
+    "forms": [
+      {
+        "term": "至る",
+        "reading": "いたる"
+      }
+    ],
+    "meaningKeywords": [
+      "导致",
+      "来临",
+      "到来"
+    ],
+    "collocation": {
+      "ja": "話し合いの末に結論に至る",
+      "reading": "はなしあいのすえにけつろんにいたる",
+      "zh": "经过讨论得出结论"
+    },
+    "tip": "到达的结果或阶段常用「に至る」，表示导致某种结果时也常说「～に至る」。"
+  },
+  {
+    "id": "deep-n3-itchi-agree",
+    "forms": [
+      {
+        "term": "一致",
+        "reading": "いっち"
+      }
+    ],
+    "meaningKeywords": [
+      "相符",
+      "对应"
+    ],
+    "collocation": {
+      "ja": "意見が一致する",
+      "reading": "いけんがいっちする",
+      "zh": "意见一致"
+    },
+    "tip": "相同、相符的内容用「が」标出，「意見が一致する」比「意見を一致する」自然。"
+  },
+  {
+    "id": "deep-n3-ihou-rule",
+    "forms": [
+      {
+        "term": "違反",
+        "reading": "いはん"
+      }
+    ],
+    "meaningKeywords": [
+      "违反",
+      "违背",
+      "违规"
+    ],
+    "collocation": {
+      "ja": "規則に違反する",
+      "reading": "きそくにいはんする",
+      "zh": "违反规定"
+    },
+    "tip": "违反的规则或法律用「に」，違反する是名词「違反」接「する」构成的动词。"
+  },
+  {
+    "id": "deep-n3-irai-arguments",
+    "forms": [
+      {
+        "term": "依頼",
+        "reading": "いらい"
+      }
+    ],
+    "meaningKeywords": [
+      "请求",
+      "委托"
+    ],
+    "collocation": {
+      "ja": "業者に修理を依頼する",
+      "reading": "ぎょうしゃにしゅうりをいらいする",
+      "zh": "委托商家维修"
+    },
+    "tip": "受托的人或机构用「に」，委托的事项用「を」。"
+  },
+  {
+    "id": "deep-n3-uketoru-source",
+    "forms": [
+      {
+        "term": "受け取る",
+        "reading": "うけとる"
+      }
+    ],
+    "meaningKeywords": [
+      "收到",
+      "接收"
+    ],
+    "collocation": {
+      "ja": "窓口で書類を受け取る",
+      "reading": "まどぐちでしょるいをうけとる",
+      "zh": "在窗口领取文件"
+    },
+    "tip": "收到的东西用「を」，交付来源可用「から」或「に」标出。"
+  },
+  {
+    "id": "deep-n3-ugokasu-pair",
+    "forms": [
+      {
+        "term": "動かす",
+        "reading": "うごかす"
+      }
+    ],
+    "meaningKeywords": [
+      "移动",
+      "挪动",
+      "搬动"
+    ],
+    "collocation": {
+      "ja": "机を動かす",
+      "reading": "つくえをうごかす",
+      "zh": "挪动桌子"
+    },
+    "tip": "被移动的物体用「を」，物体自行移动或运转时用自动词「動く」。",
+    "contrast": {
+      "term": "動く",
+      "reading": "うごく",
+      "collocation": {
+        "ja": "時計が動く",
+        "reading": "とけいがうごく",
+        "zh": "钟在走"
+      },
+      "note": "動かす是人为让物体移动，動く表示主体自行移动或运转。"
+    }
+  },
+  {
+    "id": "deep-n3-ushinau-object",
+    "forms": [
+      {
+        "term": "失う",
+        "reading": "うしなう"
+      }
+    ],
+    "meaningKeywords": [
+      "失去",
+      "丧失"
+    ],
+    "collocation": {
+      "ja": "信頼を失う",
+      "reading": "しんらいをうしなう",
+      "zh": "失去信任"
+    },
+    "tip": "失去的东西用「を」标出，常与「信頼」「機会」「自信」等抽象名词搭配。"
+  },
+  {
+    "id": "deep-n3-utagau-object",
+    "forms": [
+      {
+        "term": "疑う",
+        "reading": "うたがう"
+      }
+    ],
+    "meaningKeywords": [
+      "怀疑",
+      "猜疑"
+    ],
+    "collocation": {
+      "ja": "自分の目を疑う",
+      "reading": "じぶんのめをうたがう",
+      "zh": "怀疑自己的眼睛"
+    },
+    "tip": "怀疑的人、说法或事实用「を」，「本当かと疑う」也可用「か」引出疑问内容。"
+  },
+  {
+    "id": "deep-n3-utsusu-infection",
+    "forms": [
+      {
+        "term": "移す",
+        "reading": "うつす"
+      }
+    ],
+    "meaningKeywords": [
+      "传染",
+      "传播（感染）"
+    ],
+    "collocation": {
+      "ja": "風邪を人に移す",
+      "reading": "かぜをひとにうつす",
+      "zh": "把感冒传染给别人"
+    },
+    "tip": "被传染的疾病用「を」，传染对象用「に」，自己被传染则用「移る」。"
+  },
+  {
+    "id": "deep-n3-uttaeru-complaint",
+    "forms": [
+      {
+        "term": "訴える",
+        "reading": "うったえる"
+      }
+    ],
+    "meaningKeywords": [
+      "控告",
+      "起诉"
+    ],
+    "collocation": {
+      "ja": "裁判所に訴える",
+      "reading": "さいばんしょにうったえる",
+      "zh": "向法院起诉"
+    },
+    "tip": "提起诉讼时，诉诸的机构或对象用「に」，一般陈述不满、主张时常说「不満を訴える」。"
+  },
+  {
+    "id": "deep-n3-ubau-arguments",
+    "forms": [
+      {
+        "term": "奪う",
+        "reading": "うばう"
+      }
+    ],
+    "meaningKeywords": [
+      "夺取",
+      "夺走",
+      "抢夺"
+    ],
+    "collocation": {
+      "ja": "人から自由を奪う",
+      "reading": "ひとからじゆうをうばう",
+      "zh": "剥夺他人的自由"
+    },
+    "tip": "被夺走的东西用「を」，原持有人用「から」。"
+  },
+  {
+    "id": "deep-n3-uragiru-trust",
+    "forms": [
+      {
+        "term": "裏切る",
+        "reading": "うらぎる"
+      }
+    ],
+    "meaningKeywords": [
+      "背叛",
+      "出卖",
+      "辜负"
+    ],
+    "collocation": {
+      "ja": "友人を裏切る",
+      "reading": "ゆうじんをうらぎる",
+      "zh": "背叛朋友"
+    },
+    "tip": "被背叛的人或被辜负的信任用「を」，常见搭配有「友人を裏切る」「期待を裏切る」。"
+  },
+  {
+    "id": "deep-n3-ureru-sales",
+    "forms": [
+      {
+        "term": "売れる",
+        "reading": "うれる"
+      }
+    ],
+    "meaningKeywords": [
+      "畅销",
+      "好卖"
+    ],
+    "collocation": {
+      "ja": "この本はよく売れる",
+      "reading": "このほんはよくうれる",
+      "zh": "这本书很畅销"
+    },
+    "tip": "表示商品卖得好时用自动词「売れる」，商家把商品卖给顾客则用他动词「売る」。"
+  },
+  {
+    "id": "deep-n3-egaku-object",
+    "forms": [
+      {
+        "term": "描く",
+        "reading": "えがく"
+      }
+    ],
+    "meaningKeywords": [
+      "绘画",
+      "绘制",
+      "描绘"
+    ],
+    "collocation": {
+      "ja": "地図を描く",
+      "reading": "ちずをえがく",
+      "zh": "绘制地图"
+    },
+    "tip": "描绘、绘制的对象用「を」，除具体图画外，也能搭配「未来を描く」表示构想未来。"
+  },
+  {
+    "id": "deep-n3-eru-formal",
+    "forms": [
+      {
+        "term": "得る",
+        "reading": "える"
+      }
+    ],
+    "meaningKeywords": [
+      "获得",
+      "取得",
+      "获取"
+    ],
+    "collocation": {
+      "ja": "許可を得る",
+      "reading": "きょかをえる",
+      "zh": "取得许可"
+    },
+    "tip": "取得的资格、机会或许可用「を得る」，在「あり得る」等表达中也可读作「うる」。"
+  },
+  {
+    "id": "deep-n3-oi-tsuku-ni",
+    "forms": [
+      {
+        "term": "追い付く",
+        "reading": "おいつく"
+      }
+    ],
+    "meaningKeywords": [
+      "赶上",
+      "跟上"
+    ],
+    "collocation": {
+      "ja": "先頭の選手に追い付く",
+      "reading": "せんとうのせんしゅにおいつく",
+      "zh": "追上领先的选手"
+    },
+    "tip": "追赶并达到的对象用「に」，追赶过程中的对象常用「を追う」。"
+  },
+  {
+    "id": "deep-n3-oujiru-ni",
+    "forms": [
+      {
+        "term": "応じる",
+        "reading": "おうじる"
+      }
+    ],
+    "meaningKeywords": [
+      "满足",
+      "接受",
+      "遵从"
+    ],
+    "collocation": {
+      "ja": "依頼に応じる",
+      "reading": "いらいにおうじる",
+      "zh": "回应委托请求"
+    },
+    "tip": "回应、满足的请求或要求用「に」，「応じて」还可表示根据情况采取行动。"
+  },
+  {
+    "id": "deep-n3-oeru-complete",
+    "forms": [
+      {
+        "term": "終える",
+        "reading": "おえる"
+      }
+    ],
+    "meaningKeywords": [
+      "完成",
+      "做完",
+      "使（某事）结束"
+    ],
+    "collocation": {
+      "ja": "仕事を終える",
+      "reading": "しごとをおえる",
+      "zh": "完成工作"
+    },
+    "tip": "人为完成某件事用「を終える」，事情自己结束则用自动词「終わる」。"
+  },
+  {
+    "id": "deep-n3-oou-cover",
+    "forms": [
+      {
+        "term": "覆う",
+        "reading": "おおう"
+      }
+    ],
+    "meaningKeywords": [
+      "覆盖",
+      "包裹"
+    ],
+    "collocation": {
+      "ja": "布で荷物を覆う",
+      "reading": "ぬのでにもつをおおう",
+      "zh": "用布盖住行李"
+    },
+    "tip": "被覆盖的对象用「を」，覆盖材料或工具用「で」。"
+  },
+  {
+    "id": "deep-n3-okuru-gift",
+    "forms": [
+      {
+        "term": "贈る",
+        "reading": "おくる"
+      }
+    ],
+    "meaningKeywords": [
+      "赠送",
+      "馈赠"
+    ],
+    "collocation": {
+      "ja": "友達に花を贈る",
+      "reading": "ともだちにはなをおくる",
+      "zh": "送花给朋友"
+    },
+    "tip": "礼物的接收者用「に」，所送物品用「を」，「送る」也可表示寄送或发送。"
+  },
+  {
+    "id": "deep-n3-osameru-pay",
+    "forms": [
+      {
+        "term": "収める",
+        "reading": "おさめる"
+      }
+    ],
+    "meaningKeywords": [
+      "获胜",
+      "赢得"
+    ],
+    "collocation": {
+      "ja": "勝利を収める",
+      "reading": "しょうりをおさめる",
+      "zh": "取得胜利"
+    },
+    "tip": "取得的成果或胜利用「を」，「収める」也表示把东西收入、归置。"
+  },
+  {
+    "id": "deep-n3-osoreru-object",
+    "forms": [
+      {
+        "term": "恐れる",
+        "reading": "おそれる"
+      }
+    ],
+    "meaningKeywords": [
+      "害怕",
+      "恐惧"
+    ],
+    "collocation": {
+      "ja": "失敗を恐れる",
+      "reading": "しっぱいをおそれる",
+      "zh": "害怕失败"
+    },
+    "tip": "害怕的事情常用「を」，「～を恐れて」表示因为担心某事而采取行动。"
+  },
+  {
+    "id": "deep-n3-otoru-ni",
+    "forms": [
+      {
+        "term": "劣る",
+        "reading": "おとる"
+      }
+    ],
+    "meaningKeywords": [
+      "不如",
+      "不及",
+      "逊于"
+    ],
+    "collocation": {
+      "ja": "耐久性で他社製品に劣る",
+      "reading": "たいきゅうせいでたしゃせいひんにおとる",
+      "zh": "耐用性不如其他公司的产品"
+    },
+    "tip": "比较时，较差的一方用「は」，比较对象用「に」，比较标准可用「で」。"
+  },
+  {
+    "id": "deep-n3-oyobosu-impact",
+    "forms": [
+      {
+        "term": "及ぼす",
+        "reading": "およぼす"
+      }
+    ],
+    "meaningKeywords": [
+      "影响",
+      "效果",
+      "损害"
+    ],
+    "collocation": {
+      "ja": "生活に影響を及ぼす",
+      "reading": "せいかつにえいきょうをおよぼす",
+      "zh": "对生活产生影响"
+    },
+    "tip": "造成的影响或效果用「を」，受影响的一方用「に」，常说「影響を及ぼす」。"
+  },
+  {
+    "id": "deep-n3-oru-humble",
+    "forms": [
+      {
+        "term": "居る",
+        "reading": "おる"
+      }
+    ],
+    "meaningKeywords": [
+      "存在",
+      "生存"
+    ],
+    "collocation": {
+      "ja": "私は事務所におります",
+      "reading": "わたしはじむしょにおります",
+      "zh": "我在办公室"
+    },
+    "tip": "作为「いる」的谦让说法时常用「おります」，用于降低自己的存在或所在状态。"
+  },
+  {
+    "id": "deep-n3-kaifuku-state",
+    "forms": [
+      {
+        "term": "回復",
+        "reading": "かいふく"
+      }
+    ],
+    "meaningKeywords": [
+      "恢复",
+      "康复"
+    ],
+    "collocation": {
+      "ja": "体力が回復する",
+      "reading": "たいりょくがかいふくする",
+      "zh": "体力恢复"
+    },
+    "tip": "恢复的状态或能力用「が」表示，使数据、体力等恢复时也可用「を回復する」。"
+  },
+  {
+    "id": "deep-n3-kau-animal",
+    "forms": [
+      {
+        "term": "飼う",
+        "reading": "かう"
+      }
+    ],
+    "meaningKeywords": [
+      "饲养",
+      "喂养"
+    ],
+    "collocation": {
+      "ja": "犬を飼う",
+      "reading": "いぬをかう",
+      "zh": "养狗"
+    },
+    "tip": "饲养的动物用「を」，「買う」同音但表示购买，汉字不同。",
+    "contrast": {
+      "term": "買う",
+      "reading": "かう",
+      "collocation": {
+        "ja": "犬を買う",
+        "reading": "いぬをかう",
+        "zh": "买狗"
+      },
+      "note": "飼う表示负责照料动物，買う表示支付价钱购买。"
+    }
+  },
+  {
+    "id": "deep-n3-kabureru-wear",
+    "forms": [
+      {
+        "term": "被る",
+        "reading": "かぶる"
+      }
+    ],
+    "meaningKeywords": [
+      "戴上",
+      "套在头上"
+    ],
+    "collocation": {
+      "ja": "帽子を被る",
+      "reading": "ぼうしをかぶる",
+      "zh": "戴帽子"
+    },
+    "tip": "帽子等戴在头上的物品用「を被る」，衣服穿在身上通常用「着る」。"
+  },
+  {
+    "id": "deep-n3-kakaru-illness",
+    "forms": [
+      {
+        "term": "罹る",
+        "reading": "かかる"
+      }
+    ],
+    "meaningKeywords": [
+      "患上",
+      "染上",
+      "得（病）"
+    ],
+    "collocation": {
+      "ja": "インフルエンザに罹る",
+      "reading": "いんふるえんざにかかる",
+      "zh": "患上流感"
+    },
+    "tip": "所患疾病用「に」，表示费用或时间花费的「かかる」是另一义项，常写作「掛かる」。"
+  },
+  {
+    "id": "deep-n3-kakusu-pair",
+    "forms": [
+      {
+        "term": "隠す",
+        "reading": "かくす"
+      }
+    ],
+    "meaningKeywords": [
+      "隐藏",
+      "隐瞒",
+      "遮掩"
+    ],
+    "collocation": {
+      "ja": "事実を隠す",
+      "reading": "じじつをかくす",
+      "zh": "隐瞒事实"
+    },
+    "tip": "被隐藏的物品或事实用「を」，主体自己藏起来或被遮住时用「隠れる」。",
+    "contrast": {
+      "term": "隠れる",
+      "reading": "かくれる",
+      "collocation": {
+        "ja": "木の後ろに隠れる",
+        "reading": "きのうしろにかくれる",
+        "zh": "躲到树后面"
+      },
+      "note": "隠す是有人把东西藏起来，隠れる是主体自己藏身或被遮挡。"
+    }
+  },
+  {
+    "id": "deep-n3-kakureru-pair",
+    "forms": [
+      {
+        "term": "隠れる",
+        "reading": "かくれる"
+      }
+    ],
+    "meaningKeywords": [
+      "隐藏",
+      "躲藏",
+      "被遮挡"
+    ],
+    "collocation": {
+      "ja": "木の後ろに隠れる",
+      "reading": "きのうしろにかくれる",
+      "zh": "躲到树后面"
+    },
+    "tip": "藏身处用「に」，把物品或事实藏起来时用他动词「隠す」。",
+    "contrast": {
+      "term": "隠す",
+      "reading": "かくす",
+      "collocation": {
+        "ja": "事実を隠す",
+        "reading": "じじつをかくす",
+        "zh": "隐瞒事实"
+      },
+      "note": "隠れる表示主体藏身，隠す表示有人隐藏对象。"
+    }
+  },
+  {
+    "id": "deep-n3-kakeru-missing",
+    "forms": [
+      {
+        "term": "欠ける",
+        "reading": "かける"
+      }
+    ],
+    "meaningKeywords": [
+      "缺乏",
+      "不足",
+      "欠缺"
+    ],
+    "collocation": {
+      "ja": "説明に具体例が欠ける",
+      "reading": "せつめいにぐたいれいがかける",
+      "zh": "说明缺少具体例子"
+    },
+    "tip": "欠少的部分用「が」标出，这里是不完整的状态，不是他动词「欠く」。"
+  },
+  {
+    "id": "deep-n3-kakomu-table",
+    "forms": [
+      {
+        "term": "囲む",
+        "reading": "かこむ"
+      }
+    ],
+    "meaningKeywords": [
+      "围绕",
+      "包围"
+    ],
+    "collocation": {
+      "ja": "テーブルを囲む",
+      "reading": "てーぶるをかこむ",
+      "zh": "围坐在桌边"
+    },
+    "tip": "被围在中间的人或物用「を」，表示把一群人围起来时也用「を」。"
+  },
+  {
+    "id": "deep-n3-kazoeru-count",
+    "forms": [
+      {
+        "term": "数える",
+        "reading": "かぞえる"
+      }
+    ],
+    "meaningKeywords": [
+      "数",
+      "计数"
+    ],
+    "collocation": {
+      "ja": "人数を数える",
+      "reading": "にんずうをかぞえる",
+      "zh": "数人数"
+    },
+    "tip": "被计数的对象用「を」，「三つ数える」等数量词也可直接放在动词前。"
+  },
+  {
+    "id": "deep-n3-kansha-ni",
+    "forms": [
+      {
+        "term": "感謝",
+        "reading": "かんしゃ"
+      }
+    ],
+    "meaningKeywords": [
+      "感谢",
+      "感恩"
+    ],
+    "collocation": {
+      "ja": "先生に感謝する",
+      "reading": "せんせいにかんしゃする",
+      "zh": "感谢老师"
+    },
+    "tip": "感谢的对象用「に」，感谢的原因可用「に対して」或「ことに」。"
+  },
+  {
+    "id": "deep-n3-kanjiru-object",
+    "forms": [
+      {
+        "term": "感じる",
+        "reading": "かんじる"
+      }
+    ],
+    "meaningKeywords": [
+      "感受",
+      "感觉",
+      "体验"
+    ],
+    "collocation": {
+      "ja": "変化を感じる",
+      "reading": "へんかをかんじる",
+      "zh": "感受到变化"
+    },
+    "tip": "感受到的变化、气氛或痛感常用「を感じる」，感受到的判断也可用「～と感じる」。"
+  },
+  {
+    "id": "deep-n3-kansuru-ni",
+    "forms": [
+      {
+        "term": "関する",
+        "reading": "かんする"
+      }
+    ],
+    "meaningKeywords": [
+      "涉及",
+      "关系到",
+      "相关"
+    ],
+    "collocation": {
+      "ja": "環境に関する記事",
+      "reading": "かんきょうにかんするきじ",
+      "zh": "有关环境的报道"
+    },
+    "tip": "「Nに関するN」表示与某主题有关，后面直接接名词，是常见书面搭配。"
+  },
+  {
+    "id": "deep-n3-kansei-intransitive",
+    "forms": [
+      {
+        "term": "完成",
+        "reading": "かんせい"
+      }
+    ],
+    "meaningKeywords": [
+      "完成",
+      "完善"
+    ],
+    "collocation": {
+      "ja": "作品が完成する",
+      "reading": "さくひんがかんせいする",
+      "zh": "作品完成了"
+    },
+    "tip": "完成的作品作主语时用「が完成する」，有人完成作品时可说「作品を完成させる」。"
+  },
+  {
+    "id": "deep-n3-kando-ni",
+    "forms": [
+      {
+        "term": "感動",
+        "reading": "かんどう"
+      }
+    ],
+    "meaningKeywords": [
+      "深受感动",
+      "深切感动"
+    ],
+    "collocation": {
+      "ja": "演奏に感動する",
+      "reading": "えんそうにかんどうする",
+      "zh": "被演奏打动"
+    },
+    "tip": "引发感动的事物常用「に」，描述感情时多说「～に感動する」。"
+  },
+  {
+    "id": "deep-n3-kanri-object",
+    "forms": [
+      {
+        "term": "管理",
+        "reading": "かんり"
+      }
+    ],
+    "meaningKeywords": [
+      "管理",
+      "控制"
+    ],
+    "collocation": {
+      "ja": "在庫を管理する",
+      "reading": "ざいこをかんりする",
+      "zh": "管理库存"
+    },
+    "tip": "被管理的对象用「を」，管理人或系统也可用「が管理する」说明执行者。"
+  },
+  {
+    "id": "deep-n3-kioku-object",
+    "forms": [
+      {
+        "term": "記憶",
+        "reading": "きおく"
+      }
+    ],
+    "meaningKeywords": [
+      "记忆",
+      "存储"
+    ],
+    "collocation": {
+      "ja": "名前を記憶する",
+      "reading": "なまえをきおくする",
+      "zh": "记住名字"
+    },
+    "tip": "作为动词使用时，被记住的内容用「を」，「記憶に残る」则表示留在记忆中。"
+  },
+  {
+    "id": "deep-n3-kiku-medicine",
+    "forms": [
+      {
+        "term": "効く",
+        "reading": "きく"
+      }
+    ],
+    "meaningKeywords": [
+      "有效",
+      "起效"
+    ],
+    "collocation": {
+      "ja": "薬が効く",
+      "reading": "くすりがきく",
+      "zh": "药见效"
+    },
+    "tip": "药或方法起作用时用「が効く」，表示听声音、询问则是同音的「聞く」。"
+  },
+  {
+    "id": "deep-n3-kaishi-intransitive",
+    "forms": [
+      {
+        "term": "開始",
+        "reading": "かいし"
+      }
+    ],
+    "meaningKeywords": [
+      "开始",
+      "开端",
+      "起始"
+    ],
+    "collocation": {
+      "ja": "授業が開始する",
+      "reading": "じゅぎょうがかいしする",
+      "zh": "课程开始"
+    },
+    "tip": "课程、会议等自己开始时用「が開始する」，主办方启动活动时也可说「を開始する」。"
+  },
+  {
+    "id": "deep-n3-kaiketsu-target",
+    "forms": [
+      {
+        "term": "解決",
+        "reading": "かいけつ"
+      }
+    ],
+    "meaningKeywords": [
+      "解决",
+      "解决方案"
+    ],
+    "collocation": {
+      "ja": "問題を解決する",
+      "reading": "もんだいをかいけつする",
+      "zh": "解决问题"
+    },
+    "tip": "要解决的问题用「を」，问题得到解决时可改用「問題が解決する」。"
+  },
+  {
+    "id": "deep-n3-kakudai-scale",
+    "forms": [
+      {
+        "term": "拡大",
+        "reading": "かくだい"
+      }
+    ],
+    "meaningKeywords": [
+      "放大",
+      "扩大"
+    ],
+    "collocation": {
+      "ja": "市場が拡大する",
+      "reading": "しじょうがかくだいする",
+      "zh": "市场扩大"
+    },
+    "tip": "规模自行扩大时用「が拡大する」，人为扩大范围时用「を拡大する」。"
+  },
+  {
+    "id": "deep-n3-kankyo-pollution",
+    "forms": [
+      {
+        "term": "汚染",
+        "reading": "おせん"
+      }
+    ],
+    "meaningKeywords": [
+      "污染"
+    ],
+    "collocation": {
+      "ja": "川を汚染する",
+      "reading": "かわをおせんする",
+      "zh": "污染河流"
+    },
+    "tip": "被污染的环境用「を」标出，环境受到污染时常用「川が汚染される」。"
+  },
+  {
+    "id": "deep-n3-kumu-team",
+    "forms": [
+      {
+        "term": "組む",
+        "reading": "くむ"
+      }
+    ],
+    "meaningKeywords": [
+      "组合",
+      "构建",
+      "组装"
+    ],
+    "collocation": {
+      "ja": "同僚とチームを組む",
+      "reading": "どうりょうとちーむをくむ",
+      "zh": "和同事组成团队"
+    },
+    "tip": "组队时合作对象用「と」，组成的团队用「を」，器材组装时则常说「部品を組む」。"
+  },
+  {
+    "id": "deep-n3-kurikaesu-repeat",
+    "forms": [
+      {
+        "term": "繰り返す",
+        "reading": "くりかえす"
+      }
+    ],
+    "meaningKeywords": [
+      "重复",
+      "再做一遍"
+    ],
+    "collocation": {
+      "ja": "同じ質問を繰り返す",
+      "reading": "おなじしつもんをくりかえす",
+      "zh": "反复问同一个问题"
+    },
+    "tip": "反复的动作或内容用「を」标出，「繰り返して」可连接后续步骤。"
+  },
+  {
+    "id": "deep-n3-tayoru-ni",
+    "forms": [
+      {
+        "term": "頼る",
+        "reading": "たよる"
+      }
+    ],
+    "meaningKeywords": [
+      "依靠",
+      "依赖",
+      "求助于"
+    ],
+    "collocation": {
+      "ja": "困った時に友人に頼る",
+      "reading": "こまったときにゆうじんにたよる",
+      "zh": "遇到困难时依靠朋友"
+    },
+    "tip": "依靠的人、工具或资源常用「に頼る」，强调依赖某物时也可用「に頼って」。"
+  },
+  {
+    "id": "deep-n3-chumoku-ni",
+    "forms": [
+      {
+        "term": "注目",
+        "reading": "ちゅうもく"
+      }
+    ],
+    "meaningKeywords": [
+      "注目",
+      "关注",
+      "注意"
+    ],
+    "collocation": {
+      "ja": "新しい技術に注目する",
+      "reading": "あたらしいぎじゅつにちゅうもくする",
+      "zh": "关注新技术"
+    },
+    "tip": "关注的对象常用「に」，强调把视线投向某对象时可说「～に注目が集まる」。"
+  },
+  {
+    "id": "deep-n3-tsuujiru-language",
+    "forms": [
+      {
+        "term": "通じる",
+        "reading": "つうじる"
+      }
+    ],
+    "meaningKeywords": [
+      "沟通"
+    ],
+    "collocation": {
+      "ja": "英語が通じる",
+      "reading": "えいごがつうじる",
+      "zh": "英语能沟通"
+    },
+    "tip": "沟通所用的语言常用「が通じる」，表示通过某人、某渠道传达时常用「を通じて」。"
+  },
+  {
+    "id": "deep-n3-tojiru-close",
+    "forms": [
+      {
+        "term": "閉じる",
+        "reading": "とじる"
+      }
+    ],
+    "meaningKeywords": [
+      "关闭",
+      "合上"
+    ],
+    "collocation": {
+      "ja": "目を閉じる",
+      "reading": "めをとじる",
+      "zh": "闭上眼睛"
+    },
+    "tip": "闭上的物体或身体部位用「を」，窗口、店门常用「閉める」，两者含义接近但搭配不同。"
+  },
+  {
+    "id": "deep-n3-nattoku-ni",
+    "forms": [
+      {
+        "term": "納得",
+        "reading": "なっとく"
+      }
+    ],
+    "meaningKeywords": [
+      "理解",
+      "信服",
+      "同意"
+    ],
+    "collocation": {
+      "ja": "説明に納得する",
+      "reading": "せつめいになっとくする",
+      "zh": "信服这个说明"
+    },
+    "tip": "使人信服的说明或理由常用「に」，表示自己被说服时用「説明に納得する」。"
+  },
+  {
+    "id": "deep-n3-zouka-state",
+    "forms": [
+      {
+        "term": "増加",
+        "reading": "ぞうか"
+      }
+    ],
+    "meaningKeywords": [
+      "增加",
+      "上升",
+      "增长"
+    ],
+    "collocation": {
+      "ja": "利用者が増加する",
+      "reading": "りようしゃがぞうかする",
+      "zh": "用户数量增加"
+    },
+    "tip": "增加的数量或对象用「が」，人为增加某项时常用使役表达「利用者を増加させる」。"
+  },
+  {
+    "id": "deep-n3-manzoku-ni",
+    "forms": [
+      {
+        "term": "満足",
+        "reading": "まんぞく"
+      }
+    ],
+    "meaningKeywords": [
+      "满足",
+      "满意"
+    ],
+    "collocation": {
+      "ja": "結果に満足する",
+      "reading": "けっかにまんぞくする",
+      "zh": "对结果满意"
+    },
+    "tip": "感到满意的结果、服务或水平常用「に満足する」，程度可用「十分に」修饰。"
+  },
+  {
+    "id": "deep-n3-muku-suitable",
+    "forms": [
+      {
+        "term": "向く",
+        "reading": "むく"
+      }
+    ],
+    "meaningKeywords": [
+      "面向",
+      "朝向",
+      "临"
+    ],
+    "collocation": {
+      "ja": "南を向く",
+      "reading": "みなみをむく",
+      "zh": "面朝南方"
+    },
+    "tip": "转向的方向可用「を」，表示适合某用途时则用「に向く」，如「初心者に向く」。"
+  },
+  {
+    "id": "deep-n4-tsutaeru-arguments",
+    "forms": [
+      {
+        "term": "伝える",
+        "reading": "つたえる"
+      }
+    ],
+    "meaningKeywords": [
+      "传达",
+      "告诉",
+      "传授"
+    ],
+    "collocation": {
+      "ja": "友達に気持ちを伝える",
+      "reading": "ともだちにきもちをつたえる",
+      "zh": "把心意告诉朋友"
+    },
+    "tip": "被告知的人用「に」，传达的内容用「を」，直接说传递的消息时也可用「～と伝える」。"
+  },
+  {
+    "id": "deep-n4-maniau-ni",
+    "forms": [
+      {
+        "term": "間に合う",
+        "reading": "まにあう"
+      }
+    ],
+    "meaningKeywords": [
+      "赶上",
+      "来得及"
+    ],
+    "collocation": {
+      "ja": "締め切りに間に合う",
+      "reading": "しめきりにまにあう",
+      "zh": "赶上截止时间"
+    },
+    "tip": "赶上的时间、列车或机会常用「に」，「間に合わない」表示来不及或赶不上。"
+  },
+  {
+    "id": "deep-n4-kuraberu-compare",
+    "forms": [
+      {
+        "term": "比べる",
+        "reading": "くらべる"
+      }
+    ],
+    "meaningKeywords": [
+      "比较",
+      "对比"
+    ],
+    "collocation": {
+      "ja": "二つの案を比べる",
+      "reading": "ふたつのあんをくらべる",
+      "zh": "比较两个方案"
+    },
+    "tip": "拿来比较的对象用「を」，比较基准或另一对象常用「と」：「AとBを比べる」。"
+  },
+  {
+    "id": "deep-n4-nigeru-source",
+    "forms": [
+      {
+        "term": "逃げる",
+        "reading": "にげる"
+      }
+    ],
+    "meaningKeywords": [
+      "逃跑",
+      "逃离",
+      "逃脱"
+    ],
+    "collocation": {
+      "ja": "危険な場所から逃げる",
+      "reading": "きけんなばしょからにげる",
+      "zh": "逃离危险场所"
+    },
+    "tip": "逃离的地点常用「から」，需要摆脱的事情也可用「から逃げる」。"
+  },
+  {
+    "id": "deep-n3-shitagau-ni",
+    "forms": [
+      {
+        "term": "従う",
+        "reading": "したがう"
+      }
+    ],
+    "meaningKeywords": [
+      "遵守",
+      "服从",
+      "遵循"
+    ],
+    "collocation": {
+      "ja": "規則に従う",
+      "reading": "きそくにしたがう",
+      "zh": "遵守规定"
+    },
+    "tip": "遵从的规则、命令或指导常用「に」，表示沿着路线行进时也常说「川に沿って進む」。"
+  },
+  {
+    "id": "deep-n3-mamoru-rule",
+    "forms": [
+      {
+        "term": "守る",
+        "reading": "まもる"
+      }
+    ],
+    "meaningKeywords": [
+      "遵守",
+      "履行",
+      "遵循"
+    ],
+    "collocation": {
+      "ja": "約束を守る",
+      "reading": "やくそくをまもる",
+      "zh": "遵守约定"
+    },
+    "tip": "约定、规则或承诺用「を守る」，保护人或地方时也用「を」，但宾语表示受保护对象。"
+  },
+  {
+    "id": "deep-n3-moshikomu-application",
+    "forms": [
+      {
+        "term": "申し込む",
+        "reading": "もうしこむ"
+      }
+    ],
+    "meaningKeywords": [
+      "申请",
+      "预订",
+      "提出申请"
+    ],
+    "collocation": {
+      "ja": "講座に申し込む",
+      "reading": "こうざにもうしこむ",
+      "zh": "报名参加讲座"
+    },
+    "tip": "报名或申请的项目常用「に申し込む」，也可用「参加を申し込む」突出申请的内容。"
+  },
+  {
+    "id": "deep-n3-sodatsu-growth",
+    "forms": [
+      {
+        "term": "育つ",
+        "reading": "そだつ"
+      }
+    ],
+    "meaningKeywords": [
+      "成长",
+      "长大"
+    ],
+    "collocation": {
+      "ja": "子どもが元気に育つ",
+      "reading": "こどもがげんきにそだつ",
+      "zh": "孩子健康成长"
+    },
+    "tip": "成长的主体用「が」，有人养育、培养对象时用他动词「育てる」。",
+    "contrast": {
+      "term": "育てる",
+      "reading": "そだてる",
+      "collocation": {
+        "ja": "子どもを育てる",
+        "reading": "こどもをそだてる",
+        "zh": "养育孩子"
+      },
+      "note": "育つ描述主体成长，育てる表示有人养育或培养。"
+    }
+  },
+  {
+    "id": "deep-n3-shojiru-event",
+    "forms": [
+      {
+        "term": "生じる",
+        "reading": "しょうじる"
+      }
+    ],
+    "meaningKeywords": [
+      "产生",
+      "发生"
+    ],
+    "collocation": {
+      "ja": "問題が生じる",
+      "reading": "もんだいがしょうじる",
+      "zh": "出现问题"
+    },
+    "tip": "新产生的问题、差异或损失用「が」标出，生じる多用于较正式的说明语境。"
+  },
+  {
+    "id": "deep-n3-nozomu-hope",
+    "forms": [
+      {
+        "term": "望む",
+        "reading": "のぞむ"
+      }
+    ],
+    "meaningKeywords": [
+      "渴望",
+      "希望",
+      "想要"
+    ],
+    "collocation": {
+      "ja": "平和を望む",
+      "reading": "へいわをのぞむ",
+      "zh": "希望和平"
+    },
+    "tip": "所希望的结果用「を」，「望む」比日常的「欲しい」更常搭配抽象目标或未来结果。"
+  },
+  {
+    "id": "deep-n3-motomeru-request",
+    "forms": [
+      {
+        "term": "求める",
+        "reading": "もとめる"
+      }
+    ],
+    "meaningKeywords": [
+      "请求",
+      "要求",
+      "寻求",
+      "寻找"
+    ],
+    "collocation": {
+      "ja": "解決策を求める",
+      "reading": "かいけつさくをもとめる",
+      "zh": "寻求解决方案"
+    },
+    "tip": "寻求的答案、方案或帮助用「を」，向某人要求说明时可说「人に説明を求める」。"
+  },
+  {
+    "id": "deep-n3-henkou-object",
+    "forms": [
+      {
+        "term": "変更",
+        "reading": "へんこう"
+      }
+    ],
+    "meaningKeywords": [
+      "变更",
+      "修改",
+      "更改"
+    ],
+    "collocation": {
+      "ja": "予定を変更する",
+      "reading": "よていをへんこうする",
+      "zh": "更改安排"
+    },
+    "tip": "被更改的内容用「を」，调整后的日期或地点可用「に」补充。"
+  },
+  {
+    "id": "deep-n3-jisshi-object",
+    "forms": [
+      {
+        "term": "実施",
+        "reading": "じっし"
+      }
+    ],
+    "meaningKeywords": [
+      "实施",
+      "实行",
+      "执行"
+    ],
+    "collocation": {
+      "ja": "調査を実施する",
+      "reading": "ちょうさをじっしする",
+      "zh": "实施调查"
+    },
+    "tip": "实施的调查、测试或措施用「を」，「実施する」比单说「する」更正式。"
+  },
+  {
+    "id": "deep-n3-jitsugen-sense",
+    "forms": [
+      {
+        "term": "実現",
+        "reading": "じつげん"
+      }
+    ],
+    "meaningKeywords": [
+      "实现",
+      "落实"
+    ],
+    "collocation": {
+      "ja": "夢が実現する",
+      "reading": "ゆめがじつげんする",
+      "zh": "梦想实现"
+    },
+    "tip": "目标自己实现时用「が実現する」，主动使目标实现时可说「夢を実現する」。"
+  },
+  {
+    "id": "deep-n3-sansei-ni",
+    "forms": [
+      {
+        "term": "賛成",
+        "reading": "さんせい"
+      }
+    ],
+    "meaningKeywords": [
+      "赞成",
+      "同意",
+      "支持"
+    ],
+    "collocation": {
+      "ja": "提案に賛成する",
+      "reading": "ていあんにさんせいする",
+      "zh": "赞成提案"
+    },
+    "tip": "赞成的意见、计划或人用「に」，「提案を賛成する」不自然。"
+  },
+  {
+    "id": "deep-n3-motozuku-ni",
+    "forms": [
+      {
+        "term": "基づく",
+        "reading": "もとづく"
+      }
+    ],
+    "meaningKeywords": [
+      "源于",
+      "出自",
+      "来自于"
+    ],
+    "collocation": {
+      "ja": "事実に基づく判断",
+      "reading": "じじつにもとづくはんだん",
+      "zh": "基于事实的判断"
+    },
+    "tip": "依据或来源用「に」，「Nに基づくN」常作书面定语，表示以某依据为基础。"
+  },
+  {
+    "id": "deep-n3-susumeru-recommend",
+    "forms": [
+      {
+        "term": "勧める",
+        "reading": "すすめる"
+      }
+    ],
+    "meaningKeywords": [
+      "建议",
+      "推荐",
+      "劝告"
+    ],
+    "collocation": {
+      "ja": "友人に本を勧める",
+      "reading": "ゆうじんにほんをすすめる",
+      "zh": "向朋友推荐书"
+    },
+    "tip": "被建议的人用「に」，推荐的书、方法或行动用「を」。"
+  },
+  {
+    "id": "deep-n3-toriageru-topic",
+    "forms": [
+      {
+        "term": "取り上げる",
+        "reading": "とりあげる"
+      }
+    ],
+    "meaningKeywords": [
+      "采纳",
+      "提出",
+      "听取"
+    ],
+    "collocation": {
+      "ja": "会議で新しい問題を取り上げる",
+      "reading": "かいぎであたらしいもんだいをとりあげる",
+      "zh": "在会议上提出新问题"
+    },
+    "tip": "讨论或报道的议题用「を」，除了拿起实物，也常表示选作讨论主题或报道内容。"
+  },
+  {
+    "id": "deep-n3-nobiru-progress",
+    "forms": [
+      {
+        "term": "伸びる",
+        "reading": "のびる"
+      }
+    ],
+    "meaningKeywords": [
+      "取得进展",
+      "发展",
+      "提高"
+    ],
+    "collocation": {
+      "ja": "売り上げが伸びる",
+      "reading": "うりあげがのびる",
+      "zh": "销售额增长"
+    },
+    "tip": "成绩、销量或能力自行增长时用「が伸びる」，人为延长或提升某项用「伸ばす」。",
+    "contrast": {
+      "term": "伸ばす",
+      "reading": "のばす",
+      "collocation": {
+        "ja": "売り上げを伸ばす",
+        "reading": "うりあげをのばす",
+        "zh": "提高销售额"
+      },
+      "note": "伸びる表示数值自然增长，伸ばす表示人为让数值增加。"
+    }
+  },
+  {
+    "id": "deep-n3-nobasu-improve",
+    "forms": [
+      {
+        "term": "伸ばす",
+        "reading": "のばす"
+      }
+    ],
+    "meaningKeywords": [
+      "拉长"
+    ],
+    "collocation": {
+      "ja": "ゴムを伸ばす",
+      "reading": "ごむをのばす",
+      "zh": "拉长橡皮筋"
+    },
+    "tip": "被拉长的物体用「を」标记，物体自身伸长或变长时用自动词「伸びる」。",
+    "contrast": {
+      "term": "伸びる",
+      "reading": "のびる",
+      "collocation": {
+        "ja": "ゴムが伸びる",
+        "reading": "ごむがのびる",
+        "zh": "橡皮筋被拉长"
+      },
+      "note": "伸ばす是他动词，伸びる是自动词。"
+    }
+  },
+  {
+    "id": "deep-n3-joutatsu-ni",
+    "forms": [
+      {
+        "term": "上達",
+        "reading": "じょうたつ"
+      }
+    ],
+    "meaningKeywords": [
+      "进步",
+      "提高"
+    ],
+    "collocation": {
+      "ja": "日本語が上達する",
+      "reading": "にほんごがじょうたつする",
+      "zh": "日语水平进步"
+    },
+    "tip": "进步的技能或能力用「が上達する」，表达练习使能力提高时可说「腕を上げる」。"
+  },
+  {
+    "id": "deep-n5-tsuku-arrive",
+    "forms": [
+      {
+        "term": "着く",
+        "reading": "つく"
+      }
+    ],
+    "meaningKeywords": [
+      "到达",
+      "抵达"
+    ],
+    "collocation": {
+      "ja": "駅に着く",
+      "reading": "えきにつく",
+      "zh": "到达车站"
+    },
+    "tip": "到达的地点用「に」，「へ」更突出前往的方向，着く表示到达终点。"
+  },
+  {
+    "id": "deep-n5-dekakeru-purpose",
+    "forms": [
+      {
+        "term": "出かける",
+        "reading": "でかける"
+      }
+    ],
+    "meaningKeywords": [
+      "外出",
+      "出发"
+    ],
+    "collocation": {
+      "ja": "買い物に出かける",
+      "reading": "かいものにでかける",
+      "zh": "出门购物"
+    },
+    "tip": "外出的目的常用「に」，实际前往的地点可用「へ」或「に」。"
+  },
+  {
+    "id": "deep-n5-narabu-line",
+    "forms": [
+      {
+        "term": "並ぶ",
+        "reading": "ならぶ"
+      }
+    ],
+    "meaningKeywords": [
+      "排队",
+      "排成一行"
+    ],
+    "collocation": {
+      "ja": "入口に並ぶ",
+      "reading": "いりぐちにならぶ",
+      "zh": "在入口排队"
+    },
+    "tip": "排队的人或队伍作主语用「が」，排队的位置用「に」，把物品排成一排用「並べる」。",
+    "contrast": {
+      "term": "並べる",
+      "reading": "ならべる",
+      "collocation": {
+        "ja": "本を棚に並べる",
+        "reading": "ほんをたなにならべる",
+        "zh": "把书排列在架子上"
+      },
+      "note": "並ぶ描述人或物排列着，並べる表示有人把东西排好。"
+    }
+  },
+  {
+    "id": "deep-n5-naraberu-arrange",
+    "forms": [
+      {
+        "term": "並べる",
+        "reading": "ならべる"
+      }
+    ],
+    "meaningKeywords": [
+      "排列",
+      "摆成一排"
+    ],
+    "collocation": {
+      "ja": "本を棚に並べる",
+      "reading": "ほんをたなにならべる",
+      "zh": "把书排列在架子上"
+    },
+    "tip": "被排列的东西用「を」，排列的位置用「に」，东西自然排成一列时用「並ぶ」。",
+    "contrast": {
+      "term": "並ぶ",
+      "reading": "ならぶ",
+      "collocation": {
+        "ja": "本が棚に並ぶ",
+        "reading": "ほんがたなにならぶ",
+        "zh": "书排列在架子上"
+      },
+      "note": "並べる是他动词，並ぶ是自动词。"
+    }
+  },
+  {
+    "id": "deep-n5-hashiru-path",
+    "forms": [
+      {
+        "term": "走る",
+        "reading": "はしる"
+      }
+    ],
+    "meaningKeywords": [
+      "行驶",
+      "行进",
+      "移动"
+    ],
+    "collocation": {
+      "ja": "道路を走る",
+      "reading": "どうろをはしる",
+      "zh": "沿道路行驶"
+    },
+    "tip": "道路或路线作为移动经过的路径时用「を」，跑步时的具体场所则常用「で」。"
+  },
+  {
+    "id": "deep-n5-yobu-name",
+    "forms": [
+      {
+        "term": "呼ぶ",
+        "reading": "よぶ"
+      }
+    ],
+    "meaningKeywords": [
+      "呼叫",
+      "呼唤",
+      "邀请"
+    ],
+    "collocation": {
+      "ja": "友達を呼ぶ",
+      "reading": "ともだちをよぶ",
+      "zh": "叫朋友过来"
+    },
+    "tip": "被呼叫或邀请的人用「を」，给人命名时常用「Nを～と呼ぶ」。"
+  },
+  {
+    "id": "deep-n5-chigau-comparison",
+    "forms": [
+      {
+        "term": "違う",
+        "reading": "ちがう"
+      }
+    ],
+    "meaningKeywords": [
+      "不同",
+      "有区别",
+      "不一致"
+    ],
+    "collocation": {
+      "ja": "予定と違う",
+      "reading": "よていとちがう",
+      "zh": "和预定的不一样"
+    },
+    "tip": "比较的对象常用「と」，「AはBと違う」表示A与B不同。"
+  },
+  {
+    "id": "deep-n4-shokai-arguments",
+    "forms": [
+      {
+        "term": "紹介",
+        "reading": "しょうかい"
+      }
+    ],
+    "meaningKeywords": [
+      "介绍",
+      "引见",
+      "推荐"
+    ],
+    "collocation": {
+      "ja": "友達に先生を紹介する",
+      "reading": "ともだちにせんせいをしょうかいする",
+      "zh": "把老师介绍给朋友"
+    },
+    "tip": "介绍给谁用「に」，介绍的人或事物用「を」。"
+  },
+  {
+    "id": "deep-n4-yoyaku-object",
+    "forms": [
+      {
+        "term": "予約",
+        "reading": "よやく"
+      }
+    ],
+    "meaningKeywords": [
+      "预约",
+      "预订"
+    ],
+    "collocation": {
+      "ja": "ホテルを予約する",
+      "reading": "ほてるをよやくする",
+      "zh": "预订酒店"
+    },
+    "tip": "被预约的房间、座位或服务用「を」，预约日期和时间可用「を」或「に」按句式补充。"
+  },
+  {
+    "id": "deep-n5-ikaga-polite",
+    "forms": [
+      {
+        "term": "いかが",
+        "reading": "いかが"
+      }
+    ],
+    "meaningKeywords": [
+      "怎么样",
+      "怎样"
+    ],
+    "collocation": {
+      "ja": "コーヒーはいかがですか",
+      "reading": "こーひーはいかがですか",
+      "zh": "要不要来杯咖啡"
+    },
+    "tip": "「いかがですか」礼貌地询问意见或提供选择，比「どうですか」更客气。"
+  },
+  {
+    "id": "deep-n5-ikutsu-count-age",
+    "forms": [
+      {
+        "term": "いくつ",
+        "reading": "いくつ"
+      }
+    ],
+    "meaningKeywords": [
+      "几个",
+      "几岁",
+      "多大"
+    ],
+    "collocation": {
+      "ja": "おいくつですか",
+      "reading": "おいくつですか",
+      "zh": "您多大年纪"
+    },
+    "tip": "「いくつ」可问数量或年龄，询问成人年龄时加「お」更礼貌。"
+  },
+  {
+    "id": "deep-n5-chotto-softener",
+    "forms": [
+      {
+        "term": "ちょっと",
+        "reading": "ちょっと"
+      }
+    ],
+    "meaningKeywords": [
+      "有点",
+      "相当"
+    ],
+    "collocation": {
+      "ja": "今日はちょっと難しいです",
+      "reading": "きょうはちょっとむずかしいです",
+      "zh": "今天有点不太方便"
+    },
+    "tip": "拒绝或表达为难时常用「ちょっと」缓和语气，句子有时会省略后面的直接拒绝。"
+  },
+  {
+    "id": "deep-n5-dozo-invitation",
+    "forms": [
+      {
+        "term": "どうぞ",
+        "reading": "どうぞ"
+      }
+    ],
+    "meaningKeywords": [
+      "请",
+      "请随意",
+      "欢迎"
+    ],
+    "collocation": {
+      "ja": "どうぞお入りください",
+      "reading": "どうぞおはいりください",
+      "zh": "请进"
+    },
+    "tip": "「どうぞ」常放在请求、邀请或让对方先行的表达前，表示礼貌地请对方做某事。"
+  },
+  {
+    "id": "deep-n5-nado-example",
+    "forms": [
+      {
+        "term": "など",
+        "reading": "など"
+      }
+    ],
+    "meaningKeywords": [
+      "等等",
+      "之类的"
+    ],
+    "collocation": {
+      "ja": "コーヒーやお茶など",
+      "reading": "こーひーやおちゃなど",
+      "zh": "咖啡、茶等"
+    },
+    "tip": "列出部分例子后用「など」表示还有其他同类项目，「や」通常也用于非穷尽列举。"
+  },
+  {
+    "id": "deep-n5-yori-comparison",
+    "forms": [
+      {
+        "term": "より",
+        "reading": "より"
+      }
+    ],
+    "meaningKeywords": [
+      "比",
+      "较"
+    ],
+    "collocation": {
+      "ja": "電車はバスより速い",
+      "reading": "でんしゃはばすよりはやい",
+      "zh": "电车比公交车快"
+    },
+    "tip": "比较基准用「より」，也可用「AよりBのほうが～」突出更符合描述的B。"
+  },
+  {
+    "id": "deep-n5-mata-again",
+    "forms": [
+      {
+        "term": "また",
+        "reading": "また"
+      }
+    ],
+    "meaningKeywords": [
+      "再",
+      "重新",
+      "又一次"
+    ],
+    "collocation": {
+      "ja": "また明日会いましょう",
+      "reading": "またあしたあいましょう",
+      "zh": "明天再见吧"
+    },
+    "tip": "「また」可表示动作再次发生，也可表示“此外、而且”，具体意思看它连接的是时间还是新信息。"
+  },
+  {
+    "id": "deep-n5-sugu-proximity",
+    "forms": [
+      {
+        "term": "すぐ",
+        "reading": "すぐ"
+      }
+    ],
+    "meaningKeywords": [
+      "马上",
+      "附近"
+    ],
+    "collocation": {
+      "ja": "駅のすぐ近く",
+      "reading": "えきのすぐちかく",
+      "zh": "车站附近"
+    },
+    "tip": "「すぐ」既可表示立刻，也可表示距离近，「すぐに出発する」是马上出发，「すぐ近く」是很近。"
+  },
+  {
+    "id": "deep-n4-kanarazu-commitment",
+    "forms": [
+      {
+        "term": "必ず",
+        "reading": "かならず"
+      }
+    ],
+    "meaningKeywords": [
+      "一定",
+      "必定"
+    ],
+    "collocation": {
+      "ja": "必ず連絡します",
+      "reading": "かならずれんらくします",
+      "zh": "一定会联系"
+    },
+    "tip": "必ず常用于确定发生或说话者保证做到的事，与「必ずしも～ない」的部分否定不同。"
+  },
+  {
+    "id": "deep-n4-kitto-confidence",
+    "forms": [
+      {
+        "term": "きっと",
+        "reading": "きっと"
+      }
+    ],
+    "meaningKeywords": [
+      "很可能",
+      "必然"
+    ],
+    "collocation": {
+      "ja": "きっと合格する",
+      "reading": "きっとごうかくする",
+      "zh": "一定能通过考试"
+    },
+    "tip": "「きっと」表达较强的确信或预测，「たぶん」通常保留更多不确定性。",
+    "contrast": {
+      "term": "たぶん",
+      "reading": "たぶん",
+      "collocation": {
+        "ja": "たぶん間に合う",
+        "reading": "たぶんまにあう",
+        "zh": "大概来得及"
+      },
+      "note": "きっと偏向说话者有把握的预测，たぶん更接近“大概、或许”。"
+    }
+  },
+  {
+    "id": "deep-n4-kesshite-negative",
+    "forms": [
+      {
+        "term": "決して",
+        "reading": "けっして"
+      }
+    ],
+    "meaningKeywords": [
+      "决不",
+      "绝不",
+      "毫不"
+    ],
+    "collocation": {
+      "ja": "決して忘れません",
+      "reading": "けっしてわすれません",
+      "zh": "绝不会忘记"
+    },
+    "tip": "表示“决不”时通常与否定形式搭配，如「決して～ない」。"
+  },
+  {
+    "id": "deep-n4-sou-appearance",
+    "forms": [
+      {
+        "term": "そう",
+        "reading": "そう"
+      }
+    ],
+    "meaningKeywords": [
+      "看起来",
+      "似乎",
+      "显得"
+    ],
+    "collocation": {
+      "ja": "雨が降りそうだ",
+      "reading": "あめがふりそうだ",
+      "zh": "看起来要下雨了"
+    },
+    "tip": "表示外观或即将发生时，动词常用ます形词干接「そう」，「降るそうだ」则是听说要下雨。"
+  },
+  {
+    "id": "deep-n4-sorosoro-time",
+    "forms": [
+      {
+        "term": "そろそろ",
+        "reading": "そろそろ"
+      }
+    ],
+    "meaningKeywords": [
+      "即将",
+      "很快",
+      "逐渐"
+    ],
+    "collocation": {
+      "ja": "そろそろ帰りましょう",
+      "reading": "そろそろかえりましょう",
+      "zh": "差不多该回去了"
+    },
+    "tip": "常用来表示某个时间或动作快要到来，语气比「すぐ」更像“差不多该……了”。"
+  },
+  {
+    "id": "deep-n4-shibaraku-period",
+    "forms": [
+      {
+        "term": "しばらく",
+        "reading": "しばらく"
+      }
+    ],
+    "meaningKeywords": [
+      "片刻",
+      "一会儿"
+    ],
+    "collocation": {
+      "ja": "しばらくお待ちください",
+      "reading": "しばらくおまちください",
+      "zh": "请稍等一会儿"
+    },
+    "tip": "表示一段不确定时长的时间，礼貌请求中常说「しばらくお待ちください」。"
+  },
+  {
+    "id": "deep-n4-sukkari-complete",
+    "forms": [
+      {
+        "term": "すっかり",
+        "reading": "すっかり"
+      }
+    ],
+    "meaningKeywords": [
+      "完全",
+      "彻底"
+    ],
+    "collocation": {
+      "ja": "名前をすっかり忘れた",
+      "reading": "なまえをすっかりわすれた",
+      "zh": "把名字忘得一干二净"
+    },
+    "tip": "修饰变化或状态时表示“完全、彻底”，常与忘记、改变、恢复等结果性谓语搭配。"
+  },
+  {
+    "id": "deep-n4-zenzen-negative",
+    "forms": [
+      {
+        "term": "ぜんぜん",
+        "reading": "ぜんぜん"
+      }
+    ],
+    "meaningKeywords": [
+      "毫不",
+      "一点也不",
+      "丝毫不"
+    ],
+    "collocation": {
+      "ja": "ぜんぜん分からない",
+      "reading": "ぜんぜんわからない",
+      "zh": "完全不懂"
+    },
+    "tip": "教科书中的基本用法是搭配否定，表示一点也不，口语中偶尔也见肯定用法，学习时先掌握否定搭配。"
+  },
+  {
+    "id": "deep-n4-yatto-effort",
+    "forms": [
+      {
+        "term": "やっと",
+        "reading": "やっと"
+      }
+    ],
+    "meaningKeywords": [
+      "好不容易",
+      "总算",
+      "终于"
+    ],
+    "collocation": {
+      "ja": "やっと間に合った",
+      "reading": "やっとまにあった",
+      "zh": "总算赶上了"
+    },
+    "tip": "常强调经过等待或努力后终于达成，「とうとう」更侧重最终结果到来，不一定带有努力感。"
+  },
+  {
+    "id": "deep-n4-mousugu-near-future",
+    "forms": [
+      {
+        "term": "もうすぐ",
+        "reading": "もうすぐ"
+      }
+    ],
+    "meaningKeywords": [
+      "不久",
+      "即将",
+      "很快"
+    ],
+    "collocation": {
+      "ja": "もうすぐ電車が来ます",
+      "reading": "もうすぐでんしゃがきます",
+      "zh": "电车马上就来"
+    },
+    "tip": "表示不久之后将发生的事情，后面常接现在或将来时态，不表示刚刚过去。"
+  },
+  {
+    "id": "deep-n3-osoraku-probability",
+    "forms": [
+      {
+        "term": "おそらく",
+        "reading": "おそらく"
+      }
+    ],
+    "meaningKeywords": [
+      "大概",
+      "也许",
+      "恐怕",
+      "想必"
+    ],
+    "collocation": {
+      "ja": "おそらく間に合うだろう",
+      "reading": "おそらくまにあうだろう",
+      "zh": "大概来得及吧"
+    },
+    "tip": "表达推测时常与「だろう」或「でしょう」连用，比确定断言保留更多判断空间。"
+  },
+  {
+    "id": "deep-n3-kekkyoku-result",
+    "forms": [
+      {
+        "term": "結局",
+        "reading": "けっきょく"
+      }
+    ],
+    "meaningKeywords": [
+      "终究",
+      "最后",
+      "最终"
+    ],
+    "collocation": {
+      "ja": "結局、会議は延期になった",
+      "reading": "けっきょく、かいぎはえんきになった",
+      "zh": "结果会议还是延期了"
+    },
+    "tip": "总结经过后得到的最终结果时用「結局」，它强调落到什么结果，不只是事情发生的最后时刻。"
+  },
+  {
+    "id": "deep-n3-guuzen-chance",
+    "forms": [
+      {
+        "term": "偶然",
+        "reading": "ぐうぜん"
+      }
+    ],
+    "meaningKeywords": [
+      "偶然",
+      "巧合",
+      "意外"
+    ],
+    "collocation": {
+      "ja": "駅で偶然友人に会った",
+      "reading": "えきでぐうぜんゆうじんにあった",
+      "zh": "在车站偶然遇见朋友"
+    },
+    "tip": "强调事情并非事先安排而碰巧发生，作形容动词时也可说「偶然の出会い」。"
+  },
+  {
+    "id": "deep-n3-jitsuha-disclosure",
+    "forms": [
+      {
+        "term": "実は",
+        "reading": "じつは"
+      }
+    ],
+    "meaningKeywords": [
+      "实际上",
+      "说实话",
+      "其实"
+    ],
+    "collocation": {
+      "ja": "実はお願いがあります",
+      "reading": "じつはおねがいがあります",
+      "zh": "其实我有件事想拜托你"
+    },
+    "tip": "常置于句首，引出之前没有说出的真实情况或请求，语气不等于直接反驳对方。"
+  },
+  {
+    "id": "deep-n3-shojo-progress",
+    "forms": [
+      {
+        "term": "徐々に",
+        "reading": "じょじょに"
+      }
+    ],
+    "meaningKeywords": [
+      "逐渐",
+      "稳步",
+      "逐步"
+    ],
+    "collocation": {
+      "ja": "気温が徐々に上がる",
+      "reading": "きおんがじょじょにあがる",
+      "zh": "气温逐渐升高"
+    },
+    "tip": "强调变化一点点发生、过程较平稳，常修饰上升、改善、広がる等变化动词。"
+  },
+  {
+    "id": "deep-n3-sudeni-completed",
+    "forms": [
+      {
+        "term": "既に",
+        "reading": "すでに"
+      }
+    ],
+    "meaningKeywords": [
+      "已经"
+    ],
+    "collocation": {
+      "ja": "店は既に閉まっていた",
+      "reading": "みせはすでにしまっていた",
+      "zh": "店已经关门了"
+    },
+    "tip": "从当前或过去的参照时点看，动作或状态此前已经发生，位置较「もう」正式。"
+  },
+  {
+    "id": "deep-n3-seizei-limit",
+    "forms": [
+      {
+        "term": "精々",
+        "reading": "せいぜい"
+      }
+    ],
+    "meaningKeywords": [
+      "最多",
+      "至多"
+    ],
+    "collocation": {
+      "ja": "参加者はせいぜい十人だ",
+      "reading": "さんかしゃはせいぜいじゅうにんだ",
+      "zh": "参加者最多十人"
+    },
+    "tip": "放在数量或程度前表示上限“最多、至多”，另一个义项可表示尽力做到最好。"
+  },
+  {
+    "id": "deep-n3-sotto-quietly",
+    "forms": [
+      {
+        "term": "そっと",
+        "reading": "そっと"
+      }
+    ],
+    "meaningKeywords": [
+      "轻轻地",
+      "悄悄地",
+      "温柔地"
+    ],
+    "collocation": {
+      "ja": "ドアをそっと閉める",
+      "reading": "どあをそっとしめる",
+      "zh": "轻轻关上门"
+    },
+    "tip": "修饰动作时表示不出声或不惊动他人地做，也可表示动作轻柔。"
+  },
+  {
+    "id": "deep-n3-sonouchi-time",
+    "forms": [
+      {
+        "term": "そのうち",
+        "reading": "そのうち"
+      }
+    ],
+    "meaningKeywords": [
+      "不久",
+      "很快",
+      "某一天",
+      "迟早"
+    ],
+    "collocation": {
+      "ja": "そのうち連絡します",
+      "reading": "そのうちれんらくします",
+      "zh": "过些时候会联系"
+    },
+    "tip": "表示未来某个不确定时点，时间不如「もうすぐ」明确，语境也可表示“其中”。"
+  },
+  {
+    "id": "deep-n3-sorezore-distributive",
+    "forms": [
+      {
+        "term": "それぞれ",
+        "reading": "それぞれ"
+      }
+    ],
+    "meaningKeywords": [
+      "各自",
+      "分别",
+      "各个"
+    ],
+    "collocation": {
+      "ja": "それぞれの席に座る",
+      "reading": "それぞれのせきにすわる",
+      "zh": "各自坐到自己的座位上"
+    },
+    "tip": "可作副词修饰动作，也可用「それぞれの＋名词」表示每一个分别对应。"
+  },
+  {
+    "id": "deep-n3-soredemo-contrast",
+    "forms": [
+      {
+        "term": "それでも",
+        "reading": "それでも"
+      }
+    ],
+    "meaningKeywords": [
+      "尽管如此",
+      "即便如此",
+      "然而"
+    ],
+    "collocation": {
+      "ja": "雨が降っていた。それでも出かけた",
+      "reading": "あめがふっていた。それでもでかけた",
+      "zh": "当时下着雨。尽管如此还是出门了"
+    },
+    "tip": "承接前句的困难或反面情况，表示后面的事仍然成立，常放在新句句首。"
+  },
+  {
+    "id": "deep-n3-tamata-chance",
+    "forms": [
+      {
+        "term": "たまたま",
+        "reading": "たまたま"
+      }
+    ],
+    "meaningKeywords": [
+      "偶然",
+      "碰巧",
+      "恰好"
+    ],
+    "collocation": {
+      "ja": "たまたま近くを通った",
+      "reading": "たまたまちかくをとおった",
+      "zh": "碰巧路过附近"
+    },
+    "tip": "表示某事无意中或偶然发生，「偶然」较中性书面，「たまたま」更像日常叙述。"
+  },
+  {
+    "id": "deep-n3-tadachini-formal",
+    "forms": [
+      {
+        "term": "直ちに",
+        "reading": "ただちに"
+      }
+    ],
+    "meaningKeywords": [
+      "立即",
+      "马上",
+      "当即"
+    ],
+    "collocation": {
+      "ja": "直ちに対応してください",
+      "reading": "ただちにたいおうしてください",
+      "zh": "请立即处理"
+    },
+    "tip": "表示不延迟地立即行动，语气较正式，常见于通知、指示或书面说明。"
+  },
+  {
+    "id": "deep-n3-tabitabi-repeat",
+    "forms": [
+      {
+        "term": "たびたび",
+        "reading": "たびたび"
+      }
+    ],
+    "meaningKeywords": [
+      "频繁",
+      "屡次",
+      "多次"
+    ],
+    "collocation": {
+      "ja": "たびたびご迷惑をおかけします",
+      "reading": "たびたびごめいわくをおかけします",
+      "zh": "屡次给您添麻烦"
+    },
+    "tip": "表示同类事情反复发生多次，用于道歉时常见「たびたび申し訳ありません」。"
+  },
+  {
+    "id": "deep-n3-chanto-correctly",
+    "forms": [
+      {
+        "term": "ちゃんと",
+        "reading": "ちゃんと"
+      }
+    ],
+    "meaningKeywords": [
+      "正确地",
+      "准时地",
+      "状态良好"
+    ],
+    "collocation": {
+      "ja": "約束をちゃんと守る",
+      "reading": "やくそくをちゃんとまもる",
+      "zh": "好好遵守约定"
+    },
+    "tip": "表示按要求、如期或充分地完成，口语常用，正式报告中可换成「きちんと」。"
+  },
+  {
+    "id": "deep-n3-tsuini-finally",
+    "forms": [
+      {
+        "term": "遂に",
+        "reading": "ついに"
+      }
+    ],
+    "meaningKeywords": [
+      "最终",
+      "终于",
+      "到底"
+    ],
+    "collocation": {
+      "ja": "ついに新しい店が開店した",
+      "reading": "ついにあたらしいみせがかいてんした",
+      "zh": "新店终于开业了"
+    },
+    "tip": "强调等待或发展到最后的结果终于出现，语气通常比单纯表示时间顺序更有结果感。"
+  },
+  {
+    "id": "deep-n3-tsugitsugi-sequence",
+    "forms": [
+      {
+        "term": "次々",
+        "reading": "つぎつぎ"
+      }
+    ],
+    "meaningKeywords": [
+      "依次",
+      "逐个",
+      "陆续"
+    ],
+    "collocation": {
+      "ja": "新しい問題が次々と見つかる",
+      "reading": "あたらしいもんだいがつぎつぎとみつかる",
+      "zh": "新的问题接连被发现"
+    },
+    "tip": "表示多个事件或对象一个接一个出现，常与「と」连用成「次々と」。"
+  },
+  {
+    "id": "deep-n3-tsuneni-always",
+    "forms": [
+      {
+        "term": "常に",
+        "reading": "つねに"
+      }
+    ],
+    "meaningKeywords": [
+      "总是",
+      "始终",
+      "经常"
+    ],
+    "collocation": {
+      "ja": "常に安全を確認する",
+      "reading": "つねにあんぜんをかくにんする",
+      "zh": "始终确认安全"
+    },
+    "tip": "表示一贯、持续地成立，语气较「いつも」正式，常用于说明或书面语。"
+  },
+  {
+    "id": "deep-n3-tonikaku-priority",
+    "forms": [
+      {
+        "term": "とにかく",
+        "reading": "とにかく"
+      }
+    ],
+    "meaningKeywords": [
+      "无论如何",
+      "总之",
+      "反正"
+    ],
+    "collocation": {
+      "ja": "とにかく始めてみよう",
+      "reading": "とにかくはじめてみよう",
+      "zh": "总之先试着开始吧"
+    },
+    "tip": "暂时搁下其他问题、先强调当前要做的事时用「とにかく」。"
+  },
+  {
+    "id": "deep-n3-doushitemo-inevitable",
+    "forms": [
+      {
+        "term": "どうしても",
+        "reading": "どうしても"
+      }
+    ],
+    "meaningKeywords": [
+      "无论如何",
+      "一定要",
+      "必须"
+    ],
+    "collocation": {
+      "ja": "どうしても自分で確かめたい",
+      "reading": "どうしてもじぶんでたしかめたい",
+      "zh": "无论如何都想亲自确认"
+    },
+    "tip": "与意志表达搭配时表示强烈愿望或必要，在否定句中也可表示“怎么都不”。"
+  },
+  {
+    "id": "deep-n3-tokorode-topic",
+    "forms": [
+      {
+        "term": "ところで",
+        "reading": "ところで"
+      }
+    ],
+    "meaningKeywords": [
+      "顺便说一下",
+      "话说回来"
+    ],
+    "collocation": {
+      "ja": "ところで、明日の予定はどうですか",
+      "reading": "ところで、あしたのよていはどうですか",
+      "zh": "对了，明天有什么安排"
+    },
+    "tip": "句首用来转换话题或插入新问题，与名词后的「ところで」表示时间节点的用法不同。"
+  },
+  {
+    "id": "deep-n3-nantoka-effort",
+    "forms": [
+      {
+        "term": "何とか",
+        "reading": "なんとか"
+      }
+    ],
+    "meaningKeywords": [
+      "设法",
+      "总算",
+      "好歹"
+    ],
+    "collocation": {
+      "ja": "何とか間に合った",
+      "reading": "なんとかまにあった",
+      "zh": "好歹赶上了"
+    },
+    "tip": "表示虽然困难但设法达成，也可放在动词前表示“想办法做到”。"
+  },
+  {
+    "id": "deep-n3-betsuni-negative",
+    "forms": [
+      {
+        "term": "別に",
+        "reading": "べつに"
+      }
+    ],
+    "meaningKeywords": [
+      "特别"
+    ],
+    "collocation": {
+      "ja": "別に困っていません",
+      "reading": "べつにこまっていません",
+      "zh": "我并没有特别为难"
+    },
+    "tip": "表示“不特别、并不怎么”时常与否定搭配，语气可能显得冷淡，需看对话关系。"
+  },
+  {
+    "id": "deep-n3-masani-exact",
+    "forms": [
+      {
+        "term": "まさに",
+        "reading": "まさに"
+      }
+    ],
+    "meaningKeywords": [
+      "恰好",
+      "正好",
+      "确实"
+    ],
+    "collocation": {
+      "ja": "それはまさに私が探していた本だ",
+      "reading": "それはまさにわたしがさがしていたほんだ",
+      "zh": "那正是我一直在找的书"
+    },
+    "tip": "强调眼前事物与预期、描述完全吻合，可译为“正是、恰好”。"
+  },
+  {
+    "id": "deep-n3-maru-de-as-if",
+    "forms": [
+      {
+        "term": "まるで",
+        "reading": "まるで"
+      }
+    ],
+    "meaningKeywords": [
+      "完全",
+      "真正"
+    ],
+    "collocation": {
+      "ja": "まるで夢のようだ",
+      "reading": "まるでゆめのようだ",
+      "zh": "简直像梦一样"
+    },
+    "tip": "常与「～ようだ」搭配作比喻，表示“简直如同”，也可在否定句中加强“完全不”的语气。"
+  },
+  {
+    "id": "deep-n3-mannichi-contingency",
+    "forms": [
+      {
+        "term": "万一",
+        "reading": "まんいち"
+      }
+    ],
+    "meaningKeywords": [
+      "万一",
+      "如果万一"
+    ],
+    "collocation": {
+      "ja": "万一に備えて連絡先を確認する",
+      "reading": "まんいちにそなえてれんらくさきをかくにんする",
+      "zh": "以防万一先确认联系方式"
+    },
+    "tip": "引出低概率但需要准备的情况，常见搭配是「万一に備える」或「万一の場合」。"
+  },
+  {
+    "id": "deep-n3-mushiro-preference",
+    "forms": [
+      {
+        "term": "寧ろ",
+        "reading": "むしろ"
+      }
+    ],
+    "meaningKeywords": [
+      "宁可",
+      "倒不如",
+      "反而"
+    ],
+    "collocation": {
+      "ja": "急ぐより、むしろ休んだ方がいい",
+      "reading": "いそぐより、むしろやすんだほうがいい",
+      "zh": "与其着急，不如休息更好"
+    },
+    "tip": "对比两个选择并倾向后者时用「むしろ」，常见结构是「Aより、むしろB」。"
+  },
+  {
+    "id": "deep-n3-yosuru-ni-summary",
+    "forms": [
+      {
+        "term": "要するに",
+        "reading": "ようするに"
+      }
+    ],
+    "meaningKeywords": [
+      "总之",
+      "说到底",
+      "简而言之"
+    ],
+    "collocation": {
+      "ja": "要するに、準備が足りなかった",
+      "reading": "ようするに、じゅんびがたりなかった",
+      "zh": "总之，准备不足"
+    },
+    "tip": "放在总结句开头，把前面内容压缩成核心结论，常用于口头说明或文章归纳。"
+  },
+  {
+    "id": "deep-n3-wazato-intention",
+    "forms": [
+      {
+        "term": "わざと",
+        "reading": "わざと"
+      }
+    ],
+    "meaningKeywords": [
+      "故意",
+      "有意",
+      "刻意"
+    ],
+    "collocation": {
+      "ja": "わざと遅れて来た",
+      "reading": "わざとおくれてきた",
+      "zh": "故意迟到了"
+    },
+    "tip": "表示有意做出某动作，与「うっかり」无意间发生相反。"
+  },
+  {
+    "id": "deep-n4-enryo-polite",
+    "forms": [
+      {
+        "term": "遠慮",
+        "reading": "えんりょ"
+      }
+    ],
+    "meaningKeywords": [
+      "克制",
+      "顾虑",
+      "迟疑"
+    ],
+    "collocation": {
+      "ja": "写真撮影はご遠慮ください",
+      "reading": "しゃしんさつえいはごえんりょください",
+      "zh": "请勿拍照"
+    },
+    "tip": "告示中的「ご遠慮ください」是礼貌地请人不要做某事，不表示鼓励对方“不必客气”。"
+  },
+  {
+    "id": "deep-n4-kankei-relate",
+    "forms": [
+      {
+        "term": "関係",
+        "reading": "かんけい"
+      }
+    ],
+    "meaningKeywords": [
+      "关系",
+      "联系",
+      "关联"
+    ],
+    "collocation": {
+      "ja": "この問題に関係する",
+      "reading": "このもんだいにかんけいする",
+      "zh": "与这个问题有关"
+    },
+    "tip": "作サ变动词时常用「Nに関係する」，名词表达关系时可说「Nと関係がある」。"
+  },
+  {
+    "id": "deep-n4-keiken-object",
+    "forms": [
+      {
+        "term": "経験",
+        "reading": "けいけん"
+      }
+    ],
+    "meaningKeywords": [
+      "经验",
+      "体验"
+    ],
+    "collocation": {
+      "ja": "海外で生活を経験する",
+      "reading": "かいがいでせいかつをけいけんする",
+      "zh": "体验海外生活"
+    },
+    "tip": "经历的事件或活动用「を経験する」，表示有过某种经历也可说「経験がある」。"
+  },
+  {
+    "id": "deep-n4-susumu-progress",
+    "forms": [
+      {
+        "term": "進む",
+        "reading": "すすむ"
+      }
+    ],
+    "meaningKeywords": [
+      "取得进展",
+      "进步"
+    ],
+    "collocation": {
+      "ja": "計画が順調に進む",
+      "reading": "けいかくがじゅんちょうにすすむ",
+      "zh": "计划顺利推进"
+    },
+    "tip": "事情取得进展时，计划或工作作主语并用「が」，主动推进事情则用「進める」。"
+  },
+  {
+    "id": "deep-n4-sewa-direction",
+    "forms": [
+      {
+        "term": "世話",
+        "reading": "せわ"
+      }
+    ],
+    "meaningKeywords": [
+      "照顾",
+      "照看",
+      "帮助"
+    ],
+    "collocation": {
+      "ja": "子どもの世話をする",
+      "reading": "こどものせわをする",
+      "zh": "照顾孩子"
+    },
+    "tip": "照料对象用「の」修饰「世話」，「人の世話になる」则表示接受别人的照顾。"
+  },
+  {
+    "id": "deep-n4-hikkosu-route",
+    "forms": [
+      {
+        "term": "引っ越す",
+        "reading": "ひっこす"
+      }
+    ],
+    "meaningKeywords": [
+      "搬家",
+      "迁居",
+      "改变住所"
+    ],
+    "collocation": {
+      "ja": "大阪から東京へ引っ越す",
+      "reading": "おおさかからとうきょうへひっこす",
+      "zh": "从大阪搬到东京"
+    },
+    "tip": "原居地用「から」，搬去的地点用「へ」或「に」。"
+  },
+  {
+    "id": "deep-n4-hieru-intransitive",
+    "forms": [
+      {
+        "term": "冷える",
+        "reading": "ひえる"
+      }
+    ],
+    "meaningKeywords": [
+      "变冷",
+      "冷却"
+    ],
+    "collocation": {
+      "ja": "体が冷える",
+      "reading": "からだがひえる",
+      "zh": "身体发凉"
+    },
+    "tip": "温度自己下降或身体变凉用「冷える」，主动把饮料或食物弄凉时用「冷やす」。"
+  },
+  {
+    "id": "deep-n4-yureru-intransitive",
+    "forms": [
+      {
+        "term": "揺れる",
+        "reading": "ゆれる"
+      }
+    ],
+    "meaningKeywords": [
+      "摇晃",
+      "摇摆",
+      "颤动"
+    ],
+    "collocation": {
+      "ja": "地震で窓が揺れる",
+      "reading": "じしんでまどがゆれる",
+      "zh": "窗户因地震摇晃"
+    },
+    "tip": "自行摇晃的物体用「が揺れる」，这里的「で」说明造成摇晃的原因。"
+  },
+  {
+    "id": "deep-n4-henji-recipient",
+    "forms": [
+      {
+        "term": "返事",
+        "reading": "へんじ"
+      }
+    ],
+    "meaningKeywords": [
+      "回复",
+      "答复",
+      "回答"
+    ],
+    "collocation": {
+      "ja": "友達に返事をする",
+      "reading": "ともだちにへんじをする",
+      "zh": "回复朋友"
+    },
+    "tip": "回复的对象常用「に」，回信或答复的内容也可说「質問に返事をする」。"
+  },
+  {
+    "id": "deep-n3-akiru-ni",
+    "forms": [
+      {
+        "term": "飽きる",
+        "reading": "あきる"
+      }
+    ],
+    "meaningKeywords": [
+      "厌倦",
+      "厌烦",
+      "失去兴趣"
+    ],
+    "collocation": {
+      "ja": "同じ仕事に飽きる",
+      "reading": "おなじしごとにあきる",
+      "zh": "厌倦同一份工作"
+    },
+    "tip": "感到厌倦的对象常用「に」，表示把某人弄烦时则是「飽きさせる」。"
+  },
+  {
+    "id": "deep-n3-akushu-to",
+    "forms": [
+      {
+        "term": "握手",
+        "reading": "あくしゅ"
+      }
+    ],
+    "meaningKeywords": [
+      "握手"
+    ],
+    "collocation": {
+      "ja": "選手と握手する",
+      "reading": "せんしゅとあくしゅする",
+      "zh": "和选手握手"
+    },
+    "tip": "握手的对象用「と」，表示双方互相握手，而不是把对方当作「を」的直接宾语。"
+  },
+  {
+    "id": "deep-n3-iji-object",
+    "forms": [
+      {
+        "term": "維持",
+        "reading": "いじ"
+      }
+    ],
+    "meaningKeywords": [
+      "维持",
+      "保持"
+    ],
+    "collocation": {
+      "ja": "健康を維持する",
+      "reading": "けんこうをいじする",
+      "zh": "保持健康"
+    },
+    "tip": "需要持续保持的状态或水平用「を維持する」。"
+  },
+  {
+    "id": "deep-n3-idou-route",
+    "forms": [
+      {
+        "term": "移動",
+        "reading": "いどう"
+      }
+    ],
+    "meaningKeywords": [
+      "移动",
+      "转移",
+      "迁移"
+    ],
+    "collocation": {
+      "ja": "駅から会場へ移動する",
+      "reading": "えきからかいじょうへいどうする",
+      "zh": "从车站移动到会场"
+    },
+    "tip": "起点用「から」，目的地用「へ」或「に」，名词「移動」接「する」表示移动。"
+  },
+  {
+    "id": "deep-n3-iwau-object",
+    "forms": [
+      {
+        "term": "祝う",
+        "reading": "いわう"
+      }
+    ],
+    "meaningKeywords": [
+      "庆祝",
+      "祝贺"
+    ],
+    "collocation": {
+      "ja": "友人の合格を祝う",
+      "reading": "ゆうじんのごうかくをいわう",
+      "zh": "庆祝朋友通过考试"
+    },
+    "tip": "庆祝的事件或祝贺内容用「を」，祝贺对象也可用「人の成功を祝う」。"
+  },
+  {
+    "id": "deep-n3-enki-object",
+    "forms": [
+      {
+        "term": "延期",
+        "reading": "えんき"
+      }
+    ],
+    "meaningKeywords": [
+      "延期",
+      "推迟"
+    ],
+    "collocation": {
+      "ja": "会議を延期する",
+      "reading": "かいぎをえんきする",
+      "zh": "推迟会议"
+    },
+    "tip": "被推迟的活动或日期用「を」，新的日期可用「まで」或「に」补充。"
+  },
+  {
+    "id": "deep-n3-enjo-object",
+    "forms": [
+      {
+        "term": "援助",
+        "reading": "えんじょ"
+      }
+    ],
+    "meaningKeywords": [
+      "援助",
+      "帮助",
+      "支持"
+    ],
+    "collocation": {
+      "ja": "被災者を援助する",
+      "reading": "ひさいしゃをえんじょする",
+      "zh": "援助受灾者"
+    },
+    "tip": "接受帮助的人或团体用「を」，较正式的名词「援助」常出现在制度、组织或公共事务语境。"
+  },
+  {
+    "id": "deep-n3-oudan-path",
+    "forms": [
+      {
+        "term": "横断",
+        "reading": "おうだん"
+      }
+    ],
+    "meaningKeywords": [
+      "横穿",
+      "穿过",
+      "横越"
+    ],
+    "collocation": {
+      "ja": "道路を横断する",
+      "reading": "どうろをおうだんする",
+      "zh": "横穿道路"
+    },
+    "tip": "被横穿的道路、桥面等用「を」标记，横断行為是从一侧穿到另一侧。"
+  },
+  {
+    "id": "deep-n3-oboreru-ni",
+    "forms": [
+      {
+        "term": "溺れる",
+        "reading": "おぼれる"
+      }
+    ],
+    "meaningKeywords": [
+      "沉溺于",
+      "上瘾",
+      "沉湎于"
+    ],
+    "collocation": {
+      "ja": "ゲームに溺れる",
+      "reading": "げーむにおぼれる",
+      "zh": "沉迷于游戏"
+    },
+    "tip": "沉迷的事物用「に」，具体溺水也常说「水に溺れる」。"
+  },
+  {
+    "id": "deep-n3-orosu-source",
+    "forms": [
+      {
+        "term": "降ろす",
+        "reading": "おろす"
+      }
+    ],
+    "meaningKeywords": [
+      "放下",
+      "降下",
+      "落下"
+    ],
+    "collocation": {
+      "ja": "荷物を車から降ろす",
+      "reading": "にもつをくるまからおろす",
+      "zh": "把行李从车上搬下来"
+    },
+    "tip": "搬下的物品用「を」，从哪处取下用「から」，人自己下车则用自动词「降りる」。"
+  },
+  {
+    "id": "deep-n3-kaishaku-as",
+    "forms": [
+      {
+        "term": "解釈",
+        "reading": "かいしゃく"
+      }
+    ],
+    "meaningKeywords": [
+      "解释",
+      "理解",
+      "诠释"
+    ],
+    "collocation": {
+      "ja": "発言を冗談と解釈する",
+      "reading": "はつげんをじょうだんとかいしゃくする",
+      "zh": "把发言理解为玩笑"
+    },
+    "tip": "被解释的文字或行为用「を」，解释成什么用「と」标出。"
+  },
+  {
+    "id": "deep-n3-gaishutsu-time",
+    "forms": [
+      {
+        "term": "外出",
+        "reading": "がいしゅつ"
+      }
+    ],
+    "meaningKeywords": [
+      "外出",
+      "出门",
+      "离开"
+    ],
+    "collocation": {
+      "ja": "午後は外出する",
+      "reading": "ごごはがいしゅつする",
+      "zh": "下午外出"
+    },
+    "tip": "名词「外出」后接「する」构成动词，具体外出地点可用「へ」或「に」补充。"
+  },
+  {
+    "id": "deep-n3-kagiru-limit",
+    "forms": [
+      {
+        "term": "限る",
+        "reading": "かぎる"
+      }
+    ],
+    "meaningKeywords": [
+      "限制",
+      "限定",
+      "局限"
+    ],
+    "collocation": {
+      "ja": "応募は学生に限る",
+      "reading": "おうぼはがくせいにかぎる",
+      "zh": "申请对象限于学生"
+    },
+    "tip": "限定的范围常用「に限る」，「～とは限らない」则表示未必如此。"
+  },
+  {
+    "id": "deep-n3-katsuyou-object",
+    "forms": [
+      {
+        "term": "活用",
+        "reading": "かつよう"
+      }
+    ],
+    "meaningKeywords": [
+      "实际应用",
+      "灵活运用",
+      "充分利用"
+    ],
+    "collocation": {
+      "ja": "経験を活用する",
+      "reading": "けいけんをかつようする",
+      "zh": "运用经验"
+    },
+    "tip": "被利用、运用的资源或经验用「を」，表示语法活用时，具体词形或规则也可作宾语。"
+  },
+  {
+    "id": "deep-n3-gaman-object",
+    "forms": [
+      {
+        "term": "我慢",
+        "reading": "がまん"
+      }
+    ],
+    "meaningKeywords": [
+      "忍耐",
+      "容忍",
+      "坚持"
+    ],
+    "collocation": {
+      "ja": "痛みを我慢する",
+      "reading": "いたみをがまんする",
+      "zh": "忍受疼痛"
+    },
+    "tip": "忍受的痛苦、不便或欲望用「を」，「我慢できない」表示无法继续忍受。"
+  },
+  {
+    "id": "deep-n3-kinou-function",
+    "forms": [
+      {
+        "term": "機能",
+        "reading": "きのう"
+      }
+    ],
+    "meaningKeywords": [
+      "功能",
+      "能力",
+      "特性"
+    ],
+    "collocation": {
+      "ja": "安全装置として機能する",
+      "reading": "あんぜんそうちとしてきのうする",
+      "zh": "作为安全装置发挥作用"
+    },
+    "tip": "表示某物发挥什么作用时常用「Nとして機能する」，「として」说明它承担的角色。"
+  },
+  {
+    "id": "deep-n3-kifu-recipient",
+    "forms": [
+      {
+        "term": "寄付",
+        "reading": "きふ"
+      }
+    ],
+    "meaningKeywords": [
+      "捐献",
+      "捐赠",
+      "贡献"
+    ],
+    "collocation": {
+      "ja": "学校に本を寄付する",
+      "reading": "がっこうにほんをきふする",
+      "zh": "向学校捐书"
+    },
+    "tip": "接受捐赠的团体用「に」，捐出的金钱或物品用「を」。"
+  },
+  {
+    "id": "deep-n3-kubetsu-pair",
+    "forms": [
+      {
+        "term": "区別",
+        "reading": "くべつ"
+      }
+    ],
+    "meaningKeywords": [
+      "区别",
+      "区分",
+      "辨别"
+    ],
+    "collocation": {
+      "ja": "二つの言葉を区別する",
+      "reading": "ふたつのことばをくべつする",
+      "zh": "区分两个词"
+    },
+    "tip": "需要区分的对象用「を」，两者之间的对照常用「と」：「AとBを区別する」。"
+  },
+  {
+    "id": "deep-n3-kurushimu-ni",
+    "forms": [
+      {
+        "term": "苦しむ",
+        "reading": "くるしむ"
+      }
+    ],
+    "meaningKeywords": [
+      "受苦",
+      "烦恼",
+      "受苦"
+    ],
+    "collocation": {
+      "ja": "病気に苦しむ",
+      "reading": "びょうきにくるしむ",
+      "zh": "因疾病而受苦"
+    },
+    "tip": "造成痛苦的疾病、问题或困境常用「に苦しむ」，受苦的人作主语。"
+  },
+  {
+    "id": "deep-n3-keiyaku-to",
+    "forms": [
+      {
+        "term": "契約",
+        "reading": "けいやく"
+      }
+    ],
+    "meaningKeywords": [
+      "合同",
+      "契约",
+      "协议"
+    ],
+    "collocation": {
+      "ja": "会社と契約する",
+      "reading": "かいしゃとけいやくする",
+      "zh": "与公司签约"
+    },
+    "tip": "签约的另一方用「と」，合同内容可用「を結ぶ」等表达补充。"
+  },
+  {
+    "id": "deep-n3-kesshin-object",
+    "forms": [
+      {
+        "term": "決心",
+        "reading": "けっしん"
+      }
+    ],
+    "meaningKeywords": [
+      "决心",
+      "决断"
+    ],
+    "collocation": {
+      "ja": "留学を決心する",
+      "reading": "りゅうがくをけっしんする",
+      "zh": "决心留学"
+    },
+    "tip": "下定决心要做的事情用「を」，「決心がつく」表示终于拿定主意。"
+  },
+  {
+    "id": "deep-n3-kouken-ni",
+    "forms": [
+      {
+        "term": "貢献",
+        "reading": "こうけん"
+      }
+    ],
+    "meaningKeywords": [
+      "贡献",
+      "效力"
+    ],
+    "collocation": {
+      "ja": "地域社会に貢献する",
+      "reading": "ちいきしゃかいにこうけんする",
+      "zh": "为当地社会作贡献"
+    },
+    "tip": "贡献的团体、领域或目标常用「に」，貢献する是自动词性用法。"
+  },
+  {
+    "id": "deep-n3-kousei-by",
+    "forms": [
+      {
+        "term": "構成",
+        "reading": "こうせい"
+      }
+    ],
+    "meaningKeywords": [
+      "构成",
+      "组成",
+      "形成"
+    ],
+    "collocation": {
+      "ja": "委員会は五人で構成される",
+      "reading": "いいんかいはごにんでこうせいされる",
+      "zh": "委员会由五人组成"
+    },
+    "tip": "组成整体的成员或部分常用「で」引出，被动式「～で構成される」很常见。"
+  },
+  {
+    "id": "deep-n3-kotonaru-formal",
+    "forms": [
+      {
+        "term": "異なる",
+        "reading": "ことなる"
+      }
+    ],
+    "meaningKeywords": [
+      "不同",
+      "有区别",
+      "相异"
+    ],
+    "collocation": {
+      "ja": "色と形が異なる",
+      "reading": "いろとかたちがことなる",
+      "zh": "颜色和形状不同"
+    },
+    "tip": "比较对象常用「と」，異なる比「違う」更偏书面说明语气。"
+  },
+  {
+    "id": "deep-n3-kotowaru-decline",
+    "forms": [
+      {
+        "term": "断る",
+        "reading": "ことわる"
+      }
+    ],
+    "meaningKeywords": [
+      "拒绝",
+      "婉拒",
+      "谢绝"
+    ],
+    "collocation": {
+      "ja": "誘いを断る",
+      "reading": "さそいをことわる",
+      "zh": "拒绝邀请"
+    },
+    "tip": "拒绝的邀请、要求或提议用「を」标出，礼貌说明理由可接「～ので、断ります」。"
+  },
+  {
+    "id": "deep-n3-konzatsu-subject",
+    "forms": [
+      {
+        "term": "混雑",
+        "reading": "こんざつ"
+      }
+    ],
+    "meaningKeywords": [
+      "拥挤",
+      "拥堵",
+      "堵塞"
+    ],
+    "collocation": {
+      "ja": "駅が混雑する",
+      "reading": "えきがこんざつする",
+      "zh": "车站拥挤"
+    },
+    "tip": "拥挤的地点用「が」作主语，表示人群挤满场所时也可说「会場が人で混雑する」。"
+  },
+  {
+    "id": "deep-n3-sakarau-ni",
+    "forms": [
+      {
+        "term": "逆らう",
+        "reading": "さからう"
+      }
+    ],
+    "meaningKeywords": [
+      "违抗",
+      "反抗",
+      "不服从"
+    ],
+    "collocation": {
+      "ja": "命令に逆らう",
+      "reading": "めいれいにさからう",
+      "zh": "违抗命令"
+    },
+    "tip": "违抗的命令、权威或潮流常用「に」，「流れに逆らう」也可作比喻。"
+  },
+  {
+    "id": "deep-n3-shikyu-recipient",
+    "forms": [
+      {
+        "term": "支給",
+        "reading": "しきゅう"
+      }
+    ],
+    "meaningKeywords": [
+      "供给",
+      "供应",
+      "支付"
+    ],
+    "collocation": {
+      "ja": "会社が社員に制服を支給する",
+      "reading": "かいしゃがしゃいんにせいふくをしきゅうする",
+      "zh": "公司向员工发放制服"
+    },
+    "tip": "供应者作主语，领取者用「に」，发放的物品或款项用「を」。"
+  },
+  {
+    "id": "deep-n3-shiharau-recipient",
+    "forms": [
+      {
+        "term": "支払う",
+        "reading": "しはらう"
+      }
+    ],
+    "meaningKeywords": [
+      "支付",
+      "付款"
+    ],
+    "collocation": {
+      "ja": "店に代金を支払う",
+      "reading": "みせにだいきんをしはらう",
+      "zh": "向店家支付货款"
+    },
+    "tip": "付款对象可用「に」，支付的金额或费用用「を」。"
+  },
+  {
+    "id": "deep-n3-shimeru-proportion",
+    "forms": [
+      {
+        "term": "占める",
+        "reading": "しめる"
+      }
+    ],
+    "meaningKeywords": [
+      "占…的比例",
+      "构成",
+      "占据"
+    ],
+    "collocation": {
+      "ja": "売上の半分を占める",
+      "reading": "うりあげのはんぶんをしめる",
+      "zh": "占销售额的一半"
+    },
+    "tip": "整体比例用「の」引出，被占据的份额用「を」，常见句型是「全体の三割を占める」。"
+  },
+  {
+    "id": "deep-n3-shuchu-ni",
+    "forms": [
+      {
+        "term": "集中",
+        "reading": "しゅうちゅう"
+      }
+    ],
+    "meaningKeywords": [
+      "专注",
+      "集中注意力",
+      "聚集"
+    ],
+    "collocation": {
+      "ja": "勉強に集中する",
+      "reading": "べんきょうにしゅうちゅうする",
+      "zh": "专心学习"
+    },
+    "tip": "注意力集中的活动或对象常用「に」，把人或物集中起来时可用「を集中させる」。"
+  },
+  {
+    "id": "deep-n3-shukuhaku-ni",
+    "forms": [
+      {
+        "term": "宿泊",
+        "reading": "しゅくはく"
+      }
+    ],
+    "meaningKeywords": [
+      "住宿",
+      "投宿"
+    ],
+    "collocation": {
+      "ja": "ホテルに宿泊する",
+      "reading": "ほてるにしゅくはくする",
+      "zh": "住在酒店"
+    },
+    "tip": "住宿地点用「に」，宿泊する较正式，日常可说「ホテルに泊まる」。"
+  },
+  {
+    "id": "deep-n3-jutai-subject",
+    "forms": [
+      {
+        "term": "渋滞",
+        "reading": "じゅうたい"
+      }
+    ],
+    "meaningKeywords": [
+      "堵塞",
+      "塞车",
+      "交通拥堵"
+    ],
+    "collocation": {
+      "ja": "高速道路が渋滞する",
+      "reading": "こうそくどうろがじゅうたいする",
+      "zh": "高速公路堵车"
+    },
+    "tip": "发生拥堵的道路或交通作主语用「が」，也可说「渋滞に巻き込まれる」表示被堵在路上。"
+  },
+  {
+    "id": "deep-n3-shototsu-to",
+    "forms": [
+      {
+        "term": "衝突",
+        "reading": "しょうとつ"
+      }
+    ],
+    "meaningKeywords": [
+      "碰撞",
+      "相撞",
+      "冲突"
+    ],
+    "collocation": {
+      "ja": "車と衝突する",
+      "reading": "くるまとしょうとつする",
+      "zh": "与汽车相撞"
+    },
+    "tip": "碰撞的另一方常用「と」，意见或利益冲突也可说「意見が衝突する」。"
+  },
+  {
+    "id": "deep-n3-shouhi-object",
+    "forms": [
+      {
+        "term": "消費",
+        "reading": "しょうひ"
+      }
+    ],
+    "meaningKeywords": [
+      "消费",
+      "支出",
+      "花费"
+    ],
+    "collocation": {
+      "ja": "電力を消費する",
+      "reading": "でんりょくをしょうひする",
+      "zh": "消耗电力"
+    },
+    "tip": "被消费或耗用的资源用「を」，常与时间、能源、費用等名词搭配。"
+  },
+  {
+    "id": "deep-n3-shoumei-object",
+    "forms": [
+      {
+        "term": "証明",
+        "reading": "しょうめい"
+      }
+    ],
+    "meaningKeywords": [
+      "证明",
+      "证实",
+      "验证"
+    ],
+    "collocation": {
+      "ja": "身分を証明する",
+      "reading": "みぶんをしょうめいする",
+      "zh": "证明身份"
+    },
+    "tip": "需要证明的事实或身份用「を」，证据或材料可用「で」说明。"
+  },
+  {
+    "id": "deep-n3-shinrai-object",
+    "forms": [
+      {
+        "term": "信頼",
+        "reading": "しんらい"
+      }
+    ],
+    "meaningKeywords": [
+      "信任",
+      "信赖"
+    ],
+    "collocation": {
+      "ja": "同僚を信頼する",
+      "reading": "どうりょうをしんらいする",
+      "zh": "信任同事"
+    },
+    "tip": "信任的人或组织用「を」，信任关系常说「人との信頼関係」。"
+  },
+  {
+    "id": "deep-n3-seikyu-arguments",
+    "forms": [
+      {
+        "term": "請求",
+        "reading": "せいきゅう"
+      }
+    ],
+    "meaningKeywords": [
+      "请求",
+      "索赔",
+      "申请",
+      "收费"
+    ],
+    "collocation": {
+      "ja": "会社に修理費を請求する",
+      "reading": "かいしゃにしゅうりひをせいきゅうする",
+      "zh": "向公司索要维修费"
+    },
+    "tip": "被要求付款的人或机构用「に」，索要的费用或服务用「を」。"
+  },
+  {
+    "id": "deep-n3-zetsumetsu-subject",
+    "forms": [
+      {
+        "term": "絶滅",
+        "reading": "ぜつめつ"
+      }
+    ],
+    "meaningKeywords": [
+      "灭绝",
+      "消灭"
+    ],
+    "collocation": {
+      "ja": "恐竜が絶滅する",
+      "reading": "きょうりゅうがぜつめつする",
+      "zh": "恐龙灭绝"
+    },
+    "tip": "灭绝的物种用「が」作主语，有意导致物种灭绝时可用「絶滅させる」。"
+  },
+  {
+    "id": "deep-n3-senkou-field",
+    "forms": [
+      {
+        "term": "専攻",
+        "reading": "せんこう"
+      }
+    ],
+    "meaningKeywords": [
+      "专业",
+      "专攻"
+    ],
+    "collocation": {
+      "ja": "大学で経済学を専攻する",
+      "reading": "だいがくでけいざいがくをせんこうする",
+      "zh": "在大学专攻经济学"
+    },
+    "tip": "学习领域用「を」，就读机构或学习场所用「で」。"
+  },
+  {
+    "id": "deep-n3-taisuru-modifier",
+    "forms": [
+      {
+        "term": "対する",
+        "reading": "たいする"
+      }
+    ],
+    "meaningKeywords": [
+      "面对",
+      "相对",
+      "对抗"
+    ],
+    "collocation": {
+      "ja": "質問に対する答え",
+      "reading": "しつもんにたいするこたえ",
+      "zh": "针对问题的回答"
+    },
+    "tip": "「Nに対するN」表示针对、面向某对象，常直接放在后面的名词前作定语。"
+  },
+  {
+    "id": "deep-n3-tatakau-to",
+    "forms": [
+      {
+        "term": "戦う",
+        "reading": "たたかう"
+      }
+    ],
+    "meaningKeywords": [
+      "交战",
+      "搏斗",
+      "抗争"
+    ],
+    "collocation": {
+      "ja": "相手と戦う",
+      "reading": "あいてとたたかう",
+      "zh": "与对手交战"
+    },
+    "tip": "交战或竞争的对象常用「と」，对抗某个困难时也可用「と戦う」。"
+  },
+  {
+    "id": "deep-n3-chikoku-ni",
+    "forms": [
+      {
+        "term": "遅刻",
+        "reading": "ちこく"
+      }
+    ],
+    "meaningKeywords": [
+      "迟到",
+      "晚到",
+      "来迟"
+    ],
+    "collocation": {
+      "ja": "授業に遅刻する",
+      "reading": "じゅぎょうにちこくする",
+      "zh": "上课迟到"
+    },
+    "tip": "迟到的活动或约定常用「に」，迟到多少时间可用「時間だけ遅刻する」补充。"
+  },
+  {
+    "id": "deep-n3-chusha-location",
+    "forms": [
+      {
+        "term": "駐車",
+        "reading": "ちゅうしゃ"
+      }
+    ],
+    "meaningKeywords": [
+      "停车",
+      "泊车"
+    ],
+    "collocation": {
+      "ja": "駐車場に駐車する",
+      "reading": "ちゅうしゃじょうにちゅうしゃする",
+      "zh": "把车停在停车场"
+    },
+    "tip": "停车的地点用「に」，正式标牌常用「駐車禁止」表示禁止停车。"
+  },
+  {
+    "id": "deep-n3-chumon-object",
+    "forms": [
+      {
+        "term": "注文",
+        "reading": "ちゅうもん"
+      }
+    ],
+    "meaningKeywords": [
+      "订货",
+      "订单",
+      "要求",
+      "请求"
+    ],
+    "collocation": {
+      "ja": "料理を注文する",
+      "reading": "りょうりをちゅうもんする",
+      "zh": "点菜"
+    },
+    "tip": "点购的菜品、商品或服务用「を」，向店员提出特殊要求时也可说「人に注文する」。"
+  },
+  {
+    "id": "deep-n3-tsuukou-path",
+    "forms": [
+      {
+        "term": "通行",
+        "reading": "つうこう"
+      }
+    ],
+    "meaningKeywords": [
+      "通行",
+      "通过"
+    ],
+    "collocation": {
+      "ja": "車が道路を通行する",
+      "reading": "くるまがどうろをつうこうする",
+      "zh": "车辆在道路上通行"
+    },
+    "tip": "车辆通过的道路或路线用「を」，「通行止め」表示禁止通过。"
+  },
+  {
+    "id": "deep-n3-deau-ni",
+    "forms": [
+      {
+        "term": "出会う",
+        "reading": "であう"
+      }
+    ],
+    "meaningKeywords": [
+      "偶然相遇",
+      "邂逅",
+      "遇见"
+    ],
+    "collocation": {
+      "ja": "旅先で友人に出会う",
+      "reading": "たびさきでゆうじんにであう",
+      "zh": "在旅途中偶遇朋友"
+    },
+    "tip": "相遇的对象用「に」，「出会う」常含偶然或初次遇见的意味，普通约见多用「会う」。"
+  },
+  {
+    "id": "deep-n3-teikou-ni",
+    "forms": [
+      {
+        "term": "抵抗",
+        "reading": "ていこう"
+      }
+    ],
+    "meaningKeywords": [
+      "抵抗",
+      "反抗",
+      "对抗"
+    ],
+    "collocation": {
+      "ja": "圧力に抵抗する",
+      "reading": "あつりょくにていこうする",
+      "zh": "抵抗压力"
+    },
+    "tip": "抵抗的力量、压力或要求常用「に」，抵抗する表示主体主动对抗。"
+  },
+  {
+    "id": "deep-n3-tekiyou-object",
+    "forms": [
+      {
+        "term": "適用",
+        "reading": "てきよう"
+      }
+    ],
+    "meaningKeywords": [
+      "适用",
+      "应用"
+    ],
+    "collocation": {
+      "ja": "新しい規則を適用する",
+      "reading": "あたらしいきそくをてきようする",
+      "zh": "适用新规定"
+    },
+    "tip": "被采用的规则、技术或制度用「を」，适用对象可用「に」补充。"
+  },
+  {
+    "id": "deep-n3-touchaku-ni",
+    "forms": [
+      {
+        "term": "到着",
+        "reading": "とうちゃく"
+      }
+    ],
+    "meaningKeywords": [
+      "到达",
+      "抵达"
+    ],
+    "collocation": {
+      "ja": "空港に到着する",
+      "reading": "くうこうにとうちゃくする",
+      "zh": "抵达机场"
+    },
+    "tip": "到达的地点用「に」，到着する较正式，日常也可说「空港に着く」。"
+  },
+  {
+    "id": "deep-n3-touhyou-target",
+    "forms": [
+      {
+        "term": "投票",
+        "reading": "とうひょう"
+      }
+    ],
+    "meaningKeywords": [
+      "投票",
+      "民意调查"
+    ],
+    "collocation": {
+      "ja": "候補者に投票する",
+      "reading": "こうほしゃにとうひょうする",
+      "zh": "给候选人投票"
+    },
+    "tip": "投票选择的候选人或选项用「に」，选票本身也可用「を」作宾语。"
+  },
+  {
+    "id": "deep-n3-noboru-rise",
+    "forms": [
+      {
+        "term": "昇る",
+        "reading": "のぼる"
+      }
+    ],
+    "meaningKeywords": [
+      "升起",
+      "上升"
+    ],
+    "collocation": {
+      "ja": "東の空に太陽が昇る",
+      "reading": "ひがしのそらにたいようがのぼる",
+      "zh": "太阳从东方升起"
+    },
+    "tip": "太阳、月亮等升起多写作「昇る」，登山或攀上高处多写作同音的「登る」。",
+    "contrast": {
+      "term": "登る",
+      "reading": "のぼる",
+      "collocation": {
+        "ja": "山に登る",
+        "reading": "やまにのぼる",
+        "zh": "登山"
+      },
+      "note": "昇る常用于天体升起或地位上升，登る常指攀登、登上。"
+    }
+  },
+  {
+    "id": "deep-n3-hanasu-release",
+    "forms": [
+      {
+        "term": "放す",
+        "reading": "はなす"
+      }
+    ],
+    "meaningKeywords": [
+      "释放",
+      "放开",
+      "放出"
+    ],
+    "collocation": {
+      "ja": "鳥を空へ放す",
+      "reading": "とりをそらへはなす",
+      "zh": "把鸟放飞到空中"
+    },
+    "tip": "被放开的动物或物品用「を」，「手を放す」表示松开手。"
+  },
+  {
+    "id": "deep-n3-henka-state",
+    "forms": [
+      {
+        "term": "変化",
+        "reading": "へんか"
+      }
+    ],
+    "meaningKeywords": [
+      "变化",
+      "改变",
+      "转变"
+    ],
+    "collocation": {
+      "ja": "気温が変化する",
+      "reading": "きおんがへんかする",
+      "zh": "气温发生变化"
+    },
+    "tip": "发生变化的事物用「が」作主语，使某物变化则用「変化させる」。"
+  },
+  {
+    "id": "deep-n3-hoshou-object",
+    "forms": [
+      {
+        "term": "保証",
+        "reading": "ほしょう"
+      }
+    ],
+    "meaningKeywords": [
+      "保证",
+      "担保",
+      "保修"
+    ],
+    "collocation": {
+      "ja": "品質を保証する",
+      "reading": "ひんしつをほしょうする",
+      "zh": "保证质量"
+    },
+    "tip": "保证的质量、性能或结果用「を」，商品保修常说「保証期間」。"
+  },
+  {
+    "id": "deep-n5-ato-after",
+    "forms": [
+      {
+        "term": "後",
+        "reading": "あと"
+      }
+    ],
+    "meaningKeywords": [
+      "之后",
+      "以后"
+    ],
+    "collocation": {
+      "ja": "食事の後で散歩する",
+      "reading": "しょくじのあとでさんぽする",
+      "zh": "饭后散步"
+    },
+    "tip": "表示某事之后时用「Nの後で／後に」，「あと」还可表示剩余量或后续部分。"
+  },
+  {
+    "id": "deep-n5-ikura-price",
+    "forms": [
+      {
+        "term": "いくら",
+        "reading": "いくら"
+      }
+    ],
+    "meaningKeywords": [
+      "多少"
+    ],
+    "collocation": {
+      "ja": "この本はいくらですか",
+      "reading": "このほんはいくらですか",
+      "zh": "这本书多少钱"
+    },
+    "tip": "询问价钱或金额常用「いくら」，问物品个数或年龄则用「いくつ」。",
+    "contrast": {
+      "term": "いくつ",
+      "reading": "いくつ",
+      "collocation": {
+        "ja": "りんごはいくつありますか",
+        "reading": "りんごはいくつありますか",
+        "zh": "有几个苹果"
+      },
+      "note": "いくら问金额，いくつ问数量或年龄。"
+    }
+  },
+  {
+    "id": "deep-n5-ichiban-degree",
+    "forms": [
+      {
+        "term": "いちばん",
+        "reading": "いちばん"
+      }
+    ],
+    "meaningKeywords": [
+      "最",
+      "最好",
+      "第一"
+    ],
+    "collocation": {
+      "ja": "果物の中でりんごが一番好きだ",
+      "reading": "くだもののなかでりんごがいちばんすきだ",
+      "zh": "水果里最喜欢苹果"
+    },
+    "tip": "放在形容词或喜欢等表达前表示程度最高，也可作名词指第一名或第一位。"
+  },
+  {
+    "id": "deep-n5-asoko-distance",
+    "forms": [
+      {
+        "term": "あそこ",
+        "reading": "あそこ"
+      }
+    ],
+    "meaningKeywords": [
+      "那里",
+      "那个地方"
+    ],
+    "collocation": {
+      "ja": "あそこに郵便局があります",
+      "reading": "あそこにゆうびんきょくがあります",
+      "zh": "那里有邮局"
+    },
+    "tip": "指离说话人和听话人都较远的地点，说话时附近用「ここ」，听话人附近用「そこ」。"
+  },
+  {
+    "id": "deep-n5-achira-polite",
+    "forms": [
+      {
+        "term": "あちら",
+        "reading": "あちら"
+      }
+    ],
+    "meaningKeywords": [
+      "那边",
+      "那里"
+    ],
+    "collocation": {
+      "ja": "受付はあちらです",
+      "reading": "うけつけはあちらです",
+      "zh": "接待处在那边"
+    },
+    "tip": "あちら是「そちら／あっち」一类指示语的礼貌说法，也可礼貌地指对方一侧或第三方。"
+  },
+  {
+    "id": "deep-n5-acchi-casual",
+    "forms": [
+      {
+        "term": "あっち",
+        "reading": "あっち"
+      }
+    ],
+    "meaningKeywords": [
+      "那边",
+      "那个方向",
+      "远处"
+    ],
+    "collocation": {
+      "ja": "あっちに行こう",
+      "reading": "あっちにいこう",
+      "zh": "去那边吧"
+    },
+    "tip": "口语中表示离双方都较远的方向，正式或礼貌场合改用「あちら」。"
+  },
+  {
+    "id": "deep-n5-kochira-polite",
+    "forms": [
+      {
+        "term": "こちら",
+        "reading": "こちら"
+      }
+    ],
+    "meaningKeywords": [
+      "这边",
+      "这个方向"
+    ],
+    "collocation": {
+      "ja": "こちらへどうぞ",
+      "reading": "こちらへどうぞ",
+      "zh": "请往这边走"
+    },
+    "tip": "指说话人这一侧时可用「こちら」，它比口语的「こっち」礼貌，也能礼貌地指自己一方。"
+  },
+  {
+    "id": "deep-n5-kocchi-casual",
+    "forms": [
+      {
+        "term": "こっち",
+        "reading": "こっち"
+      }
+    ],
+    "meaningKeywords": [
+      "这边",
+      "这个方向"
+    ],
+    "collocation": {
+      "ja": "こっちに座って",
+      "reading": "こっちにすわって",
+      "zh": "坐这边吧"
+    },
+    "tip": "口语中指说话人这一侧，正式场合可换成「こちら」。"
+  },
+  {
+    "id": "deep-n5-sochira-polite",
+    "forms": [
+      {
+        "term": "そちら",
+        "reading": "そちら"
+      }
+    ],
+    "meaningKeywords": [
+      "那边",
+      "那个方向"
+    ],
+    "collocation": {
+      "ja": "そちらへ伺います",
+      "reading": "そちらへうかがいます",
+      "zh": "我会去您那边拜访"
+    },
+    "tip": "礼貌地指听话人一侧或对方所在处，口语对应形式是「そっち」。"
+  },
+  {
+    "id": "deep-n5-socchi-casual",
+    "forms": [
+      {
+        "term": "そっち",
+        "reading": "そっち"
+      }
+    ],
+    "meaningKeywords": [
+      "那边",
+      "那个方向"
+    ],
+    "collocation": {
+      "ja": "そっちに置いて",
+      "reading": "そっちにおいて",
+      "zh": "放到那边"
+    },
+    "tip": "日常口语中指听话人一侧，正式或礼貌表达用「そちら」。"
+  },
+  {
+    "id": "deep-n5-sore-prior-mention",
+    "forms": [
+      {
+        "term": "それ",
+        "reading": "それ"
+      }
+    ],
+    "meaningKeywords": [
+      "那个",
+      "它"
+    ],
+    "collocation": {
+      "ja": "それは私の本です",
+      "reading": "それはわたしのほんです",
+      "zh": "那是我的书"
+    },
+    "tip": "可指听话人附近的事物，也可回指刚提到的内容，离双方都远的东西常用「あれ」。"
+  },
+  {
+    "id": "deep-n5-are-shared-reference",
+    "forms": [
+      {
+        "term": "あれ",
+        "reading": "あれ"
+      }
+    ],
+    "meaningKeywords": [
+      "那个",
+      "那件事"
+    ],
+    "collocation": {
+      "ja": "あれを見てください",
+      "reading": "あれをみてください",
+      "zh": "请看那个"
+    },
+    "tip": "指离说话人和听话人都远、但双方能辨认的事物，提到双方都知道的往事也可用「あれ」。"
+  },
+  {
+    "id": "deep-n5-doko-location-particles",
+    "forms": [
+      {
+        "term": "どこ",
+        "reading": "どこ"
+      }
+    ],
+    "meaningKeywords": [
+      "哪里",
+      "什么地方"
+    ],
+    "collocation": {
+      "ja": "どこで会いますか",
+      "reading": "どこであいますか",
+      "zh": "在哪里见面"
+    },
+    "tip": "询问动作发生地点用「どこで」，询问人或物存在的位置用「どこに」。"
+  },
+  {
+    "id": "deep-n5-dochira-choice",
+    "forms": [
+      {
+        "term": "どちら",
+        "reading": "どちら"
+      }
+    ],
+    "meaningKeywords": [
+      "哪个方向",
+      "哪里"
+    ],
+    "collocation": {
+      "ja": "どちらがよろしいですか",
+      "reading": "どちらがよろしいですか",
+      "zh": "您觉得哪个更合适"
+    },
+    "tip": "礼貌地询问方向或在两个选项中作选择，口语中常说「どっち」。"
+  },
+  {
+    "id": "deep-n5-docchi-choice",
+    "forms": [
+      {
+        "term": "どっち",
+        "reading": "どっち"
+      }
+    ],
+    "meaningKeywords": [
+      "哪个方向",
+      "哪里"
+    ],
+    "collocation": {
+      "ja": "どっちにする",
+      "reading": "どっちにする",
+      "zh": "选哪一个"
+    },
+    "tip": "口语中询问两个选项或方向，礼貌场合用「どちら」。"
+  },
+  {
+    "id": "deep-n5-dore-multiple-choice",
+    "forms": [
+      {
+        "term": "どれ",
+        "reading": "どれ"
+      }
+    ],
+    "meaningKeywords": [
+      "哪一个"
+    ],
+    "collocation": {
+      "ja": "どれが一番好きですか",
+      "reading": "どれがいちばんすきですか",
+      "zh": "最喜欢哪一个"
+    },
+    "tip": "在三个或更多选项中询问“哪一个”，两个选项时常用「どちら／どっち」。"
+  },
+  {
+    "id": "deep-n5-suguni-immediate",
+    "forms": [
+      {
+        "term": "すぐに",
+        "reading": "すぐに"
+      }
+    ],
+    "meaningKeywords": [
+      "立即",
+      "马上",
+      "当即"
+    ],
+    "collocation": {
+      "ja": "すぐに返事します",
+      "reading": "すぐにへんじします",
+      "zh": "马上回复"
+    },
+    "tip": "强调动作马上发生，相比之下，单独的「すぐ」也能修饰距离，表示附近。"
+  },
+  {
+    "id": "deep-n5-hajimete-first-time",
+    "forms": [
+      {
+        "term": "初めて",
+        "reading": "はじめて"
+      }
+    ],
+    "meaningKeywords": [
+      "第一次",
+      "首次"
+    ],
+    "collocation": {
+      "ja": "日本へ来たのは初めてです",
+      "reading": "にほんへきたのははじめてです",
+      "zh": "这是我第一次来日本"
+    },
+    "tip": "表示某动作或经历第一次发生，表示事情的开端用名词「初め」。"
+  },
+  {
+    "id": "deep-n5-magaru-path",
+    "forms": [
+      {
+        "term": "曲る",
+        "reading": "まがる"
+      }
+    ],
+    "meaningKeywords": [
+      "转向",
+      "转弯"
+    ],
+    "collocation": {
+      "ja": "次の角を曲がる",
+      "reading": "つぎのかどをまがる",
+      "zh": "在下个路口转弯"
+    },
+    "tip": "经过的路口或拐弯处可用「を」标出，目标方向可用「へ」补充。"
+  },
+  {
+    "id": "deep-n5-heta-skill",
+    "forms": [
+      {
+        "term": "下手",
+        "reading": "へた"
+      }
+    ],
+    "meaningKeywords": [
+      "不熟练",
+      "笨拙",
+      "生疏"
+    ],
+    "collocation": {
+      "ja": "私は料理が下手です",
+      "reading": "わたしはりょうりがへたです",
+      "zh": "我不擅长做菜"
+    },
+    "tip": "不擅长的技能用「が」表示，「下手な＋名词」可作定语，语气上可能较直接。"
+  },
+  {
+    "id": "deep-n5-yowai-ni-tolerance",
+    "forms": [
+      {
+        "term": "弱い",
+        "reading": "よわい"
+      }
+    ],
+    "meaningKeywords": [
+      "不熟练",
+      "淡（酒）"
+    ],
+    "collocation": {
+      "ja": "私はお酒に弱い",
+      "reading": "わたしはおさけによわい",
+      "zh": "我酒量不好"
+    },
+    "tip": "「Nに弱い」可表示对某物耐受力差或不擅长，「体が弱い」则直接描述身体虚弱。"
+  },
+  {
+    "id": "deep-n5-kekkou-refusal",
+    "forms": [
+      {
+        "term": "結構",
+        "reading": "けっこう"
+      }
+    ],
+    "meaningKeywords": [
+      "可以",
+      "足够",
+      "满意"
+    ],
+    "collocation": {
+      "ja": "もう結構です",
+      "reading": "もうけっこうです",
+      "zh": "不用了，已经够了"
+    },
+    "tip": "在回应对方提供东西时，「もう結構です」常是礼貌拒绝或表示够了，其他语境也可表示很好。"
+  },
+  {
+    "id": "deep-n5-daisuki-ga",
+    "forms": [
+      {
+        "term": "大好き",
+        "reading": "だいすき"
+      }
+    ],
+    "meaningKeywords": [
+      "非常喜欢",
+      "很喜欢"
+    ],
+    "collocation": {
+      "ja": "猫が大好きです",
+      "reading": "ねこがだいすきです",
+      "zh": "非常喜欢猫"
+    },
+    "tip": "喜欢的对象常用「が」标出，「Nが好き」和「Nが大好き」都不把对象标作「を」。"
+  },
+  {
+    "id": "deep-n5-kirai-ga",
+    "forms": [
+      {
+        "term": "嫌い",
+        "reading": "きらい"
+      }
+    ],
+    "meaningKeywords": [
+      "讨厌",
+      "不喜欢"
+    ],
+    "collocation": {
+      "ja": "納豆が嫌いです",
+      "reading": "なっとうがきらいです",
+      "zh": "不喜欢纳豆"
+    },
+    "tip": "不喜欢的对象常用「が」，表达个人偏好时，嫌い比「好きではない」更直接。"
+  },
+  {
+    "id": "deep-n5-onegaishimasu-request",
+    "forms": [
+      {
+        "term": "お願いします",
+        "reading": "おねがいします"
+      }
+    ],
+    "meaningKeywords": [
+      "请",
+      "拜托",
+      "麻烦"
+    ],
+    "collocation": {
+      "ja": "水をお願いします",
+      "reading": "みずをおねがいします",
+      "zh": "麻烦给我一杯水"
+    },
+    "tip": "点餐或提出简单请求时可用「Nをお願いします」，请求别人做事时常说「～をお願いします」。"
+  },
+  {
+    "id": "deep-n5-itadakimasu-meal",
+    "forms": [
+      {
+        "term": "いただきます",
+        "reading": "いただきます"
+      }
+    ],
+    "meaningKeywords": [
+      "用餐前",
+      "谢谢款待",
+      "我开动了"
+    ],
+    "collocation": {
+      "ja": "いただきます",
+      "reading": "いただきます",
+      "zh": "我开动了"
+    },
+    "tip": "作为固定寒暄语在用餐前说，此时不是逐字表示“我接受”。"
+  },
+  {
+    "id": "deep-n5-gochisousama-meal",
+    "forms": [
+      {
+        "term": "ごちそうさま",
+        "reading": "ごちそうさま"
+      }
+    ],
+    "meaningKeywords": [
+      "感谢款待",
+      "美味佳肴"
+    ],
+    "collocation": {
+      "ja": "ごちそうさまでした",
+      "reading": "ごちそうさまでした",
+      "zh": "谢谢款待"
+    },
+    "tip": "用餐结束后对提供食物的人表达感谢，常用完整形式「ごちそうさまでした」。"
+  },
+  {
+    "id": "deep-n5-sumimasen-pragmatics",
+    "forms": [
+      {
+        "term": "すみません",
+        "reading": "すみません"
+      }
+    ],
+    "meaningKeywords": [
+      "对不起",
+      "抱歉"
+    ],
+    "collocation": {
+      "ja": "すみません、駅はどこですか",
+      "reading": "すみません、えきはどこですか",
+      "zh": "不好意思，请问车站在哪里"
+    },
+    "tip": "可用于道歉、引起注意或对小帮助表示感谢，具体功能由场景和语调决定。"
+  },
+  {
+    "id": "deep-n5-sayounara-farewell",
+    "forms": [
+      {
+        "term": "さようなら",
+        "reading": "さようなら"
+      }
+    ],
+    "meaningKeywords": [
+      "再见",
+      "告辞"
+    ],
+    "collocation": {
+      "ja": "先生、さようなら",
+      "reading": "せんせい、さようなら",
+      "zh": "老师，再见"
+    },
+    "tip": "可作告别语，日常熟人短暂分开时常说「またね」，さようなら有时听起来更正式或更像较久不见。"
+  },
+  {
+    "id": "deep-n4-isshoukenmei-adverb",
+    "forms": [
+      {
+        "term": "一生懸命",
+        "reading": "いっしょうけんめい"
+      }
+    ],
+    "meaningKeywords": [
+      "拼命",
+      "竭尽全力"
+    ],
+    "collocation": {
+      "ja": "一生懸命に練習する",
+      "reading": "いっしょうけんめいにれんしゅうする",
+      "zh": "拼命练习"
+    },
+    "tip": "常修饰动作表示尽全力做某事，也可作「一生懸命な人」修饰名词。"
+  },
+  {
+    "id": "deep-n4-uketsuke-procedure",
+    "forms": [
+      {
+        "term": "受付",
+        "reading": "うけつけ"
+      }
+    ],
+    "meaningKeywords": [
+      "受理",
+      "接收"
+    ],
+    "collocation": {
+      "ja": "受付で申込書を出す",
+      "reading": "うけつけでもうしこみしょをだす",
+      "zh": "在接待处提交申请表"
+    },
+    "tip": "「受付」既指办理手续的窗口，也可说「受付で申し込む／受付を済ませる」表示办理登记。"
+  },
+  {
+    "id": "deep-n4-kaigi-attend",
+    "forms": [
+      {
+        "term": "会議",
+        "reading": "かいぎ"
+      }
+    ],
+    "meaningKeywords": [
+      "会议"
+    ],
+    "collocation": {
+      "ja": "会議に参加する",
+      "reading": "かいぎにさんかする",
+      "zh": "参加会议"
+    },
+    "tip": "参加某场会议用「会議に参加する」，讨论某个议题可说「議題について会議で話し合う」。"
+  },
+  {
+    "id": "deep-n4-kaiwa-conversation",
+    "forms": [
+      {
+        "term": "会話",
+        "reading": "かいわ"
+      }
+    ],
+    "meaningKeywords": [
+      "对话",
+      "谈话"
+    ],
+    "collocation": {
+      "ja": "日本語で会話をする",
+      "reading": "にほんごでかいわをする",
+      "zh": "用日语交谈"
+    },
+    "tip": "常说「人と会話する」或「会話をする」，交流语言用「日本語で」。"
+  },
+  {
+    "id": "deep-n4-kyouiku-object",
+    "forms": [
+      {
+        "term": "教育",
+        "reading": "きょういく"
+      }
+    ],
+    "meaningKeywords": [
+      "教育",
+      "培养"
+    ],
+    "collocation": {
+      "ja": "子どもの教育に力を入れる",
+      "reading": "こどものきょういくにちからをいれる",
+      "zh": "重视孩子的教育"
+    },
+    "tip": "强调传授知识和能力时常以受教育者或领域作「教育する」的对象，谈总体教育事务常用「教育に力を入れる」。"
+  },
+  {
+    "id": "deep-n4-keikaku-make",
+    "forms": [
+      {
+        "term": "計画",
+        "reading": "けいかく"
+      }
+    ],
+    "meaningKeywords": [
+      "计划",
+      "方案"
+    ],
+    "collocation": {
+      "ja": "旅行の計画を立てる",
+      "reading": "りょこうのけいかくをたてる",
+      "zh": "制订旅行计划"
+    },
+    "tip": "日语固定说「計画を立てる」表示制订计划，实施时说「計画を実行する」。"
+  },
+  {
+    "id": "deep-n4-genin-cause",
+    "forms": [
+      {
+        "term": "原因",
+        "reading": "げんいん"
+      }
+    ],
+    "meaningKeywords": [
+      "原因",
+      "起因"
+    ],
+    "collocation": {
+      "ja": "事故の原因を調べる",
+      "reading": "じこのげんいんをしらべる",
+      "zh": "调查事故原因"
+    },
+    "tip": "「Nの原因」指出某事的起因，说明结果时可用「事故が原因で電車が止まった」。"
+  },
+  {
+    "id": "deep-n4-kougi-attend",
+    "forms": [
+      {
+        "term": "講義",
+        "reading": "こうぎ"
+      }
+    ],
+    "meaningKeywords": [
+      "讲座",
+      "授课"
+    ],
+    "collocation": {
+      "ja": "大学で講義を受ける",
+      "reading": "だいがくでこうぎをうける",
+      "zh": "在大学听课"
+    },
+    "tip": "学生听讲用「講義を受ける／聞く」，教师开讲则说「講義をする」。"
+  },
+  {
+    "id": "deep-n4-koutsuu-access",
+    "forms": [
+      {
+        "term": "交通",
+        "reading": "こうつう"
+      }
+    ],
+    "meaningKeywords": [
+      "交通",
+      "运输"
+    ],
+    "collocation": {
+      "ja": "この町は交通が便利だ",
+      "reading": "このまちはこうつうがべんりだ",
+      "zh": "这个城镇交通便利"
+    },
+    "tip": "谈交通状况时常用「交通が便利／不便」，交通工具或方式可用「交通手段」。"
+  },
+  {
+    "id": "deep-n4-komu-crowded",
+    "forms": [
+      {
+        "term": "込む",
+        "reading": "こむ"
+      }
+    ],
+    "meaningKeywords": [
+      "拥挤",
+      "堵塞"
+    ],
+    "collocation": {
+      "ja": "朝の電車は人が多くて込んでいる",
+      "reading": "あさのでんしゃはひとがおおくてこんでいる",
+      "zh": "早高峰电车里人多拥挤"
+    },
+    "tip": "自动词「込む」描述场所或交通工具拥挤，主体用「が」标记，不要和复合动词后缀「～込む」混为一谈。"
+  },
+  {
+    "id": "deep-n4-shiai-compete",
+    "forms": [
+      {
+        "term": "試合",
+        "reading": "しあい"
+      }
+    ],
+    "meaningKeywords": [
+      "比赛",
+      "竞赛"
+    ],
+    "collocation": {
+      "ja": "来週、学校で試合がある",
+      "reading": "らいしゅう、がっこうでしあいがある",
+      "zh": "下周学校有比赛"
+    },
+    "tip": "用「試合に出る／勝つ／負ける」描述参赛结果，比赛进行的地点用「で」。"
+  },
+  {
+    "id": "deep-n4-shitaku-preparation",
+    "forms": [
+      {
+        "term": "支度",
+        "reading": "したく"
+      }
+    ],
+    "meaningKeywords": [
+      "准备",
+      "筹备"
+    ],
+    "collocation": {
+      "ja": "出かける支度をする",
+      "reading": "でかけるしたくをする",
+      "zh": "做出门准备"
+    },
+    "tip": "个人整理行装或为出门做准备常说「支度をする／支度ができる」，也可说「食事の支度」。"
+  },
+  {
+    "id": "deep-n4-shikkari-action",
+    "forms": [
+      {
+        "term": "しっかり",
+        "reading": "しっかり"
+      }
+    ],
+    "meaningKeywords": [
+      "牢牢地",
+      "稳定地"
+    ],
+    "collocation": {
+      "ja": "説明をしっかり聞く",
+      "reading": "せつめいをしっかりきく",
+      "zh": "认真听说明"
+    },
+    "tip": "修饰动作时表示做得扎实、可靠，也可说「しっかりした計画」形容计划周全。"
+  },
+  {
+    "id": "deep-n4-juubun-enough",
+    "forms": [
+      {
+        "term": "十分",
+        "reading": "じゅうぶん"
+      }
+    ],
+    "meaningKeywords": [
+      "充分",
+      "足够"
+    ],
+    "collocation": {
+      "ja": "時間は十分あります",
+      "reading": "じかんはじゅうぶんあります",
+      "zh": "时间很充足"
+    },
+    "tip": "表示数量或程度够用时常说「十分ある／十分だ」，可放在名词前作「十分な時間」。"
+  },
+  {
+    "id": "deep-n4-suiei-activity",
+    "forms": [
+      {
+        "term": "水泳",
+        "reading": "すいえい"
+      }
+    ],
+    "meaningKeywords": [
+      "游泳"
+    ],
+    "collocation": {
+      "ja": "夏は毎朝、水泳をする",
+      "reading": "なつはまいあさ、すいえいをする",
+      "zh": "夏天每天早晨游泳"
+    },
+    "tip": "作为运动项目常说「水泳をする」，说在泳池游泳则用「プールで泳ぐ」。"
+  },
+  {
+    "id": "deep-n4-danbou-switch",
+    "forms": [
+      {
+        "term": "暖房",
+        "reading": "だんぼう"
+      }
+    ],
+    "meaningKeywords": [
+      "供暖",
+      "暖气"
+    ],
+    "collocation": {
+      "ja": "寒いので暖房をつける",
+      "reading": "さむいのでだんぼうをつける",
+      "zh": "天气冷，打开暖气"
+    },
+    "tip": "设备或功能用「暖房をつける／切る」表示开启和关闭，房间也可说「暖房が効いている」。"
+  },
+  {
+    "id": "deep-n4-chuusha-receive",
+    "forms": [
+      {
+        "term": "注射",
+        "reading": "ちゅうしゃ"
+      }
+    ],
+    "meaningKeywords": [
+      "注射",
+      "打针"
+    ],
+    "collocation": {
+      "ja": "病院で注射を受ける",
+      "reading": "びょういんでちゅうしゃをうける",
+      "zh": "在医院打针"
+    },
+    "tip": "患者接受注射用「注射を受ける」，医护人员实施注射可说「患者に注射する」。"
+  },
+  {
+    "id": "deep-n4-nageru-object",
+    "forms": [
+      {
+        "term": "投げる",
+        "reading": "なげる"
+      }
+    ],
+    "meaningKeywords": [
+      "投掷",
+      "抛"
+    ],
+    "collocation": {
+      "ja": "ボールを相手に投げる",
+      "reading": "ぼーるをあいてになげる",
+      "zh": "把球扔给对方"
+    },
+    "tip": "投出的物品用「を」，投向的人或方向用「に／へ」标记。"
+  },
+  {
+    "id": "deep-n4-hatsuon-pronounce",
+    "forms": [
+      {
+        "term": "発音",
+        "reading": "はつおん"
+      }
+    ],
+    "meaningKeywords": [
+      "发音"
+    ],
+    "collocation": {
+      "ja": "単語の発音を練習する",
+      "reading": "たんごのはつおんをれんしゅうする",
+      "zh": "练习单词的发音"
+    },
+    "tip": "练习发音可说「発音を練習する」，发出某个音则用「この音を発音する」。"
+  },
+  {
+    "id": "deep-n4-hanami-seasonal",
+    "forms": [
+      {
+        "term": "花見",
+        "reading": "はなみ"
+      }
+    ],
+    "meaningKeywords": [
+      "赏樱花",
+      "赏花"
+    ],
+    "collocation": {
+      "ja": "公園で花見をする",
+      "reading": "こうえんではなみをする",
+      "zh": "在公园赏樱"
+    },
+    "tip": "通常指春天观赏樱花，可说「花見に行く／花見をする」，比一般的「花を見る」更像季节活动。"
+  },
+  {
+    "id": "deep-n4-housou-broadcast",
+    "forms": [
+      {
+        "term": "放送",
+        "reading": "ほうそう"
+      }
+    ],
+    "meaningKeywords": [
+      "广播",
+      "播送"
+    ],
+    "collocation": {
+      "ja": "その番組は夜七時に放送される",
+      "reading": "そのばんぐみはよるしちじにほうそうされる",
+      "zh": "那个节目在晚上七点播出"
+    },
+    "tip": "电台或电视台播出节目时常用被动式「番組が放送される」，表示播出的时间用「に」。"
+  },
+  {
+    "id": "deep-n4-reibou-switch",
+    "forms": [
+      {
+        "term": "冷房",
+        "reading": "れいぼう"
+      }
+    ],
+    "meaningKeywords": [
+      "空调",
+      "制冷"
+    ],
+    "collocation": {
+      "ja": "暑いので冷房をつける",
+      "reading": "あついのでれいぼうをつける",
+      "zh": "天气热，打开制冷空调"
+    },
+    "tip": "指空调制冷或冷气功能，常说「冷房をつける／切る」，暖气功能是「暖房」。"
+  },
+  {
+    "id": "deep-n4-report-write",
+    "forms": [
+      {
+        "term": "レポート",
+        "reading": "レポート"
+      }
+    ],
+    "meaningKeywords": [
+      "报告",
+      "论文"
+    ],
+    "collocation": {
+      "ja": "授業のレポートを書く",
+      "reading": "じゅぎょうのれぽーとをかく",
+      "zh": "写课程报告"
+    },
+    "tip": "大学课程作业常用「レポートを書く／提出する」，强调正式研究论文时通常说「論文」。"
+  },
+  {
+    "id": "deep-n3-akirameru-object",
+    "forms": [
+      {
+        "term": "諦める",
+        "reading": "あきらめる"
+      }
+    ],
+    "meaningKeywords": [
+      "放弃",
+      "抛弃"
+    ],
+    "collocation": {
+      "ja": "最後まで希望を諦めない",
+      "reading": "さいごまできぼうをあきらめない",
+      "zh": "直到最后都不放弃希望"
+    },
+    "tip": "放弃的目标或希望用「を」标记，表示彻底放弃常说「諦めてしまう」。"
+  },
+  {
+    "id": "deep-n3-achikochi-places",
+    "forms": [
+      {
+        "term": "あちこち",
+        "reading": "あちこち"
+      }
+    ],
+    "meaningKeywords": [
+      "到处",
+      "各处"
+    ],
+    "collocation": {
+      "ja": "休日に町のあちこちを歩いた",
+      "reading": "きゅうじつにまちのあちこちをあるいた",
+      "zh": "休息日走遍了城里的各处"
+    },
+    "tip": "指分散在各处的地点，既可修饰名词「町のあちこち」，也可说「部屋をあちこち探す」。"
+  },
+  {
+    "id": "deep-n3-igai-evaluation",
+    "forms": [
+      {
+        "term": "意外",
+        "reading": "いがい"
+      }
+    ],
+    "meaningKeywords": [
+      "出人意料",
+      "令人惊讶"
+    ],
+    "collocation": {
+      "ja": "結果は意外に良かった",
+      "reading": "けっかはいがいによかった",
+      "zh": "结果意外地好"
+    },
+    "tip": "作な形容词用「意外な結果」，作副词常接「に」修饰形容词或动词。"
+  },
+  {
+    "id": "deep-n3-ichi-position",
+    "forms": [
+      {
+        "term": "位置",
+        "reading": "いち"
+      }
+    ],
+    "meaningKeywords": [
+      "位置",
+      "所在地"
+    ],
+    "collocation": {
+      "ja": "駅は町の中心に位置する",
+      "reading": "えきはまちのちゅうしんにいちする",
+      "zh": "车站位于城镇中心"
+    },
+    "tip": "说明某处所在位置时常用「AはBに位置する」，地点用「に」标记，日常口语也可说「Bにある」。"
+  },
+  {
+    "id": "deep-n3-isshun-time",
+    "forms": [
+      {
+        "term": "一瞬",
+        "reading": "いっしゅん"
+      }
+    ],
+    "meaningKeywords": [
+      "瞬间",
+      "刹那"
+    ],
+    "collocation": {
+      "ja": "一瞬、何が起きたか分からなかった",
+      "reading": "いっしゅん、なにがおきたかわからなかった",
+      "zh": "一瞬间没明白发生了什么"
+    },
+    "tip": "表示极短的一段时间，可作副词「一瞬、目を閉じた」或修饰名词「一瞬の出来事」。"
+  },
+  {
+    "id": "deep-n3-inemuri-situation",
+    "forms": [
+      {
+        "term": "居眠り",
+        "reading": "いねむり"
+      }
+    ],
+    "meaningKeywords": [
+      "打瞌睡",
+      "打盹"
+    ],
+    "collocation": {
+      "ja": "授業中に居眠りしてしまった",
+      "reading": "じゅぎょうちゅうにいねむりしてしまった",
+      "zh": "上课时不小心打了瞌睡"
+    },
+    "tip": "通常说「居眠りする」，发生的场合用「で／中に」标记，常带有不该睡着却睡着的语感。"
+  },
+  {
+    "id": "deep-n3-insatsu-object",
+    "forms": [
+      {
+        "term": "印刷",
+        "reading": "いんさつ"
+      }
+    ],
+    "meaningKeywords": [
+      "印刷"
+    ],
+    "collocation": {
+      "ja": "資料を十部印刷する",
+      "reading": "しりょうをじゅっぷいんさつする",
+      "zh": "把资料印十份"
+    },
+    "tip": "印刷的文件或资料用「を」标记，数量可接在动作前，如「十部印刷する」。"
+  },
+  {
+    "id": "deep-n3-intai-career",
+    "forms": [
+      {
+        "term": "引退",
+        "reading": "いんたい"
+      }
+    ],
+    "meaningKeywords": [
+      "退休",
+      "隐退"
+    ],
+    "collocation": {
+      "ja": "選手を引退する",
+      "reading": "せんしゅをいんたいする",
+      "zh": "退役，不再当运动员"
+    },
+    "tip": "退出职业或舞台活动常说「選手を引退する」，比一般的「仕事を辞める」更强调结束一段职业生涯。"
+  },
+  {
+    "id": "deep-n3-inyou-source",
+    "forms": [
+      {
+        "term": "引用",
+        "reading": "いんよう"
+      }
+    ],
+    "meaningKeywords": [
+      "引用",
+      "援引"
+    ],
+    "collocation": {
+      "ja": "本から一文を引用する",
+      "reading": "ほんからいちぶんをいんようする",
+      "zh": "从书中引用一句话"
+    },
+    "tip": "被引用的内容用「を」，出处用「から」标记，正式写作中引用来源应注明出处。"
+  },
+  {
+    "id": "deep-n3-ugai-routine",
+    "forms": [
+      {
+        "term": "うがい",
+        "reading": "うがい"
+      }
+    ],
+    "meaningKeywords": [
+      "漱口",
+      "漱喉"
+    ],
+    "collocation": {
+      "ja": "帰宅したら、手洗いとうがいをする",
+      "reading": "きたくしたら、てあらいとうがいをする",
+      "zh": "回家后洗手并漱口"
+    },
+    "tip": "通常与「する」组成「うがいをする」，常与洗手并列为预防感冒的日常动作。"
+  },
+  {
+    "id": "deep-n3-utsu-weapon",
+    "forms": [
+      {
+        "term": "撃つ",
+        "reading": "うつ"
+      }
+    ],
+    "meaningKeywords": [
+      "攻击",
+      "击败"
+    ],
+    "collocation": {
+      "ja": "銃で標的を撃つ",
+      "reading": "じゅうでひょうてきをうつ",
+      "zh": "用枪射击目标"
+    },
+    "tip": "本义多指用枪或武器射击，工具用「で」标记，与同音的「打つ」写法和常用对象不同。"
+  },
+  {
+    "id": "deep-n3-engi-performance",
+    "forms": [
+      {
+        "term": "演技",
+        "reading": "えんぎ"
+      }
+    ],
+    "meaningKeywords": [
+      "演技",
+      "表演"
+    ],
+    "collocation": {
+      "ja": "俳優の演技が自然だった",
+      "reading": "はいゆうのえんぎがしぜんだった",
+      "zh": "演员的表演很自然"
+    },
+    "tip": "评价表演时常说「演技が上手／自然」，指演员的演绎，不指音乐演奏。"
+  },
+  {
+    "id": "deep-n3-ensou-instrument",
+    "forms": [
+      {
+        "term": "演奏",
+        "reading": "えんそう"
+      }
+    ],
+    "meaningKeywords": [
+      "演奏"
+    ],
+    "collocation": {
+      "ja": "友達がピアノを演奏する",
+      "reading": "ともだちがぴあのをえんそうする",
+      "zh": "朋友演奏钢琴"
+    },
+    "tip": "演奏的乐器用「を」标记，表现音乐演绎可说「演奏が素晴らしい」。"
+  },
+  {
+    "id": "deep-n3-otagai-mutual",
+    "forms": [
+      {
+        "term": "お互い",
+        "reading": "おたがい"
+      }
+    ],
+    "meaningKeywords": [
+      "彼此",
+      "互相"
+    ],
+    "collocation": {
+      "ja": "困ったときはお互いに助け合う",
+      "reading": "こまったときはおたがいにたすけあう",
+      "zh": "遇到困难时互相帮助"
+    },
+    "tip": "双方的行为可用「お互いに」修饰动词，关系双方都适用时也常直接说「お互い様」。"
+  },
+  {
+    "id": "deep-n3-odayaka-weather",
+    "forms": [
+      {
+        "term": "穏やか",
+        "reading": "おだやか"
+      }
+    ],
+    "meaningKeywords": [
+      "平静",
+      "温和"
+    ],
+    "collocation": {
+      "ja": "今日は穏やかな天気だ",
+      "reading": "きょうはおだやかなてんきだ",
+      "zh": "今天天气平和舒适"
+    },
+    "tip": "修饰名词用「穏やかな」，可形容天气、海面或人的性情，常表示平静柔和而非强烈。"
+  },
+  {
+    "id": "deep-n3-kaikei-pay",
+    "forms": [
+      {
+        "term": "会計",
+        "reading": "かいけい"
+      }
+    ],
+    "meaningKeywords": [
+      "结算",
+      "账目"
+    ],
+    "collocation": {
+      "ja": "食事のあとで会計を済ませる",
+      "reading": "しょくじのあとでかいけいをすませる",
+      "zh": "吃完饭后结账"
+    },
+    "tip": "餐馆付款常说「会計をする／済ませる」，账单金额可称「会計」或「会計額」。"
+  },
+  {
+    "id": "deep-n3-kaigou-gathering",
+    "forms": [
+      {
+        "term": "会合",
+        "reading": "かいごう"
+      }
+    ],
+    "meaningKeywords": [
+      "会面",
+      "集会"
+    ],
+    "collocation": {
+      "ja": "関係者が集まって会合する",
+      "reading": "かんけいしゃがあつまってかいごうする",
+      "zh": "相关人员聚在一起开会"
+    },
+    "tip": "比日常的小会面更正式，可说「会合を開く」，描述参与者聚会也可用「会合する」。"
+  },
+  {
+    "id": "deep-n3-kaiteki-condition",
+    "forms": [
+      {
+        "term": "快適",
+        "reading": "かいてき"
+      }
+    ],
+    "meaningKeywords": [
+      "舒适",
+      "宜人"
+    ],
+    "collocation": {
+      "ja": "快適な環境で働く",
+      "reading": "かいてきなかんきょうではたらく",
+      "zh": "在舒适的环境里工作"
+    },
+    "tip": "な形容词修饰名词用「快適な」，描述生活或工作状态常说「快適に過ごす」。"
+  },
+  {
+    "id": "deep-n3-kaeru-exchange",
+    "forms": [
+      {
+        "term": "換える",
+        "reading": "かえる"
+      }
+    ],
+    "meaningKeywords": [
+      "交换",
+      "替换"
+    ],
+    "collocation": {
+      "ja": "古い電池を新しいものに換える",
+      "reading": "ふるいでんちをあたらしいものにかえる",
+      "zh": "把旧电池换成新的"
+    },
+    "tip": "替换时常用「AをBに換える」，旧物作「を」的宾语，新物用「に」标记，和「変える」的改变含义相近但字形侧重点不同。"
+  },
+  {
+    "id": "deep-n3-kakaeru-object",
+    "forms": [
+      {
+        "term": "抱える",
+        "reading": "かかえる"
+      }
+    ],
+    "meaningKeywords": [
+      "抱在怀里",
+      "用手臂抱住"
+    ],
+    "collocation": {
+      "ja": "大きな荷物を両腕で抱える",
+      "reading": "おおきなにもつをりょううででかかえる",
+      "zh": "用双臂抱着大件行李"
+    },
+    "tip": "被抱持的物品用「を」，身体部位或方式用「で」说明，此处取具体的抱持义。"
+  },
+  {
+    "id": "deep-n3-kakugo-resolve",
+    "forms": [
+      {
+        "term": "覚悟",
+        "reading": "かくご"
+      }
+    ],
+    "meaningKeywords": [
+      "心理准备",
+      "决心"
+    ],
+    "collocation": {
+      "ja": "失敗する覚悟で挑戦する",
+      "reading": "しっぱいするかくごでちょうせんする",
+      "zh": "抱着失败的心理准备去挑战"
+    },
+    "tip": "面对困难或不利结果时常说「覚悟を決める／覚悟で臨む」，表示已做好心理准备。"
+  },
+  {
+    "id": "deep-n3-kasegu-income",
+    "forms": [
+      {
+        "term": "稼ぐ",
+        "reading": "かせぐ"
+      }
+    ],
+    "meaningKeywords": [
+      "劳动",
+      "苦干"
+    ],
+    "collocation": {
+      "ja": "アルバイトで生活費を稼ぐ",
+      "reading": "あるばいとでせいかつひをかせぐ",
+      "zh": "打工赚生活费"
+    },
+    "tip": "赚取的钱或收入用「を」标记，工作方式或场所常用「で」说明。"
+  },
+  {
+    "id": "deep-n3-katsudou-community",
+    "forms": [
+      {
+        "term": "活動",
+        "reading": "かつどう"
+      }
+    ],
+    "meaningKeywords": [
+      "活动",
+      "行动"
+    ],
+    "collocation": {
+      "ja": "地域のボランティア活動に参加する",
+      "reading": "ちいきのぼらんてぃあかつどうにさんかする",
+      "zh": "参加社区志愿活动"
+    },
+    "tip": "团体或个人开展活动可说「活動する」，参与某项活动则说「活動に参加する」。"
+  },
+  {
+    "id": "deep-n3-kanashimu-object",
+    "forms": [
+      {
+        "term": "悲しむ",
+        "reading": "かなしむ"
+      }
+    ],
+    "meaningKeywords": [
+      "感到悲伤",
+      "哀悼"
+    ],
+    "collocation": {
+      "ja": "友人の死を悲しむ",
+      "reading": "ゆうじんのしをかなしむ",
+      "zh": "为朋友的离世感到悲伤"
+    },
+    "tip": "引起悲伤的事情用「を」标记，和描述自身感受的「悲しい」相比，「悲しむ」强调表现出悲痛。"
+  },
+  {
+    "id": "deep-n3-karu-vegetation",
+    "forms": [
+      {
+        "term": "刈る",
+        "reading": "かる"
+      }
+    ],
+    "meaningKeywords": [
+      "刈",
+      "修剪"
+    ],
+    "collocation": {
+      "ja": "庭の草を刈る",
+      "reading": "にわのくさをかる",
+      "zh": "修剪院子里的草"
+    },
+    "tip": "用于割除草木或收割作物，处理的植物用「を」标记，一般剪纸或头发通常说「切る」。"
+  },
+  {
+    "id": "deep-n3-kankaku-sense",
+    "forms": [
+      {
+        "term": "感覚",
+        "reading": "かんかく"
+      }
+    ],
+    "meaningKeywords": [
+      "感觉",
+      "知觉"
+    ],
+    "collocation": {
+      "ja": "指先の感覚が戻ってきた",
+      "reading": "ゆびさきのかんかくがもどってきた",
+      "zh": "指尖的感觉恢复了"
+    },
+    "tip": "身体或感官的感觉常说「感覚がある／戻る」，对某事的直觉可说「時間の感覚」。"
+  },
+  {
+    "id": "deep-n3-kanjou-bill",
+    "forms": [
+      {
+        "term": "勘定",
+        "reading": "かんじょう"
+      }
+    ],
+    "meaningKeywords": [
+      "核算",
+      "计算"
+    ],
+    "collocation": {
+      "ja": "店を出る前に勘定を払う",
+      "reading": "みせをでるまえにかんじょうをはらう",
+      "zh": "离店前付账"
+    },
+    "tip": "账款或费用可称「勘定」，付款常说「勘定を払う／済ませる」，现代日常用语里「会計」更常见。"
+  },
+  {
+    "id": "deep-n3-kantoku-film",
+    "forms": [
+      {
+        "term": "監督",
+        "reading": "かんとく"
+      }
+    ],
+    "meaningKeywords": [
+      "监督",
+      "指挥"
+    ],
+    "collocation": {
+      "ja": "有名な映画監督が新作を監督する",
+      "reading": "ゆうめいなえいがかんとくがしんさくをかんとくする",
+      "zh": "著名电影导演执导新作"
+    },
+    "tip": "体育语境指教练或领队，电影语境指导演，「選手を監督する」和「映画を監督する」对象不同。"
+  },
+  {
+    "id": "deep-n3-kanren-topic",
+    "forms": [
+      {
+        "term": "関連",
+        "reading": "かんれん"
+      }
+    ],
+    "meaningKeywords": [
+      "关联",
+      "相关性"
+    ],
+    "collocation": {
+      "ja": "この問題に関連する資料",
+      "reading": "このもんだいにかんれんするしりょう",
+      "zh": "与这个问题相关的资料"
+    },
+    "tip": "常用「Aに関連するB」连接相关主题与资料，也可说「AとBの関連を調べる」。"
+  },
+  {
+    "id": "deep-n3-kinodoku-sympathy",
+    "forms": [
+      {
+        "term": "気の毒",
+        "reading": "きのどく"
+      }
+    ],
+    "meaningKeywords": [
+      "可怜",
+      "不幸"
+    ],
+    "collocation": {
+      "ja": "彼の話を聞いて気の毒に思った",
+      "reading": "かれのはなしをきいてきのどくにおもった",
+      "zh": "听了他的遭遇后觉得他很可怜"
+    },
+    "tip": "表达对他人遭遇的同情时常说「気の毒に思う」，比直接评价人「かわいそうだ」稍正式。"
+  },
+  {
+    "id": "deep-n3-kyuujou-rescue",
+    "forms": [
+      {
+        "term": "救助",
+        "reading": "きゅうじょ"
+      }
+    ],
+    "meaningKeywords": [
+      "救援",
+      "救助"
+    ],
+    "collocation": {
+      "ja": "消防隊が川で人を救助した",
+      "reading": "しょうぼうたいがかわでひとをきゅうじょした",
+      "zh": "消防队在河里救起了人"
+    },
+    "tip": "救助的对象用「を」标记，正式报道常见「救助する／救助される」。"
+  },
+  {
+    "id": "deep-n3-kyoka-permission",
+    "forms": [
+      {
+        "term": "許可",
+        "reading": "きょか"
+      }
+    ],
+    "meaningKeywords": [
+      "许可",
+      "批准"
+    ],
+    "collocation": {
+      "ja": "写真を撮る許可を得る",
+      "reading": "しゃしんをとるきょかをえる",
+      "zh": "获得拍照许可"
+    },
+    "tip": "请求许可用「許可を求める」，获得许可用「許可を得る」，也可直接说「撮影を許可する」。"
+  },
+  {
+    "id": "deep-n3-kireru-intransitive",
+    "forms": [
+      {
+        "term": "切れる",
+        "reading": "きれる"
+      }
+    ],
+    "meaningKeywords": [
+      "断裂",
+      "折断"
+    ],
+    "collocation": {
+      "ja": "古い糸が途中で切れた",
+      "reading": "ふるいいとがとちゅうできれた",
+      "zh": "旧线在中途断了"
+    },
+    "tip": "此处表示东西自行断开或被切断，断裂的物品用「が」，人为把东西切断则用他动词「切る」。"
+  },
+  {
+    "id": "deep-n3-kiroku-update",
+    "forms": [
+      {
+        "term": "記録",
+        "reading": "きろく"
+      }
+    ],
+    "meaningKeywords": [
+      "记录",
+      "纪录"
+    ],
+    "collocation": {
+      "ja": "選手が大会記録を更新した",
+      "reading": "せんしゅがたいかいきろくをこうしんした",
+      "zh": "选手刷新了赛事纪录"
+    },
+    "tip": "资料或成绩都可称「記録」，创造更好成绩常用「記録を更新する／破る」。"
+  },
+  {
+    "id": "deep-n3-kinshi-prohibit",
+    "forms": [
+      {
+        "term": "禁止",
+        "reading": "きんし"
+      }
+    ],
+    "meaningKeywords": [
+      "禁止",
+      "禁令"
+    ],
+    "collocation": {
+      "ja": "この建物では喫煙が禁止されている",
+      "reading": "このたてものではきつえんがきんしされている",
+      "zh": "这栋建筑内禁止吸烟"
+    },
+    "tip": "正式规定常用「Nは禁止されている」，规定者禁止某行为可说「Nを禁止する」。"
+  },
+  {
+    "id": "deep-n3-kunren-training",
+    "forms": [
+      {
+        "term": "訓練",
+        "reading": "くんれん"
+      }
+    ],
+    "meaningKeywords": [
+      "训练",
+      "操练"
+    ],
+    "collocation": {
+      "ja": "毎日、避難訓練を行う",
+      "reading": "まいにち、ひなんくんれんをおこなう",
+      "zh": "每天进行避难训练"
+    },
+    "tip": "通过反复练习提升能力常说「訓練をする／受ける」，具体项目常放在前面组成复合词。"
+  },
+  {
+    "id": "deep-n3-keiji-posting",
+    "forms": [
+      {
+        "term": "掲示",
+        "reading": "けいじ"
+      }
+    ],
+    "meaningKeywords": [
+      "公告",
+      "张贴"
+    ],
+    "collocation": {
+      "ja": "入口に案内を掲示する",
+      "reading": "いりぐちにあんないをけいじする",
+      "zh": "在入口张贴指引信息"
+    },
+    "tip": "张贴或公告的内容用「を」标记，张贴地点用「に」标记，告示牌常说「掲示板」。"
+  },
+  {
+    "id": "deep-n3-kega-injury",
+    "forms": [
+      {
+        "term": "怪我",
+        "reading": "けが"
+      }
+    ],
+    "meaningKeywords": [
+      "伤害",
+      "伤口"
+    ],
+    "collocation": {
+      "ja": "転んで足に怪我をした",
+      "reading": "ころんであしにけがをした",
+      "zh": "摔倒后腿受了伤"
+    },
+    "tip": "日常多说「怪我をする」，受伤部位可用「に」说明，也可说「足を怪我する」。"
+  },
+  {
+    "id": "deep-n3-keshou-routine",
+    "forms": [
+      {
+        "term": "化粧",
+        "reading": "けしょう"
+      }
+    ],
+    "meaningKeywords": [
+      "化妆"
+    ],
+    "collocation": {
+      "ja": "出かける前に化粧をする",
+      "reading": "でかけるまえにけしょうをする",
+      "zh": "出门前化妆"
+    },
+    "tip": "日常动作常说「化粧をする／落とす」，化妆品本身则通常称「化粧品」。"
+  },
+  {
+    "id": "deep-n3-kettei-object",
+    "forms": [
+      {
+        "term": "決定",
+        "reading": "けってい"
+      }
+    ],
+    "meaningKeywords": [
+      "决定",
+      "决断"
+    ],
+    "collocation": {
+      "ja": "会議で開催日を決定する",
+      "reading": "かいぎでかいさいびをけっていする",
+      "zh": "在会议上决定举办日期"
+    },
+    "tip": "作出决定的内容用「を」标记，方案或日期确定后可说「開催日が決定した」。"
+  },
+  {
+    "id": "deep-n3-kensetsu-building",
+    "forms": [
+      {
+        "term": "建設",
+        "reading": "けんせつ"
+      }
+    ],
+    "meaningKeywords": [
+      "建设",
+      "建立"
+    ],
+    "collocation": {
+      "ja": "川の近くに橋を建設する",
+      "reading": "かわのちかくにはしをけんせつする",
+      "zh": "在河边建造桥梁"
+    },
+    "tip": "建造的设施或建筑物用「を」标记，建造地点用「に」标记。"
+  },
+  {
+    "id": "deep-n3-kougeki-target",
+    "forms": [
+      {
+        "term": "攻撃",
+        "reading": "こうげき"
+      }
+    ],
+    "meaningKeywords": [
+      "攻击",
+      "袭击"
+    ],
+    "collocation": {
+      "ja": "相手の弱点を攻撃する",
+      "reading": "あいてのじゃくてんをこうげきする",
+      "zh": "攻击对方的弱点"
+    },
+    "tip": "被攻击的人、目标或弱点用「を」标记，也可用于言语批评等非身体攻击。"
+  },
+  {
+    "id": "deep-n3-gokai-misunderstanding",
+    "forms": [
+      {
+        "term": "誤解",
+        "reading": "ごかい"
+      }
+    ],
+    "meaningKeywords": [
+      "误解",
+      "误会"
+    ],
+    "collocation": {
+      "ja": "相手の言葉を誤解していた",
+      "reading": "あいてのことばをごかいしていた",
+      "zh": "我误解了对方的话"
+    },
+    "tip": "被误解的内容用「を」标记，造成误解常说「誤解を招く」，解除误解说「誤解を解く」。"
+  },
+  {
+    "id": "deep-n3-kosu-cross",
+    "forms": [
+      {
+        "term": "越す",
+        "reading": "こす"
+      }
+    ],
+    "meaningKeywords": [
+      "越过",
+      "跨越"
+    ],
+    "collocation": {
+      "ja": "山を越して隣の町へ行く",
+      "reading": "やまをこしてとなりのまちへいく",
+      "zh": "翻过山去邻近的城镇"
+    },
+    "tip": "越过的障碍或地点用「を」表示经过的路线，目的地用「へ／に」标记。"
+  },
+  {
+    "id": "deep-n3-sabetsu-target",
+    "forms": [
+      {
+        "term": "差別",
+        "reading": "さべつ"
+      }
+    ],
+    "meaningKeywords": [
+      "歧视",
+      "不公正对待"
+    ],
+    "collocation": {
+      "ja": "出身によって人を差別してはいけない",
+      "reading": "しゅっしんによってひとをさべつしてはいけない",
+      "zh": "不能因出身而歧视他人"
+    },
+    "tip": "被区别对待的人用「を」，区别的依据常用「によって」说明。"
+  },
+  {
+    "id": "deep-n3-jikken-conduct",
+    "forms": [
+      {
+        "term": "実験",
+        "reading": "じっけん"
+      }
+    ],
+    "meaningKeywords": [
+      "实验",
+      "试验"
+    ],
+    "collocation": {
+      "ja": "研究室で新しい薬の実験を行う",
+      "reading": "けんきゅうしつであたらしいくすりのじっけんをおこなう",
+      "zh": "在实验室进行新药实验"
+    },
+    "tip": "研究或检验对象常用「の」连接，如「薬の実験」，实施实验说「実験を行う」。"
+  },
+  {
+    "id": "deep-n3-shidou-learner",
+    "forms": [
+      {
+        "term": "指導",
+        "reading": "しどう"
+      }
+    ],
+    "meaningKeywords": [
+      "指导",
+      "教学"
+    ],
+    "collocation": {
+      "ja": "先生が学生を指導する",
+      "reading": "せんせいががくせいをしどうする",
+      "zh": "老师指导学生"
+    },
+    "tip": "指导对象用「を」标记，指导内容或领域常用「について」说明。"
+  },
+  {
+    "id": "deep-n3-shihai-domain",
+    "forms": [
+      {
+        "term": "支配",
+        "reading": "しはい"
+      }
+    ],
+    "meaningKeywords": [
+      "支配",
+      "控制"
+    ],
+    "collocation": {
+      "ja": "広い地域を支配する",
+      "reading": "ひろいちいきをしはいする",
+      "zh": "统治广大地区"
+    },
+    "tip": "被控制或统治的对象用「を」标记，也可用于某种力量对结果产生主导影响。"
+  },
+  {
+    "id": "deep-n3-shuukaku-crop",
+    "forms": [
+      {
+        "term": "収穫",
+        "reading": "しゅうかく"
+      }
+    ],
+    "meaningKeywords": [
+      "收获",
+      "收成"
+    ],
+    "collocation": {
+      "ja": "秋に米を収穫する",
+      "reading": "あきにこめをしゅうかくする",
+      "zh": "秋天收获稻米"
+    },
+    "tip": "收获的作物用「を」标记，也可把成果比喻为「大きな収穫」。"
+  },
+  {
+    "id": "deep-n3-shuuri-object",
+    "forms": [
+      {
+        "term": "修理",
+        "reading": "しゅうり"
+      }
+    ],
+    "meaningKeywords": [
+      "修理",
+      "维修"
+    ],
+    "collocation": {
+      "ja": "壊れた自転車を修理する",
+      "reading": "こわれたじてんしゃをしゅうりする",
+      "zh": "修理坏掉的自行车"
+    },
+    "tip": "修理的物品用「を」标记，通常用于恢复损坏物品的功能，机器或设施也常用「修理する」。"
+  },
+  {
+    "id": "deep-n3-shujutsu-receive",
+    "forms": [
+      {
+        "term": "手術",
+        "reading": "しゅじゅつ"
+      }
+    ],
+    "meaningKeywords": [
+      "手术",
+      "外科手术"
+    ],
+    "collocation": {
+      "ja": "来週、病院で手術を受ける",
+      "reading": "らいしゅう、びょういんでしゅじゅつをうける",
+      "zh": "下周在医院接受手术"
+    },
+    "tip": "患者接受手术说「手術を受ける」，医生实施手术说「患者を手術する」。"
+  },
+  {
+    "id": "deep-n3-shuchou-claim",
+    "forms": [
+      {
+        "term": "主張",
+        "reading": "しゅちょう"
+      }
+    ],
+    "meaningKeywords": [
+      "主张",
+      "坚持"
+    ],
+    "collocation": {
+      "ja": "自分の意見を主張する",
+      "reading": "じぶんのいけんをしゅちょうする",
+      "zh": "坚持表达自己的意见"
+    },
+    "tip": "主张的观点用「を」标记，内容可用「～と主張する」引用，语气比「意見を言う」更坚定。"
+  },
+  {
+    "id": "deep-n3-shougai-obstacle",
+    "forms": [
+      {
+        "term": "障害",
+        "reading": "しょうがい"
+      }
+    ],
+    "meaningKeywords": [
+      "障碍",
+      "阻碍"
+    ],
+    "collocation": {
+      "ja": "大雪が交通の障害になった",
+      "reading": "おおゆきがこうつうのしょうがいになった",
+      "zh": "大雪成了交通阻碍"
+    },
+    "tip": "妨碍进展的事物可说「Nの障害になる」，引发障碍的原因常用「が」标记。"
+  },
+  {
+    "id": "deep-n3-shinkou-faith",
+    "forms": [
+      {
+        "term": "信仰",
+        "reading": "しんこう"
+      }
+    ],
+    "meaningKeywords": [
+      "信仰",
+      "信念"
+    ],
+    "collocation": {
+      "ja": "家族は同じ宗教を信仰している",
+      "reading": "かぞくはおなじしゅうきょうをしんこうしている",
+      "zh": "家人信仰同一种宗教"
+    },
+    "tip": "信仰的宗教或对象用「を」标记，名词形式常说「信仰を持つ」。"
+  },
+  {
+    "id": "deep-n3-shinsatsu-doctor",
+    "forms": [
+      {
+        "term": "診察",
+        "reading": "しんさつ"
+      }
+    ],
+    "meaningKeywords": [
+      "医学检查",
+      "就诊"
+    ],
+    "collocation": {
+      "ja": "医師が患者を診察する",
+      "reading": "いしがかんじゃをしんさつする",
+      "zh": "医生为患者看诊"
+    },
+    "tip": "医生检查患者说「患者を診察する」，患者去看诊说「診察を受ける」。"
+  },
+  {
+    "id": "deep-n3-shinyou-trust",
+    "forms": [
+      {
+        "term": "信用",
+        "reading": "しんよう"
+      }
+    ],
+    "meaningKeywords": [
+      "信任",
+      "信赖"
+    ],
+    "collocation": {
+      "ja": "長い付き合いの友人を信用する",
+      "reading": "ながいつきあいのゆうじんをしんようする",
+      "zh": "信任相识多年的朋友"
+    },
+    "tip": "信任的对象用「を」标记，描述值得信任可说「信用できる人」。"
+  },
+  {
+    "id": "deep-n3-seigen-limit",
+    "forms": [
+      {
+        "term": "制限",
+        "reading": "せいげん"
+      }
+    ],
+    "meaningKeywords": [
+      "限制",
+      "限定"
+    ],
+    "collocation": {
+      "ja": "一人につき二枚までに制限する",
+      "reading": "ひとりにつきにまいまでにせいげんする",
+      "zh": "限制每人最多两张"
+    },
+    "tip": "限制的数量、时间或行为用「を」标记，限制范围可用「まで」说明。"
+  },
+  {
+    "id": "deep-n3-sekkei-design",
+    "forms": [
+      {
+        "term": "設計",
+        "reading": "せっけい"
+      }
+    ],
+    "meaningKeywords": [
+      "设计",
+      "布局"
+    ],
+    "collocation": {
+      "ja": "建築家が新しい図書館を設計する",
+      "reading": "けんちくかがあたらしいとしょかんをせっけいする",
+      "zh": "建筑师设计新的图书馆"
+    },
+    "tip": "设计的建筑、产品或系统用「を」标记，设计图可称「設計図」。"
+  },
+  {
+    "id": "deep-n3-setsubi-facilities",
+    "forms": [
+      {
+        "term": "設備",
+        "reading": "せつび"
+      }
+    ],
+    "meaningKeywords": [
+      "设备",
+      "设施"
+    ],
+    "collocation": {
+      "ja": "この体育館は設備が整っている",
+      "reading": "このたいいくかんはせつびがととのっている",
+      "zh": "这座体育馆设施齐全"
+    },
+    "tip": "指建筑或场所内的设施时常说「設備が整う／充実している」，安装新设施可说「設備を設ける」。"
+  },
+  {
+    "id": "deep-n3-sentaku-choice",
+    "forms": [
+      {
+        "term": "選択",
+        "reading": "せんたく"
+      }
+    ],
+    "meaningKeywords": [
+      "选择",
+      "挑选"
+    ],
+    "collocation": {
+      "ja": "いくつかの案から一つを選択する",
+      "reading": "いくつかのあんからひとつをせんたくする",
+      "zh": "从几个方案中选择一个"
+    },
+    "tip": "可供选择的范围用「から」引出，选中的对象用「を」标记，比口语的「選ぶ」更书面。"
+  },
+  {
+    "id": "deep-n3-sousa-machine",
+    "forms": [
+      {
+        "term": "操作",
+        "reading": "そうさ"
+      }
+    ],
+    "meaningKeywords": [
+      "操作",
+      "处理"
+    ],
+    "collocation": {
+      "ja": "説明書を読んで機械を操作する",
+      "reading": "せつめいしょをよんできかいをそうさする",
+      "zh": "阅读说明书后操作机器"
+    },
+    "tip": "被操控的机器或设备用「を」标记，操作方法可用「操作方法」表示。"
+  },
+  {
+    "id": "deep-n3-souzou-future",
+    "forms": [
+      {
+        "term": "想像",
+        "reading": "そうぞう"
+      }
+    ],
+    "meaningKeywords": [
+      "想象",
+      "推测"
+    ],
+    "collocation": {
+      "ja": "将来の生活を想像する",
+      "reading": "しょうらいのせいかつをそうぞうする",
+      "zh": "想象未来的生活"
+    },
+    "tip": "想象或推测的内容用「を」标记，也可说「～と想像する」引出具体设想。"
+  },
+  {
+    "id": "deep-n3-songai-suffer",
+    "forms": [
+      {
+        "term": "損害",
+        "reading": "そんがい"
+      }
+    ],
+    "meaningKeywords": [
+      "损害",
+      "损失"
+    ],
+    "collocation": {
+      "ja": "台風で大きな損害を受けた",
+      "reading": "たいふうでおおきなそんがいをうけた",
+      "zh": "因台风遭受了重大损失"
+    },
+    "tip": "遭受损失常说「損害を受ける／被る」，原因常用「で」标记。"
+  },
+  {
+    "id": "deep-n3-sonzai-subject",
+    "forms": [
+      {
+        "term": "存在",
+        "reading": "そんざい"
+      }
+    ],
+    "meaningKeywords": [
+      "存在",
+      "存有"
+    ],
+    "collocation": {
+      "ja": "この地域には珍しい植物が存在する",
+      "reading": "このちいきにはめずらしいしょくぶつがそんざいする",
+      "zh": "这个地区存在着珍稀植物"
+    },
+    "tip": "存在的事物作「が」的主体，所在地点用「に」标记，此词较「ある／いる」正式或抽象。"
+  },
+  {
+    "id": "deep-n3-daihyou-represent",
+    "forms": [
+      {
+        "term": "代表",
+        "reading": "だいひょう"
+      }
+    ],
+    "meaningKeywords": [
+      "代表",
+      "代表团"
+    ],
+    "collocation": {
+      "ja": "彼女はクラスを代表して発表した",
+      "reading": "かのじょはくらすをだいひょうしてはっぴょうした",
+      "zh": "她代表班级作了发表"
+    },
+    "tip": "代表的团体或对象用「を」标记，代替团体发言或行动可用「を代表して」。"
+  },
+  {
+    "id": "deep-n3-chuushi-cancel",
+    "forms": [
+      {
+        "term": "中止",
+        "reading": "ちゅうし"
+      }
+    ],
+    "meaningKeywords": [
+      "中止",
+      "暂停"
+    ],
+    "collocation": {
+      "ja": "台風のため試合を中止する",
+      "reading": "たいふうのためしあいをちゅうしする",
+      "zh": "因台风取消比赛"
+    },
+    "tip": "取消或暂停的活动用「を」标记，原因常用「ため」或「ので」说明。"
+  },
+  {
+    "id": "deep-n3-chousa-investigate",
+    "forms": [
+      {
+        "term": "調査",
+        "reading": "ちょうさ"
+      }
+    ],
+    "meaningKeywords": [
+      "调查",
+      "审查"
+    ],
+    "collocation": {
+      "ja": "警察が事故の原因を調査している",
+      "reading": "けいさつがじこのげんいんをちょうさしている",
+      "zh": "警方正在调查事故原因"
+    },
+    "tip": "调查的对象用「を」标记，调查地点或方法分别可用「で」「について」补充。"
+  },
+  {
+    "id": "deep-n3-tsuushin-contact",
+    "forms": [
+      {
+        "term": "通信",
+        "reading": "つうしん"
+      }
+    ],
+    "meaningKeywords": [
+      "通信",
+      "通讯"
+    ],
+    "collocation": {
+      "ja": "無線で本部と通信する",
+      "reading": "むせんでほんぶとつうしんする",
+      "zh": "用无线电与总部通信"
+    },
+    "tip": "通信的对象常用「と」标记，通信方式用「で」说明。"
+  },
+  {
+    "id": "deep-n3-teian-proposal",
+    "forms": [
+      {
+        "term": "提案",
+        "reading": "ていあん"
+      }
+    ],
+    "meaningKeywords": [
+      "提案",
+      "建议"
+    ],
+    "collocation": {
+      "ja": "会議で新しい方法を提案する",
+      "reading": "かいぎであたらしいほうほうをていあんする",
+      "zh": "在会上提出新方法"
+    },
+    "tip": "提出的方案或建议用「を」标记，提出场合常用「で」说明。"
+  },
+  {
+    "id": "deep-n3-tetsuya-overnight",
+    "forms": [
+      {
+        "term": "徹夜",
+        "reading": "てつや"
+      }
+    ],
+    "meaningKeywords": [
+      "通宵",
+      "彻夜不眠"
+    ],
+    "collocation": {
+      "ja": "試験の前に徹夜で勉強した",
+      "reading": "しけんのまえにてつやでべんきょうした",
+      "zh": "考试前通宵学习"
+    },
+    "tip": "通宵做某事常说「徹夜で＋动词」，也可说「徹夜する」表示整夜没睡。"
+  },
+  {
+    "id": "deep-n3-dokusho-habit",
+    "forms": [
+      {
+        "term": "読書",
+        "reading": "どくしょ"
+      }
+    ],
+    "meaningKeywords": [
+      "读书"
+    ],
+    "collocation": {
+      "ja": "寝る前に読書をする",
+      "reading": "ねるまえにどくしょをする",
+      "zh": "睡前读书"
+    },
+    "tip": "作为阅读活动常说「読書をする」，具体书籍则用「本を読む」。"
+  },
+  {
+    "id": "deep-n3-tozan-activity",
+    "forms": [
+      {
+        "term": "登山",
+        "reading": "とざん"
+      }
+    ],
+    "meaningKeywords": [
+      "登山",
+      "攀登山峰"
+    ],
+    "collocation": {
+      "ja": "友人と富士山に登山する",
+      "reading": "ゆうじんとふじさんにとざんする",
+      "zh": "和朋友一起登富士山"
+    },
+    "tip": "登山活动常说「登山をする／登山に行く」，强调攀登某座山时用「山に登る」。"
+  },
+  {
+    "id": "deep-n3-nagasu-tears",
+    "forms": [
+      {
+        "term": "流す",
+        "reading": "ながす"
+      }
+    ],
+    "meaningKeywords": [
+      "流泪",
+      "流血"
+    ],
+    "collocation": {
+      "ja": "映画を見て涙を流した",
+      "reading": "えいがをみてなみだをながした",
+      "zh": "看电影看得流下了眼泪"
+    },
+    "tip": "液体或泪水用「を」标记，和自动词「流れる」相对，流す强调使其流出或流动。"
+  },
+  {
+    "id": "deep-n3-necchuu-focus",
+    "forms": [
+      {
+        "term": "熱中",
+        "reading": "ねっちゅう"
+      }
+    ],
+    "meaningKeywords": [
+      "沉迷于",
+      "专注于"
+    ],
+    "collocation": {
+      "ja": "彼は研究に熱中している",
+      "reading": "かれはけんきゅうにねっちゅうしている",
+      "zh": "他正专心于研究"
+    },
+    "tip": "投入的活动或对象用「に」标记，常说「～に熱中する」，带有专注到忘我的语感。"
+  },
+  {
+    "id": "deep-n3-haitatsu-delivery",
+    "forms": [
+      {
+        "term": "配達",
+        "reading": "はいたつ"
+      }
+    ],
+    "meaningKeywords": [
+      "配送",
+      "投递"
+    ],
+    "collocation": {
+      "ja": "荷物を午後に配達する",
+      "reading": "にもつをごごにはいたつする",
+      "zh": "下午投递包裹"
+    },
+    "tip": "递送的物品用「を」标记，目的地用「に」标记，邮政投递信件也常说「配達する」。"
+  },
+  {
+    "id": "deep-n3-hakushu-applause",
+    "forms": [
+      {
+        "term": "拍手",
+        "reading": "はくしゅ"
+      }
+    ],
+    "meaningKeywords": [
+      "拍手",
+      "鼓掌"
+    ],
+    "collocation": {
+      "ja": "演奏が終わると、会場から拍手が起きた",
+      "reading": "えんそうがおわると、かいじょうからはくしゅがおきた",
+      "zh": "演奏结束后，场内响起了掌声"
+    },
+    "tip": "动作可说「拍手する」，掌声响起常用「拍手が起きる／起こる」。"
+  },
+  {
+    "id": "deep-n3-hassha-departure",
+    "forms": [
+      {
+        "term": "発車",
+        "reading": "はっしゃ"
+      }
+    ],
+    "meaningKeywords": [
+      "出发",
+      "开出"
+    ],
+    "collocation": {
+      "ja": "電車は九時に発車します",
+      "reading": "でんしゃはくじにはっしゃします",
+      "zh": "电车九点发车"
+    },
+    "tip": "车辆出发用自动词「発車する」，出发时间用「に」标记，乘客不能作此动作的主语。"
+  },
+  {
+    "id": "deep-n3-hattatsu-growth",
+    "forms": [
+      {
+        "term": "発達",
+        "reading": "はったつ"
+      }
+    ],
+    "meaningKeywords": [
+      "发展",
+      "成长"
+    ],
+    "collocation": {
+      "ja": "子どもの運動能力が発達する",
+      "reading": "こどものうんどうのうりょくがはったつする",
+      "zh": "孩子的运动能力得到发展"
+    },
+    "tip": "能力、身体或技术作「が」的主体，常用「発達する」描述逐步成熟或发展。"
+  },
+  {
+    "id": "deep-n3-hitokoto-short-remark",
+    "forms": [
+      {
+        "term": "一言",
+        "reading": "ひとこと"
+      }
+    ],
+    "meaningKeywords": [
+      "一句话",
+      "片言只语"
+    ],
+    "collocation": {
+      "ja": "最後に一言お願いします",
+      "reading": "さいごにひとことおねがいします",
+      "zh": "最后请说一句话"
+    },
+    "tip": "表示简短的一句话时常说「一言お願いします／一言添える」，读作「ひとこと」。"
+  },
+  {
+    "id": "deep-n3-hyouka-object",
+    "forms": [
+      {
+        "term": "評価",
+        "reading": "ひょうか"
+      }
+    ],
+    "meaningKeywords": [
+      "评估",
+      "评价"
+    ],
+    "collocation": {
+      "ja": "作品の内容を評価する",
+      "reading": "さくひんのないようをひょうかする",
+      "zh": "评价作品的内容"
+    },
+    "tip": "评价对象用「を」标记，评价标准或角度可用「～として／～の点で」说明。"
+  },
+  {
+    "id": "deep-n3-houfu-experience",
+    "forms": [
+      {
+        "term": "豊富",
+        "reading": "ほうふ"
+      }
+    ],
+    "meaningKeywords": [
+      "丰富",
+      "充裕"
+    ],
+    "collocation": {
+      "ja": "彼は経験が豊富だ",
+      "reading": "かれはけいけんがほうふだ",
+      "zh": "他经验丰富"
+    },
+    "tip": "描述某类资源、经验或知识多时用「Nが豊富だ」，修饰名词用「豊富な」。"
+  },
+  {
+    "id": "deep-n3-mukeru-direction",
+    "forms": [
+      {
+        "term": "向ける",
+        "reading": "むける"
+      }
+    ],
+    "meaningKeywords": [
+      "转向",
+      "面向"
+    ],
+    "collocation": {
+      "ja": "入口にカメラを向ける",
+      "reading": "いりぐちにかめらをむける",
+      "zh": "把相机朝向入口"
+    },
+    "tip": "转动的身体部位或物品用「を」标记，朝向的方向或对象用「に」标记。"
+  },
+  {
+    "id": "deep-n3-meirei-order",
+    "forms": [
+      {
+        "term": "命令",
+        "reading": "めいれい"
+      }
+    ],
+    "meaningKeywords": [
+      "命令",
+      "指令"
+    ],
+    "collocation": {
+      "ja": "上司が部下に命令を出した",
+      "reading": "じょうしがぶかにめいれいをだした",
+      "zh": "上司向下属下达了命令"
+    },
+    "tip": "接受命令的人用「に」标记，常说「命令を出す／受ける」，语气比「頼む」强。"
+  },
+  {
+    "id": "deep-n3-meiwaku-fixed",
+    "forms": [
+      {
+        "term": "迷惑",
+        "reading": "めいわく"
+      }
+    ],
+    "meaningKeywords": [
+      "麻烦",
+      "困扰"
+    ],
+    "collocation": {
+      "ja": "人に迷惑をかけないようにする",
+      "reading": "ひとにめいわくをかけないようにする",
+      "zh": "尽量不给别人添麻烦"
+    },
+    "tip": "常用固定搭配「人に迷惑をかける」表示给别人添麻烦，受影响的人用「に」标记。"
+  },
+  {
+    "id": "deep-n3-moushiwake-apology",
+    "forms": [
+      {
+        "term": "申し訳",
+        "reading": "もうしわけ"
+      }
+    ],
+    "meaningKeywords": [
+      "道歉",
+      "借口"
+    ],
+    "collocation": {
+      "ja": "ご迷惑をおかけして申し訳ございません",
+      "reading": "ごめいわくをおかけしてもうしわけございません",
+      "zh": "给您添麻烦了，实在抱歉"
+    },
+    "tip": "道歉时常以「申し訳ありません／ございません」作固定表达，单独说「申し訳」也可指借口。"
+  },
+  {
+    "id": "deep-n3-modosu-return",
+    "forms": [
+      {
+        "term": "戻す",
+        "reading": "もどす"
+      }
+    ],
+    "meaningKeywords": [
+      "放回",
+      "恢复"
+    ],
+    "collocation": {
+      "ja": "使った本を元の場所に戻す",
+      "reading": "つかったほんをもとのばしょにもどす",
+      "zh": "把用过的书放回原处"
+    },
+    "tip": "使物品回到原位或状态时常说「元の場所／状態に戻す」，对象用「を」标记。"
+  },
+  {
+    "id": "deep-n3-yosan-planning",
+    "forms": [
+      {
+        "term": "予算",
+        "reading": "よさん"
+      }
+    ],
+    "meaningKeywords": [
+      "预算",
+      "成本估算"
+    ],
+    "collocation": {
+      "ja": "旅行の予算を決める",
+      "reading": "りょこうのよさんをきめる",
+      "zh": "确定旅行预算"
+    },
+    "tip": "预先安排的可用金额常说「予算を立てる／決める」，在预算范围内可用「予算内で」。"
+  },
+  {
+    "id": "deep-n3-yosoku-forecast",
+    "forms": [
+      {
+        "term": "予測",
+        "reading": "よそく"
+      }
+    ],
+    "meaningKeywords": [
+      "预测",
+      "推测"
+    ],
+    "collocation": {
+      "ja": "専門家が人口の変化を予測する",
+      "reading": "せんもんかがじんこうのへんかをよそくする",
+      "zh": "专家预测人口变化"
+    },
+    "tip": "根据资料或趋势推测未来时用「Nを予測する」，比日常的「予想する」更偏分析或估算。"
+  },
+  {
+    "id": "deep-n3-rikon-intransitive",
+    "forms": [
+      {
+        "term": "離婚",
+        "reading": "りこん"
+      }
+    ],
+    "meaningKeywords": [
+      "离婚"
+    ],
+    "collocation": {
+      "ja": "二人は十年前に離婚した",
+      "reading": "ふたりはじゅうねんまえにりこんした",
+      "zh": "两人十年前离婚了"
+    },
+    "tip": "通常作为自动词说「離婚する」，双方不作宾语，说明离婚时间可用「に」。"
+  },
+  {
+    "id": "deep-n3-renzoku-duration",
+    "forms": [
+      {
+        "term": "連続",
+        "reading": "れんぞく"
+      }
+    ],
+    "meaningKeywords": [
+      "连续",
+      "系列"
+    ],
+    "collocation": {
+      "ja": "三日連続で雨が降った",
+      "reading": "みっかれんぞくであめがふった",
+      "zh": "连续下了三天雨"
+    },
+    "tip": "表示不中断地接连发生时用「期間＋連続で」，也常说「連続して起こる」。"
+  },
+  {
+    "id": "deep-n3-roudou-hours",
+    "forms": [
+      {
+        "term": "労働",
+        "reading": "ろうどう"
+      }
+    ],
+    "meaningKeywords": [
+      "劳动",
+      "劳力"
+    ],
+    "collocation": {
+      "ja": "一日の労働時間を短くする",
+      "reading": "いちにちのろうどうじかんをみじかくする",
+      "zh": "缩短一天的劳动时间"
+    },
+    "tip": "偏正式地指劳动或工作，具体时长常说「労働時間」，日常口语更常用「仕事」。"
+  },
+  {
+    "id": "deep-n3-ronsou-about",
+    "forms": [
+      {
+        "term": "論争",
+        "reading": "ろんそう"
+      }
+    ],
+    "meaningKeywords": [
+      "争论",
+      "辩论"
+    ],
+    "collocation": {
+      "ja": "その計画をめぐって論争が続いている",
+      "reading": "そのけいかくをめぐってろんそうがつづいている",
+      "zh": "围绕那项计划的争论仍在继续"
+    },
+    "tip": "围绕议题的公开争论常用「Nをめぐる論争」，比日常口角「けんか」更正式。"
+  },
+  {
+    "id": "deep-n3-wagamama-request",
+    "forms": [
+      {
+        "term": "わがまま",
+        "reading": "わがまま"
+      }
+    ],
+    "meaningKeywords": [
+      "自私",
+      "利己主义者"
+    ],
+    "collocation": {
+      "ja": "わがままを言わずに順番を待つ",
+      "reading": "わがままをいわずにじゅんばんをまつ",
+      "zh": "不任性地等待轮到自己"
+    },
+    "tip": "表示任性时可说「わがままを言う／する」，修饰名词用「わがままな人」。"
+  },
+  {
+    "id": "deep-n3-wazuka-small-amount",
+    "forms": [
+      {
+        "term": "僅か",
+        "reading": "わずか"
+      }
+    ],
+    "meaningKeywords": [
+      "少量",
+      "仅仅"
+    ],
+    "collocation": {
+      "ja": "残り時間は僅かしかない",
+      "reading": "のこりじかんはわずかしかない",
+      "zh": "剩余时间所剩无几"
+    },
+    "tip": "表示数量很少或程度很低，常用「わずかしかない」突出少，也可作「わずかな差」。"
+  },
+  {
+    "id": "deep-n4-kanojo-pronoun",
+    "forms": [{ "term": "彼女", "reading": "かのじょ" }],
+    "meaningKeywords": ["她", "女朋友"],
+    "collocation": { "ja": "彼女は今、大学で勉強している", "reading": "かのじょはいま、だいがくでべんきょうしている", "zh": "她现在在大学学习" },
+    "tip": "「彼女は」可作第三人称“她”，也可指女朋友，谈关系时常说「彼女がいる」。"
+  },
+  {
+    "id": "deep-n4-kare-pronoun",
+    "forms": [{ "term": "彼", "reading": "かれ" }],
+    "meaningKeywords": ["他", "男友"],
+    "collocation": { "ja": "彼は来月、国へ帰る", "reading": "かれはらいげつ、くにへかえる", "zh": "他下个月回国" },
+    "tip": "可作第三人称“他”，也常指男朋友，若关系身份不清楚，日语口语常直接说对方姓名。"
+  },
+  {
+    "id": "deep-n4-karera-plural",
+    "forms": [{ "term": "彼ら", "reading": "かれら" }],
+    "meaningKeywords": ["他们", "她们"],
+    "collocation": { "ja": "彼らは同じチームで働いている", "reading": "かれらはおなじちーむではたらいている", "zh": "他们在同一个团队工作" },
+    "tip": "后缀「ら」构成复数，可按语境指一群人，实际交流中常用姓名或「みんな」避免重复代词。"
+  },
+  {
+    "id": "deep-n4-kawari-substitution",
+    "forms": [{ "term": "代わり", "reading": "かわり" }],
+    "meaningKeywords": ["替代", "代替"],
+    "collocation": { "ja": "母の代わりに買い物へ行く", "reading": "ははのかわりにかいものへいく", "zh": "代替母亲去购物" },
+    "tip": "表示替某人做事常用「Nの代わりに」，其中「に」引出所代替的对象。"
+  },
+  {
+    "id": "deep-n4-kantan-easy",
+    "forms": [{ "term": "簡単", "reading": "かんたん" }],
+    "meaningKeywords": ["简单", "容易"],
+    "collocation": { "ja": "この料理は簡単に作れる", "reading": "このりょうりはかんたんにつくれる", "zh": "这道菜很容易做" },
+    "tip": "な形容词修饰名词用「簡単な」，修饰动作时用「簡単に＋动词」。"
+  },
+  {
+    "id": "deep-n4-kibishii-target",
+    "forms": [{ "term": "厳しい", "reading": "きびしい" }],
+    "meaningKeywords": ["严厉", "严格"],
+    "collocation": { "ja": "先生は学生に厳しい", "reading": "せんせいはがくせいにきびしい", "zh": "老师对学生很严格" },
+    "tip": "严格对待的对象常用「に」标记，也可形容天气、条件或形势严峻。"
+  },
+  {
+    "id": "deep-n4-kimi-register",
+    "forms": [{ "term": "君", "reading": "きみ" }],
+    "meaningKeywords": ["你"],
+    "collocation": { "ja": "君ならきっとできる", "reading": "きみならきっとできる", "zh": "如果是你的话一定能做到" },
+    "tip": "「君」是亲近或带上下级色彩的非正式称呼，通常不用于对陌生人或上级，中性场合可用姓名。"
+  },
+  {
+    "id": "deep-n4-saisho-order",
+    "forms": [{ "term": "最初", "reading": "さいしょ" }],
+    "meaningKeywords": ["最初", "开始"],
+    "collocation": { "ja": "最初に名前を書いてください", "reading": "さいしょになまえをかいてください", "zh": "请先写名字" },
+    "tip": "用于说明顺序的第一步时常放句首或动词前，名词修饰用「最初のページ」。"
+  },
+  {
+    "id": "deep-n4-sakan-industry",
+    "forms": [{ "term": "盛ん", "reading": "さかん" }],
+    "meaningKeywords": ["繁荣", "兴盛"],
+    "collocation": { "ja": "この町では漁業が盛んだ", "reading": "このまちではぎょぎょうがさかんだ", "zh": "这个城镇渔业兴盛" },
+    "tip": "活动、产业或交流作「が」的主体，常说「Nが盛んだ」，修饰名词用「盛んな」。"
+  },
+  {
+    "id": "deep-n4-senpai-consult",
+    "forms": [{ "term": "先輩", "reading": "せんぱい" }],
+    "meaningKeywords": ["前辈", "上级"],
+    "collocation": { "ja": "困ったときは先輩に相談する", "reading": "こまったときはせんぱいにそうだんする", "zh": "遇到困难时向前辈请教" },
+    "tip": "对方比自己先入学、入职或资历更深时称「先輩」，向其请教用「先輩に相談する」。"
+  },
+  {
+    "id": "deep-n4-konoaida-recent-past",
+    "forms": [{ "term": "このあいだ", "reading": "このあいだ" }],
+    "meaningKeywords": ["前些天", "最近"],
+    "collocation": { "ja": "このあいだ駅で会った人", "reading": "このあいだえきであったひと", "zh": "前些天在车站遇到的人" },
+    "tip": "通常回指不久前的一次时间或经历，可修饰名词「このあいだの話」，不表示固定的“每隔一段时间”。"
+  },
+  {
+    "id": "deep-n4-konogoro-current-period",
+    "forms": [{ "term": "このごろ", "reading": "このごろ" }],
+    "meaningKeywords": ["最近", "近来"],
+    "collocation": { "ja": "このごろ早く目が覚める", "reading": "このごろはやくめがさめる", "zh": "最近总是很早醒来" },
+    "tip": "指当前这段时间的持续状况，常放句首，一次具体的近期经历则可说「このあいだ」。"
+  },
+  {
+    "id": "deep-n4-tochuu-interruption",
+    "forms": [{ "term": "途中", "reading": "とちゅう" }],
+    "meaningKeywords": ["途中", "路上"],
+    "collocation": { "ja": "帰る途中で友達に会った", "reading": "かえるとちゅうでともだちにあった", "zh": "回家路上遇到了朋友" },
+    "tip": "表示移动过程或事情进行到一半，地点或时间点常用「途中で」，途中停下可说「途中でやめる」。"
+  },
+  {
+    "id": "deep-n4-nigai-literal-metaphor",
+    "forms": [{ "term": "苦い", "reading": "にがい" }],
+    "meaningKeywords": ["苦的", "苦味"],
+    "collocation": { "ja": "この薬はとても苦い", "reading": "このくすりはとてもにがい", "zh": "这药很苦" },
+    "tip": "描述味道时指苦味，也常组成「苦い経験」比喻不愉快的经历。"
+  },
+  {
+    "id": "deep-n4-nemui-state",
+    "forms": [{ "term": "眠い", "reading": "ねむい" }],
+    "meaningKeywords": ["困倦", "打瞌睡"],
+    "collocation": { "ja": "午後になると眠くなる", "reading": "ごごになるとねむくなる", "zh": "一到下午就犯困" },
+    "tip": "表示困倦的身体状态，常用「眠くなる」说开始犯困，想睡觉的意愿可说「眠りたい」。"
+  },
+  {
+    "id": "deep-n4-fukuzatsu-feelings",
+    "forms": [{ "term": "複雑", "reading": "ふくざつ" }],
+    "meaningKeywords": ["复杂", "错综复杂"],
+    "collocation": { "ja": "事情が複雑で説明しにくい", "reading": "じじょうがふくざつでせつめいしにくい", "zh": "情况复杂，很难说明" },
+    "tip": "な形容词用「複雑な事情」修饰名词，也能形容「複雑な気持ち」等纠结的状态。"
+  },
+  {
+    "id": "deep-n4-fuben-person",
+    "forms": [{ "term": "不便", "reading": "ふべん" }],
+    "meaningKeywords": ["不便", "不方便"],
+    "collocation": { "ja": "駅から遠くて不便だ", "reading": "えきからとおくてふべんだ", "zh": "离车站远，很不方便" },
+    "tip": "描述交通或设备不便利时可说「Nが不便だ」，对某人而言不方便可补充「人にとって」。"
+  },
+  {
+    "id": "deep-n4-purezento-recipient",
+    "forms": [{ "term": "プレゼント", "reading": "プレゼント" }],
+    "meaningKeywords": ["礼物", "赠礼"],
+    "collocation": { "ja": "友達に誕生日プレゼントを贈る", "reading": "ともだちにたんじょうびぷれぜんとをおくる", "zh": "送朋友生日礼物" },
+    "tip": "收礼的人用「に」，礼物用「を」标记，说「プレゼントする」也可表示送礼。"
+  },
+  {
+    "id": "deep-n4-betsu-alternative",
+    "forms": [{ "term": "別", "reading": "べつ" }],
+    "meaningKeywords": ["不同的", "另外的"],
+    "collocation": { "ja": "別の方法を考えましょう", "reading": "べつのほうほうをかんがえましょう", "zh": "我们再想别的方法吧" },
+    "tip": "修饰名词时用「別のN」，表示另一个或不同的，副词「別に」的意思和用法需按后续句子另行判断。"
+  },
+  {
+    "id": "deep-n4-boku-register",
+    "forms": [{ "term": "僕", "reading": "ぼく" }],
+    "meaningKeywords": ["我", "本人"],
+    "collocation": { "ja": "僕は電車で学校へ行く", "reading": "ぼくはでんしゃでがっこうへいく", "zh": "我坐电车去学校" },
+    "tip": "常见于男性的非正式自称，语气比「俺」柔和，正式场合通常改用「私」。"
+  },
+  {
+    "id": "deep-n4-mazu-sequence",
+    "forms": [{ "term": "まず", "reading": "まず" }],
+    "meaningKeywords": ["首先", "首要地"],
+    "collocation": { "ja": "まず説明を読んでください", "reading": "まずせつめいをよんでください", "zh": "请先阅读说明" },
+    "tip": "列出步骤时用来引出第一步，后面常接「次に」「それから」继续说明。"
+  },
+  {
+    "id": "deep-n4-mina-polite-group",
+    "forms": [{ "term": "皆", "reading": "みな" }],
+    "meaningKeywords": ["所有人", "大家"],
+    "collocation": { "ja": "皆さんにお知らせがあります", "reading": "みなさんにおしらせがあります", "zh": "有事要通知大家" },
+    "tip": "读作「みな」时常用于「皆さん」等较整齐或正式的称呼，口语里「みんな」更常见。"
+  },
+  {
+    "id": "deep-n4-mukashi-time",
+    "forms": [{ "term": "昔", "reading": "むかし" }],
+    "meaningKeywords": ["往昔", "过去"],
+    "collocation": { "ja": "昔はこの町に映画館があった", "reading": "むかしはこのまちにえいがかんがあった", "zh": "以前这个城镇有电影院" },
+    "tip": "与现在对比过去的状况时常用「昔は」，修饰名词则说「昔の写真」。"
+  },
+  {
+    "id": "deep-n4-yoroshii-polite-confirm",
+    "forms": [{ "term": "よろしい", "reading": "よろしい" }],
+    "meaningKeywords": ["好的", "可以"],
+    "collocation": { "ja": "こちらでよろしいですか", "reading": "こちらでよろしいですか", "zh": "这样可以吗" },
+    "tip": "是「いい」的礼貌说法，常用于确认许可或是否合适，如「これでよろしいでしょうか」。"
+  },
+  {
+    "id": "deep-n3-ainiku-unfortunate",
+    "forms": [{ "term": "あいにく", "reading": "あいにく" }],
+    "meaningKeywords": ["不巧", "遗憾的是"],
+    "collocation": { "ja": "あいにく今日は満席です", "reading": "あいにくきょうはまんせきです", "zh": "不巧，今天已经满座了" },
+    "tip": "用于告知不如意的情况，常放句首，也常用「申し訳ありませんが、あいにく…」委婉说明。"
+  },
+  {
+    "id": "deep-n3-anki-memorize",
+    "forms": [{ "term": "暗記", "reading": "あんき" }],
+    "meaningKeywords": ["记忆", "背诵"],
+    "collocation": { "ja": "試験のために単語を暗記する", "reading": "しけんのためにたんごをあんきする", "zh": "为了考试背单词" },
+    "tip": "需要记住的内容用「を」标记，常说「単語を暗記する」，完整背诵文章则常用「暗唱する」。"
+  },
+  {
+    "id": "deep-n3-antei-state",
+    "forms": [{ "term": "安定", "reading": "あんてい" }],
+    "meaningKeywords": ["稳定", "稳固"],
+    "collocation": { "ja": "価格が安定している", "reading": "かかくがあんていしている", "zh": "价格稳定" },
+    "tip": "价格、状态或情绪作「が」的主体，稳定状态常说「安定している」，使其稳定则用他动的「安定させる」。"
+  },
+  {
+    "id": "deep-n3-ishiki-awareness",
+    "forms": [{ "term": "意識", "reading": "いしき" }],
+    "meaningKeywords": ["意识", "知觉状态"],
+    "collocation": { "ja": "周囲の人を意識して話す", "reading": "しゅういのひとをいしきしてはなす", "zh": "注意周围的人并说话" },
+    "tip": "注意或在意某事用「Nを意識する」，失去知觉则说「意識を失う」，两种用法的宾语都用「を」。"
+  },
+  {
+    "id": "deep-n3-itarazura-mischief",
+    "forms": [{ "term": "いたずら", "reading": "いたずら" }],
+    "meaningKeywords": ["恶作剧", "玩笑"],
+    "collocation": { "ja": "弟が友達にいたずらをした", "reading": "おとうとがともだちにいたずらをした", "zh": "弟弟捉弄了朋友" },
+    "tip": "名词常说「いたずらをする」，被捉弄的人用「に」标记，可指淘气行为，也可指恶作剧。"
+  },
+  {
+    "id": "deep-n3-itsuka-indefinite-future",
+    "forms": [{ "term": "いつか", "reading": "いつか" }],
+    "meaningKeywords": ["总有一天", "某个时候"],
+    "collocation": { "ja": "いつか日本へ行ってみたい", "reading": "いつかにほんへいってみたい", "zh": "总有一天想去日本看看" },
+    "tip": "常表示将来某个不确定的时间，想表达“任何时候”则用「いつでも」。"
+  },
+  {
+    "id": "deep-n3-ichidoni-all-at-once",
+    "forms": [{ "term": "一度に", "reading": "いちどに" }],
+    "meaningKeywords": ["一下子", "一次性"],
+    "collocation": { "ja": "一度に三つの質問をしないでください", "reading": "いちどにみっつのしつもんをしないでください", "zh": "请不要一下子问三个问题" },
+    "tip": "表示多个动作或数量在同一时刻集中发生，和「一度」表示“某一次”不同。"
+  },
+  {
+    "id": "deep-n3-unaru-animal",
+    "forms": [{ "term": "うなる", "reading": "うなる" }],
+    "meaningKeywords": ["呻吟", "低声呻吟"],
+    "collocation": { "ja": "犬が低い声でうなっている", "reading": "いぬがひくいこえでうなっている", "zh": "狗正低声吼叫" },
+    "tip": "可指人因疼痛发出呻吟声，也可指动物发出低沉的吼声，发声者用「が」标记。"
+  },
+  {
+    "id": "deep-n3-eien-duration",
+    "forms": [{ "term": "永遠", "reading": "えいえん" }],
+    "meaningKeywords": ["永恒", "永久"],
+    "collocation": { "ja": "この景色を永遠に忘れない", "reading": "このけしきをえいえんにわすれない", "zh": "永远不会忘记这片景色" },
+    "tip": "强调无尽或极长的时间，常作副词「永遠に」，用于感情或誓言时常带有强调语气。"
+  },
+  {
+    "id": "deep-n3-kanshin-admire",
+    "forms": [{ "term": "感心", "reading": "かんしん" }],
+    "meaningKeywords": ["赞叹", "钦佩"],
+    "collocation": { "ja": "彼の努力に感心した", "reading": "かれのどりょくにかんしんした", "zh": "我钦佩他的努力" },
+    "tip": "钦佩的对象或原因常用「に」标记，如「努力に感心する」，不可与“关心”的「関心」混淆。"
+  },
+  {
+    "id": "deep-n3-kitaku-formal-home",
+    "forms": [{ "term": "帰宅", "reading": "きたく" }],
+    "meaningKeywords": ["回家", "到家"],
+    "collocation": { "ja": "毎日、七時ごろ帰宅する", "reading": "まいにち、しちじごろきたくする", "zh": "每天七点左右回家" },
+    "tip": "较正式地表示回到家中，通常作自动词「帰宅する」，一般口语也常说「家に帰る」。"
+  },
+  {
+    "id": "deep-n3-kizuku-particle",
+    "forms": [{ "term": "気付く", "reading": "きづく" }],
+    "meaningKeywords": ["注意到", "察觉到"],
+    "collocation": { "ja": "帰り道で忘れ物に気付いた", "reading": "かえりみちでわすれものにきづいた", "zh": "回家路上才发现忘了东西" },
+    "tip": "注意到的情况或问题通常用「に」标记，如「間違いに気付く」，不是直接说「間違いを気付く」。"
+  },
+  {
+    "id": "deep-n3-kiniiru-subject",
+    "forms": [{ "term": "気に入る", "reading": "きにいる" }],
+    "meaningKeywords": ["喜欢", "中意"],
+    "collocation": { "ja": "この色が気に入った", "reading": "このいろがきにいった", "zh": "我喜欢这个颜色" },
+    "tip": "喜欢的东西通常用「が」标记，如「この服が気に入った」，和「Nを好きだ」的助词结构不同。"
+  },
+  {
+    "id": "deep-n3-kinyuu-form",
+    "forms": [{ "term": "記入", "reading": "きにゅう" }],
+    "meaningKeywords": ["记入", "填写"],
+    "collocation": { "ja": "申込書に住所を記入する", "reading": "もうしこみしょにじゅうしょをきにゅうする", "zh": "在申请表上填写地址" },
+    "tip": "填写的表格用「に」，写入的姓名、地址等内容用「を」标记。"
+  },
+  {
+    "id": "deep-n3-kibou-request",
+    "forms": [{ "term": "希望", "reading": "きぼう" }],
+    "meaningKeywords": ["希望", "愿望"],
+    "collocation": { "ja": "来月からの勤務を希望する", "reading": "らいげつからのきんむをきぼうする", "zh": "希望从下个月开始上班" },
+    "tip": "希望的职位、安排或结果用「を」标记，说明希望的地点或时期可用「で／から」。"
+  },
+  {
+    "id": "deep-n3-kyuukei-break",
+    "forms": [{ "term": "休憩", "reading": "きゅうけい" }],
+    "meaningKeywords": ["休息", "小憩"],
+    "collocation": { "ja": "一時間ごとに休憩を取る", "reading": "いちじかんごとにきゅうけいをとる", "zh": "每隔一小时休息一次" },
+    "tip": "常用固定搭配「休憩を取る」，表示休息的时长可说「十分休憩する」。"
+  },
+  {
+    "id": "deep-n3-kyuushuu-absorb",
+    "forms": [{ "term": "吸収", "reading": "きゅうしゅう" }],
+    "meaningKeywords": ["吸收", "吸取"],
+    "collocation": { "ja": "植物は根から水分を吸収する", "reading": "しょくぶつはねからすいぶんをきゅうしゅうする", "zh": "植物从根部吸收水分" },
+    "tip": "吸收的物质用「を」标记，来源或途径常用「から」说明，也可用于知识和经验。"
+  },
+  {
+    "id": "deep-n3-kyoukyuu-recipient",
+    "forms": [{ "term": "供給", "reading": "きょうきゅう" }],
+    "meaningKeywords": ["供给", "供应"],
+    "collocation": { "ja": "工場に電気を供給する", "reading": "こうじょうにでんきをきょうきゅうする", "zh": "向工厂供电" },
+    "tip": "供应的物品用「を」标记，接收方用「に」标记，常用于资源、商品或服务。"
+  },
+  {
+    "id": "deep-n3-kyouju-professor",
+    "forms": [{ "term": "教授", "reading": "きょうじゅ" }],
+    "meaningKeywords": ["教授", "授课"],
+    "collocation": { "ja": "大学の教授に質問する", "reading": "だいがくのきょうじゅにしつもんする", "zh": "向大学教授提问" },
+    "tip": "作名词时指大学教师，作动词「教授する」则指传授知识，教学对象用「に」标记。"
+  },
+  {
+    "id": "deep-n3-kyouchou-point",
+    "forms": [{ "term": "強調", "reading": "きょうちょう" }],
+    "meaningKeywords": ["强调", "着重"],
+    "collocation": { "ja": "大切な点を強調する", "reading": "たいせつなてんをきょうちょうする", "zh": "强调重要的一点" },
+    "tip": "想突出的内容用「を」标记，可用「～と強調する」引出说话内容。"
+  },
+  {
+    "id": "deep-n3-kyoutsuu-common",
+    "forms": [{ "term": "共通", "reading": "きょうつう" }],
+    "meaningKeywords": ["共通", "共同"],
+    "collocation": { "ja": "二つの案に共通する問題がある", "reading": "ふたつのあんにきょうつうするもんだいがある", "zh": "两个方案有共同的问题" },
+    "tip": "共同拥有的特征或问题可说「AとBに共通するN」，相关对象常用「に」标记。"
+  },
+  {
+    "id": "deep-n3-kyouryoku-particle",
+    "forms": [{ "term": "協力", "reading": "きょうりょく" }],
+    "meaningKeywords": ["合作", "协力"],
+    "collocation": { "ja": "地域の活動に協力する", "reading": "ちいきのかつどうにきょうりょくする", "zh": "协助社区活动" },
+    "tip": "协助的活动、计划或对象用「に」标记，常说「計画に協力する」，不直接用「を」。"
+  },
+  {
+    "id": "deep-n3-kirau-object",
+    "forms": [{ "term": "嫌う", "reading": "きらう" }],
+    "meaningKeywords": ["讨厌", "厌恶"],
+    "collocation": { "ja": "彼はうそを嫌う", "reading": "かれはうそをきらう", "zh": "他讨厌说谎" },
+    "tip": "讨厌的人或事用「を」标记，动词「嫌う」比状态表达「嫌いだ」更强调厌恶或排斥。"
+  },
+  {
+    "id": "deep-n3-giron-topic",
+    "forms": [{ "term": "議論", "reading": "ぎろん" }],
+    "meaningKeywords": ["议论", "讨论"],
+    "collocation": { "ja": "会議で予算について議論する", "reading": "かいぎでよさんについてぎろんする", "zh": "在会上讨论预算" },
+    "tip": "讨论的主题常用「について」引出，也可说「案を議論する」把议题作「を」的宾语。"
+  },
+  {
+    "id": "deep-n3-kinchou-situation",
+    "forms": [{ "term": "緊張", "reading": "きんちょう" }],
+    "meaningKeywords": ["紧张", "神经紧张"],
+    "collocation": { "ja": "大勢の前で話すと緊張する", "reading": "おおぜいのまえではなすときんちょうする", "zh": "在人多的场合讲话会紧张" },
+    "tip": "常说「緊張する」，紧张的场合或对象用「で／に」说明，名词形式可说「緊張が高まる」。"
+  },
+  {
+    "id": "deep-n3-kusaru-food",
+    "forms": [{ "term": "腐る", "reading": "くさる" }],
+    "meaningKeywords": ["腐烂", "变质"],
+    "collocation": { "ja": "暑い日に魚が腐ってしまった", "reading": "あついひにさかながくさってしまった", "zh": "鱼在炎热的天气里变质了" },
+    "tip": "食物或物品自行变质时用自动词「腐る」，变质的东西作「が」的主体。"
+  },
+  {
+    "id": "deep-n3-kurasu-lifestyle",
+    "forms": [{ "term": "暮らす", "reading": "くらす" }],
+    "meaningKeywords": ["生活", "度日"],
+    "collocation": { "ja": "家族と静かに暮らしている", "reading": "かぞくとしずかにくらしている", "zh": "和家人平静地生活" },
+    "tip": "共同生活的人用「と」，居住地点常用「で」说明，比「生活する」更侧重日常过日子。"
+  },
+  {
+    "id": "deep-n3-kuruu-clock",
+    "forms": [{ "term": "狂う", "reading": "くるう" }],
+    "meaningKeywords": ["出故障", "运转不正常"],
+    "collocation": { "ja": "古い時計は時間が狂っている", "reading": "ふるいとけいはじかんがくるっている", "zh": "旧钟的时间不准" },
+    "tip": "可形容钟表或计划偏离正常状态，出问题的部分常用「が」标记，也可用于表示人失常，语气较强。"
+  },
+  {
+    "id": "deep-n3-kurou-task",
+    "forms": [{ "term": "苦労", "reading": "くろう" }],
+    "meaningKeywords": ["劳苦", "困难"],
+    "collocation": { "ja": "子育てに苦労した", "reading": "こそだてにくろうした", "zh": "养育孩子吃了不少苦" },
+    "tip": "经历困难或为某事费力常说「Nに苦労する」，困难所在用「に」标记。"
+  },
+  {
+    "id": "deep-n3-kuwaeru-add",
+    "forms": [{ "term": "加える", "reading": "くわえる" }],
+    "meaningKeywords": ["添加", "加上"],
+    "collocation": { "ja": "スープに塩を少し加える", "reading": "すーぷにしおをすこしくわえる", "zh": "往汤里加一点盐" },
+    "tip": "新加入的物品用「を」，加入的容器、集合或对象用「に」标记，主体主动添加时用他动词「加える」。",
+    "contrast": {
+      "term": "加わる",
+      "reading": "くわわる",
+      "collocation": { "ja": "新しいメンバーがチームに加わる", "reading": "あたらしいめんばーがちーむにくわわる", "zh": "新成员加入团队" },
+      "note": "加える是主动把某物加进去的他动词，加わる表示人或事物加入其中的自动词。"
+    }
+  },
+  {
+    "id": "deep-n3-keiei-business",
+    "forms": [{ "term": "経営", "reading": "けいえい" }],
+    "meaningKeywords": ["经营", "管理"],
+    "collocation": { "ja": "両親は小さな店を経営している", "reading": "りょうしんはちいさなみせをけいえいしている", "zh": "父母经营着一家小店" },
+    "tip": "被经营的公司、商店或事业用「を」标记，表示正在持续经营常用「経営している」。"
+  },
+  {
+    "id": "deep-n3-keikoku-warning",
+    "forms": [{ "term": "警告", "reading": "けいこく" }],
+    "meaningKeywords": ["警告", "告诫"],
+    "collocation": { "ja": "警察は住民に危険を警告した", "reading": "けいさつはじゅうみんにきけんをけいこくした", "zh": "警方警告居民注意危险" },
+    "tip": "被警告的人用「に」标记，危险或问题用「を」标记，也常说「警告を発する」。"
+  },
+  {
+    "id": "deep-n3-keisan-cost",
+    "forms": [{ "term": "計算", "reading": "けいさん" }],
+    "meaningKeywords": ["计算", "运算"],
+    "collocation": { "ja": "店員が料金を計算する", "reading": "てんいんがりょうきんをけいさんする", "zh": "店员计算费用" },
+    "tip": "计算的数字或费用用「を」标记，也可说「時間を計算に入れる」表示把时间考虑进去。"
+  },
+  {
+    "id": "deep-n3-keiyu-route",
+    "forms": [{ "term": "経由", "reading": "けいゆ" }],
+    "meaningKeywords": ["经由", "途经"],
+    "collocation": { "ja": "東京経由で大阪へ向かう", "reading": "とうきょうけいゆでおおさかへむかう", "zh": "经由东京前往大阪" },
+    "tip": "说明经过的城市或地点时用「N経由で」，后面接交通路线或目的地。"
+  },
+  {
+    "id": "deep-n3-koufuku-life",
+    "forms": [{ "term": "幸福", "reading": "こうふく" }],
+    "meaningKeywords": ["幸福", "快乐"],
+    "collocation": { "ja": "家族と過ごす時間に幸福を感じる", "reading": "かぞくとすごすじかんにこうふくをかんじる", "zh": "从与家人共度的时光中感到幸福" },
+    "tip": "名词可说「幸福を感じる」，な形容词修饰名词时用「幸福な暮らし」。"
+  },
+  {
+    "id": "deep-n3-goukei-total",
+    "forms": [{ "term": "合計", "reading": "ごうけい" }],
+    "meaningKeywords": ["总计", "合计"],
+    "collocation": { "ja": "三つの料金は合計で五千円です", "reading": "みっつのりょうきんはごうけいでごせんえんです", "zh": "三项费用合计五千日元" },
+    "tip": "总数或总额常说「合計で＋数量」，具体项目可说「料金を合計する」。"
+  },
+  {
+    "id": "deep-n3-shigeki-senses",
+    "forms": [{ "term": "刺激", "reading": "しげき" }],
+    "meaningKeywords": ["刺激", "促进"],
+    "collocation": { "ja": "新しい経験が好奇心を刺激した", "reading": "あたらしいけいけんがこうきしんをしげきした", "zh": "新经历激发了好奇心" },
+    "tip": "受到刺激的感官、情绪或兴趣用「を」标记，也可用于刺激发展或行动的比喻义。"
+  },
+  {
+    "id": "deep-n3-soshiki-organize",
+    "forms": [{ "term": "組織", "reading": "そしき" }],
+    "meaningKeywords": ["组织", "形成"],
+    "collocation": { "ja": "地域の人々が救助隊を組織した", "reading": "ちいきのひとびとがきゅうじょたいをそしきした", "zh": "当地居民组建了救援队" },
+    "tip": "主动建立团体或机构时用他动词「組織する」，组建的团体用「を」标记。"
+  },
+  {
+    "id": "deep-n3-dairi-substitute",
+    "forms": [{ "term": "代理", "reading": "だいり" }],
+    "meaningKeywords": ["代理", "副手"],
+    "collocation": { "ja": "部長の代理として会議に出る", "reading": "ぶちょうのだいりとしてかいぎにでる", "zh": "作为部长的代理出席会议" },
+    "tip": "替代某人履行职责可说「Nの代理として」，也常用「代理を務める」。"
+  },
+  {
+    "id": "deep-n3-hitei-fact",
+    "forms": [{ "term": "否定", "reading": "ひてい" }],
+    "meaningKeywords": ["否定", "否认"],
+    "collocation": { "ja": "彼は事実を否定した", "reading": "かれはじじつをひていした", "zh": "他否认了事实" },
+    "tip": "否认的事实或说法用「を」标记，引用具体否认内容时可说「～と否定する」。"
+  },
+  {
+    "id": "deep-n3-hyouban-reputation",
+    "forms": [{ "term": "評判", "reading": "ひょうばん" }],
+    "meaningKeywords": ["声誉", "名声"],
+    "collocation": { "ja": "この店は料理がおいしいと評判だ", "reading": "このみせはりょうりがおいしいとひょうばんだ", "zh": "这家店以菜好吃而闻名" },
+    "tip": "常说「評判がいい／悪い」或「～と評判だ」，后者引出大家普遍的评价。"
+  },
+  {
+    "id": "deep-n3-hyoumen-physical",
+    "forms": [{ "term": "表面", "reading": "ひょうめん" }],
+    "meaningKeywords": ["表面", "外面"],
+    "collocation": { "ja": "水の表面が凍っている", "reading": "みずのひょうめんがこおっている", "zh": "水的表面结冰了" },
+    "tip": "可指物体外层或表层，也可比喻事情显露在外的一面，搭配常用「表面に／表面が」。"
+  },
+  {
+    "id": "deep-n3-heikin-score",
+    "forms": [{ "term": "平均", "reading": "へいきん" }],
+    "meaningKeywords": ["平均", "平均值"],
+    "collocation": { "ja": "クラスの平均点を計算する", "reading": "くらすのへいきんてんをけいさんする", "zh": "计算班级平均分" },
+    "tip": "统计结果常组成「平均点／平均気温」等名词，也可说「平均を出す」。"
+  },
+  {
+    "id": "deep-n3-taishou-research",
+    "forms": [{ "term": "対象", "reading": "たいしょう" }],
+    "meaningKeywords": ["对象", "研究对象"],
+    "collocation": { "ja": "この調査は大学生を対象にしている", "reading": "このちょうさはだいがくせいをたいしょうにしている", "zh": "这项调查以大学生为对象" },
+    "tip": "以某人为调查或服务对象常说「人を対象にする」，対象用「とする」时表示把某项事物定为对象。"
+  },
+  {
+    "id": "deep-n3-fushigi-reaction",
+    "forms": [{ "term": "不思議", "reading": "ふしぎ" }],
+    "meaningKeywords": ["不可思议", "神奇"],
+    "collocation": { "ja": "どうしてそうなるのか不思議に思う", "reading": "どうしてそうなるのかふしぎにおもう", "zh": "觉得为什么会那样很不可思议" },
+    "tip": "作な形容词修饰名词用「不思議な」，表达觉得奇怪或不可理解常说「不思議に思う」。"
+  },
+  {
+    "id": "deep-n3-fuman-treatment",
+    "forms": [{ "term": "不満", "reading": "ふまん" }],
+    "meaningKeywords": ["不满", "不满意"],
+    "collocation": { "ja": "今の待遇に不満がある", "reading": "いまのたいぐうにふまんがある", "zh": "对目前的待遇不满" },
+    "tip": "不满的对象或原因常用「に」标记，常说「Nに不満がある／不満を持つ」。"
+  },
+  {
+    "id": "deep-n3-makka-face",
+    "forms": [{ "term": "真っ赤", "reading": "まっか" }],
+    "meaningKeywords": ["鲜红", "潮红"],
+    "collocation": { "ja": "恥ずかしくて顔が真っ赤になった", "reading": "はずかしくてかおがまっかになった", "zh": "因为害羞，脸涨得通红" },
+    "tip": "描述颜色用「真っ赤な花」，说脸因情绪而变红则常用「顔が真っ赤になる」。"
+  },
+  {
+    "id": "deep-n3-muchuu-activity",
+    "forms": [{ "term": "夢中", "reading": "むちゅう" }],
+    "meaningKeywords": ["入迷", "忘我"],
+    "collocation": { "ja": "子どもたちはゲームに夢中だ", "reading": "こどもたちはげーむにむちゅうだ", "zh": "孩子们沉迷于游戏" },
+    "tip": "投入的活动或对象用「に」标记，常说「Nに夢中になる」表示变得入迷。"
+  },
+  {
+    "id": "deep-n3-yoki-unexpected",
+    "forms": [{ "term": "予期", "reading": "よき" }],
+    "meaningKeywords": ["预期", "预料"],
+    "collocation": { "ja": "予期しない結果に驚いた", "reading": "よきしないけっかにおどろいた", "zh": "对意想不到的结果感到惊讶" },
+    "tip": "较正式地表示预料或预想，常见「予期しない出来事」，表示结果超出事前预计。"
+  },
+  {
+    "id": "deep-n3-raku-ease",
+    "forms": [{ "term": "楽", "reading": "らく" }],
+    "meaningKeywords": ["轻松", "舒适"],
+    "collocation": { "ja": "この靴は軽くて歩くのが楽だ", "reading": "このくつはかるくてあるくのがらくだ", "zh": "这双鞋很轻，走起来很轻松" },
+    "tip": "表示省力、舒适时用「楽だ」，形容词修饰名词用「楽な仕事」，不等于“有趣”的「楽しい」。"
+  },
+  {
+    "id": "deep-n3-kimari-rule",
+    "forms": [{ "term": "決まり", "reading": "きまり" }],
+    "meaningKeywords": ["规则", "规定"],
+    "collocation": { "ja": "学校の決まりを守る", "reading": "がっこうのきまりをまもる", "zh": "遵守学校规定" },
+    "tip": "指约定或规则时常搭配「決まりを守る」，约定已经确定可说「決まりがつく」。"
+  },
+  {
+    "id": "deep-n3-konomi-preference",
+    "forms": [{ "term": "好み", "reading": "このみ" }],
+    "meaningKeywords": ["喜好", "品味"],
+    "collocation": { "ja": "人によって好みの味が違う", "reading": "ひとによってこのみのあじがちがう", "zh": "每个人喜欢的口味不同" },
+    "tip": "个人偏好常说「好みが違う」或「好みの味」，与表示希望的「希望」不同。"
+  },
+  {
+    "id": "deep-n3-douji-simultaneous",
+    "forms": [{ "term": "同時", "reading": "どうじ" }],
+    "meaningKeywords": ["同时", "同一时间"],
+    "collocation": { "ja": "二つの作業を同時に進める", "reading": "ふたつのさぎょうをどうじにすすめる", "zh": "同时推进两项工作" },
+    "tip": "描述动作在同一时间发生时常用「同時に＋动词」，也可修饰名词「同時通訳」。"
+  },
+  {
+    "id": "deep-n3-soutou-equivalent",
+    "forms": [{ "term": "相当", "reading": "そうとう" }],
+    "meaningKeywords": ["相称", "相应"],
+    "collocation": { "ja": "この費用は一万円に相当する", "reading": "このひようはいちまんえんにそうとうする", "zh": "这笔费用相当于一万日元" },
+    "tip": "表示数量或价值相当于某标准时用「Nに相当する」，作な形容词也可说「相当な量」。"
+  },
+  {
+    "id": "deep-n3-totsuzen-event",
+    "forms": [{ "term": "突然", "reading": "とつぜん" }],
+    "meaningKeywords": ["突然", "陡然"],
+    "collocation": { "ja": "突然、雨が降り始めた", "reading": "とつぜん、あめがふりはじめた", "zh": "突然开始下雨了" },
+    "tip": "可放句首或动词前表示事情发生得出乎意料，常见搭配「突然起こる／突然始まる」。"
+  },
+  {
+    "id": "deep-n3-chokusetsu-contact",
+    "forms": [{ "term": "直接", "reading": "ちょくせつ" }],
+    "meaningKeywords": ["直接", "亲身"],
+    "collocation": { "ja": "詳しいことは店に直接聞いてください", "reading": "くわしいことはみせにちょくせつきいてください", "zh": "详情请直接询问店家" },
+    "tip": "表示不经中间环节，可修饰动词「直接聞く」，也可用「直接の連絡」修饰名词。"
+  },
+  {
+    "id": "deep-n3-tanjun-mistake",
+    "forms": [{ "term": "単純", "reading": "たんじゅん" }],
+    "meaningKeywords": ["简单", "不复杂"],
+    "collocation": { "ja": "これは単純な計算ミスだ", "reading": "これはたんじゅんなけいさんみすだ", "zh": "这是个简单的计算错误" },
+    "tip": "な形容词修饰名词用「単純な」，可表示结构简单，也可含有做法直截了当的语感。"
+  },
+  {
+    "id": "deep-n3-saishuu-last-service",
+    "forms": [{ "term": "最終", "reading": "さいしゅう" }],
+    "meaningKeywords": ["最后", "最终"],
+    "collocation": { "ja": "駅までの最終電車に間に合った", "reading": "えきまでのさいしゅうでんしゃにまにあった", "zh": "赶上了去车站的末班车" },
+    "tip": "常作前缀般修饰名词表示最后一班或最后一个环节，如「最終電車」「最終回」。"
+  }
+]

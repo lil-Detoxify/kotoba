@@ -1,0 +1,730 @@
+[
+  {
+    "id": "refine-n4-agaru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "上がる",
+        "reading": "あがる"
+      },
+      {
+        "term": "上がります",
+        "reading": "あがります"
+      }
+    ],
+    "meaningKeywords": [
+      "上涨"
+    ],
+    "example": {
+      "ja": "来月から電気代が上がります。",
+      "reading": "らいげつからでんきだいがあがります。",
+      "zh": "从下个月起电费会上涨。",
+      "cloze": {
+        "answer": "上がります",
+        "reading": "あがります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "値段が上がる",
+        "reading": "ねだんがあがる",
+        "zh": "价格上涨"
+      },
+      "tip": "表示价格上涨时，用「が」标出上涨的对象。"
+    }
+  },
+  {
+    "id": "refine-n4-atsumaru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "集まる",
+        "reading": "あつまる"
+      },
+      {
+        "term": "集まります",
+        "reading": "あつまります"
+      }
+    ],
+    "meaningKeywords": [
+      "聚集"
+    ],
+    "example": {
+      "ja": "駅の前に友達が集まりました。",
+      "reading": "えきのまえにともだちがあつまりました。",
+      "zh": "朋友们在车站前聚到了一起。",
+      "cloze": {
+        "answer": "集まりました",
+        "reading": "あつまりました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "人が集まる",
+        "reading": "ひとがあつまる",
+        "zh": "人聚集起来"
+      },
+      "tip": "表示人或东西聚到一起时，用「が」标出聚集的主体。",
+      "contrast": {
+        "term": "集める",
+        "reading": "あつめる",
+        "collocation": {
+          "ja": "人を集める",
+          "reading": "ひとをあつめる",
+          "zh": "召集人们"
+        },
+        "note": "集まる表示主体自行聚集，集める表示有人把对象召集起来。"
+      }
+    }
+  },
+  {
+    "id": "refine-n4-atsumeru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "集める",
+        "reading": "あつめる"
+      },
+      {
+        "term": "集めます",
+        "reading": "あつめます"
+      }
+    ],
+    "meaningKeywords": [
+      "收集"
+    ],
+    "example": {
+      "ja": "旅行のために、みんなからお金を集めています。",
+      "reading": "りょこうのために、みんなからおかねをあつめています。",
+      "zh": "我正在向大家收旅行用的钱。",
+      "cloze": {
+        "answer": "集めています",
+        "reading": "あつめています"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "切手を集める",
+        "reading": "きってをあつめる",
+        "zh": "收集邮票"
+      },
+      "tip": "收集的对象用「を」标出，来源可以用「から」表示。",
+      "contrast": {
+        "term": "集まる",
+        "reading": "あつまる",
+        "collocation": {
+          "ja": "人が集まる",
+          "reading": "ひとがあつまる",
+          "zh": "人聚集起来"
+        },
+        "note": "集める表示有人收集对象，集まる表示对象自行聚集。"
+      }
+    }
+  },
+  {
+    "id": "refine-n4-ayamaru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "謝る",
+        "reading": "あやまる"
+      },
+      {
+        "term": "謝ります",
+        "reading": "あやまります"
+      }
+    ],
+    "meaningKeywords": [
+      "道歉"
+    ],
+    "example": {
+      "ja": "遅刻したので、先生に謝りました。",
+      "reading": "ちこくしたので、せんせいにあやまりました。",
+      "zh": "因为迟到了，我向老师道了歉。",
+      "cloze": {
+        "answer": "謝りました",
+        "reading": "あやまりました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "先生に謝る",
+        "reading": "せんせいにあやまる",
+        "zh": "向老师道歉"
+      },
+      "tip": "道歉的对象通常用「に」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-isogu",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "急ぐ",
+        "reading": "いそぐ"
+      },
+      {
+        "term": "急ぎます",
+        "reading": "いそぎます"
+      }
+    ],
+    "meaningKeywords": [
+      "赶紧"
+    ],
+    "example": {
+      "ja": "電車に間に合うように、駅まで急ぎます。",
+      "reading": "でんしゃにまにあうように、えきまでいそぎます。",
+      "zh": "为了赶上电车，我急忙赶到车站。",
+      "cloze": {
+        "answer": "急ぎます",
+        "reading": "いそぎます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "駅へ急ぐ",
+        "reading": "えきへいそぐ",
+        "zh": "赶往车站"
+      },
+      "tip": "表示赶往目的地时，目的地常用「へ」或「まで」。"
+    }
+  },
+  {
+    "id": "refine-n4-ueru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "植える",
+        "reading": "うえる"
+      },
+      {
+        "term": "植えます",
+        "reading": "うえます"
+      }
+    ],
+    "meaningKeywords": [
+      "种植"
+    ],
+    "example": {
+      "ja": "春に庭に花を植えました。",
+      "reading": "はるににわにはなをうえました。",
+      "zh": "春天在院子里种了花。",
+      "cloze": {
+        "answer": "植えました",
+        "reading": "うえました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "庭に木を植える",
+        "reading": "にわにきをうえる",
+        "zh": "在院子里种树"
+      },
+      "tip": "种植的对象用「を」标出，种植地点常用「に」。"
+    }
+  },
+  {
+    "id": "refine-n4-ukeru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "受ける",
+        "reading": "うける"
+      },
+      {
+        "term": "受けます",
+        "reading": "うけます"
+      }
+    ],
+    "meaningKeywords": [
+      "接收"
+    ],
+    "example": {
+      "ja": "先生から説明を受けました。",
+      "reading": "せんせいからせつめいをうけました。",
+      "zh": "我听取了老师的说明。",
+      "cloze": {
+        "answer": "受けました",
+        "reading": "うけました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "説明を受ける",
+        "reading": "せつめいをうける",
+        "zh": "接受说明"
+      },
+      "tip": "接受的内容用「を」标出，来源常用「から」表示。"
+    }
+  },
+  {
+    "id": "refine-n4-ugoku",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "動く",
+        "reading": "うごく"
+      },
+      {
+        "term": "動きます",
+        "reading": "うごきます"
+      }
+    ],
+    "meaningKeywords": [
+      "移动"
+    ],
+    "example": {
+      "ja": "バスがゆっくり動き始めました。",
+      "reading": "ばすがゆっくりうごきはじめました。",
+      "zh": "公交车慢慢地开动了。",
+      "cloze": {
+        "answer": "動き始めました",
+        "reading": "うごきはじめました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "車が動く",
+        "reading": "くるまがうごく",
+        "zh": "车子移动"
+      },
+      "tip": "表示物体自行移动或开始运转时，物体用「が」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-utsusu",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "写す",
+        "reading": "うつす"
+      },
+      {
+        "term": "写します",
+        "reading": "うつします"
+      }
+    ],
+    "meaningKeywords": [
+      "抄写"
+    ],
+    "example": {
+      "ja": "黒板の文をノートに写しました。",
+      "reading": "こくばんのぶんをのーとにうつしました。",
+      "zh": "我把黑板上的句子抄到了笔记本上。",
+      "cloze": {
+        "answer": "写しました",
+        "reading": "うつしました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "文をノートに写す",
+        "reading": "ぶんをのーとにうつす",
+        "zh": "把句子抄到笔记本上"
+      },
+      "tip": "抄写的内容用「を」标出，写入的地方常用「に」。"
+    }
+  },
+  {
+    "id": "refine-n4-utsuru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "移る",
+        "reading": "うつる"
+      },
+      {
+        "term": "移ります",
+        "reading": "うつります"
+      }
+    ],
+    "meaningKeywords": [
+      "移动到"
+    ],
+    "example": {
+      "ja": "来週、駅の近くのアパートに移ります。",
+      "reading": "らいしゅう、えきのちかくのあぱーとにうつります。",
+      "zh": "下周我会搬到车站附近的公寓。",
+      "cloze": {
+        "answer": "移ります",
+        "reading": "うつります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "新しい町へ移る",
+        "reading": "あたらしいまちへうつる",
+        "zh": "搬到新城镇"
+      },
+      "tip": "表示迁移到的地点时，常用「に」或「へ」。"
+    }
+  },
+  {
+    "id": "refine-n4-erabu",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "選ぶ",
+        "reading": "えらぶ"
+      },
+      {
+        "term": "選びます",
+        "reading": "えらびます"
+      }
+    ],
+    "meaningKeywords": [
+      "选择"
+    ],
+    "example": {
+      "ja": "メニューを見て、魚の料理を選びました。",
+      "reading": "めにゅーをみて、さかなのりょうりをえらびました。",
+      "zh": "看了菜单后，我选了鱼料理。",
+      "cloze": {
+        "answer": "選びました",
+        "reading": "えらびました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "好きな色を選ぶ",
+        "reading": "すきないろをえらぶ",
+        "zh": "选择喜欢的颜色"
+      },
+      "tip": "选择的对象用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-okuru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "送る",
+        "reading": "おくる"
+      },
+      {
+        "term": "送ります",
+        "reading": "おくります"
+      }
+    ],
+    "meaningKeywords": [
+      "邮寄"
+    ],
+    "example": {
+      "ja": "母に誕生日のカードを送りました。",
+      "reading": "ははにたんじょうびのかーどをおくりました。",
+      "zh": "我给妈妈寄了生日卡片。",
+      "cloze": {
+        "answer": "送りました",
+        "reading": "おくりました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "友達に手紙を送る",
+        "reading": "ともだちにてがみをおくる",
+        "zh": "给朋友寄信"
+      },
+      "tip": "接收者用「に」标出，寄送的东西用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-okureru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "遅れる",
+        "reading": "おくれる"
+      },
+      {
+        "term": "遅れます",
+        "reading": "おくれます"
+      }
+    ],
+    "meaningKeywords": [
+      "延误"
+    ],
+    "example": {
+      "ja": "雨でバスが遅れました。",
+      "reading": "あめでばすがおくれました。",
+      "zh": "因为下雨，公交车晚点了。",
+      "cloze": {
+        "answer": "遅れました",
+        "reading": "おくれました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "電車が遅れる",
+        "reading": "でんしゃがおくれる",
+        "zh": "电车晚点"
+      },
+      "tip": "表示交通工具晚点时，交通工具用「が」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-okosu",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "起す",
+        "reading": "おこす"
+      },
+      {
+        "term": "起こす",
+        "reading": "おこす"
+      },
+      {
+        "term": "起こします",
+        "reading": "おこします"
+      }
+    ],
+    "meaningKeywords": [
+      "唤醒"
+    ],
+    "example": {
+      "ja": "母は毎朝、弟を六時に起こします。",
+      "reading": "はははまいあさ、おとうとをろくじにおこします。",
+      "zh": "妈妈每天早上六点叫醒弟弟。",
+      "cloze": {
+        "answer": "起こします",
+        "reading": "おこします"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "子どもを起こす",
+        "reading": "こどもをおこす",
+        "zh": "叫醒孩子"
+      },
+      "tip": "被叫醒的人用「を」标出，常见写法是「起こす」。"
+    }
+  },
+  {
+    "id": "refine-n4-okonau",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "行う",
+        "reading": "おこなう"
+      },
+      {
+        "term": "行います",
+        "reading": "おこないます"
+      }
+    ],
+    "meaningKeywords": [
+      "实施"
+    ],
+    "example": {
+      "ja": "学校で安全についての訓練を行いました。",
+      "reading": "がっこうであんぜんについてのくんれんをおこないました。",
+      "zh": "学校开展了安全训练。",
+      "cloze": {
+        "answer": "行いました",
+        "reading": "おこないました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "訓練を行う",
+        "reading": "くんれんをおこなう",
+        "zh": "实施训练"
+      },
+      "tip": "「行う」较正式，常用于活动或训练，事项用「を」。"
+    }
+  },
+  {
+    "id": "refine-n4-okoru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "怒る",
+        "reading": "おこる"
+      },
+      {
+        "term": "怒ります",
+        "reading": "おこります"
+      }
+    ],
+    "meaningKeywords": [
+      "发怒"
+    ],
+    "example": {
+      "ja": "父は約束を守らない私に怒りました。",
+      "reading": "ちちはやくそくをまもらないわたしにおこりました。",
+      "zh": "父亲因为我不守约而生气了。",
+      "cloze": {
+        "answer": "怒りました",
+        "reading": "おこりました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "子どもに怒る",
+        "reading": "こどもにおこる",
+        "zh": "对孩子发火"
+      },
+      "tip": "表示对某人发火时，对象常用「に」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-ochiru",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "落ちる",
+        "reading": "おちる"
+      },
+      {
+        "term": "落ちます",
+        "reading": "おちます"
+      }
+    ],
+    "meaningKeywords": [
+      "落下"
+    ],
+    "example": {
+      "ja": "かばんから本が落ちました。",
+      "reading": "かばんからほんがおちました。",
+      "zh": "书从包里掉了出来。",
+      "cloze": {
+        "answer": "落ちました",
+        "reading": "おちました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "木から葉が落ちる",
+        "reading": "きからはがおちる",
+        "zh": "叶子从树上落下"
+      },
+      "tip": "东西自行掉落时，用「が」标出掉落的东西。",
+      "contrast": {
+        "term": "落とす",
+        "reading": "おとす",
+        "collocation": {
+          "ja": "財布を落とす",
+          "reading": "さいふをおとす",
+          "zh": "把钱包弄丢"
+        },
+        "note": "落ちる表示东西自行掉下，落とす表示有人使东西掉下或弄丢。"
+      }
+    }
+  },
+  {
+    "id": "refine-n4-otosu",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "落す",
+        "reading": "おとす"
+      },
+      {
+        "term": "落とす",
+        "reading": "おとす"
+      },
+      {
+        "term": "落とします",
+        "reading": "おとします"
+      }
+    ],
+    "meaningKeywords": [
+      "遗失"
+    ],
+    "example": {
+      "ja": "道で財布を落としてしまいました。",
+      "reading": "みちでさいふをおとしてしまいました。",
+      "zh": "我在路上把钱包弄丢了。",
+      "cloze": {
+        "answer": "落としてしまいました",
+        "reading": "おとしてしまいました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "財布を落とす",
+        "reading": "さいふをおとす",
+        "zh": "把钱包弄丢"
+      },
+      "tip": "遗失的物品用「を」，常见写法是「落とす」。",
+      "contrast": {
+        "term": "落ちる",
+        "reading": "おちる",
+        "collocation": {
+          "ja": "財布が落ちる",
+          "reading": "さいふがおちる",
+          "zh": "钱包掉下来"
+        },
+        "note": "落とす有使东西掉落的动作，落ちる表示东西自己掉落。"
+      }
+    }
+  },
+  {
+    "id": "refine-n4-omoidasu",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "思い出す",
+        "reading": "おもいだす"
+      },
+      {
+        "term": "思い出します",
+        "reading": "おもいだします"
+      }
+    ],
+    "meaningKeywords": [
+      "回忆"
+    ],
+    "example": {
+      "ja": "小学校の友達の名前を思い出しました。",
+      "reading": "しょうがっこうのともだちのなまえをおもいだしました。",
+      "zh": "我想起了小学朋友的名字。",
+      "cloze": {
+        "answer": "思い出しました",
+        "reading": "おもいだしました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "昔のことを思い出す",
+        "reading": "むかしのことをおもいだす",
+        "zh": "想起以前的事"
+      },
+      "tip": "想起的内容用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n4-kaeru-henkou",
+    "level": "N4",
+    "forms": [
+      {
+        "term": "変える",
+        "reading": "かえる"
+      },
+      {
+        "term": "変えます",
+        "reading": "かえます"
+      }
+    ],
+    "meaningKeywords": [
+      "变更"
+    ],
+    "example": {
+      "ja": "会議の時間を午後に変えました。",
+      "reading": "かいぎのじかんをごごにかえました。",
+      "zh": "我把会议时间改到了下午。",
+      "cloze": {
+        "answer": "変えました",
+        "reading": "かえました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "予定を変える",
+        "reading": "よていをかえる",
+        "zh": "更改安排"
+      },
+      "tip": "被更改的内容用「を」标出，更改后的结果常用「に」表示。"
+    }
+  }
+]

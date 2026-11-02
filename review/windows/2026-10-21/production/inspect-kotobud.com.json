@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-21T02:11:43.601Z",
+  "version": "0.9.0-beta.2",
+  "origin": "https://kotobud.com",
+  "mode": "inspect",
+  "objects": [],
+  "download": {
+    "status": 200,
+    "latestWindowsLink": false,
+    "latestExtensionLink": true
+  },
+  "main": {
+    "status": 200,
+    "sha256": "b175c060f3e0bda7c6b74ad46cd2a1bc5cae148c045056d700849b7df7906295"
+  }
+}

@@ -1,0 +1,746 @@
+[
+  {
+    "id": "refine-n5-ageru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "上げる",
+        "reading": "あげる"
+      },
+      {
+        "term": "あげる",
+        "reading": "あげる"
+      },
+      {
+        "term": "上げます",
+        "reading": "あげます"
+      },
+      {
+        "term": "あげます",
+        "reading": "あげます"
+      }
+    ],
+    "meaningKeywords": [
+      "给予",
+      "赠与"
+    ],
+    "example": {
+      "ja": "妹に花をあげます。",
+      "reading": "いもうとにはなをあげます。",
+      "zh": "我送花给妹妹。",
+      "cloze": {
+        "answer": "あげます",
+        "reading": "あげます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "友達に本をあげる",
+        "reading": "ともだちにほんをあげる",
+        "zh": "送书给朋友"
+      },
+      "tip": "表示赠与时常写「あげる」，接受者用「に」。"
+    }
+  },
+  {
+    "id": "refine-n5-asobu",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "遊ぶ",
+        "reading": "あそぶ"
+      },
+      {
+        "term": "遊びます",
+        "reading": "あそびます"
+      }
+    ],
+    "meaningKeywords": [
+      "玩耍",
+      "消遣"
+    ],
+    "example": {
+      "ja": "子どもは公園で遊びます。",
+      "reading": "こどもはこうえんであそびます。",
+      "zh": "孩子在公园玩。",
+      "cloze": {
+        "answer": "遊びます",
+        "reading": "あそびます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "公園で遊ぶ",
+        "reading": "こうえんであそぶ",
+        "zh": "在公园玩"
+      },
+      "tip": "活动场所用「で」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-abiru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "あびる",
+        "reading": "あびる"
+      },
+      {
+        "term": "浴びる",
+        "reading": "あびる"
+      },
+      {
+        "term": "あびます",
+        "reading": "あびます"
+      },
+      {
+        "term": "浴びます",
+        "reading": "あびます"
+      }
+    ],
+    "meaningKeywords": [
+      "冲淋",
+      "沐浴"
+    ],
+    "example": {
+      "ja": "朝、シャワーを浴びます。",
+      "reading": "あさ、しゃわーをあびます。",
+      "zh": "早上淋浴。",
+      "cloze": {
+        "answer": "浴びます",
+        "reading": "あびます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "シャワーを浴びる",
+        "reading": "しゃわーをあびる",
+        "zh": "淋浴"
+      },
+      "tip": "「シャワーを浴びる」表示淋浴，动作对象用「を」。"
+    }
+  },
+  {
+    "id": "refine-n5-arau",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "洗う",
+        "reading": "あらう"
+      },
+      {
+        "term": "洗います",
+        "reading": "あらいます"
+      }
+    ],
+    "meaningKeywords": [
+      "冲洗",
+      "漂洗"
+    ],
+    "example": {
+      "ja": "食事の前に手を洗います。",
+      "reading": "しょくじのまえにてをあらいます。",
+      "zh": "吃饭前洗手。",
+      "cloze": {
+        "answer": "洗います",
+        "reading": "あらいます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "手を洗う",
+        "reading": "てをあらう",
+        "zh": "洗手"
+      },
+      "tip": "洗的对象用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-aruku",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "歩く",
+        "reading": "あるく"
+      },
+      {
+        "term": "歩きます",
+        "reading": "あるきます"
+      }
+    ],
+    "meaningKeywords": [
+      "行走",
+      "步行"
+    ],
+    "example": {
+      "ja": "駅まで歩きます。",
+      "reading": "えきまであるきます。",
+      "zh": "步行到车站。",
+      "cloze": {
+        "answer": "歩きます",
+        "reading": "あるきます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "駅まで歩く",
+        "reading": "えきまであるく",
+        "zh": "步行到车站"
+      },
+      "tip": "步行到达的终点用「まで」。"
+    }
+  },
+  {
+    "id": "refine-n5-iku",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "行く",
+        "reading": "いく"
+      },
+      {
+        "term": "いく",
+        "reading": "いく"
+      },
+      {
+        "term": "行きます",
+        "reading": "いきます"
+      },
+      {
+        "term": "いきます",
+        "reading": "いきます"
+      }
+    ],
+    "meaningKeywords": [
+      "前往"
+    ],
+    "example": {
+      "ja": "毎朝、学校へ行きます。",
+      "reading": "まいあさ、がっこうへいきます。",
+      "zh": "我每天早上去学校。",
+      "cloze": {
+        "answer": "行きます",
+        "reading": "いきます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "学校へ行く",
+        "reading": "がっこうへいく",
+        "zh": "去学校"
+      },
+      "tip": "目的地后可接「へ」或「に」。"
+    }
+  },
+  {
+    "id": "refine-n5-iru-need",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "要る",
+        "reading": "いる"
+      },
+      {
+        "term": "要ります",
+        "reading": "いります"
+      }
+    ],
+    "meaningKeywords": [
+      "需要",
+      "必需",
+      "必要"
+    ],
+    "example": {
+      "ja": "旅行には時間が要ります。",
+      "reading": "りょこうにはじかんがいります。",
+      "zh": "旅行需要时间。",
+      "cloze": {
+        "answer": "要ります",
+        "reading": "いります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "時間が要る",
+        "reading": "じかんがいる",
+        "zh": "需要时间"
+      },
+      "tip": "所需物品或时间常用「が」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-utau",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "歌う",
+        "reading": "うたう"
+      },
+      {
+        "term": "歌います",
+        "reading": "うたいます"
+      }
+    ],
+    "meaningKeywords": [
+      "歌唱"
+    ],
+    "example": {
+      "ja": "家で歌を歌います。",
+      "reading": "いえでうたをうたいます。",
+      "zh": "我在家唱歌。",
+      "cloze": {
+        "answer": "歌います",
+        "reading": "うたいます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "歌を歌う",
+        "reading": "うたをうたう",
+        "zh": "唱歌"
+      },
+      "tip": "唱的内容用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-umareru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "生まれる",
+        "reading": "うまれる"
+      },
+      {
+        "term": "生まれます",
+        "reading": "うまれます"
+      }
+    ],
+    "meaningKeywords": [
+      "出生",
+      "降生"
+    ],
+    "example": {
+      "ja": "妹は春に生まれました。",
+      "reading": "いもうとははるにうまれました。",
+      "zh": "妹妹在春天出生。",
+      "cloze": {
+        "answer": "生まれました",
+        "reading": "うまれました"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "春に生まれる",
+        "reading": "はるにうまれる",
+        "zh": "在春天出生"
+      },
+      "tip": "出生的时间常用「に」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-oku",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "置く",
+        "reading": "おく"
+      },
+      {
+        "term": "置きます",
+        "reading": "おきます"
+      }
+    ],
+    "meaningKeywords": [
+      "放置",
+      "搁"
+    ],
+    "example": {
+      "ja": "机の上に本を置きます。",
+      "reading": "つくえのうえにほんをおきます。",
+      "zh": "把书放在桌上。",
+      "cloze": {
+        "answer": "置きます",
+        "reading": "おきます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "机の上に置く",
+        "reading": "つくえのうえにおく",
+        "zh": "放在桌上"
+      },
+      "tip": "放置地点用「に」，物品用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-osu",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "押す",
+        "reading": "おす"
+      },
+      {
+        "term": "押します",
+        "reading": "おします"
+      }
+    ],
+    "meaningKeywords": [
+      "按下"
+    ],
+    "example": {
+      "ja": "このボタンを押してください。",
+      "reading": "このぼたんをおしてください。",
+      "zh": "请按这个按钮。",
+      "cloze": {
+        "answer": "押してください",
+        "reading": "おしてください"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "ボタンを押す",
+        "reading": "ぼたんをおす",
+        "zh": "按按钮"
+      },
+      "tip": "被按的按钮用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-oboeru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "覚える",
+        "reading": "おぼえる"
+      },
+      {
+        "term": "覚えます",
+        "reading": "おぼえます"
+      }
+    ],
+    "meaningKeywords": [
+      "记住",
+      "背下来"
+    ],
+    "example": {
+      "ja": "新しい言葉を一つ覚えます。",
+      "reading": "あたらしいことばをひとつおぼえます。",
+      "zh": "我记住一个新单词。",
+      "cloze": {
+        "answer": "覚えます",
+        "reading": "おぼえます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "言葉を覚える",
+        "reading": "ことばをおぼえる",
+        "zh": "记单词"
+      },
+      "tip": "记住的内容用「を」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-oyogu",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "泳ぐ",
+        "reading": "およぐ"
+      },
+      {
+        "term": "泳ぎます",
+        "reading": "およぎます"
+      }
+    ],
+    "meaningKeywords": [
+      "游泳"
+    ],
+    "example": {
+      "ja": "夏は海で泳ぎます。",
+      "reading": "なつはうみでおよぎます。",
+      "zh": "夏天我在海里游泳。",
+      "cloze": {
+        "answer": "泳ぎます",
+        "reading": "およぎます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "海で泳ぐ",
+        "reading": "うみでおよぐ",
+        "zh": "在海里游泳"
+      },
+      "tip": "游泳的场所用「で」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-owaru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "終る",
+        "reading": "おわる"
+      },
+      {
+        "term": "終わる",
+        "reading": "おわる"
+      },
+      {
+        "term": "終わります",
+        "reading": "おわります"
+      },
+      {
+        "term": "おわる",
+        "reading": "おわる"
+      }
+    ],
+    "meaningKeywords": [
+      "结束",
+      "完结"
+    ],
+    "example": {
+      "ja": "授業は三時に終わります。",
+      "reading": "じゅぎょうはさんじにおわります。",
+      "zh": "课程三点结束。",
+      "cloze": {
+        "answer": "終わります",
+        "reading": "おわります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "授業が終わる",
+        "reading": "じゅぎょうがおわる",
+        "zh": "课程结束"
+      },
+      "tip": "表示结束时间时，时间点用「に」。"
+    }
+  },
+  {
+    "id": "refine-n5-kaesu",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "返す",
+        "reading": "かえす"
+      },
+      {
+        "term": "返します",
+        "reading": "かえします"
+      }
+    ],
+    "meaningKeywords": [
+      "归还",
+      "返还"
+    ],
+    "example": {
+      "ja": "借りた本を図書館に返します。",
+      "reading": "かりたほんをとしょかんにかえします。",
+      "zh": "我把借来的书还到图书馆。",
+      "cloze": {
+        "answer": "返します",
+        "reading": "かえします"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "本を返す",
+        "reading": "ほんをかえす",
+        "zh": "还书"
+      },
+      "tip": "归还物品用「を」，归还去向用「に」。"
+    }
+  },
+  {
+    "id": "refine-n5-kaeru-home",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "帰る",
+        "reading": "かえる"
+      },
+      {
+        "term": "帰ります",
+        "reading": "かえります"
+      }
+    ],
+    "meaningKeywords": [
+      "回家",
+      "回去",
+      "返回"
+    ],
+    "example": {
+      "ja": "六時に家へ帰ります。",
+      "reading": "ろくじにいえへかえります。",
+      "zh": "我六点回家。",
+      "cloze": {
+        "answer": "帰ります",
+        "reading": "かえります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "家へ帰る",
+        "reading": "いえへかえる",
+        "zh": "回家"
+      },
+      "tip": "回家的目的地常用「へ」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-kakaru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "かかる",
+        "reading": "かかる"
+      },
+      {
+        "term": "掛かる",
+        "reading": "かかる"
+      },
+      {
+        "term": "かかります",
+        "reading": "かかります"
+      },
+      {
+        "term": "掛かります",
+        "reading": "かかります"
+      }
+    ],
+    "meaningKeywords": [
+      "耗费",
+      "花费"
+    ],
+    "example": {
+      "ja": "駅から学校まで十分かかります。",
+      "reading": "えきからがっこうまでじゅっぷんかかります。",
+      "zh": "从车站到学校要花十分钟。",
+      "cloze": {
+        "answer": "かかります",
+        "reading": "かかります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "時間がかかる",
+        "reading": "じかんがかかる",
+        "zh": "花费时间"
+      },
+      "tip": "所需时间或金钱常用「が」标出。"
+    }
+  },
+  {
+    "id": "refine-n5-kaku",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "書く",
+        "reading": "かく"
+      },
+      {
+        "term": "書きます",
+        "reading": "かきます"
+      }
+    ],
+    "meaningKeywords": [
+      "书写"
+    ],
+    "example": {
+      "ja": "ノートに名前を書きます。",
+      "reading": "のーとになまえをかきます。",
+      "zh": "我在笔记本上写名字。",
+      "cloze": {
+        "answer": "書きます",
+        "reading": "かきます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "名前を書く",
+        "reading": "なまえをかく",
+        "zh": "写名字"
+      },
+      "tip": "写的内容用「を」，写在哪里用「に」。"
+    }
+  },
+  {
+    "id": "refine-n5-kakeru-call",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "かける",
+        "reading": "かける"
+      },
+      {
+        "term": "掛ける",
+        "reading": "かける"
+      },
+      {
+        "term": "かけます",
+        "reading": "かけます"
+      },
+      {
+        "term": "掛けます",
+        "reading": "かけます"
+      }
+    ],
+    "meaningKeywords": [
+      "打电话",
+      "拨打"
+    ],
+    "example": {
+      "ja": "友達に電話をかけます。",
+      "reading": "ともだちにでんわをかけます。",
+      "zh": "我给朋友打电话。",
+      "cloze": {
+        "answer": "かけます",
+        "reading": "かけます"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "友達に電話をかける",
+        "reading": "ともだちにでんわをかける",
+        "zh": "给朋友打电话"
+      },
+      "tip": "打电话的对象用「に」，「電話」后接「を」。"
+    }
+  },
+  {
+    "id": "refine-n5-kiru",
+    "level": "N5",
+    "forms": [
+      {
+        "term": "切る",
+        "reading": "きる"
+      },
+      {
+        "term": "切ります",
+        "reading": "きります"
+      }
+    ],
+    "meaningKeywords": [
+      "切开"
+    ],
+    "example": {
+      "ja": "包丁で野菜を切ります。",
+      "reading": "ほうちょうでやさいをきります。",
+      "zh": "我用菜刀切蔬菜。",
+      "cloze": {
+        "answer": "切ります",
+        "reading": "きります"
+      }
+    },
+    "usage": {
+      "collocation": {
+        "ja": "野菜を切る",
+        "reading": "やさいをきる",
+        "zh": "切蔬菜"
+      },
+      "tip": "使用的工具用「で」，切开的对象用「を」。"
+    }
+  }
+]

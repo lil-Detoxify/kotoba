@@ -1,12 +1,41 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, nextTick, onMounted, onUnmounted, watch } from 'vue';
+import { gsap } from 'gsap';
 import { useApp } from '../store';
+import type { WechatAttempt } from '../services/wechatAuth';
 import { X, Mail, Lock, ShieldCheck, RefreshCw, Eye, EyeOff, ArrowLeft, CheckCircle2, KeyRound } from 'lucide-vue-next';
 
 type AuthStep = 'email' | 'password' | 'register' | 'legacy_upgrade' | 'reset_password';
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 const app = useApp();
+// Development plan is archived. Re-enable only after an explicit product decision.
+const wechatLoginAvailable = false;
+const modalRoot = ref<HTMLElement | null>(null);
+let modalMotion: gsap.Context | undefined;
+let previousFocus: HTMLElement | null = null;
+let previousOverflow = '';
+
+function focusFirstField() {
+  modalRoot.value?.querySelector<HTMLInputElement>('input:not([disabled])')?.focus();
+}
+
+function handleModalKeys(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    emit('close');
+    return;
+  }
+  if (event.key !== 'Tab' || !modalRoot.value) return;
+  const focusable = Array.from(modalRoot.value.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled])'))
+    .filter(element => element.getClientRects().length > 0 && element.tabIndex >= 0);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (!modalRoot.value.contains(document.activeElement)) { event.preventDefault(); first.focus(); }
+  else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+}
 
 const step = ref<AuthStep>('email');
 const email = ref('');
@@ -22,10 +51,23 @@ const submitting = ref(false);
 
 const errorMessage = ref('');
 const successMessage = ref('');
+const wechatAttempt = ref<WechatAttempt | null>(null);
+const wechatBusy = ref(false);
+const wechatError = ref('');
+let wechatTimer: ReturnType<typeof setTimeout> | null = null;
 const cooldownSeconds = ref(0);
 let cooldownTimer: any = null;
 
 onMounted(() => {
+  previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', handleModalKeys);
+  if (modalRoot.value && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    modalMotion = gsap.context(() => {
+      gsap.from('.login-modal', { autoAlpha: 0, y: 18, scale: 0.985, duration: 0.32, ease: 'power2.out', clearProps: 'opacity,visibility,transform', onComplete: focusFirstField });
+    }, modalRoot.value);
+  } else void nextTick(focusFirstField);
   const savedEmail = localStorage.getItem('kotobud_last_login_email');
   if (savedEmail && !email.value) {
     email.value = savedEmail;
@@ -47,8 +89,56 @@ watch(email, (val) => {
 });
 
 onUnmounted(() => {
+  modalMotion?.revert();
+  document.removeEventListener('keydown', handleModalKeys);
+  document.body.style.overflow = previousOverflow;
+  previousFocus?.focus();
   if (cooldownTimer) clearInterval(cooldownTimer);
+  if (wechatTimer) clearTimeout(wechatTimer);
+  wechatAttempt.value = null;
 });
+
+watch(step, value => {
+  void nextTick(focusFirstField);
+  if (value !== 'email') {
+    wechatAttempt.value = null;
+    if (wechatTimer) clearTimeout(wechatTimer);
+  }
+});
+
+async function startWechatLogin() {
+  if (wechatBusy.value) return;
+  wechatBusy.value = true;
+  wechatError.value = '';
+  try {
+    const attempt = await app.startWechatLogin();
+    wechatAttempt.value = attempt;
+    scheduleWechatPoll(attempt);
+  } catch (error) {
+    wechatError.value = error instanceof Error ? error.message : '微信登录暂时不可用。';
+  } finally { wechatBusy.value = false; }
+}
+
+function scheduleWechatPoll(attempt: WechatAttempt) {
+  if (wechatTimer) clearTimeout(wechatTimer);
+  wechatTimer = setTimeout(async () => {
+    if (wechatAttempt.value?.attemptId !== attempt.attemptId) return;
+    if (Date.now() >= Date.parse(attempt.expiresAt)) {
+      wechatError.value = '二维码已过期，请重新获取。';
+      wechatAttempt.value = null;
+      return;
+    }
+    try {
+      const result = await app.finishWechatLogin(attempt, () => wechatAttempt.value?.attemptId === attempt.attemptId && step.value === 'email');
+      if (wechatAttempt.value?.attemptId !== attempt.attemptId) return;
+      if (result.pending) scheduleWechatPoll(attempt);
+      else if (result.success) emit('close');
+      else wechatError.value = result.error || '微信登录失败，请重试。';
+    } catch (error) {
+      wechatError.value = error instanceof Error ? error.message : '微信登录失败，请重试。';
+    }
+  }, 2000);
+}
 
 function startCooldown(seconds: number) {
   cooldownSeconds.value = seconds;
@@ -296,16 +386,16 @@ async function handleResetPassword() {
 </script>
 
 <template>
-  <div class="modal-backdrop" @click.self="emit('close')">
-    <div class="login-modal" role="dialog" aria-modal="true">
+  <div ref="modalRoot" class="modal-backdrop" @click.self="emit('close')">
+    <div class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
       <header class="modal-header">
         <div class="title-group">
           <span class="badge">Cloud Sync</span>
-          <h2 v-if="step === 'email'">登录或注册 KotoBud</h2>
-          <h2 v-else-if="step === 'password'">密码登录</h2>
-          <h2 v-else-if="step === 'register'">创建新账号</h2>
-          <h2 v-else-if="step === 'legacy_upgrade'">账号安全升级</h2>
-          <h2 v-else-if="step === 'reset_password'">重置登录密码</h2>
+          <h2 v-if="step === 'email'" id="login-modal-title">登录或注册 Kotobud</h2>
+          <h2 v-else-if="step === 'password'" id="login-modal-title">密码登录</h2>
+          <h2 v-else-if="step === 'register'" id="login-modal-title">创建新账号</h2>
+          <h2 v-else-if="step === 'legacy_upgrade'" id="login-modal-title">账号安全升级</h2>
+          <h2 v-else-if="step === 'reset_password'" id="login-modal-title">重置登录密码</h2>
         </div>
         <button class="close-btn" @click="emit('close')" aria-label="关闭">
           <X :size="20" />
@@ -374,6 +464,15 @@ async function handleResetPassword() {
         </div>
       </form>
 
+      <div v-if="step === 'email' && wechatLoginAvailable" class="wechat-login-option">
+        <button type="button" class="wechat-action" :disabled="wechatBusy" @click="startWechatLogin">{{ wechatBusy ? '正在准备…' : '微信扫码登录' }}</button>
+        <template v-if="wechatAttempt">
+          <a class="wechat-open" :href="wechatAttempt.authorizeUrl" target="_blank" rel="noopener noreferrer">打开微信扫码页</a>
+          <p>扫码确认后返回这里，登录将自动完成。已有邮箱学习记录请先用邮箱登录并绑定微信。</p>
+        </template>
+        <p v-if="wechatError" role="alert" class="error-msg">{{ wechatError }}</p>
+      </div>
+
       <!-- Form: Flow A Password Login -->
       <form v-else-if="step === 'password'" class="modal-form" @submit.prevent="handlePasswordLogin">
         <div class="field">
@@ -400,7 +499,6 @@ async function handleResetPassword() {
             <button
               type="button"
               class="toggle-pwd-btn"
-              tabindex="-1"
               :aria-label="showPassword ? '隐藏密码' : '显示密码'"
               @click="showPassword = !showPassword"
             >
@@ -751,6 +849,7 @@ async function handleResetPassword() {
 </template>
 
 <style scoped>
+.wechat-login-option{padding:18px 24px 24px;border-top:1px solid var(--line);text-align:center}.wechat-login-option p{font-size:12px;line-height:1.6;color:var(--muted);margin:10px 0 0}.wechat-action{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--green);cursor:pointer}.wechat-open{display:inline-block;margin-top:12px;color:var(--green);text-decoration:underline}.wechat-login-option .error-msg{color:#873c2c}
 .modal-backdrop {
   position: fixed;
   inset: 0;

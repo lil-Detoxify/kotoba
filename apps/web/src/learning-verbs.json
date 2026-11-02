@@ -1,0 +1,842 @@
+[
+  {
+    "id": "write",
+    "term": "書く",
+    "reading": "かく",
+    "meaning": "写",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "書く",
+        "reading": "かく"
+      },
+      {
+        "term": "書きます",
+        "reading": "かきます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "ここに名前を{answer}。",
+        "zh": "在这里写名字。"
+      },
+      "te": {
+        "ja": "ここに名前を{answer}ください。",
+        "zh": "请在这里写名字。"
+      },
+      "ta": {
+        "ja": "昨日、手紙を{answer}。",
+        "zh": "昨天写了信。"
+      },
+      "nai": {
+        "ja": "この紙には{answer}でください。",
+        "zh": "请不要写在这张纸上。"
+      }
+    }
+  },
+  {
+    "id": "swim",
+    "term": "泳ぐ",
+    "reading": "およぐ",
+    "meaning": "游泳",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "泳ぐ",
+        "reading": "およぐ"
+      },
+      {
+        "term": "泳ぎます",
+        "reading": "およぎます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "夏はよくプールで{answer}。",
+        "zh": "夏天经常在游泳池游泳。"
+      },
+      "te": {
+        "ja": "ここで{answer}もいいです。",
+        "zh": "可以在这里游泳。"
+      },
+      "ta": {
+        "ja": "昨日、海で{answer}。",
+        "zh": "昨天在海里游了泳。"
+      },
+      "nai": {
+        "ja": "今日は{answer}。",
+        "zh": "今天不游泳。"
+      }
+    }
+  },
+  {
+    "id": "speak",
+    "term": "話す",
+    "reading": "はなす",
+    "meaning": "说话",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "話す",
+        "reading": "はなす"
+      },
+      {
+        "term": "話します",
+        "reading": "はなします"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "日本語で{answer}。",
+        "zh": "用日语说话。"
+      },
+      "te": {
+        "ja": "もう少しゆっくり{answer}ください。",
+        "zh": "请再说慢一点。"
+      },
+      "ta": {
+        "ja": "昨日、友達と{answer}。",
+        "zh": "昨天和朋友聊了天。"
+      },
+      "nai": {
+        "ja": "ここでは大きな声で{answer}でください。",
+        "zh": "请不要在这里大声说话。"
+      }
+    }
+  },
+  {
+    "id": "wait",
+    "term": "待つ",
+    "reading": "まつ",
+    "meaning": "等待",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "待つ",
+        "reading": "まつ"
+      },
+      {
+        "term": "待ちます",
+        "reading": "まちます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "ここで{answer}。",
+        "zh": "在这里等。"
+      },
+      "te": {
+        "ja": "ここで{answer}ください。",
+        "zh": "请在这里等。"
+      },
+      "ta": {
+        "ja": "駅で友達を{answer}。",
+        "zh": "在车站等了朋友。"
+      },
+      "nai": {
+        "ja": "今日は{answer}。",
+        "zh": "今天不等了。"
+      }
+    }
+  },
+  {
+    "id": "read",
+    "term": "読む",
+    "reading": "よむ",
+    "meaning": "阅读",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "読む",
+        "reading": "よむ"
+      },
+      {
+        "term": "読みます",
+        "reading": "よみます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "毎朝、新聞を{answer}。",
+        "zh": "每天早上读报。"
+      },
+      "te": {
+        "ja": "この説明を{answer}ください。",
+        "zh": "请读一下这段说明。"
+      },
+      "ta": {
+        "ja": "昨日、この本を{answer}。",
+        "zh": "昨天读了这本书。"
+      },
+      "nai": {
+        "ja": "今は本を{answer}。",
+        "zh": "现在不读书。"
+      }
+    }
+  },
+  {
+    "id": "play",
+    "term": "遊ぶ",
+    "reading": "あそぶ",
+    "meaning": "玩",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "遊ぶ",
+        "reading": "あそぶ"
+      },
+      {
+        "term": "遊びます",
+        "reading": "あそびます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "週末、友達と{answer}。",
+        "zh": "周末和朋友一起玩。"
+      },
+      "te": {
+        "ja": "公園で{answer}います。",
+        "zh": "正在公园玩。"
+      },
+      "ta": {
+        "ja": "昨日、友達と{answer}。",
+        "zh": "昨天和朋友一起玩了。"
+      },
+      "nai": {
+        "ja": "ここでは{answer}でください。",
+        "zh": "请不要在这里玩。"
+      }
+    }
+  },
+  {
+    "id": "drink",
+    "term": "飲む",
+    "reading": "のむ",
+    "meaning": "喝",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "飲む",
+        "reading": "のむ"
+      },
+      {
+        "term": "飲みます",
+        "reading": "のみます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "朝、コーヒーを{answer}。",
+        "zh": "早上喝咖啡。"
+      },
+      "te": {
+        "ja": "水を{answer}ください。",
+        "zh": "请喝水。"
+      },
+      "ta": {
+        "ja": "昨日、お茶を{answer}。",
+        "zh": "昨天喝了茶。"
+      },
+      "nai": {
+        "ja": "寝る前にコーヒーを{answer}。",
+        "zh": "睡前不喝咖啡。"
+      }
+    }
+  },
+  {
+    "id": "buy",
+    "term": "買う",
+    "reading": "かう",
+    "meaning": "买",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "買う",
+        "reading": "かう"
+      },
+      {
+        "term": "買います",
+        "reading": "かいます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "パンを{answer}。",
+        "zh": "买面包。"
+      },
+      "te": {
+        "ja": "パンを{answer}から帰ります。",
+        "zh": "买完面包再回去。"
+      },
+      "ta": {
+        "ja": "昨日、パンを{answer}。",
+        "zh": "昨天买了面包。"
+      },
+      "nai": {
+        "ja": "今日はパンを{answer}。",
+        "zh": "今天不买面包。"
+      }
+    }
+  },
+  {
+    "id": "meet",
+    "term": "会う",
+    "reading": "あう",
+    "meaning": "见面",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "会う",
+        "reading": "あう"
+      },
+      {
+        "term": "会います",
+        "reading": "あいます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "明日、友達に{answer}。",
+        "zh": "明天和朋友见面。"
+      },
+      "te": {
+        "ja": "友達に{answer}から帰ります。",
+        "zh": "和朋友见面后再回去。"
+      },
+      "ta": {
+        "ja": "昨日、友達に{answer}。",
+        "zh": "昨天和朋友见了面。"
+      },
+      "nai": {
+        "ja": "今日は友達に{answer}。",
+        "zh": "今天不和朋友见面。"
+      }
+    }
+  },
+  {
+    "id": "return",
+    "term": "帰る",
+    "reading": "かえる",
+    "meaning": "回去",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "帰る",
+        "reading": "かえる"
+      },
+      {
+        "term": "帰ります",
+        "reading": "かえります"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "今日は早く{answer}。",
+        "zh": "今天早点回去。"
+      },
+      "te": {
+        "ja": "早く{answer}ください。",
+        "zh": "请早点回去。"
+      },
+      "ta": {
+        "ja": "昨日は早く{answer}。",
+        "zh": "昨天很早就回去了。"
+      },
+      "nai": {
+        "ja": "今日はすぐに{answer}。",
+        "zh": "今天不会马上回去。"
+      }
+    }
+  },
+  {
+    "id": "enter",
+    "term": "入る",
+    "reading": "はいる",
+    "meaning": "进入",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "入る",
+        "reading": "はいる"
+      },
+      {
+        "term": "入ります",
+        "reading": "はいります"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "部屋に{answer}。",
+        "zh": "进入房间。"
+      },
+      "te": {
+        "ja": "中に{answer}ください。",
+        "zh": "请进去。"
+      },
+      "ta": {
+        "ja": "さっき部屋に{answer}。",
+        "zh": "刚才进了房间。"
+      },
+      "nai": {
+        "ja": "ここには{answer}でください。",
+        "zh": "请不要进入这里。"
+      }
+    }
+  },
+  {
+    "id": "cut",
+    "term": "切る",
+    "reading": "きる",
+    "meaning": "切",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "切る",
+        "reading": "きる"
+      },
+      {
+        "term": "切ります",
+        "reading": "きります"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "野菜を{answer}。",
+        "zh": "切蔬菜。"
+      },
+      "te": {
+        "ja": "野菜を{answer}ください。",
+        "zh": "请切一下蔬菜。"
+      },
+      "ta": {
+        "ja": "昨日、髪を{answer}。",
+        "zh": "昨天剪了头发。"
+      },
+      "nai": {
+        "ja": "この紙は{answer}でください。",
+        "zh": "请不要剪这张纸。"
+      }
+    }
+  },
+  {
+    "id": "run",
+    "term": "走る",
+    "reading": "はしる",
+    "meaning": "跑",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "走る",
+        "reading": "はしる"
+      },
+      {
+        "term": "走ります",
+        "reading": "はしります"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "公園で{answer}。",
+        "zh": "在公园跑步。"
+      },
+      "te": {
+        "ja": "駅まで{answer}行きます。",
+        "zh": "跑着去车站。"
+      },
+      "ta": {
+        "ja": "昨日、公園で{answer}。",
+        "zh": "昨天在公园跑了步。"
+      },
+      "nai": {
+        "ja": "廊下では{answer}でください。",
+        "zh": "请不要在走廊跑。"
+      }
+    }
+  },
+  {
+    "id": "go",
+    "term": "行く",
+    "reading": "いく",
+    "meaning": "去",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "行く",
+        "reading": "いく"
+      },
+      {
+        "term": "行きます",
+        "reading": "いきます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "明日、図書館に{answer}。",
+        "zh": "明天去图书馆。"
+      },
+      "te": {
+        "ja": "先に{answer}ください。",
+        "zh": "请先去。"
+      },
+      "ta": {
+        "ja": "昨日、図書館に{answer}。",
+        "zh": "昨天去了图书馆。"
+      },
+      "nai": {
+        "ja": "今日は図書館に{answer}。",
+        "zh": "今天不去图书馆。"
+      }
+    }
+  },
+  {
+    "id": "exist",
+    "term": "ある",
+    "reading": "ある",
+    "meaning": "有",
+    "group": "godan",
+    "forms": [
+      {
+        "term": "ある",
+        "reading": "ある"
+      },
+      {
+        "term": "あります",
+        "reading": "あります"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "机の上に本が{answer}。",
+        "zh": "桌上有书。"
+      },
+      "te": {
+        "ja": "店の前に公園が{answer}、便利です。",
+        "zh": "店前有公园，很方便。"
+      },
+      "ta": {
+        "ja": "昨日は時間が{answer}。",
+        "zh": "昨天有时间。"
+      },
+      "nai": {
+        "ja": "今日は時間が{answer}。",
+        "zh": "今天没有时间。"
+      }
+    }
+  },
+  {
+    "id": "eat",
+    "term": "食べる",
+    "reading": "たべる",
+    "meaning": "吃",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "食べる",
+        "reading": "たべる"
+      },
+      {
+        "term": "食べます",
+        "reading": "たべます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "朝ご飯を{answer}。",
+        "zh": "吃早饭。"
+      },
+      "te": {
+        "ja": "先に{answer}ください。",
+        "zh": "请先吃。"
+      },
+      "ta": {
+        "ja": "朝ご飯を{answer}。",
+        "zh": "吃了早饭。"
+      },
+      "nai": {
+        "ja": "今日はここで{answer}。",
+        "zh": "今天不在这里吃。"
+      }
+    }
+  },
+  {
+    "id": "see",
+    "term": "見る",
+    "reading": "みる",
+    "meaning": "看",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "見る",
+        "reading": "みる"
+      },
+      {
+        "term": "見ます",
+        "reading": "みます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "夜、映画を{answer}。",
+        "zh": "晚上看电影。"
+      },
+      "te": {
+        "ja": "この写真を{answer}ください。",
+        "zh": "请看这张照片。"
+      },
+      "ta": {
+        "ja": "昨日、この映画を{answer}。",
+        "zh": "昨天看了这部电影。"
+      },
+      "nai": {
+        "ja": "今はテレビを{answer}。",
+        "zh": "现在不看电视。"
+      }
+    }
+  },
+  {
+    "id": "wake",
+    "term": "起きる",
+    "reading": "おきる",
+    "meaning": "起床",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "起きる",
+        "reading": "おきる"
+      },
+      {
+        "term": "起きます",
+        "reading": "おきます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "毎朝七時に{answer}。",
+        "zh": "每天早上七点起床。"
+      },
+      "te": {
+        "ja": "明日は早く{answer}ください。",
+        "zh": "明天请早点起床。"
+      },
+      "ta": {
+        "ja": "今日は七時に{answer}。",
+        "zh": "今天七点起床了。"
+      },
+      "nai": {
+        "ja": "休みの日は早く{answer}。",
+        "zh": "休息日不早起。"
+      }
+    }
+  },
+  {
+    "id": "borrow",
+    "term": "借りる",
+    "reading": "かりる",
+    "meaning": "借入",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "借りる",
+        "reading": "かりる"
+      },
+      {
+        "term": "借ります",
+        "reading": "かります"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "図書館で本を{answer}。",
+        "zh": "在图书馆借书。"
+      },
+      "te": {
+        "ja": "本を{answer}、読みます。",
+        "zh": "借书来读。"
+      },
+      "ta": {
+        "ja": "昨日、図書館で本を{answer}。",
+        "zh": "昨天在图书馆借了书。"
+      },
+      "nai": {
+        "ja": "今日は本を{answer}。",
+        "zh": "今天不借书。"
+      }
+    }
+  },
+  {
+    "id": "teach",
+    "term": "教える",
+    "reading": "おしえる",
+    "meaning": "教",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "教える",
+        "reading": "おしえる"
+      },
+      {
+        "term": "教えます",
+        "reading": "おしえます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "友達に日本語を{answer}。",
+        "zh": "教朋友日语。"
+      },
+      "te": {
+        "ja": "道を{answer}ください。",
+        "zh": "请告诉我怎么走。"
+      },
+      "ta": {
+        "ja": "友達に日本語を{answer}。",
+        "zh": "教了朋友日语。"
+      },
+      "nai": {
+        "ja": "答えはまだ{answer}でください。",
+        "zh": "请先不要告诉我答案。"
+      }
+    }
+  },
+  {
+    "id": "sleep",
+    "term": "寝る",
+    "reading": "ねる",
+    "meaning": "睡觉",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "寝る",
+        "reading": "ねる"
+      },
+      {
+        "term": "寝ます",
+        "reading": "ねます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "毎晩十一時に{answer}。",
+        "zh": "每天晚上十一点睡觉。"
+      },
+      "te": {
+        "ja": "今日は早く{answer}ください。",
+        "zh": "今天请早点睡。"
+      },
+      "ta": {
+        "ja": "昨日は早く{answer}。",
+        "zh": "昨天很早就睡了。"
+      },
+      "nai": {
+        "ja": "まだ{answer}でください。",
+        "zh": "请先不要睡。"
+      }
+    }
+  },
+  {
+    "id": "leave",
+    "term": "出る",
+    "reading": "でる",
+    "meaning": "离开",
+    "group": "ichidan",
+    "forms": [
+      {
+        "term": "出る",
+        "reading": "でる"
+      },
+      {
+        "term": "出ます",
+        "reading": "でます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "八時に家を{answer}。",
+        "zh": "八点离开家。"
+      },
+      "te": {
+        "ja": "ここから{answer}ください。",
+        "zh": "请从这里出去。"
+      },
+      "ta": {
+        "ja": "さっき家を{answer}。",
+        "zh": "刚才离开了家。"
+      },
+      "nai": {
+        "ja": "今日は家から{answer}。",
+        "zh": "今天不出门。"
+      }
+    }
+  },
+  {
+    "id": "do",
+    "term": "する",
+    "reading": "する",
+    "meaning": "做",
+    "group": "irregular",
+    "forms": [
+      {
+        "term": "する",
+        "reading": "する"
+      },
+      {
+        "term": "します",
+        "reading": "します"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "毎朝、運動を{answer}。",
+        "zh": "每天早上做运动。"
+      },
+      "te": {
+        "ja": "宿題を{answer}から遊びます。",
+        "zh": "做完作业再玩。"
+      },
+      "ta": {
+        "ja": "昨日、宿題を{answer}。",
+        "zh": "昨天做了作业。"
+      },
+      "nai": {
+        "ja": "今日は無理を{answer}。",
+        "zh": "今天不勉强自己。"
+      }
+    }
+  },
+  {
+    "id": "come",
+    "term": "来る",
+    "reading": "くる",
+    "meaning": "来",
+    "group": "irregular",
+    "forms": [
+      {
+        "term": "来る",
+        "reading": "くる"
+      },
+      {
+        "term": "来ます",
+        "reading": "きます"
+      }
+    ],
+    "examples": {
+      "masu": {
+        "ja": "明日、友達が{answer}。",
+        "zh": "明天朋友会来。"
+      },
+      "te": {
+        "ja": "こちらに{answer}ください。",
+        "zh": "请到这边来。"
+      },
+      "ta": {
+        "ja": "昨日、友達が{answer}。",
+        "zh": "昨天朋友来了。"
+      },
+      "nai": {
+        "ja": "今日は友達が{answer}。",
+        "zh": "今天朋友不来。"
+      }
+    }
+  }
+]

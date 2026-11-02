@@ -1,8 +1,21 @@
+<script lang="ts">
+import { createFriendShare, createTimelineShare } from "../../services/share";
+export default {
+  onShareAppMessage: createFriendShare,
+  onShareTimeline: createTimelineShare,
+};
+</script>
+
 <script setup lang="ts">
+import { useMiniPageActivity } from "../../services/page-motion";
 import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
+import MiniPage from "../../components/MiniPage.vue";
+import MiniHeader from "../../components/MiniHeader.vue";
+import MiniNotice from "../../components/MiniNotice.vue";
 import { defaultAuthService, defaultSyncCoordinator } from "../../adapters";
 import { defaultPrivacyConsent, PRIVACY_POLICY_VERSION } from "../../services/privacy-consent";
+useMiniPageActivity();
 
 const busy = ref(false);
 const message = ref("");
@@ -41,8 +54,17 @@ async function withdrawPrivacy() {
 }
 
 async function openPlatformPrivacy() {
-  if (await defaultPrivacyConsent.openPrivacyContract()) return;
-  message.value = "当前平台未提供官方指引入口，以上为本小程序的本地说明。";
+  if (busy.value) return;
+  busy.value = true;
+  message.value = "";
+  try {
+    if (await defaultPrivacyConsent.openPrivacyContract()) return;
+    message.value = "当前平台未提供官方指引入口，以上为本小程序的本地说明。";
+  } catch {
+    message.value = "打开微信平台指引失败，请稍后重试。";
+  } finally {
+    busy.value = false;
+  }
 }
 
 onShow(() => {
@@ -54,13 +76,10 @@ onShow(() => {
 </script>
 
 <template>
-  <view class="container privacy-page">
-    <view class="section-header">
-      <text class="section-title">隐私保护说明</text>
-      <text class="section-desc">版本 {{ PRIVACY_POLICY_VERSION }} · 当前状态：{{ consentLabel }}</text>
-    </view>
+  <MiniPage class="privacy-page">
+    <MiniHeader kicker="PRIVACY / 由你决定" title="隐私保护说明" :description="`版本 ${PRIVACY_POLICY_VERSION} · 当前状态：${consentLabel}`" />
 
-    <view class="card notice-card">
+    <view class="card notice-card motion-enter">
       <text class="group-title">主体与联系方式</text>
       <text class="body-text">运营主体、联系方式以及具体服务方，以微信平台配置的《小程序用户隐私保护指引》展示内容为准。本页面不臆造或替代平台指引中的主体信息。</text>
     </view>
@@ -77,11 +96,11 @@ onShow(() => {
       <text class="body-text">拒绝或撤回同意不会影响本机词书和纯离线学习，但会关闭邮箱登录、验证码发送和云同步。你可以随时回到本页重新选择。</text>
       <button v-if="consentStatus !== 'accepted' && platformAuthorizationRequired" class="primary-btn privacy-action" open-type="agreePrivacyAuthorization" :disabled="busy" :loading="busy" @agreeprivacyauthorization="agreePrivacy">同意并开启同步</button>
       <button v-else-if="consentStatus !== 'accepted'" class="primary-btn privacy-action" :disabled="busy" :loading="busy" @tap="agreePrivacy">同意并开启同步</button>
-      <button v-else class="secondary-btn privacy-action" :disabled="busy" @tap="withdrawPrivacy">撤回同意并关闭同步</button>
-      <button class="secondary-btn privacy-action" :disabled="busy" @tap="openPlatformPrivacy">打开微信平台指引</button>
-      <text v-if="message" class="message">{{ message }}</text>
+      <button v-else class="secondary-btn privacy-action" :disabled="busy" :loading="busy" @tap="withdrawPrivacy">撤回同意并关闭同步</button>
+      <button class="secondary-btn privacy-action" :disabled="busy" :loading="busy" @tap="openPlatformPrivacy">打开微信平台指引</button>
+      <MiniNotice :message="message" />
     </view>
-  </view>
+  </MiniPage>
 </template>
 
 <style scoped>
@@ -95,4 +114,9 @@ onShow(() => {
 .data-title { display: block; color: #1F2937; font-size: 26rpx; font-weight: 600; margin-bottom: 5rpx; }
 .privacy-action { width: 100%; min-height: 88rpx; margin-top: 20rpx; }
 .message { display: block; color: #047857; font-size: 24rpx; line-height: 1.5; margin-top: 16rpx; }
+.notice-card { border-left: 6rpx solid #a2bb97; }
+.group-title, .data-title { color: var(--kotoba-ink); }
+.group-title { border-color: var(--kotoba-line); font-size: 31rpx; }
+.body-text { color: var(--kotoba-muted); font-size: 26rpx; line-height: 1.8; }
+.data-item + .data-item { margin-top: 30rpx; padding-top: 24rpx; border-top: 1rpx solid var(--kotoba-line); }
 </style>

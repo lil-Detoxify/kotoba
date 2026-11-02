@@ -1,0 +1,2 @@
+6fdec6db0451e3d46309343d70f3a6185e60ecc4cac68724d914a75d62c951aa  packages/KotoBud-0.9.0-beta.2-Windows-x64-Setup.exe
+a92d310fc171128ad2cdf7f74f3c28c663e11ef61b95e1444af172a458d9080b  packages/KotoBud-0.9.0-beta.2-Windows-x64-Portable.exe

@@ -46,6 +46,48 @@ describe("mini-program strict sync gate", () => {
     expect(h.client.push).not.toHaveBeenCalled();
   });
 
+  it("pulls an authenticated account without reading, merging, or clearing a missing guest snapshot", async () => {
+    const h = coordinator({ userId: "kb_1", token: "at" });
+    h.repository.switchUser("kb_1");
+    await h.repository.transact(data => { data.currentBookId = "account-local"; });
+    h.repository.switchUser(null);
+    const guestQueue = [{ id: "guest-pending", type: "progress", payload: { wordId: "guest-word" }, createdAt: "2026-10-02T00:00:00.000Z", retries: 0 }];
+    h.mem.values.set("sync_queue:data_guest", JSON.stringify(guestQueue));
+    h.mem.values.set("guest_learning_owner.v1", "claimed-before-recovery");
+    const dangling = Object.assign(new Error("snapshot file missing"), {
+      code: "SNAPSHOT_MISSING", key: "data_guest", pointer: "kotobud-data_guest-lost.json", inlineValue: null,
+    });
+    const getItem = h.mem.storage.getItem;
+    h.mem.storage.getItem = async key => {
+      if (key === "data_guest") throw dangling;
+      return getItem(key);
+    };
+    h.client.pull.mockResolvedValue(pull("kb_1", [progress("kb_1", "cloud-word")]));
+
+    await h.sync.init();
+
+    expect(h.sync.state).toMatchObject({ phase: "ready", isSyncReady: true, activeKey: "data_user_kb_1" });
+    expect(h.client.pull).toHaveBeenCalledOnce();
+    expect((await h.repository.read("data_user_kb_1")).states.map(state => state.wordId)).toContain("cloud-word");
+    await expect(h.repository.read("data_guest")).rejects.toMatchObject({ code: "SNAPSHOT_MISSING" });
+    expect(JSON.parse(h.mem.values.get("sync_queue:data_guest")!)).toEqual(guestQueue);
+    expect(h.mem.values.get("guest_learning_owner.v1")).toBe("claimed-before-recovery");
+  });
+
+  it("does not bypass a permission or corruption error while hydrating guest data", async () => {
+    const h = coordinator({ userId: "kb_1", token: "at" });
+    h.mem.storage.getItem = async key => {
+      if (key === "data_guest") throw Object.assign(new Error("permission denied"), { errMsg: "readFile:fail permission denied" });
+      return null;
+    };
+
+    await h.sync.init();
+
+    expect(h.sync.state).toMatchObject({ phase: "error", isSyncReady: false });
+    expect(h.sync.state.error).toContain("permission denied");
+    expect(h.client.pull).not.toHaveBeenCalled();
+  });
+
   it("physically blocks push until pull, validation, reconciliation and persistence finish", async () => {
     const h = coordinator({ userId: "kb_1", token: "at" });
     let resolvePull!: (value: any) => void;

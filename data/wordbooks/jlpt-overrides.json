@@ -1,0 +1,274 @@
+{
+  "license": "CC-BY-SA-4.0",
+  "review": "KotoBud main agent and Luna, 2026-10-05; reviewed source gloss, POS, dictionary identity, and ambiguous fallback senses.",
+  "entries": [
+    {
+      "id": "f586d7d023",
+      "meaning": "复印；复制",
+      "partOfSpeech": "サ变他动词",
+      "reason": "Verb expression derived from コピー; omit unrelated noun senses."
+    },
+    {
+      "id": "558866ef86",
+      "meaning": "什么",
+      "partOfSpeech": "代词",
+      "reason": "Correct なに-only entry to 何/なん entry.",
+      "dictionaryEntryId": "2846738"
+    },
+    {
+      "id": "d980cb1531",
+      "meaning": "慢慢地；缓慢地",
+      "partOfSpeech": "副词",
+      "reason": "Adverbial form with と."
+    },
+    {
+      "id": "c3c3ac9f48",
+      "meaning": "打招呼；问候",
+      "partOfSpeech": "サ变动词",
+      "reason": "Verb expression derived from 挨拶."
+    },
+    {
+      "id": "8fb005254a",
+      "meaning": "受伤；使受伤",
+      "partOfSpeech": "サ变动词",
+      "reason": "Cover source intransitive/transitive injury glosses."
+    },
+    {
+      "id": "063c94089d",
+      "meaning": "争吵；吵架",
+      "partOfSpeech": "サ变动词",
+      "reason": "Verb expression derived from 喧嘩."
+    },
+    {
+      "id": "83a456da88",
+      "meaning": "检查；核对",
+      "partOfSpeech": "サ变他动词",
+      "reason": "Select checking verb sense; source noun-only POS corrected."
+    },
+    {
+      "id": "ab4a88a2c0",
+      "meaning": "吃惊；感到惊讶",
+      "partOfSpeech": "サ变动词",
+      "reason": "Verb expression derived from びっくり."
+    },
+    {
+      "id": "a3e1ac6ec4",
+      "meaning": "据……；根据……",
+      "partOfSpeech": "惯用表达",
+      "reason": "According-to expression, not all senses of 因る."
+    },
+    {
+      "id": "28ba375980",
+      "meaning": "更加；进一步",
+      "partOfSpeech": "副词",
+      "reason": "Adverbial form with と."
+    },
+    {
+      "id": "3db8531d3b",
+      "meaning": "慢走；路上小心（对出门的人说）",
+      "partOfSpeech": "惯用表达",
+      "reason": "Fixed farewell expression."
+    },
+    {
+      "id": "91b50bd069",
+      "meaning": "保重（告别时说）",
+      "partOfSpeech": "惯用表达",
+      "reason": "Fixed farewell expression."
+    },
+    {
+      "id": "321ba5716a",
+      "meaning": "请稍等",
+      "partOfSpeech": "惯用表达",
+      "reason": "Polite request expression."
+    },
+    {
+      "id": "feb110fb03",
+      "meaning": "您知道吗（敬语）",
+      "partOfSpeech": "惯用表达",
+      "reason": "Honorific question."
+    },
+    {
+      "id": "d374033b31",
+      "meaning": "鸦雀无声地；静悄悄地",
+      "partOfSpeech": "副词",
+      "reason": "Reject source JMdict ID 1310740 for 死因; translate silence adverb."
+    },
+    {
+      "id": "049cebeff8",
+      "meaning": "担任；充当",
+      "partOfSpeech": "一段动词",
+      "reason": "Entry 1240825 sense 1, applicable to 務める.",
+      "dictionaryEntryId": "1240825"
+    },
+    {
+      "id": "251266e6d5",
+      "meaning": "胡乱地；盲目地",
+      "partOfSpeech": "副词",
+      "reason": "Adverbial form with に."
+    },
+    {
+      "id": "75012ef36e",
+      "meaning": "事情的经过；来龙去脉",
+      "partOfSpeech": "名词",
+      "reason": "Entry 1251120 sense 0 for いきさつ; exclude latitude/longitude senses.",
+      "dictionaryEntryId": "1251120"
+    },
+    {
+      "id": "24113c7b64",
+      "meaning": "明亮地；闪耀地",
+      "partOfSpeech": "副词",
+      "reason": "Light/brightness expression with と."
+    },
+    {
+      "id": "192cd7a066",
+      "meaning": "柔韧；柔软而有弹性",
+      "partOfSpeech": "形容动词",
+      "reason": "Historical 嫋か spelling; matches supple/flexible/elastic."
+    },
+    {
+      "id": "b2fea90627",
+      "meaning": "或者；还是",
+      "partOfSpeech": "接续词",
+      "reason": "Alternative conjunction."
+    },
+    {
+      "id": "bd3e76856f",
+      "meaning": "胡乱地；盲目地",
+      "partOfSpeech": "副词",
+      "reason": "Adverbial form with に; independent N1 source entry."
+    },
+    {
+      "id": "4f134c9b38",
+      "meaning": "之后；以后",
+      "partOfSpeech": "名词；の形容词",
+      "dictionaryEntryId": "1269320",
+      "reason": "OpenJLPT English is “afterwards”; current dictionary-first sense is “后面；背后” (behind/rear). The same JMdict entry has a later “after/later” sense with this Chinese gloss."
+    },
+    {
+      "id": "eac90e8e98",
+      "meaning": "不很；不太；不怎么",
+      "partOfSpeech": "副词",
+      "dictionaryEntryId": "1584930",
+      "reason": "Source gloss “not very” maps to JMdict sense 1, while current output selected sense 0 (“剩余/余数/剩饭”). The exact Chinese translation is present in the same dictionary entry."
+    },
+    {
+      "id": "0ce2b98d3b",
+      "meaning": "打电话；拨打",
+      "partOfSpeech": "一段动词；他动词",
+      "dictionaryEntryId": "1207610",
+      "reason": "Source gloss is “to call by phone”; current output selected “挂起；悬挂；吊起；升起”. JMdict sense 3 has the exact call-by-phone meaning and a corresponding Chinese gloss."
+    },
+    {
+      "id": "4e2aefb855",
+      "meaning": "撑（伞）；伸出（手臂）",
+      "partOfSpeech": "五段动词；他动词",
+      "dictionaryEntryId": "1291330",
+      "reason": "Source glosses are “to stretch out hands” and “to raise an umbrella”; current output is the unrelated shine/light sense. Both source meanings appear as later senses of the same さす dictionary entry."
+    },
+    {
+      "id": "e5e5899ce2",
+      "meaning": "多亏；托……的福；由于……（受益于）",
+      "partOfSpeech": "名词",
+      "dictionaryEntryId": "1001640",
+      "reason": "Source gloss is “owing to”; current output only has the religious “神恩；佛恩；祝福” sense. The same dictionary entry has an assistance/help sense; this candidate states the ordinary causal expression."
+    },
+    {
+      "id": "06aec1d647",
+      "meaning": "为了；为……起见；目的",
+      "partOfSpeech": "名词；副词",
+      "dictionaryEntryId": "1157080",
+      "reason": "Source gloss is “in order to”; current output “好处；利益；福利” is the separate sake/benefit sense. The same dictionary entry’s purpose sense supplies this Chinese gloss."
+    },
+    {
+      "id": "ccfefc657c",
+      "meaning": "越来越……；不断地；接连不断地",
+      "partOfSpeech": "副词",
+      "dictionaryEntryId": "1009320",
+      "reason": "Source gloss is “more and more”; current output is the drumming/banging sound sense. The same JMdict entry has later adverb senses “continuously/one after the other” with these Chinese glosses."
+    },
+    {
+      "id": "b377c7b2ea",
+      "meaning": "接受；同意；答应；应允",
+      "partOfSpeech": "名词；サ变动词；他动词",
+      "dictionaryEntryId": "1349480",
+      "reason": "Source gloss is “to consent”; current output “知晓；知悉” is the knowledge/awareness sense. JMdict sense 1 has the exact consent/acceptance sense and matching Chinese glosses."
+    },
+    {
+      "id": "44f33984fb",
+      "meaning": "驾驶；开车",
+      "partOfSpeech": "名词；サ变动词；他动词；自动词",
+      "dictionaryEntryId": "1172830",
+      "reason": "Source gloss is “to drive”; current output only translates machine operation. The same dictionary entry has a separate vehicle-driving sense with this Chinese gloss."
+    },
+    {
+      "id": "7ffceb4055",
+      "meaning": "顺路拜访；顺道造访；中途停留",
+      "partOfSpeech": "五段动词；自动词",
+      "dictionaryEntryId": "1219680",
+      "reason": "Source gloss is “to visit”; current output only translates approach/drawing near. JMdict sense 2 of 寄る has the visit/drop-by meaning and these Chinese glosses."
+    },
+    {
+      "id": "bcab821414",
+      "meaning": "方法；方式；样式；形态",
+      "partOfSpeech": "名词后缀；名词",
+      "dictionaryEntryId": "1605840",
+      "reason": "Source glosses are “way/manner/kind”; current output translates “appearing/looking”. The same 様 entry’s later senses are method/way and form/style, rather than appearance."
+    },
+    {
+      "id": "ef3eb33c32",
+      "meaning": "汉和词典；汉字词典",
+      "partOfSpeech": "名词",
+      "dictionaryEntryId": "1213260",
+      "reason": "Source gloss specifies a Japanese dictionary explaining kanji and compounds; current output “中国和日本” selected the unrelated China-and-Japan sense. The exact dictionary sense is present later in the same entry."
+    },
+    {
+      "id": "dddceb65a5",
+      "meaning": "举办；举行；召开（活动）",
+      "partOfSpeech": "五段动词；自动词；他动词",
+      "dictionaryEntryId": "1202440",
+      "reason": "Source gloss is “to open an event”; current output selected the unseal/unpack sense of 開く. The same dictionary entry has a meeting/party-holding sense with these Chinese glosses."
+    },
+    {
+      "id": "26c17d8895",
+      "meaning": "海岸；岸边；乡村；农村；地方",
+      "partOfSpeech": "名词",
+      "dictionaryEntryId": "2796690",
+      "reason": "Source glosses specify area/locality/region/coast; current output is the unrelated music lead in a Japanese dance performance. The same 地方/じかた entry has coast and countryside senses at indices 2–3."
+    },
+    {
+      "id": "8ee5c7c8db",
+      "meaning": "（日本传统舞蹈表演中的）舞蹈演员；舞者",
+      "partOfSpeech": "名词",
+      "dictionaryEntryId": "1551810",
+      "reason": "Source gloss is “dancing (geisha)”; current output is the unrelated literal posture/way-of-standing sense. The same 立方/たちかた entry has a later dancer sense."
+    },
+    {
+      "id": "a2e9a76dd2",
+      "meaning": "（锅炉的）燃烧器",
+      "partOfSpeech": "名词",
+      "dictionaryEntryId": "1193860",
+      "reason": "Source gloss begins “a burner”; current output selected volcanic crater. The same 火口/かこう JMdict entry has a separate boiler-burner sense."
+    },
+    {
+      "id": "69ce5c06bb",
+      "meaning": "日本国旗；日章旗",
+      "partOfSpeech": "名词",
+      "dictionaryEntryId": "1463780",
+      "reason": "Source gloss is “the Japanese flag”; current output only describes the red/gold sun emblem. The same 日の丸 entry has a separate national-flag sense with these Chinese glosses."
+    },
+    {
+      "id": "f1d383593c",
+      "meaning": "（接动词连用形）反复地做；连续地做；不顾一切地做",
+      "partOfSpeech": "助动词；五段动词",
+      "dictionaryEntryId": "1257800",
+      "reason": "Source explicitly identifies auxiliary まくる meaning reckless/continuous activity; current output selects the literal roll-up-sleeves sense. The same entry has the auxiliary-verb sense with these Chinese glosses."
+    },
+    {
+      "id": "67f7a8d49f",
+      "meaning": "南；南方",
+      "partOfSpeech": "名词前缀",
+      "dictionaryEntryId": "2869020",
+      "reason": "Correct source ID 2833068 (mahjong south-wind tile) to exact 南/なん entry 2869020 sense 0 (southern/south); exclude food sense."
+    }
+  ]
+}

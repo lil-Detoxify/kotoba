@@ -1,0 +1,30 @@
+{
+  "result": "passed",
+  "windowsPackageVersion": "0.9.0-beta.1",
+  "webUiVersion": "0.9.0",
+  "stagedMainAsset": "assets/main-HbacATkW.js",
+  "stagedMainAssetSha256": "b175c060f3e0bda7c6b74ad46cd2a1bc5cae148c045056d700849b7df7906295",
+  "dictionaryProbe": {
+    "term": "日本",
+    "legacyRequest": {
+      "path": "/dictionary/487.json",
+      "status": 200,
+      "entries": 1
+    },
+    "wiktionaryRequest": {
+      "path": "/data/dictionaries/wiktionary-ja/2026-10-12/231.json",
+      "status": 200,
+      "entries": 3
+    },
+    "renderedSources": [
+      "Tomoshi",
+      "JMdict",
+      "维基词典"
+    ]
+  },
+  "scoringActions": 0,
+  "gpuFailure": false,
+  "profileWasIsolated": true,
+  "profileDirectoryRemoved": true,
+  "checkedAt": "2026-10-13T15:45:18.044Z"
+}

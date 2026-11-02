@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-10-21T02:24:25.249Z",
+  "version": "0.9.0-beta.2",
+  "origin": "https://kotobud.com",
+  "mode": "verify",
+  "download": {
+    "status": 200,
+    "latestWindowsLink": true,
+    "latestExtensionLink": true
+  },
+  "main": {
+    "status": 200,
+    "sha256": "b175c060f3e0bda7c6b74ad46cd2a1bc5cae148c045056d700849b7df7906295"
+  },
+  "checksum": {
+    "status": 200,
+    "matches": true
+  },
+  "files": [
+    {
+      "name": "KotoBud-0.9.0-beta.2-Windows-x64-Setup.exe",
+      "headStatus": 200,
+      "contentLength": "183734913",
+      "contentType": "application/octet-stream",
+      "disposition": "attachment; filename=\"KotoBud-0.9.0-beta.2-Windows-x64-Setup.exe\"",
+      "getStatus": 200,
+      "bytes": 183734913,
+      "sha256": "6fdec6db0451e3d46309343d70f3a6185e60ecc4cac68724d914a75d62c951aa"
+    },
+    {
+      "name": "KotoBud-0.9.0-beta.2-Windows-x64-Portable.exe",
+      "headStatus": 200,
+      "contentLength": "183502935",
+      "contentType": "application/octet-stream",
+      "disposition": "attachment; filename=\"KotoBud-0.9.0-beta.2-Windows-x64-Portable.exe\"",
+      "getStatus": 200,
+      "bytes": 183502935,
+      "sha256": "a92d310fc171128ad2cdf7f74f3c28c663e11ef61b95e1444af172a458d9080b"
+    }
+  ],
+  "changelog": {
+    "status": 200,
+    "currentVersionPresent": true
+  }
+}

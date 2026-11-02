@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {
+      "id": "8814988b80",
+      "reason": "中腹/ちゅうっぱら has a spelling-reading mismatch; anger expression normally 中っ腹. Await corrected source."
+    },
+    {
+      "id": "4ec7fe1166",
+      "reason": "何々/どれどれ has a spelling-reading mismatch; do not silently change source spelling. Await corrected source."
+    }
+  ]
+}

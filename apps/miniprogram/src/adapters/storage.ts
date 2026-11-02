@@ -1,7 +1,7 @@
 import type { Data, SyncQueueItem, WordState } from "@jp/models";
 import { emptyData } from "@jp/models";
 import type { StorageAdapter, MiniProgramRepositoryContract } from "./types";
-import { filePointerKey, isFileStorageKey, UniFileStorage } from "./file-storage";
+import { filePointerKey, isFileStorageKey, isMissingSnapshotError, UniFileStorage } from "./file-storage";
 import type { FileStorageDriver, FileStoragePointerStore } from "./file-storage";
 export type { StorageAdapter, MiniProgramRepositoryContract };
 
@@ -69,6 +69,13 @@ export class UniStorageAdapter implements StorageAdapter {
       return;
     }
     uni.removeStorageSync(key);
+  }
+
+  async recoverMissingSnapshot(key: string, expectedPointer: string, inlineValue: string, beforeCommit?: () => void): Promise<void> {
+    if (typeof uni === "undefined") throw new Error("Storage unavailable");
+    const fileStorage = this.getFileStorage();
+    if (!fileStorage) throw new Error("File storage unavailable");
+    await fileStorage.recoverMissingSnapshot(key, expectedPointer, inlineValue, inlineValue, beforeCommit);
   }
 
   private getFileStorage(): UniFileStorage | undefined {
@@ -230,26 +237,37 @@ export class MiniProgramRepository implements MiniProgramRepositoryContract {
   async read(key = this.activeKey): Promise<Data> {
     const raw = await this.storage.getItem(key);
     if (raw === null) return emptyData();
-    const data = JSON.parse(raw) as Data;
-    if (!data || ![data.books, data.lessons, data.words, data.states, data.logs].every(Array.isArray)) {
-      throw new Error("Invalid learning data; preserved for recovery");
-    }
-    // JSON snapshots lose Date instances; restore the FSRS Card contract at this boundary.
-    const restoreCard = (state: WordState) => {
-      if (!state?.card) throw new Error("Invalid study card; preserved for recovery");
-      state.card.due = new Date(state.card.due);
-      if (!Number.isFinite(state.card.due.getTime())) throw new Error("Invalid card date");
-      if (state.card.last_review != null) {
-        state.card.last_review = new Date(state.card.last_review);
-        if (!Number.isFinite(state.card.last_review.getTime())) throw new Error("Invalid review date");
+    return parseLearningSnapshot(raw);
+  }
+
+  async recoverMissingSnapshot(expectedPointer: string, key = this.activeKey): Promise<Data> {
+    if (key !== "data_guest") throw new Error("Only a missing guest snapshot can be restored from its local inline copy");
+    const operation = this.pendingWrite.then(async () => {
+      if (this.activeKey !== key) throw new Error("Active learning partition changed; reload before recovery");
+      let missing: unknown;
+      try {
+        await this.read(key);
+      } catch (error) {
+        if (!isMissingSnapshotError(error)) throw error;
+        missing = error;
       }
-    };
-    data.states.forEach(restoreCard);
-    data.logs.forEach((log) => {
-      restoreCard(log.previousState);
-      restoreCard(log.newState);
+      if (!isMissingSnapshotError(missing) || missing.pointer !== expectedPointer) {
+        throw new Error("Snapshot changed while recovery was awaiting confirmation; reload and try again");
+      }
+      if (missing.key !== key || missing.inlineValue === null) {
+        throw new Error("No local inline copy is available to restore; the original pointer was preserved");
+      }
+      // Validate through the normal repository boundary before writing any
+      // recovered copy. JSON syntax alone does not make a learning snapshot valid.
+      parseLearningSnapshot(missing.inlineValue);
+      if (!this.storage.recoverMissingSnapshot) throw new Error("This storage adapter cannot archive and restore a missing snapshot safely");
+      await this.storage.recoverMissingSnapshot(key, expectedPointer, missing.inlineValue, () => {
+        if (this.activeKey !== key) throw new Error("Active learning partition changed during recovery");
+      });
+      return this.read(key);
     });
-    return data;
+    this.pendingWrite = operation.catch(() => undefined);
+    return operation;
   }
 
   async transact(change: (data: Data) => void, key = this.activeKey): Promise<Data> {
@@ -382,4 +400,27 @@ export class MiniProgramRepository implements MiniProgramRepositoryContract {
     this.pendingQueueWrite = operation.catch(() => undefined);
     return operation;
   }
+}
+
+function parseLearningSnapshot(raw: string): Data {
+  const data = JSON.parse(raw) as Data;
+  if (!data || ![data.books, data.lessons, data.words, data.states, data.logs].every(Array.isArray)) {
+    throw new Error("Invalid learning data; preserved for recovery");
+  }
+  // JSON snapshots lose Date instances; restore the FSRS Card contract at this boundary.
+  const restoreCard = (state: WordState) => {
+    if (!state?.card) throw new Error("Invalid study card; preserved for recovery");
+    state.card.due = new Date(state.card.due);
+    if (!Number.isFinite(state.card.due.getTime())) throw new Error("Invalid card date; preserved for recovery");
+    if (state.card.last_review != null) {
+      state.card.last_review = new Date(state.card.last_review);
+      if (!Number.isFinite(state.card.last_review.getTime())) throw new Error("Invalid review date; preserved for recovery");
+    }
+  };
+  data.states.forEach(restoreCard);
+  data.logs.forEach((log) => {
+    restoreCard(log.previousState);
+    restoreCard(log.newState);
+  });
+  return data;
 }

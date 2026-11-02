@@ -1,0 +1,415 @@
+[
+  {
+    "id": "foundation-buy",
+    "forms": [
+      { "term": "買う", "reading": "かう" },
+      { "term": "買います", "reading": "かいます" }
+    ],
+    "collocation": {
+      "ja": "本を買います",
+      "reading": "ほんをかいます",
+      "zh": "买书"
+    },
+    "tip": "买的对象用「を」标出。",
+    "contrast": {
+      "term": "売る",
+      "reading": "うる",
+      "collocation": {
+        "ja": "本を売ります",
+        "reading": "ほんをうります",
+        "zh": "卖书"
+      },
+      "note": "買う从买方说，売る从卖方说，交易对象都用「を」。"
+    }
+  },
+  {
+    "id": "foundation-sell",
+    "forms": [
+      { "term": "売る", "reading": "うる" },
+      { "term": "売ります", "reading": "うります" }
+    ],
+    "collocation": {
+      "ja": "本を売ります",
+      "reading": "ほんをうります",
+      "zh": "卖书"
+    },
+    "tip": "卖出的东西用「を」标出。",
+    "contrast": {
+      "term": "買う",
+      "reading": "かう",
+      "collocation": {
+        "ja": "本を買います",
+        "reading": "ほんをかいます",
+        "zh": "买书"
+      },
+      "note": "売る从卖方说，買う从买方说，交易对象都用「を」。"
+    }
+  },
+  {
+    "id": "foundation-see",
+    "forms": [
+      { "term": "見る", "reading": "みる" },
+      { "term": "見ます", "reading": "みます" }
+    ],
+    "collocation": {
+      "ja": "写真を見ます",
+      "reading": "しゃしんをみます",
+      "zh": "看照片"
+    },
+    "tip": "看的对象用「を」标出。",
+    "contrast": {
+      "term": "見せる",
+      "reading": "みせる",
+      "collocation": {
+        "ja": "友達に写真を見せます",
+        "reading": "ともだちにしゃしんをみせます",
+        "zh": "给朋友看照片"
+      },
+      "note": "見る是自己看，見せる是把东西给别人看，观看者用「に」。"
+    }
+  },
+  {
+    "id": "foundation-show",
+    "forms": [
+      { "term": "見せる", "reading": "みせる" },
+      { "term": "見せます", "reading": "みせます" }
+    ],
+    "collocation": {
+      "ja": "友達に写真を見せます",
+      "reading": "ともだちにしゃしんをみせます",
+      "zh": "给朋友看照片"
+    },
+    "tip": "看的人用「に」，展示的东西用「を」。",
+    "contrast": {
+      "term": "見る",
+      "reading": "みる",
+      "collocation": {
+        "ja": "写真を見ます",
+        "reading": "しゃしんをみます",
+        "zh": "看照片"
+      },
+      "note": "見せる是让别人看，見る是自己看照片。"
+    }
+  },
+  {
+    "id": "foundation-listen",
+    "forms": [
+      { "term": "聞く", "reading": "きく" },
+      { "term": "聞きます", "reading": "ききます" }
+    ],
+    "collocation": {
+      "ja": "音楽を聞きます",
+      "reading": "おんがくをききます",
+      "zh": "听音乐"
+    },
+    "tip": "主动去听时，听的内容常用「を」。",
+    "contrast": {
+      "term": "聞こえる",
+      "reading": "きこえる",
+      "collocation": {
+        "ja": "音楽が聞こえます",
+        "reading": "おんがくがきこえます",
+        "zh": "听得见音乐"
+      },
+      "note": "聞く表示主动听，聞こえる表示声音传入耳中，声音常用「が」。"
+    }
+  },
+  {
+    "id": "foundation-be-audible",
+    "forms": [
+      { "term": "聞こえる", "reading": "きこえる" },
+      { "term": "聞こえます", "reading": "きこえます" }
+    ],
+    "collocation": {
+      "ja": "音楽が聞こえます",
+      "reading": "おんがくがきこえます",
+      "zh": "听得见音乐"
+    },
+    "tip": "听得见的声音用「が」标出。",
+    "contrast": {
+      "term": "聞く",
+      "reading": "きく",
+      "collocation": {
+        "ja": "音楽を聞きます",
+        "reading": "おんがくをききます",
+        "zh": "听音乐"
+      },
+      "note": "聞こえる说声音自然传来，聞く说主动去听。"
+    }
+  },
+  {
+    "id": "foundation-say",
+    "forms": [
+      { "term": "言う", "reading": "いう" },
+      { "term": "言います", "reading": "いいます" }
+    ],
+    "collocation": {
+      "ja": "名前を言います",
+      "reading": "なまえをいいます",
+      "zh": "说出名字"
+    },
+    "tip": "说出的内容常用「を」标出。",
+    "contrast": {
+      "term": "話す",
+      "reading": "はなす",
+      "collocation": {
+        "ja": "友達と話します",
+        "reading": "ともだちとはなします",
+        "zh": "和朋友交谈"
+      },
+      "note": "言う说出具体内容，話す表示交谈，对话对象常用「と」。"
+    }
+  },
+  {
+    "id": "foundation-talk",
+    "forms": [
+      { "term": "話す", "reading": "はなす" },
+      { "term": "話します", "reading": "はなします" }
+    ],
+    "collocation": {
+      "ja": "友達と話します",
+      "reading": "ともだちとはなします",
+      "zh": "和朋友交谈"
+    },
+    "tip": "交谈的对象常用「と」连接。",
+    "contrast": {
+      "term": "言う",
+      "reading": "いう",
+      "collocation": {
+        "ja": "名前を言います",
+        "reading": "なまえをいいます",
+        "zh": "说出名字"
+      },
+      "note": "話す表示和人交谈，言う表示说出某项内容。"
+    }
+  },
+  {
+    "id": "foundation-meet",
+    "forms": [
+      { "term": "会う", "reading": "あう" },
+      { "term": "会います", "reading": "あいます" }
+    ],
+    "collocation": {
+      "ja": "駅で友達に会います",
+      "reading": "えきでともだちにあいます",
+      "zh": "在车站见朋友"
+    },
+    "tip": "见面的对象常用「に」标出。",
+    "contrast": {
+      "term": "合う",
+      "reading": "あう",
+      "collocation": {
+        "ja": "この服は私に合います",
+        "reading": "このふくはわたしにあいます",
+        "zh": "这件衣服适合我"
+      },
+      "note": "会う是见到某人，合う是事物与对象相匹配。"
+    }
+  },
+  {
+    "id": "foundation-fit",
+    "forms": [
+      { "term": "合う", "reading": "あう" },
+      { "term": "合います", "reading": "あいます" }
+    ],
+    "collocation": {
+      "ja": "この服は私に合います",
+      "reading": "このふくはわたしにあいます",
+      "zh": "这件衣服适合我"
+    },
+    "tip": "适合的对象用「に」标出。",
+    "contrast": {
+      "term": "会う",
+      "reading": "あう",
+      "collocation": {
+        "ja": "駅で友達に会います",
+        "reading": "えきでともだちにあいます",
+        "zh": "在车站见朋友"
+      },
+      "note": "合う表示事物相配，会う表示与人见面。"
+    }
+  },
+  {
+    "id": "foundation-put-in",
+    "forms": [
+      { "term": "入れる", "reading": "いれる" },
+      { "term": "入れます", "reading": "いれます" }
+    ],
+    "collocation": {
+      "ja": "かばんに本を入れます",
+      "reading": "かばんにほんをいれます",
+      "zh": "把书放进包里"
+    },
+    "tip": "放入的地点用「に」，放入的东西用「を」。",
+    "contrast": {
+      "term": "出す",
+      "reading": "だす",
+      "collocation": {
+        "ja": "かばんから本を出します",
+        "reading": "かばんからほんをだします",
+        "zh": "从包里拿出书"
+      },
+      "note": "入れる把东西放进去，出す把东西从「から」所示地点取出。"
+    }
+  },
+  {
+    "id": "foundation-take-out",
+    "forms": [
+      { "term": "出す", "reading": "だす" },
+      { "term": "出します", "reading": "だします" }
+    ],
+    "collocation": {
+      "ja": "かばんから本を出します",
+      "reading": "かばんからほんをだします",
+      "zh": "从包里拿出书"
+    },
+    "tip": "拿出的地点用「から」标出。",
+    "contrast": {
+      "term": "入れる",
+      "reading": "いれる",
+      "collocation": {
+        "ja": "かばんに本を入れます",
+        "reading": "かばんにほんをいれます",
+        "zh": "把书放进包里"
+      },
+      "note": "出す把东西取出来，入れる把东西放进「に」所示地点。"
+    }
+  },
+  {
+    "id": "foundation-stop-action",
+    "forms": [
+      { "term": "止める", "reading": "とめる" },
+      { "term": "止めます", "reading": "とめます" }
+    ],
+    "collocation": {
+      "ja": "車を止めます",
+      "reading": "くるまをとめます",
+      "zh": "停下车"
+    },
+    "tip": "让车停下时，车用「を」标出。",
+    "contrast": {
+      "term": "止まる",
+      "reading": "とまる",
+      "collocation": {
+        "ja": "車が止まります",
+        "reading": "くるまがとまります",
+        "zh": "车停下来"
+      },
+      "note": "止める表示让车停下，止まる描述车停下这一变化。"
+    }
+  },
+  {
+    "id": "foundation-stop-change",
+    "forms": [
+      { "term": "止まる", "reading": "とまる" },
+      { "term": "止まります", "reading": "とまります" }
+    ],
+    "collocation": {
+      "ja": "車が止まります",
+      "reading": "くるまがとまります",
+      "zh": "车停下来"
+    },
+    "tip": "发生停止变化的主体常用「が」标出。",
+    "contrast": {
+      "term": "止める",
+      "reading": "とめる",
+      "collocation": {
+        "ja": "車を止めます",
+        "reading": "くるまをとめます",
+        "zh": "停下车"
+      },
+      "note": "止まる说车停下来，止める说有人让车停下。"
+    }
+  },
+  {
+    "id": "foundation-begin-action",
+    "forms": [
+      { "term": "始める", "reading": "はじめる" },
+      { "term": "始めます", "reading": "はじめます" }
+    ],
+    "collocation": {
+      "ja": "勉強を始めます",
+      "reading": "べんきょうをはじめます",
+      "zh": "开始学习"
+    },
+    "tip": "开始做的事情用「を」标出。",
+    "contrast": {
+      "term": "始まる",
+      "reading": "はじまる",
+      "collocation": {
+        "ja": "授業が始まります",
+        "reading": "じゅぎょうがはじまります",
+        "zh": "课程开始"
+      },
+      "note": "始める表示有人开始某事，始まる表示事情开始。"
+    }
+  },
+  {
+    "id": "foundation-begin-change",
+    "forms": [
+      { "term": "始まる", "reading": "はじまる" },
+      { "term": "始まります", "reading": "はじまります" }
+    ],
+    "collocation": {
+      "ja": "授業が始まります",
+      "reading": "じゅぎょうがはじまります",
+      "zh": "课程开始"
+    },
+    "tip": "开始的活动或事情常用「が」作主语。",
+    "contrast": {
+      "term": "始める",
+      "reading": "はじめる",
+      "collocation": {
+        "ja": "勉強を始めます",
+        "reading": "べんきょうをはじめます",
+        "zh": "开始学习"
+      },
+      "note": "始まる说课程开始，始める说有人开始学习等行动。"
+    }
+  },
+  {
+    "id": "foundation-wake-someone",
+    "forms": [
+      { "term": "起こします", "reading": "おこします" }
+    ],
+    "collocation": {
+      "ja": "母が弟を起こします",
+      "reading": "ははがおとうとをおこします",
+      "zh": "妈妈叫醒弟弟"
+    },
+    "tip": "被叫醒的人用「を」标出。",
+    "contrast": {
+      "term": "起きる",
+      "reading": "おきる",
+      "collocation": {
+        "ja": "毎朝七時に起きます",
+        "reading": "まいあさしちじにおきます",
+        "zh": "每天早上七点起床"
+      },
+      "note": "起こす是叫别人醒来，起きる是自己起床。"
+    }
+  },
+  {
+    "id": "foundation-get-up",
+    "forms": [
+      { "term": "起きる", "reading": "おきる" },
+      { "term": "起きます", "reading": "おきます" }
+    ],
+    "collocation": {
+      "ja": "毎朝七時に起きます",
+      "reading": "まいあさしちじにおきます",
+      "zh": "每天早上七点起床"
+    },
+    "tip": "起床的时间常用「に」标出。",
+    "contrast": {
+      "term": "起こします",
+      "reading": "おこします",
+      "collocation": {
+        "ja": "母が弟を起こします",
+        "reading": "ははがおとうとをおこします",
+        "zh": "妈妈叫醒弟弟"
+      },
+      "note": "起きる说自己起床，起こす说叫别人起床。"
+    }
+  }
+]

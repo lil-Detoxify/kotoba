@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-21",
+  "windowsVersion": "0.9.0-beta.2",
+  "webVersion": "0.9.0",
+  "source": "review\\windows\\web",
+  "fileCount": 888,
+  "bytes": 282957177,
+  "main": "assets/main-HbacATkW.js",
+  "mainSha256": "b175c060f3e0bda7c6b74ad46cd2a1bc5cae148c045056d700849b7df7906295",
+  "sourceFilesByteIdentical": true,
+  "approvedProductionAppRetained": true,
+  "noNewWebBuild": true
+}

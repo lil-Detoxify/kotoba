@@ -1,0 +1,88 @@
+{
+  "result": "passed",
+  "verifiedOn": "2026-10-27",
+  "releaseStatus": "localTestCandidateNotPublished",
+  "uploaded": false,
+  "published": false,
+  "executables": [
+    {
+      "file": "pack/KotoBud-0.9.1-beta.1-Windows-x64-Setup.exe",
+      "bytes": 194853558,
+      "sha256": "8053c0d800940e2c7622456f8a1113c1f72f25914db114612aa99c50d192697e",
+      "headerHex": "4d5a",
+      "hasMzHeader": true
+    },
+    {
+      "file": "pack/KotoBud-0.9.1-beta.1-Windows-x64-Portable.exe",
+      "bytes": 194621644,
+      "sha256": "07b81e57524a57cd4624109204a38d53a56a7ec95d785a4d2f701c6eb9156d8a",
+      "headerHex": "4d5a",
+      "hasMzHeader": true
+    }
+  ],
+  "web": {
+    "source": "stage/",
+    "packaged": "pack/win-unpacked/resources/web/",
+    "uiVersion": "0.9.1",
+    "sourceFileCount": 1293,
+    "packagedFileCount": 1293,
+    "sourceBytes": 323820468,
+    "packagedBytes": 323820468,
+    "relativeFileSetsMatch": true,
+    "byteIdenticalFileCount": 1293,
+    "mismatches": [],
+    "missingFromPackage": [],
+    "extraInPackage": [],
+    "mainAsset": "assets/main-Bo62HrWV.js",
+    "sourceMainSha256": "a3029460d50cec5249f3a0a70544cd7548c27adcb418bd4a287906eb11c7d575",
+    "packagedMainSha256": "a3029460d50cec5249f3a0a70544cd7548c27adcb418bd4a287906eb11c7d575",
+    "expectedMainSha256": "a3029460d50cec5249f3a0a70544cd7548c27adcb418bd4a287906eb11c7d575"
+  },
+  "appAsar": {
+    "file": "pack/win-unpacked/resources/app.asar",
+    "bytes": 38820751,
+    "sha256": "c9371bcc9be7ba997fe5fcc7ee05fe1874d7c128c9ec2f9c5e2619d6fbd76f61",
+    "packageJson": {
+      "version": "0.9.1-beta.1",
+      "main": "main.cjs",
+      "byteIdenticalToSource": true
+    },
+    "sourceFiles": [
+      {
+        "member": "main.cjs",
+        "source": "apps/windows/main.cjs",
+        "bytes": 6337,
+        "sourceSha256": "ff39aaf8175896b1a7f14a71bd2d16be2c156acb967487f3e6fc96ad0f57551a",
+        "asarSha256": "ff39aaf8175896b1a7f14a71bd2d16be2c156acb967487f3e6fc96ad0f57551a",
+        "byteIdentical": true
+      },
+      {
+        "member": "protocol.cjs",
+        "source": "apps/windows/protocol.cjs",
+        "bytes": 556,
+        "sourceSha256": "79a9d744cbd6e157f042c46180d25c84e9b5cac052a15748e28270173245c882",
+        "asarSha256": "79a9d744cbd6e157f042c46180d25c84e9b5cac052a15748e28270173245c882",
+        "byteIdentical": true
+      },
+      {
+        "member": "preload.cjs",
+        "source": "apps/windows/preload.cjs",
+        "bytes": 343,
+        "sourceSha256": "4faff41d2389991d2860947a3a178896da9626cc90adb3a1d1c12d2b60406a25",
+        "asarSha256": "4faff41d2389991d2860947a3a178896da9626cc90adb3a1d1c12d2b60406a25",
+        "byteIdentical": true
+      }
+    ]
+  },
+  "checks": {
+    "bothExecutablesHaveMzHeaders": true,
+    "webTreeMatchesStageByteForByte": true,
+    "expectedProductionMainHashMatches": true,
+    "legacyDictionaryHas512Shards": true,
+    "googleAudioNotBundled": true,
+    "asarVersionAndEntryFilesMatchSource": true,
+    "installerWasNotRun": true,
+    "portableWasNotRun": true,
+    "uploadedOrPublished": false
+  }
+}

@@ -4,7 +4,7 @@ import type { Data, WordState } from "@jp/models";
 import { evaluate, initialState } from "@jp/core";
 import { MiniProgramRepository, type StorageAdapter } from "../apps/miniprogram/src/adapters/storage";
 import { applyStudyRating, getStudyQueue } from "../apps/miniprogram/src/pages/study/study-session";
-import { createStudyQuestion, ratingForStudyAnswer, submitStudyAnswer } from "../apps/miniprogram/src/pages/study/study-quiz";
+import { createStudyQuestion, hasStudyContent, ratingForStudyAnswer, submitStudyAnswer } from "../apps/miniprogram/src/pages/study/study-quiz";
 
 const word = (id: string, lessonId = "l1") => ({ id, lessonId, term: id, reading: id, meaning: id, order: 1 });
 
@@ -120,5 +120,29 @@ describe("mini program study session", () => {
     const noKanji = { ...source.words[0], term: "あめ", reading: "あめ" };
     expect(createStudyQuestion(noKanji, [noKanji], "kanji-reading")).toBeNull();
     expect(createStudyQuestion(noKanji, [noKanji], "mixed")).toBeNull();
+  });
+
+  it("filters legacy slash placeholders from study text and quiz answers", () => {
+    expect(hasStudyContent("/ ")).toBe(false);
+    expect(hasStudyContent(" ／ ")).toBe(false);
+    expect(hasStudyContent("  ")).toBe(false);
+    expect(hasStudyContent("ねこ")).toBe(true);
+
+    const target = { ...word("target"), term: "無理", reading: "むり", meaning: "勉强" };
+    const missingMeaning = { ...word("missing"), term: "何", reading: "なに", meaning: " / " };
+    const dog = { ...word("dog"), term: "犬", reading: "いぬ", meaning: "狗" };
+    const bird = { ...word("bird"), term: "鳥", reading: "とり", meaning: "鸟" };
+    const question = createStudyQuestion(target, [target, missingMeaning, dog, bird], "kana-meaning", () => 0.1);
+    expect(question?.options).not.toContain("/");
+    expect(question?.options).toContain("狗");
+    expect(missingMeaning.meaning).toBe(" / ");
+
+    const missingAnswer = { ...target, meaning: "/" };
+    expect(createStudyQuestion(missingAnswer, [missingAnswer, dog, bird], "kana-meaning")).toBeNull();
+    expect(createStudyQuestion(missingAnswer, [missingAnswer, dog, bird], "audio-meaning", Math.random, () => true)).toBeNull();
+
+    const missingReading = { ...target, reading: "/" };
+    expect(createStudyQuestion(missingReading, [missingReading, dog, bird], "kanji-reading")).toBeNull();
+    expect(createStudyQuestion(missingReading, [missingReading, dog, bird], "kana-meaning")).toBeNull();
   });
 });

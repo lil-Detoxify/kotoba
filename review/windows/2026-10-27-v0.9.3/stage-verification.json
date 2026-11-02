@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-27",
+  "windowsVersion": "0.9.3",
+  "webVersion": "0.9.3",
+  "frozenSource": "../kotobud-review/round57-2026-10-27/site-release",
+  "stage": "review/windows/2026-10-27-v0.9.3/stage/",
+  "fileCount": 1321,
+  "bytes": 326216539,
+  "main": "assets/main-CPE7iE7W.js",
+  "mainSha256": "22757b16c8c0a8af1c8d3a45e939586dc37d9784fa37b44d82f3de6d5f8a67e7",
+  "applicationEntry": {
+    "source": "../kotobud-review/round57-2026-10-27/site-release/app.html",
+    "stagedAppHtml": "app.html",
+    "stagedIndexHtml": "index.html",
+    "bytes": 857,
+    "sha256": "5c29cb63bfabab262607e36711d584adc26714254ab07ea543aaacac1e8a8161",
+    "stagedFilesByteIdentical": true,
+    "seoHomepageCopied": false
+  },
+  "legacyDictionary": {
+    "source": "apps/web/public/dictionary/",
+    "version": "2026-09-02",
+    "shardCount": 512,
+    "productionAndFallbackManifestsMatch": true
+  },
+  "audioGoogleBundled": false,
+  "sourceFilesCopiedByteIdentically": true
+}

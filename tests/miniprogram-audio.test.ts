@@ -65,6 +65,31 @@ describe("UniAudioPlayer", () => {
     expect(player.isSpeaking()).toBe(false);
   });
 
+  it("continues playback if the optional global silent-switch setting throws", async () => {
+    const context = audioMock();
+    const setInnerAudioOption = vi.fn(() => { throw new Error("audio option unavailable"); });
+    vi.stubGlobal("uni", { createInnerAudioContext: () => context, setInnerAudioOption });
+    const player = new UniAudioPlayer();
+
+    const result = player.play("https://kotobud.com/audio/a.mp3");
+    expect(setInnerAudioOption).toHaveBeenCalledWith({ obeyMuteSwitch: false });
+    expect(context.play).toHaveBeenCalledOnce();
+    context.ended[0]();
+    expect(await result).toBe(true);
+  });
+
+  it("handles a rejected global audio option promise without an unhandled rejection", async () => {
+    const context = audioMock();
+    const setInnerAudioOption = vi.fn(() => Promise.reject(new Error("audio option rejected")));
+    vi.stubGlobal("uni", { createInnerAudioContext: () => context, setInnerAudioOption });
+    const player = new UniAudioPlayer();
+
+    const result = player.play("https://kotobud.com/audio/a.mp3");
+    expect(context.play).toHaveBeenCalledOnce();
+    context.ended[0]();
+    await expect(result).resolves.toBe(true);
+  });
+
   it("reuses one native context for consecutive words on the same study page", async () => {
     const context = audioMock();
     const create = vi.fn(() => context);
@@ -175,6 +200,41 @@ describe("UniAudioPlayer", () => {
     player.destroy();
     expect(context.destroy).toHaveBeenCalledOnce();
     expect(await player.play("after-destroy.mp3")).toBe(false);
+  });
+
+  it("creates a fresh context after a native playback error", async () => {
+    const failedContext = audioMock();
+    const recoveredContext = audioMock();
+    const createContext = vi.fn()
+      .mockReturnValueOnce(failedContext)
+      .mockReturnValueOnce(recoveredContext);
+    vi.stubGlobal("uni", { createInnerAudioContext: createContext });
+    const player = new UniAudioPlayer();
+    let recoveredPlay: Promise<boolean> | undefined;
+    const onError = vi.fn(() => { recoveredPlay = player.play("good.mp3"); });
+
+    const failedPlay = player.play("broken.mp3", { onError });
+    const nativeError = { errMsg: "decode failed", errCode: 10004 };
+    failedContext.errors[0](nativeError);
+
+    await expect(failedPlay).resolves.toBe(false);
+    expect(onError).toHaveBeenCalledWith(nativeError);
+    expect(failedContext.stop).toHaveBeenCalledOnce();
+    expect(failedContext.destroy).toHaveBeenCalledOnce();
+    expect(createContext).toHaveBeenCalledTimes(2);
+    expect(recoveredContext.play).toHaveBeenCalledOnce();
+    recoveredContext.ended[0]();
+    await expect(recoveredPlay!).resolves.toBe(true);
+  });
+
+  it("reports a context-creation exception to onError", async () => {
+    const creationError = new Error("native context unavailable");
+    vi.stubGlobal("uni", { createInnerAudioContext: () => { throw creationError; } });
+    const onError = vi.fn();
+    const player = new UniAudioPlayer();
+
+    await expect(player.play("audio.mp3", { onError })).resolves.toBe(false);
+    expect(onError).toHaveBeenCalledWith(creationError);
   });
 
   it("times out a silent native context and stops it", async () => {

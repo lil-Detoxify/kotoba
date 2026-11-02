@@ -37,10 +37,15 @@ async function mp3Files(directory) {
 
 async function buildBookEntries() {
   const catalog = JSON.parse(await fs.readFile(catalogPath, "utf8"));
-  if (!Array.isArray(catalog.books) || catalog.books.length !== 6) throw new Error("教材目录必须包含 6 册");
+  if (!Array.isArray(catalog.books) || catalog.books.length !== 11) throw new Error("教材目录必须包含 6 册标日与 5 册 JLPT");
   const lessons = catalog.books.reduce((sum, book) => sum + book.lessons.length, 0);
   const words = catalog.books.reduce((sum, book) => sum + book.wordCount, 0);
-  if (lessons !== 104 || words !== 9117) throw new Error("教材目录统计不符合 6 册、104 课、9,117 词基线");
+  const legacy = catalog.books.filter((book) => book.id.startsWith("biaori-"));
+  if (legacy.length !== 6 || legacy.reduce((sum, book) => sum + book.lessons.length, 0) !== 104
+      || legacy.reduce((sum, book) => sum + book.wordCount, 0) !== 9117) {
+    throw new Error("旧教材目录必须保留 6 册、104 课、9,117 词基线");
+  }
+  if (lessons !== 263 || words !== 16926) throw new Error("教材目录统计不符合 11 册、263 课/组、16,926 词基线");
 
   const bookDir = path.join(publicRoot, "data/books");
   const definitions = ["index", ...catalog.books.map((book) => book.id)];
@@ -50,9 +55,13 @@ async function buildBookEntries() {
     if (name !== "index") {
       const payload = JSON.parse(await fs.readFile(localPath, "utf8"));
       const definition = catalog.books.find((book) => book.id === name);
-      const sourceIndexes = payload.lessons?.flatMap((lesson) => lesson.words?.map((word) => word.sourceIndex) ?? []) ?? [];
+      const isJlpt = name.startsWith("jlpt-");
+      const sourceKeys = payload.lessons?.flatMap((lesson) => lesson.words?.map((word) => isJlpt ? word.sourceId : word.sourceIndex) ?? []) ?? [];
+      const validKeys = sourceKeys.every((key) => isJlpt
+        ? typeof key === "string" && /^[a-z0-9_-]{1,64}$/.test(key)
+        : Number.isInteger(key) && key >= 0);
       if (payload.id !== name || payload.wordCount !== definition.wordCount || payload.lessons?.length !== definition.lessons.length
-          || sourceIndexes.length !== definition.wordCount || new Set(sourceIndexes).size !== sourceIndexes.length) {
+          || !validKeys || sourceKeys.length !== definition.wordCount || new Set(sourceKeys).size !== sourceKeys.length) {
         throw new Error(`教材源文件校验失败: ${name}`);
       }
     }
