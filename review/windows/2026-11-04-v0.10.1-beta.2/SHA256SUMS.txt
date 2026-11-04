@@ -1,0 +1,2 @@
+2b2652de8a2d2147dabb5cea12d8e434ff13d1936c0408a064ee275978574b10  pack/KotoBud-0.10.1-beta.2-Windows-x64-Setup.exe
+cbe5a63057b3e4b3ce44afa6a76fffe7b62b5ef3ee0f8c2049b4643c93cbbf09  pack/KotoBud-0.10.1-beta.2-Windows-x64-Portable.exe

@@ -22,6 +22,7 @@ import { createQuestion, quizAttempt, quizRating, toHiragana, type Question } fr
 import type { QuizAttempt, QuizType } from '@jp/models';
 import extensionPackage from '../package.json';
 import { extensionApi } from './client';
+import { studyHref, grammarHref, grammarForExtensionVocabulary } from './study/navigation';
 import { extensionContentWords, personalLibraryData } from './personal-library';
 import { createExtensionPronunciation } from './audio';
 import { bookIdForWord, buildStudyQueue, listLearningBooks, summarizeLearning } from './learning';
@@ -96,6 +97,7 @@ const catalogWords = ref<ExtensionWord[]>([]);
 const selectedMode = ref<LearningMode>('new');
 const newTarget = ref(10);
 const expandedBookIds = ref(new Set<string>());
+const visibleLessonCount = ref(6);
 const selectedLessonIds = ref<string[] | null>(null);
 const lessonRanges = reactive<Record<string, { from: string; to: string }>>({});
 const selectedFile = ref<File | null>(null);
@@ -233,6 +235,11 @@ const remaining = computed(() => Math.max(0, queue.value.length - index.value));
 const sessionProgress = computed(() => queue.value.length ? Math.min(100, Math.round(index.value / queue.value.length * 100)) : 0);
 const summaryStats = computed(() => stats.value);
 const sessionFeedback = computed(() => snapshot.value ? extensionSessionSummary(snapshot.value, learningWords.value, sessionResults.value) : null);
+const relatedGrammar = computed(() => {
+  if (!snapshot.value || !sessionFeedback.value || remaining.value || sessionSceneId.value || sessionMode.value !== 'new') return;
+  const newIds = new Set(sessionFeedback.value.newWords.map(word => word.id));
+  return grammarForExtensionVocabulary(sessionResults.value.map(result => result.word).filter(word => newIds.has(word.id)));
+});
 const relatedPractice = computed(() => {
   if (!snapshot.value || !sessionResults.value.length) return undefined;
   const completedWords = sessionResults.value.map(result => result.word);
@@ -295,7 +302,7 @@ function bookProgress(id: string) { return libraryProgress.value?.books.find(boo
 async function useBook(id: string) {
   if (busy.value || queueBusy.value || loading.value) return;
   await persistBookSelection([id]);
-  if (selectedBookIds.value.length === 1 && selectedBookIds.value[0] === id) expandedBookIds.value = new Set([id]);
+  if (selectedBookIds.value.length === 1 && selectedBookIds.value[0] === id) expandedBookIds.value = new Set();
 }
 function previousWord() {
   if (!canPrevious.value || !workspaceVisible) return;
@@ -587,10 +594,8 @@ async function persistBookSelection(ids: string[]) {
 }
 
 function toggleExpanded(bookId: string) {
-  const next = new Set(expandedBookIds.value);
-  if (next.has(bookId)) next.delete(bookId);
-  else next.add(bookId);
-  expandedBookIds.value = next;
+  visibleLessonCount.value = 6;
+  expandedBookIds.value = expandedBookIds.value.has(bookId) ? new Set() : new Set([bookId]);
 }
 
 function toggleBook(bookId: string) {
@@ -1355,7 +1360,7 @@ watch(learningBooks, books => {
     lessonRanges[book.id] = { from: lessons[0]?.id ?? '', to: lessons.at(-1)?.id ?? '' };
   }
 });
-watch(activeBookId, id => { expandedBookIds.value = id ? new Set([id]) : new Set(); });
+watch(activeBookId, () => { expandedBookIds.value = new Set(); });
 
 watch(() => snapshot.value?.preferences.voice, value => {
   if (value && voice.value !== value) {
@@ -1481,7 +1486,7 @@ onUnmounted(() => {
           <button v-else class="learning-button primary start-daily-plan" type="button" :disabled="loading || queueBusy" @click="startDailyPlan()"><BookOpen :size="16" aria-hidden="true" />开始今日计划 · {{ dailyPlan.remaining }} 词</button>
         </section>
 
-        <div class="practice-entry-grid" aria-label="把日语用起来"><button class="open-scenes" type="button" @click="emit('practice', 'scenes')"><strong>场景学习</strong><span>在生活里认词、接话</span><ChevronRight :size="16" aria-hidden="true" /></button><button class="open-conjugation" type="button" @click="emit('practice', 'conjugation')"><strong>动词活用</strong><span>四种变化，放进句子</span><ChevronRight :size="16" aria-hidden="true" /></button></div>
+        <div class="practice-entry-grid" aria-label="把日语用起来"><a class="open-kana" :href="studyHref('/kana')" target="_blank" rel="noopener noreferrer"><strong>五十音</strong><span>认读、发音与笔顺</span><ChevronRight :size="16" aria-hidden="true" /></a><button class="open-scenes" type="button" @click="emit('practice', 'scenes')"><strong>场景学习</strong><span>在生活里认词、接话</span><ChevronRight :size="16" aria-hidden="true" /></button><button class="open-conjugation" type="button" @click="emit('practice', 'conjugation')"><strong>动词活用</strong><span>四种变化，放进句子</span><ChevronRight :size="16" aria-hidden="true" /></button></div>
 
         <section v-if="resumableItems.length" class="resume-study-card" aria-label="继续上次学习"><div><strong>上次还留了 {{ resumableItems.length }} 个词</strong><p>从未评分的词继续，已保存的进度保留。</p></div><button class="learning-button secondary resume-checkpoint" type="button" :disabled="loading || queueBusy" @click="resumeCheckpoint">继续<ArrowRight :size="15" aria-hidden="true" /></button></section>
 
@@ -1498,6 +1503,7 @@ onUnmounted(() => {
               <div class="book-progress-copy"><span>已学 {{ bookProgress(book.id)?.learned ?? 0 }} / {{ bookProgress(book.id)?.total ?? book.wordCount }} 词</span><strong>{{ bookProgress(book.id)?.percent ?? 0 }}%</strong></div><div class="analytics-track"><i :style="{ width: (bookProgress(book.id)?.percent ?? 0) + '%' }" /></div>
               <div class="book-bottom"><button type="button" :disabled="queueBusy || (selectedBookIds.length === 1 && selectedBookSet.has(book.id))" @click="useBook(book.id)">{{ selectedBookIds.length === 1 && selectedBookSet.has(book.id) ? '正在学习' : '使用这本词书' }}</button><button type="button" :disabled="!selectedBookSet.has(book.id)" :aria-expanded="expandedBookIds.has(book.id)" @click="toggleExpanded(book.id)">{{ expandedBookIds.has(book.id) ? '收起课次' : '选择课次' }}<ChevronDown :size="14" aria-hidden="true" /></button></div>
               <label class="combination-choice"><input type="checkbox" :checked="selectedBookSet.has(book.id)" :disabled="selectedBookSet.has(book.id) && selectedBookIds.length === 1" @change="toggleBook(book.id)" />加入组合学习范围</label>
+              <a v-if="grammarHref(book.id)" class="book-grammar-link" :href="grammarHref(book.id)" target="_blank" rel="noopener noreferrer">本册语法 ↗</a>
               <div v-if="expandedBookIds.has(book.id) && selectedBookSet.has(book.id)" class="lesson-picker">
                 <div class="lesson-range">
                   <label>从<select v-model="lessonRanges[book.id].from" :aria-label="`${book.title}范围起始课次`"><option v-for="lesson in lessonsFor(book.id)" :key="lesson.id" :value="lesson.id">{{ lesson.title }}</option></select></label>
@@ -1507,8 +1513,13 @@ onUnmounted(() => {
                 </div>
                 <div class="lesson-actions"><button type="button" @click="selectBookLessons(book.id)">全选本册</button><button type="button" @click="clearBookLessons(book.id)">清空本册</button></div>
                 <div class="lesson-list" :aria-label="`${book.title}课次选择`">
-                  <label v-for="lesson in lessonsFor(book.id)" :key="lesson.id" class="lesson-option"><input type="checkbox" :checked="isLessonSelected(lesson.id)" @change="toggleLesson(lesson.id)" /><span>{{ lesson.title }}</span><small>{{ lesson.wordCount }}</small></label>
+                  <div v-for="lesson in lessonsFor(book.id).slice(0, visibleLessonCount)" :key="lesson.id" class="lesson-option-row">
+                    <label class="lesson-option"><input type="checkbox" :checked="isLessonSelected(lesson.id)" @change="toggleLesson(lesson.id)" /><span>{{ lesson.title }}</span><small>{{ lesson.wordCount }}</small></label>
+                    <a v-if="grammarHref(book.id, lesson.order)" class="lesson-grammar-link" :href="grammarHref(book.id, lesson.order)"
+                      :aria-label="`学习${book.title} ${lesson.title}语法`" target="_blank" rel="noopener noreferrer">语法 ↗</a>
+                  </div>
                 </div>
+                <button v-if="visibleLessonCount < lessonsFor(book.id).length" class="quiet-button" type="button" @click="visibleLessonCount += 6">显示更多课次（{{Math.min(visibleLessonCount, lessonsFor(book.id).length)}} / {{lessonsFor(book.id).length}}）</button>
               </div>
             </article>
           </div>
@@ -1634,6 +1645,7 @@ onUnmounted(() => {
       </main>
 
       <main v-else class="summary-main">
+        <a v-if="relatedGrammar" class="completion-grammar" :href="studyHref(relatedGrammar.href)" target="_blank" rel="noopener noreferrer"><span><strong>接着学第 {{relatedGrammar.order}} 课语法</strong><small>标日{{relatedGrammar.label}} · 讲解与练习</small></span><ArrowRight :size="18" aria-hidden="true" /></a>
         <StudySessionSummary v-if="sessionFeedback" :summary="sessionFeedback" :duration-ms="summaryDurationMs" :skipped="sessionSkipped" :remaining="remaining" :today-count="summaryStats?.todayCount ?? 0" :daily-goal="summaryStats?.dailyGoal ?? 20" :busy="busy || queueBusy" :practice-label="Object.keys(sessionReadingContextIds).length ? '我的原句 · 填空练习' : sessionFeedbackPractice ? '巩固练习' : undefined" :recommendation="relatedPractice" @home="page = 'home'" @resume="resumeStudy" @retry="retrySessionWords" @recommend="practiceRecommended" />
         <div v-if="lastIgnored" class="undo-ignore-bar" role="status"><span>「{{ lastIgnored.item.word.term }}」已标记为忽略，词条与记录仍保留。</span><button type="button" :disabled="busy" @click="undoIgnore"><RotateCcw :size="14" />撤销忽略</button></div>
         <div v-if="actionError" class="learning-alert is-error" role="alert"><span>{{ actionError }}</span><button type="button" @click="actionError = ''"><X :size="15" /></button></div>

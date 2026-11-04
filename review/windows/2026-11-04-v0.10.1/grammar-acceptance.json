@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "network": "http(s) blocked at renderer",
+  "steps": [
+    "Settings version and all three widescreen modes",
+    "Lower-book directory, lesson 48 and offline answer",
+    "Submitted answer and question recovered after complete process restart",
+    "Kana playback decoded offline from kotoba assets; katakana and semi-voiced strokes and stepwise replay"
+  ],
+  "errors": []
+}

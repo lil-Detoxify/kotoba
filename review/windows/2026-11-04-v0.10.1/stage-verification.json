@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-04",
+  "windowsVersion": "0.10.1",
+  "webVersion": "0.10.1",
+  "workspaceWebVersionAtPackaging": "0.10.2-beta.1",
+  "frozenSource": "../kotobud-review/round67-production-2026-11-04/site-production",
+  "stage": "review/windows/2026-11-04-v0.10.1/stage/",
+  "fileCount": 1554,
+  "bytes": 335735346,
+  "main": "assets/main-j_8dspEz.js",
+  "mainSha256": "4305c12633a902b65f6ef942435a06f0ab3d74fd46ad1da4bed375980cbf3e5e",
+  "applicationEntry": {
+    "source": "../kotobud-review/round67-production-2026-11-04/site-production/app.html",
+    "stagedAppHtml": "app.html",
+    "stagedIndexHtml": "index.html",
+    "bytes": 857,
+    "sha256": "094628783897bbc60425afd8c164c989912484e6e71e443f553c83cd734c3eff",
+    "stagedFilesByteIdentical": true,
+    "seoHomepageCopied": false
+  },
+  "legacyDictionary": {
+    "source": "apps/web/public/dictionary/",
+    "version": "2026-09-02",
+    "shardCount": 512,
+    "productionAndFallbackManifestsMatch": true
+  },
+  "remoteWordAudioLibraryBundled": false,
+  "packagedPronunciationClips": 123,
+  "sourceFilesCopiedByteIdentically": true
+}

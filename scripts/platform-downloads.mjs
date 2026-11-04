@@ -4,11 +4,11 @@ import { resolve } from 'node:path';
 
 // Publish the reviewed archive as-is; a missing package leaves the download disabled.
 export const extensionRelease = Object.freeze({
-  version: '0.3.0-beta.7',
-  file: 'KotoBud-Extension-0.3.0-beta.7.zip',
-  checksumFile: 'KotoBud-Extension-0.3.0-beta.7.sha256.txt',
-  bytes: 2443255,
-  sha256: 'c947a667fa1d5bd3fc5d2dfe7ffa1f3d1ebd5f2785712c3d9dca18f89c4ef1c8',
+  version: '0.4.0',
+  file: 'KotoBud-Extension-0.4.0.zip',
+  checksumFile: 'KotoBud-Extension-0.4.0.sha256.txt',
+  bytes: 4129359,
+  sha256: '7c928829b4431e2a7d5066578edc6d592fdc9bd4df16f2111b0158c3b584a32c',
 });
 
 export function prepareExtensionDownload(targetDir) {

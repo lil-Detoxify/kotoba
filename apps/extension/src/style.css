@@ -542,6 +542,11 @@ button:disabled { cursor: not-allowed; }
 .daily-plan-detail, .daily-plan-note { margin: 13px 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
 .daily-plan-panel .start-daily-plan { width: 100%; margin-top: 15px; min-height: 44px; }
 .practice-entry-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px 0 20px; }
+.practice-entry-grid .open-kana { grid-column: 1 / -1; display: grid; position: relative; gap: 5px; padding: 14px 30px 14px 14px; color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.practice-entry-grid .open-kana strong { font-size: 13px; font-weight: 650; }
+.practice-entry-grid .open-kana span { color: var(--muted); font-size: 10px; line-height: 1.6; }
+.practice-entry-grid .open-kana svg { position: absolute; right: 12px; top: 20px; }
+.practice-entry-grid .open-kana:hover { background: var(--green-pale); border-color: #aabb9f; }
 .practice-entry-grid button { position: relative; display: flex; min-width: 0; min-height: 76px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; padding: 12px 22px 12px 12px; border: 1px solid var(--line-strong); border-radius: 13px; background: var(--paper); color: var(--green); text-align: left; cursor: pointer; }
 .practice-entry-grid button strong { font-size: 13px; font-weight: 650; }
 .practice-entry-grid button span { color: var(--muted); font-size: 10px; line-height: 1.6; }
@@ -671,12 +676,17 @@ button:disabled { cursor: not-allowed; }
 .lesson-range button { min-height: 29px; padding: 0 9px; border: 1px solid #d5e2d1; border-radius: 8px; background: #edf4e9; color: #557554; font-size: 9px; font-weight: 750; cursor: pointer; }
 .lesson-actions { display: flex; gap: 5px; margin: 9px 0 7px; }
 .lesson-actions button { min-height: 25px; padding: 0 7px; font-size: 9px; }
-.lesson-list { display: grid; max-height: 165px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; overflow-y: auto; padding: 2px; }
+.lesson-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 2px; }
 .lesson-option { display: flex; min-width: 0; min-height: 29px; align-items: center; gap: 5px; padding: 4px 5px; border: 1px solid #edf0e9; border-radius: 7px; background: #fff; color: #758175; cursor: pointer; }
 .lesson-option > span:nth-child(2) { display: flex; min-width: 0; flex: 1; align-items: center; gap: 4px; overflow: hidden; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
 .lesson-option > span:nth-child(2)::before { display: grid; width: 11px; height: 11px; flex: 0 0 auto; place-items: center; border: 1px solid #d7e1d3; border-radius: 3px; background: white; color: transparent; content: "✓"; font-size: 8px; }
 .lesson-option input:checked + span::before { border-color: #76946e; background: #77966f; color: white; }
 .lesson-option small { color: #9da69b; font-size: 8px; }
+.lesson-option-row { display: flex; align-items: stretch; gap: 4px; min-width: 0; }
+.lesson-option-row .lesson-option { flex: 1; }
+.book-grammar-link, .lesson-grammar-link { display: inline-flex; align-items: center; color: #315944; text-decoration: underline; text-underline-offset: 3px; }
+.book-grammar-link { min-height: 36px; margin: 0 11px; font-size: 12px; }
+.lesson-grammar-link { min-height: 36px; padding: 0 3px; font-size: 11px; white-space: nowrap; }
 .lesson-scope-note { margin: 9px 2px 0; color: #8e988d; font-size: 10px; }
 .session-selection-count, .stats-total { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; color: #4c704e; font-size: 22px; font-variant-numeric: tabular-nums; font-weight: 750; line-height: 1; }
 .session-selection-count small, .stats-total small { color: #909b8f; font-size: 9px; font-weight: 500; }
@@ -952,3 +962,4 @@ button:disabled { cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }
+.completion-grammar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px;margin-bottom:20px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--green);text-decoration:none}.completion-grammar strong{font-size:14px}.completion-grammar small{display:block;font-size:12px;line-height:1.8;margin-top:5px;color:var(--muted)}.completion-grammar:hover{border-color:var(--green)}

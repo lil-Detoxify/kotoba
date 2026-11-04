@@ -145,6 +145,8 @@ const manifest = {
   content_security_policy: { extension_pages: `script-src 'self'; object-src 'none'; base-uri 'none'; connect-src 'self' https://kotobud.com${stagingSentenceData ? ' https://staging.kotobud.com' : ''}; media-src 'self' https://kotobud.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'` },
 };
 const notices = [];
+const kanaSource = JSON.parse(await readFile(resolve(root, 'apps/web/src/kana-strokes.json'), 'utf8')).source;
+notices.push(`===== Kana stroke paths =====\n${kanaSource.name} ${kanaSource.release} by ${kanaSource.author}\n${kanaSource.url}\n${kanaSource.license}: ${kanaSource.licenseUrl}\n${kanaSource.changes}\nAdapted path data remains available under CC BY-SA 3.0 in assets/Kana-*.js.`);
 for (const name of ['vue', 'idb', 'ts-fsrs', 'lucide-vue-next', 'papaparse']) {
   notices.push(`===== ${name} =====\n${await readFile(resolve(root, `node_modules/${name}/LICENSE`), 'utf8')}`);
 }

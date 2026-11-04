@@ -33,11 +33,11 @@ export function renderDownloadContent({ webVersion, windowsVersion, setupFile, p
           <p class="option-description">适合在自己的电脑上长期学习。自动创建桌面快捷方式，支持常规应用管理与升级。</p>
           <dl class="option-specs">
             <div><dt>版本 / 架构</dt><dd>v${windowsVersion} · x64</dd></div>
-            <div><dt>文件大小</dt><dd>约 195.5 MB</dd></div>
+            <div><dt>文件大小</dt><dd>约 198.3 MB</dd></div>
           </dl>
           ${downloadAction(setupFile, '安装版', 'action-primary')}
           <p class="option-file">${setupFile}</p>
-          <p class="option-note">本地词典随包提供，发音资源按需加载。</p>
+          <p class="option-note">词典、五十音与纠音录音随包提供，其他发音按需加载。</p>
         </article>
 
         <article class="download-option download-portable" id="portable" aria-labelledby="portable-title">
@@ -46,7 +46,7 @@ export function renderDownloadContent({ webVersion, windowsVersion, setupFile, p
           <p class="option-description">单文件直接运行，数据目录自包含。适合存放在 U 盘随身携带，或在无管理员权限的办公电脑上使用。</p>
           <dl class="option-specs">
             <div><dt>版本 / 架构</dt><dd>v${windowsVersion} · x64</dd></div>
-            <div><dt>文件大小</dt><dd>约 195.2 MB</dd></div>
+            <div><dt>文件大小</dt><dd>约 198.1 MB</dd></div>
           </dl>
           ${downloadAction(portableFile, '便携版', 'action-secondary')}
           <p class="option-file">${portableFile}</p>
@@ -61,13 +61,13 @@ export function renderDownloadContent({ webVersion, windowsVersion, setupFile, p
 
       <section class="download-platforms" aria-label="浏览器扩展与微信小程序">
         <article class="download-option" id="extension" aria-labelledby="extension-title">
-          <div class="option-topline"><span class="option-label">03 / EXTENSION</span><span class="option-format">手动安装测试版</span></div>
+          <div class="option-topline"><span class="option-label">03 / EXTENSION</span><span class="option-format">手动安装</span></div>
           <h2 id="extension-title">浏览器扩展 <small>v${extensionDownload.version}</small></h2>
-          <p class="option-description">在 Chrome / Edge 桌面浏览器侧边栏查词、背词和复习，新增题型、每日计划、场景词汇、个人词库与学习统计。</p>
+          <p class="option-description">在 Chrome / Edge 桌面浏览器查词、背词和复习，学习标日初级语法与五十音，使用每日计划、场景词汇和个人词库。</p>
           <dl class="option-specs"><div><dt>安装方式</dt><dd>解压后手动加载</dd></div><div><dt>文件大小</dt><dd>约 ${extensionSizeMb} MB</dd></div></dl>
-          ${extensionDownload.ready ? `<a class="download-action action-primary" href="/downloads/${extensionDownload.file}" download><span>下载扩展测试包</span><span aria-hidden="true">↓</span></a>` : '<span class="download-action action-primary" aria-disabled="true"><span>测试包暂不可用</span><span aria-hidden="true">↓</span></span>'}
+          ${extensionDownload.ready ? `<a class="download-action action-primary" href="/downloads/${extensionDownload.file}" download><span>下载扩展安装包</span><span aria-hidden="true">↓</span></a>` : '<span class="download-action action-primary" aria-disabled="true"><span>安装包暂不可用</span><span aria-hidden="true">↓</span></span>'}
           <p class="option-file">${extensionDownload.file}</p>
-          <p class="option-note">Edge 商店已有正式版；此处提供最新手动安装测试包。实际侧栏、Chrome 和真实账号跨端仍待验收。</p>
+          <p class="option-note">此处提供最新手动安装包。Edge 商店更新须经审核；Chrome、实际侧栏与真实账号跨端仍待验收。</p>
           <div class="platform-links"><a class="download-text-link" href="/guide#extension">安装与保留进度的升级步骤 ↗</a>${extensionDownload.ready ? `<a class="download-text-link" href="/downloads/${extensionDownload.checksumFile}">SHA-256 校验码 ↗</a>` : ''}</div>
         </article>
         <article class="download-option" id="miniprogram" aria-labelledby="miniprogram-title">

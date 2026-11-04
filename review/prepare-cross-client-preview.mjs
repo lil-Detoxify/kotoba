@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {cpSync,existsSync,readFileSync,writeFileSync} from 'node:fs';
+import {resolve,join} from 'node:path';
+import {createHash} from 'node:crypto';
+const out=resolve(import.meta.dirname,'../../kotobud-review/cross-client-release-2026-11-04');
+const site=join(out,'site-release'),preview=join(out,'site-preview');
+assert(!existsSync(preview),'Existing preview retained');cpSync(site,preview,{recursive:true});
+const file=join(preview,'_worker.js'),old=readFileSync(file,'utf8');
+assert.equal(createHash('sha256').update(old).digest('hex'),'e12624afe1473e1c5c89cd27f4ba57887e57b4d95b73151d12af6a05a4a31097');
+const match="env.ENABLE_LEGACY_301 === 'true' && !isStaging && hostname.endsWith('.pages.dev')";
+assert.equal(old.split(match).length,2);
+writeFileSync(file,old.replace(match,"env.ENABLE_LEGACY_301 === 'true' && !isStaging && !isPreview && hostname.endsWith('.pages.dev')"));
+console.log('Prepared dedicated preview: only the legacy-domain redirect condition differs from production.');

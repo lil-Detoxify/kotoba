@@ -42,7 +42,7 @@ assert.ok(csp.includes("media-src 'self' https://kotobud.com;"));
 const coverScenes = ['town', 'train', 'cafe', 'bridge', 'table', 'museum', 'garden'];
 const localPaths = [manifest.background.service_worker, manifest.side_panel.default_path, ...Object.values(manifest.icons), manifest.action.default_icon, 'data/catalog.json', 'pet/leaf-cat.png', ...coverScenes.map(scene => `covers/${scene}.png`), 'DATA-SOURCES.txt', 'THIRD-PARTY-NOTICES.txt', 'INSTALL.txt'];
 for (const path of localPaths) { assert.ok(!path.includes('..') && !path.includes('://')); assert.ok((await stat(resolve(dist, path))).size > 0); }
-for (const entry of ['sidepanel.html', 'learning.html']) {
+for (const entry of ['sidepanel.html', 'learning.html', 'study.html']) {
 const html = await readFile(resolve(dist, entry), 'utf8');
 assert.ok(!/<script[^>]+src=["']https?:|<script(?![^>]*src=)[^>]*>\s*\S/i.test(html), 'Executable scripts must be local external files');
 for (const [, path] of html.matchAll(/(?:src|href)=["'](\.\/[^"']+)["']/g)) assert.ok((await stat(resolve(dist, path))).size > 0);
@@ -139,6 +139,15 @@ for (const name of answerSoundNames) {
   const source = await readFile(resolve(root, `apps/web/src/assets/answer-sounds/${name}.wav`));
   sourceAnswerSoundHashes.set(name, createHash('sha256').update(source).digest('hex'));
 }
+const sourcePronunciationHashes = new Set();
+const packagedPronunciationHashes = new Set();
+for (const folder of ['kana-audio', 'word-pronunciation']) {
+  const directory = resolve(root, 'apps/web/src/assets', folder);
+  for (const name of await readdir(directory)) {
+    assert.ok(name.endsWith('.mp3'), `Unexpected pronunciation source: ${name}`);
+    sourcePronunciationHashes.add(createHash('sha256').update(await readFile(resolve(directory, name))).digest('hex'));
+  }
+}
 let files = 0, bytes = 0;
 async function walk(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -147,7 +156,14 @@ async function walk(directory) {
     else {
       files++;
       bytes += (await stat(path)).size;
-      assert.ok(!/\.(mp3|ogg|pem|key)$/i.test(entry.name));
+      assert.ok(!/\.(ogg|pem|key)$/i.test(entry.name));
+      if (/\.mp3$/i.test(entry.name)) {
+        assert.equal(directory, resolve(dist, 'assets'), 'Pronunciation clips must remain in packaged assets');
+        const hash = createHash('sha256').update(await readFile(path)).digest('hex');
+        assert.ok(sourcePronunciationHashes.has(hash), `Unapproved pronunciation clip: ${path}`);
+        assert.ok(!packagedPronunciationHashes.has(hash), `Duplicate pronunciation clip: ${path}`);
+        packagedPronunciationHashes.add(hash);
+      }
       if (/\.wav$/i.test(entry.name)) {
         const match = entry.name.match(/^(wood|chime|timber|stone)-(correct|incorrect)-([a-zA-Z0-9_-]{8,})\.wav$/);
         assert.ok(match, `Unexpected packaged WAV: ${path}`);
@@ -162,5 +178,6 @@ async function walk(directory) {
   }
 }
 await walk(dist);
+assert.deepEqual([...packagedPronunciationHashes].sort(), [...sourcePronunciationHashes].sort(), 'All and only the existing Web pronunciation clips must be packaged');
 assert.deepEqual([...packagedAnswerSounds].sort(), [...answerSoundNames].sort(), 'Exactly the eight approved answer sound assets must be packaged');
 console.log(JSON.stringify({ version: manifest.version, files, bytes, entries: catalog.length, bookCounts: Object.fromEntries(countsByBook), covers: coverScenes.length, permissions: manifest.permissions, nativeBrowserAcceptance: 'pending' }, null, 2));

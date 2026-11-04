@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {resolve,join} from 'node:path';
+const out=resolve(import.meta.dirname,'../../kotobud-review/cross-client-release-2026-11-04');
+const preview=JSON.parse(readFileSync(join(out,'preview-public-verification.json'),'utf8'));
+assert.equal(preview.complete,true);
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+assert.equal(sha(readFileSync(join(out,'site-release/_worker.js'))),'e12624afe1473e1c5c89cd27f4ba57887e57b4d95b73151d12af6a05a4a31097','Production Worker contract changed');
+const live=await fetch('https://kotobud.com/app/',{redirect:'error',signal:AbortSignal.timeout(30000)});
+assert.equal(live.status,200);assert.equal(sha(Buffer.from(await live.arrayBuffer())),sha(readFileSync(join(out,'site-release/app.html'))),'Live Web changed; stop and prepare a fresh download-only candidate');
+console.log('Production release guard passed: verified preview, approved Worker, current live Web preserved.');

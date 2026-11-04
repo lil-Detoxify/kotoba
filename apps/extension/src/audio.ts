@@ -55,6 +55,9 @@ function safeBookAudioUrl(value: string | undefined): { url: string; location: '
 function safeGoogleAudioUrl(value: string | undefined): string | undefined {
   if (!value) return undefined;
   try {
+    const page = extensionPageUrl();
+    const local = new URL(value, page);
+    if (extensionProtocols.has(local.protocol) && sameExtensionOrigin(local, page) && /^\/assets\/[^/]+\.mp3$/.test(local.pathname)) return local.href;
     const url = new URL(value, 'https://kotobud.com');
     if (
       url.protocol === 'https:' &&

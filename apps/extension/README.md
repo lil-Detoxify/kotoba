@@ -1,6 +1,10 @@
 # KotoBud 浏览器扩展
 
-Chrome / Edge 桌面版的 Manifest V3 侧边栏。当前功能候选 **0.3.0-beta.7** 已提供官网手动测试包；Edge 商店公开版仍为 **0.2.3**，beta.7 更新正在审核。产品规划见 [扩展方案](../../docs/reference/BROWSER_EXTENSION_PLAN.md)。
+Chrome / Edge 桌面版的 Manifest V3 侧边栏。官网手动安装包现为 **0.4.0**，新增本地语法与五十音；按本册进入，课次分组展开。语法进度仅保存在本机扩展中，按账号隔离。Edge 0.4.0 商店包已准备，本轮浏览器工具在登录后连续超时，尚未上传或提交审核；既有商店发布情况见下方带日期的记录。产品规划见 [扩展方案](../../docs/reference/BROWSER_EXTENSION_PLAN.md)。
+
+[0.4.0 下载](https://kotobud.com/downloads/KotoBud-Extension-0.4.0.zip)及[校验码](https://kotobud.com/downloads/KotoBud-Extension-0.4.0.sha256.txt)，发布记录见[跨端交付](../../../kotobud-review/cross-client-release-2026-11-04/DELIVERY.md)。
+
+本轮交付与验收记录见 [0.4.0-beta.1 交付](../../../kotobud-review/extension-0.4.0-beta.1/DELIVERY.md)。基础学习使用独立扩展页 `study.html`，从词书的本册语法或五十音入口打开；侧栏继续用于查词与单词学习。
 
 ## 2026-10-21 Round42 发布与审核状态（0.3.0-beta.7）
 

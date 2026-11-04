@@ -8,7 +8,7 @@ import { recentWebReleaseNotes, currentWindowsReleaseNotes } from './release-not
 const INDEXNOW_KEY = '4b68e91c784e4b5bb8972cae6c7104f2';
 const DOMAIN = 'https://kotobud.com';
 const RELEASE_VERSION = JSON.parse(readFileSync(pathResolve(import.meta.dirname, '../package.json'), 'utf8')).version;
-const WINDOWS_DOWNLOAD_VERSION = '0.9.3';
+const WINDOWS_DOWNLOAD_VERSION = '0.10.1';
 const WINDOWS_SETUP_FILE = `KotoBud-${WINDOWS_DOWNLOAD_VERSION}-Windows-x64-Setup.exe`;
 const WINDOWS_PORTABLE_FILE = `KotoBud-${WINDOWS_DOWNLOAD_VERSION}-Windows-x64-Portable.exe`;
 const WINDOWS_CHECKSUM_FILE = `SHA256SUMS-${WINDOWS_DOWNLOAD_VERSION}.txt`;

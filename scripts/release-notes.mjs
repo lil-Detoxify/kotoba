@@ -1,4 +1,8 @@
 export const recentWebReleaseNotes = `
+          <div class="version-header"><span class="version-tag">v0.10.1</span><span class="version-date">2026 年 11 月 4 日 · 正式发布</span></div>
+          <ul><li>新增五十音学习，覆盖 104 项清音、浊音、半浊音和拗音，可切换平假名与片假名，提供 Google WaveNet 发音、动态笔顺、逐笔查看、例词与记忆提示。</li><li>五十音与语法入口在词书页并排展示。标日初级单课新词学习完成后，可直接进入对应语法课。</li><li>补齐「ボウリング」等 11 个词条修正词形或读音后的男女声 WaveNet 录音。</li></ul>
+          <div class="version-header"><span class="version-tag">v0.10.0</span><span class="version-date">2026 年 11 月 3 日 · 正式发布</span></div>
+          <ul><li>标日初级上下册新增第 1–48 课语法，共 270 个语法点、540 条原创例句与 467 道练习，支持句子拆解、选词填空和错题重练。</li><li>宽屏侧边展示可在设置中切换流动词带、课次书签和林间微风。</li><li>课次书签可查看今日学习与当前课次进度，林间微风的树芽随今日新词生长。设置页优化了卡片排布。</li></ul>
           <div class="version-header"><span class="version-tag">v0.9.4</span><span class="version-date">2026 年 10 月 28 日 · 正式发布</span></div>
           <ul><li>以设置页为参照，统一词典对照、例句用法、假名纠错、个人原句和完成页的卡片与控件样式。</li><li>收敛页面入场与答题反馈动效，减少弹跳、缩放和悬停位移，改善窄屏显示。</li></ul>
           <div class="version-header"><span class="version-tag">v0.9.3</span><span class="version-date">2026 年 10 月 27 日 · 正式发布</span></div>
@@ -11,6 +15,8 @@ export const recentWebReleaseNotes = `
 `;
 
 export const currentWindowsReleaseNotes = `
+          <div class="version-header"><span class="version-tag">v0.10.1</span><span class="version-date">2026 年 11 月 4 日 · 当前官网下载版本</span></div>
+          <ul><li>同步标日初级上下册第 1–48 课语法、讲解与练习，保留本机进度和首次作答成绩。</li><li>新增 104 项五十音学习，支持平假名与片假名、离线发音、动态笔顺与逐笔查看；同步 11 个修正词条的既有录音。</li><li>保留现有应用身份、学习数据和账号同步方式，提供安装版、便携版与 SHA-256 校验清单。</li></ul>
           <div class="version-header"><span class="version-tag">v0.9.3</span><span class="version-date">2026 年 10 月 27 日 · 当前官网下载版本</span></div>
           <ul><li>安装版与便携版同步 Web 0.9.3 的自动发音、续学、假名纠错、原句复习、完成推荐和生词本性能优化。</li><li>同步最新 JLPT / 标日例句、用法与义项补正；例句男女声朗读按需加载，不将完整语音库打入安装包。</li><li>教材词典与日文维基词典随包提供；保留原有应用身份、用户数据位置与账号同步方式。</li></ul>
 `;

@@ -3,6 +3,11 @@
 const PARAMS_VERSION = 'google-wavenet-v1-ssml-yomigana-rate1-pitch0-volume0';
 const VOICES = { female: 'ja-JP-Wavenet-A', male: 'ja-JP-Wavenet-C' } as const;
 
+// Corrected textbook readings use new WaveNet recordings keyed by the same digest as remote clips.
+const correctedClips = import.meta.glob<string>('../assets/word-pronunciation/*.mp3', {
+  eager: true, import: 'default', query: '?url&no-inline',
+});
+
 const urlCache = new Map<string, string>();
 
 export async function getGoogleAudioUrl(
@@ -29,7 +34,8 @@ export async function getGoogleAudioUrl(
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     const sub = voice === 'male' ? 'c' : 'a';
-    const url = `/audio/google/v1/${sub}/${hashHex}.mp3`;
+    const url = correctedClips[`../assets/word-pronunciation/${hashHex}.mp3`]
+      ?? `/audio/google/v1/${sub}/${hashHex}.mp3`;
     urlCache.set(key, url);
     return url;
   } catch {
